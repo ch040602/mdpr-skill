@@ -1,0 +1,6 @@
+{
+  "mode": "design-components-rule-based",
+  "requiresExplicitFlag": true,
+  "defaultMode": "legacy",
+  "status": "reference-pack-only"
+}

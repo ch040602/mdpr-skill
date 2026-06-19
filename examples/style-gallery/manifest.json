@@ -1,0 +1,16 @@
+{
+  "elementIrChecksum": "sha256:sample-deck-elements",
+  "policy": "partial-output-with-profile-level-failures",
+  "profiles": [
+    {
+      "profile": "friendly-dashboard",
+      "inspectPath": "examples/style-gallery/friendly-dashboard.inspect.json",
+      "outputs": ["friendly-dashboard.pptx.plan.json", "friendly-dashboard.html", "friendly-dashboard.pdf.plan.json"]
+    },
+    {
+      "profile": "sharp-technical",
+      "inspectPath": "examples/style-gallery/sharp-technical.inspect.json",
+      "outputs": ["sharp-technical.pptx.plan.json", "sharp-technical.html", "sharp-technical.pdf.plan.json"]
+    }
+  ]
+}

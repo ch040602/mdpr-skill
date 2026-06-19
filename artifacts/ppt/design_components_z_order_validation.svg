@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<rect id="z00_background_theme" x="0" y="0" width="1280" height="720" rx="0" fill="#F8FAFC" stroke="#F8FAFC" stroke-width="2"/>
+<rect id="z10_surface_card" x="96" y="86" width="902" height="538" rx="18" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2"/>
+<rect id="z20_chart_panel" x="154" y="202" width="547" height="336" rx="0" fill="#E9EEF5" stroke="#E9EEF5" stroke-width="2"/>
+<rect id="z30_chart_bar_accent" x="211" y="307" width="461" height="96" rx="0" fill="#635BFF" stroke="#635BFF" stroke-width="2"/>
+<rect id="z40_accent_ribbon" x="586" y="120" width="278" height="470" rx="0" fill="#00C2A8" stroke="#00C2A8" stroke-width="2"/>
+<rect id="z50_callout_overlay" x="499" y="206" width="413" height="212" rx="18" fill="#FFD166" stroke="#FFD166" stroke-width="2"/>
+<rect id="z60_top_badge" x="634" y="245" width="201" height="77" rx="18" fill="#EF476F" stroke="#EF476F" stroke-width="2"/>
+<text x="664" y="292" fill="#FFFFFF" font-size="28" font-weight="700">TOP</text>
+</svg>

@@ -1,0 +1,141 @@
+version: "1.0"
+
+variants:
+  kpi.heroNumber:
+    elementType: kpi
+    accept:
+      all:
+        - element.importance:
+            gte: 5
+        - slide.density: low
+    reject:
+      any:
+        - kpiCount:
+            gt: 2
+    size:
+      minRegion: large
+    typography:
+      numberRole: display
+      unitRatio: 0.5
+    surface:
+      kind: none
+    accent:
+      usage: primary
+
+  kpi.cardWithTrend:
+    elementType: kpi
+    accept:
+      all:
+        - element.importance:
+            gte: 3
+        - kpiCount:
+            min: 2
+            max: 4
+    size:
+      minRegion: medium
+    typography:
+      numberRole: headline
+      unitRatio: 0.5
+    surface:
+      kind: card
+    accent:
+      usage: trend-only
+
+  chart.cardWithContext:
+    elementType: chart
+    accept:
+      all:
+        - hasChart: true
+    size:
+      minRegion: large
+    surface:
+      kind: card
+    accent:
+      usage: highlight-one-series
+
+  table.compactGrid:
+    elementType: table
+    accept:
+      all:
+        - element.contentMetrics.rowCount:
+            gte: 4
+    reject:
+      any:
+        - element.contentMetrics.rowCount:
+            gt: 20
+    size:
+      minRegion: large
+    typography:
+      mode: compact-ui
+    surface:
+      kind: flat
+
+  title.sectionRule:
+    elementType: title
+    accept:
+      all:
+        - slide.intent:
+            in: [section, content, data, comparison, process]
+    typography:
+      role: title
+    accent:
+      usage: title-rule
+
+  code.window:
+    elementType: code
+    accept:
+      all:
+        - hasCode: true
+    typography:
+      role: monospace
+      mode: compact-ui
+    surface:
+      kind: code-window
+    accent:
+      usage: minimal
+
+  title.hero: { elementType: title, accept: { all: [] }, size: { minRegion: large }, typography: { role: display }, surface: { kind: none }, accent: { usage: primary } }
+  title.eyebrowStack: { elementType: title, accept: { all: [] }, size: { minRegion: medium }, typography: { role: eyebrow-stack }, surface: { kind: none }, accent: { usage: label } }
+  title.editorial: { elementType: title, accept: { all: [] }, size: { minRegion: medium }, typography: { role: editorial }, surface: { kind: none }, accent: { usage: scarce } }
+  title.commandHeader: { elementType: title, accept: { all: [] }, size: { minRegion: small }, typography: { role: compact-ui }, surface: { kind: flat }, accent: { usage: minimal } }
+  title.compact: { elementType: title, accept: { all: [] }, size: { minRegion: small }, typography: { role: compact }, surface: { kind: none }, accent: { usage: none } }
+  paragraph.body: { elementType: paragraph, accept: { all: [] }, size: { minRegion: medium }, typography: { role: body }, surface: { kind: none } }
+  paragraph.editorialLead: { elementType: paragraph, accept: { all: [] }, size: { minRegion: medium }, typography: { role: lead }, surface: { kind: none } }
+  paragraph.supportingText: { elementType: paragraph, accept: { all: [] }, size: { minRegion: small }, typography: { role: supporting }, surface: { kind: none } }
+  paragraph.sideNote: { elementType: paragraph, accept: { all: [] }, size: { minRegion: small }, typography: { role: sidenote }, surface: { kind: none } }
+  paragraph.captioned: { elementType: paragraph, accept: { all: [] }, size: { minRegion: small }, typography: { role: caption }, surface: { kind: none } }
+  list.plain: { elementType: bulletList, accept: { all: [] }, size: { minRegion: medium }, typography: { role: body }, surface: { kind: none } }
+  list.checklist: { elementType: bulletList, accept: { all: [] }, size: { minRegion: medium }, typography: { role: checklist }, surface: { kind: none } }
+  list.iconRows: { elementType: bulletList, accept: { all: [] }, size: { minRegion: medium }, typography: { role: iconRows }, surface: { kind: card } }
+  list.cardStack: { elementType: bulletList, accept: { all: [] }, size: { minRegion: medium }, typography: { role: cardStack }, surface: { kind: card } }
+  list.twoColumn: { elementType: bulletList, accept: { all: [] }, size: { minRegion: large }, typography: { role: twoColumn }, surface: { kind: none } }
+  list.stepCards: { elementType: bulletList, accept: { all: [] }, size: { minRegion: large }, typography: { role: steps }, surface: { kind: card } }
+  list.timeline: { elementType: bulletList, accept: { all: [] }, size: { minRegion: large }, typography: { role: timeline }, surface: { kind: none } }
+  kpi.inlineMetric: { elementType: kpi, accept: { all: [] }, size: { minRegion: small }, typography: { numberRole: inline, unitRatio: 0.5 }, surface: { kind: none }, accent: { usage: minimal } }
+  kpi.compactStat: { elementType: kpi, accept: { all: [] }, size: { minRegion: small }, typography: { numberRole: compact, unitRatio: 0.5 }, surface: { kind: card }, accent: { usage: trend-only } }
+  kpi.metricMatrixCell: { elementType: kpi, accept: { all: [] }, size: { minRegion: small }, typography: { numberRole: matrix, unitRatio: 0.5 }, surface: { kind: flat }, accent: { usage: none } }
+  kpi.donutCenterMetric: { elementType: kpi, accept: { all: [] }, size: { minRegion: medium }, typography: { numberRole: center, unitRatio: 0.5 }, surface: { kind: none }, accent: { usage: primary } }
+  chart.heroChart: { elementType: chart, accept: { all: [] }, size: { minRegion: large }, surface: { kind: none }, accent: { usage: highlight-one-series } }
+  chart.compactInline: { elementType: chart, accept: { all: [] }, size: { minRegion: medium }, surface: { kind: flat }, accent: { usage: minimal } }
+  chart.sideBySideWithKpi: { elementType: chart, accept: { all: [] }, size: { minRegion: large }, surface: { kind: card }, accent: { usage: linked-kpi } }
+  chart.donutSummary: { elementType: chart, accept: { all: [] }, size: { minRegion: medium }, surface: { kind: card }, accent: { usage: center-metric } }
+  chart.tableLinked: { elementType: chart, accept: { all: [] }, size: { minRegion: large }, surface: { kind: flat }, accent: { usage: linked-table } }
+  table.metricMatrix: { elementType: table, accept: { all: [] }, size: { minRegion: large }, typography: { mode: compact-ui }, surface: { kind: flat } }
+  table.comparisonTable: { elementType: table, accept: { all: [] }, size: { minRegion: large }, typography: { mode: standard }, surface: { kind: card } }
+  table.highlightRows: { elementType: table, accept: { all: [] }, size: { minRegion: large }, typography: { mode: compact-ui }, surface: { kind: flat }, accent: { usage: row-highlight } }
+  table.executiveSummary: { elementType: table, accept: { all: [] }, size: { minRegion: large }, typography: { mode: standard }, surface: { kind: card } }
+  code.diff: { elementType: code, accept: { all: [] }, size: { minRegion: large }, typography: { role: monospace }, surface: { kind: code-window }, accent: { usage: diff } }
+  code.focusBlock: { elementType: code, accept: { all: [] }, size: { minRegion: large }, typography: { role: monospace }, surface: { kind: code-window }, accent: { usage: focus-line } }
+  code.splitExplain: { elementType: code, accept: { all: [] }, size: { minRegion: large }, typography: { role: monospace }, surface: { kind: code-window }, accent: { usage: annotation } }
+  code.pipeline: { elementType: code, accept: { all: [] }, size: { minRegion: large }, typography: { role: monospace }, surface: { kind: flat }, accent: { usage: flow } }
+  callout.insight: { elementType: callout, accept: { all: [] }, size: { minRegion: medium }, typography: { role: callout }, surface: { kind: card }, accent: { usage: primary } }
+  callout.warning: { elementType: warning, accept: { all: [] }, size: { minRegion: medium }, typography: { role: callout }, surface: { kind: card }, accent: { usage: warning } }
+  callout.success: { elementType: success, accept: { all: [] }, size: { minRegion: medium }, typography: { role: callout }, surface: { kind: card }, accent: { usage: success } }
+  callout.decision: { elementType: callout, accept: { all: [] }, size: { minRegion: medium }, typography: { role: callout }, surface: { kind: card }, accent: { usage: decision } }
+  quote.editorial: { elementType: quote, accept: { all: [] }, size: { minRegion: medium }, typography: { role: quote }, surface: { kind: none } }
+  quote.card: { elementType: quote, accept: { all: [] }, size: { minRegion: medium }, typography: { role: quote }, surface: { kind: card } }
+  quote.pullQuote: { elementType: quote, accept: { all: [] }, size: { minRegion: large }, typography: { role: pullQuote }, surface: { kind: none } }
+  image.fullBleed: { elementType: image, accept: { all: [] }, size: { minRegion: large }, surface: { kind: media } }
+  image.cardFrame: { elementType: image, accept: { all: [] }, size: { minRegion: medium }, surface: { kind: card } }
+  image.roundedMedia: { elementType: image, accept: { all: [] }, size: { minRegion: medium }, surface: { kind: mediaRounded } }
+  image.sideVisual: { elementType: image, accept: { all: [] }, size: { minRegion: medium }, surface: { kind: sideVisual } }

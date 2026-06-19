@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/element-variant.schema.json",
+  "title": "Design Components Element Variant",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "elementType": { "type": "string" },
+    "density": { "type": "array", "items": { "enum": ["low", "medium", "high"] } },
+    "profileAxes": { "type": "object" },
+    "hardReject": { "type": "array", "items": { "type": "string" } },
+    "styleSlots": { "type": "object" }
+  },
+  "required": ["id", "elementType", "density", "styleSlots"]
+}

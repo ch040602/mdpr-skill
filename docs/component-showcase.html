@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MDPR x Design Components Component Showcase</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fb;
+      --ink: #20242c;
+      --muted: #667085;
+      --line: #d9e0ea;
+      --accent: #635bff;
+      --accent-2: #00c2a8;
+      --warn: #ffd166;
+      --danger: #ef476f;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px 28px 56px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 780px;
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    .tile {
+      min-height: 230px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      overflow: hidden;
+    }
+    .tile h2 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .stage {
+      position: relative;
+      height: 150px;
+      border-radius: 8px;
+      background: #f1f4f8;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+    .shape { position: absolute; border: 1px solid transparent; }
+    .rect { left: 24px; top: 28px; width: 96px; height: 58px; background: var(--accent); }
+    .round { left: 132px; top: 26px; width: 86px; height: 58px; border-radius: 18px; background: var(--accent-2); }
+    .pill { left: 52px; top: 100px; width: 148px; height: 34px; border-radius: 999px; background: var(--danger); }
+    .stack-a { left: 34px; top: 36px; width: 134px; height: 82px; background: #ffffff; border-color: var(--line); border-radius: 8px; box-shadow: 0 10px 22px rgba(31, 41, 55, .12); }
+    .stack-b { left: 72px; top: 56px; width: 134px; height: 82px; background: #fef3c7; border-color: #d9a441; border-radius: 8px; box-shadow: 0 10px 22px rgba(31, 41, 55, .10); }
+    .stack-c { left: 116px; top: 76px; width: 82px; height: 34px; background: var(--danger); border-radius: 999px; color: white; display:flex; align-items:center; justify-content:center; font-weight:700; }
+    .bar { bottom: 24px; width: 30px; background: var(--accent); border-radius: 5px 5px 0 0; }
+    .bar:nth-child(1) { left: 42px; height: 44px; }
+    .bar:nth-child(2) { left: 84px; height: 78px; background: var(--accent-2); }
+    .bar:nth-child(3) { left: 126px; height: 58px; background: var(--warn); }
+    .bar:nth-child(4) { left: 168px; height: 96px; background: var(--danger); }
+    .button { left: 42px; top: 42px; width: 150px; height: 44px; border-radius: 999px; background: var(--accent); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; box-shadow: 0 8px 18px rgba(99,91,255,.22); }
+    .ghost { left: 58px; top: 98px; width: 118px; height: 34px; border-radius: 8px; border-color: var(--line); color: var(--ink); display:flex; align-items:center; justify-content:center; }
+    .table { left: 26px; top: 26px; width: 200px; height: 100px; background:white; border-color: var(--line); border-radius: 6px; display:grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); }
+    .table span { border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
+    .table span:nth-child(3n) { border-right: 0; }
+    .table span:nth-child(-n+3) { background: #eef2ff; }
+    .timeline { left: 32px; top: 72px; width: 190px; height: 4px; background: #cbd5e1; }
+    .dot { top: -8px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid white; box-shadow: 0 0 0 1px #cbd5e1; }
+    .dot:nth-child(1) { left: 0; }
+    .dot:nth-child(2) { left: 84px; background: var(--accent-2); }
+    .dot:nth-child(3) { left: 170px; background: var(--danger); }
+    .modal { left: 42px; top: 28px; width: 168px; height: 98px; background: white; border-color: var(--line); border-radius: 8px; box-shadow: 0 16px 32px rgba(15,23,42,.18); padding: 16px; }
+    .modal::before { content:""; display:block; width: 90px; height: 10px; border-radius: 999px; background:#d9e0ea; margin-bottom:14px; }
+    .modal::after { content:""; display:block; width: 132px; height: 34px; border-radius: 8px; background: var(--accent); }
+    .motion { left: 44px; top: 48px; width: 58px; height: 58px; border-radius: 16px; background: var(--accent); box-shadow: 72px 0 0 var(--accent-2), 144px 0 0 var(--warn); }
+    .caption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>MDPR x Design Components Component Showcase</h1>
+    <p class="lead">Renderer-neutral examples for PowerPoint, HTML, and PDF: editable shapes, theme-bound color roles, deterministic z-order, and Design Components component mappings.</p>
+    <section class="grid" aria-label="Component showcase">
+      <article class="tile">
+        <h2>Basic Shape Variants</h2>
+        <div class="stage"><div class="shape rect"></div><div class="shape round"></div><div class="shape pill"></div></div>
+        <p class="caption">Maps radius families and fills to editable PPT shapes.</p>
+      </article>
+      <article class="tile">
+        <h2>Layered Z-order Stack</h2>
+        <div class="stage"><div class="shape stack-a"></div><div class="shape stack-b"></div><div class="shape stack-c">TOP</div></div>
+        <p class="caption">Validates back-to-front order for card, overlay, and badge layers.</p>
+      </article>
+      <article class="tile">
+        <h2>Chart / KPI Surface</h2>
+        <div class="stage"><div class="shape bar"></div><div class="shape bar"></div><div class="shape bar"></div><div class="shape bar"></div></div>
+        <p class="caption">Uses theme slots for chart series and keeps shapes editable.</p>
+      </article>
+      <article class="tile">
+        <h2>Buttons and Actions</h2>
+        <div class="stage"><div class="shape button">Primary CTA</div><div class="shape ghost">Secondary</div></div>
+        <p class="caption">Ports Design Components button states to PPT action shapes and HTML controls.</p>
+      </article>
+      <article class="tile">
+        <h2>Tables</h2>
+        <div class="stage"><div class="shape table"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+        <p class="caption">Table cells remain structured for PPT table/chart renderers.</p>
+      </article>
+      <article class="tile">
+        <h2>Timeline / Process</h2>
+        <div class="stage"><div class="shape timeline"><span class="shape dot"></span><span class="shape dot"></span><span class="shape dot"></span></div></div>
+        <p class="caption">Maps process recipes to rails, milestones, and compact labels.</p>
+      </article>
+      <article class="tile">
+        <h2>Modal / Sheet Surface</h2>
+        <div class="stage"><div class="shape modal"></div></div>
+        <p class="caption">Ports dialog/sheet/drawer components to grouped editable shapes.</p>
+      </article>
+      <article class="tile">
+        <h2>Motion Fallbacks</h2>
+        <div class="stage"><div class="shape motion"></div></div>
+        <p class="caption">PPT/PDF use static equivalents; HTML may preserve motion classes.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

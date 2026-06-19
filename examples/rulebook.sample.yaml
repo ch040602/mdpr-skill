@@ -1,0 +1,24 @@
+version: "1.0"
+
+imports:
+  - ./profile-catalog.sample.yaml
+  - ./recipe-catalog.sample.yaml
+  - ./element-variant-catalog.sample.yaml
+
+diversity:
+  avoidSameLayoutKindInLast: 3
+  avoidSameAccentPositionInLast: 2
+  maxDecorativeEffectsPerSlide: 2
+  expressiveAllowedIntents: [cover, section, summary]
+
+coherence:
+  lockDeckAxes: true
+  severity:
+    mixedRadius: error
+    mixedShadow: error
+    mixedTypeScale: error
+    mixedSpacing: error
+    multiplePrimaryAccents: error
+    rawHexInPptxMode: error
+    excessiveEffects: error
+    repeatedLayoutRhythm: warn

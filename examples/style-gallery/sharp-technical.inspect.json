@@ -1,0 +1,19 @@
+{
+  "deckProfile": "sharp-technical",
+  "coherenceLock": {
+    "radiusFamily": "sharp",
+    "shadowFamily": "hairline",
+    "spacingScale": "compact",
+    "typeScale": "compact-ui",
+    "accentPolicy": "scarce",
+    "effectPolicy": "none"
+  },
+  "slideFeatures": [{ "slideId": "s1", "hasKpi": true, "hasChart": true, "density": "medium" }],
+  "recipeCandidates": [
+    { "recipeId": "data.kpiRailChart", "accepted": true, "finalScore": 14 },
+    { "recipeId": "content.cardStack", "accepted": true, "finalScore": 2 }
+  ],
+  "selectedRecipe": "data.kpiRailChart",
+  "selectedVariants": { "e1": "title.compact", "e2": "kpi.inlineMetric", "e3": "chart.compactInline" },
+  "lintFindings": []
+}

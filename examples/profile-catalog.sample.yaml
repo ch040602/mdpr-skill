@@ -1,0 +1,91 @@
+version: "1.0"
+
+profiles:
+  friendly-dashboard:
+    baseSeed: toss
+    suitableFor: [cover, data, summary, content]
+    axes:
+      radiusFamily: rounded
+      shadowFamily: soft
+      spacingScale: standard
+      typeScale: standard
+      surfaceDepth: card
+      accentPolicy: moderate
+      effectPolicy: subtle
+    allowedRecipes:
+      - cover.heroMinimal
+      - data.kpiRailChart
+      - data.kpiDashboard
+      - summary.metricRecap
+
+  layered-product:
+    baseSeed: stripe
+    suitableFor: [cover, content, data, comparison]
+    axes:
+      radiusFamily: soft
+      shadowFamily: layered
+      spacingScale: standard
+      typeScale: standard
+      surfaceDepth: layered
+      accentPolicy: scarce
+      effectPolicy: subtle
+
+  sharp-technical:
+    baseSeed: linear
+    suitableFor: [code, diagram, process, data]
+    axes:
+      radiusFamily: sharp
+      shadowFamily: hairline
+      spacingScale: compact
+      typeScale: compact-ui
+      surfaceDepth: flat
+      accentPolicy: scarce
+      effectPolicy: none
+
+  editorial-brief:
+    baseSeed: notion
+    suitableFor: [content, section, summary]
+    axes:
+      radiusFamily: soft
+      shadowFamily: none
+      spacingScale: generous
+      typeScale: editorial
+      surfaceDepth: card
+      accentPolicy: scarce
+      effectPolicy: none
+
+  command-dense:
+    baseSeed: raycast
+    suitableFor: [content, code, appendix, data]
+    axes:
+      radiusFamily: soft
+      shadowFamily: hairline
+      spacingScale: compact
+      typeScale: compact-ui
+      surfaceDepth: flat
+      accentPolicy: moderate
+      effectPolicy: subtle
+
+  expressive-hero:
+    baseSeed: arc
+    suitableFor: [cover, section, summary]
+    axes:
+      radiusFamily: pill
+      shadowFamily: glow
+      spacingScale: generous
+      typeScale: display
+      surfaceDepth: hero
+      accentPolicy: expressive
+      effectPolicy: expressive
+
+  minimal-system:
+    baseSeed: vercel
+    suitableFor: [cover, content, data, code, comparison]
+    axes:
+      radiusFamily: sharp
+      shadowFamily: none
+      spacingScale: generous
+      typeScale: standard
+      surfaceDepth: flat
+      accentPolicy: scarce
+      effectPolicy: none

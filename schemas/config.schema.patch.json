@@ -1,0 +1,64 @@
+{
+  "pipeline": {
+    "type": "object",
+    "properties": {
+      "mode": {
+        "enum": ["legacy", "design-components-rule-based"]
+      }
+    },
+    "additionalProperties": false
+  },
+  "mdpr": {
+    "type": "object",
+    "properties": {
+      "role": { "enum": ["element-splitter"] },
+      "output": { "enum": ["slide-element-ir"] },
+      "split": {
+        "type": "object",
+        "properties": {
+          "inferIntent": { "type": "boolean" },
+          "inferElementTypes": { "type": "boolean" },
+          "inferImportance": { "type": "boolean" },
+          "inferGroups": { "type": "boolean" },
+          "computeContentMetrics": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  },
+  "design-components": {
+    "type": "object",
+    "properties": {
+      "selection": {
+        "type": "object",
+        "properties": {
+          "mode": { "enum": ["rule-based"] },
+          "profile": {
+            "type": "object",
+            "properties": {
+              "strategy": { "enum": ["auto", "manual"] },
+              "id": { "type": "string" },
+              "candidates": { "type": "array", "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          },
+          "allowAgentHints": {
+            "type": "object",
+            "properties": {
+              "enabled": { "type": "boolean" },
+              "allowedFields": { "type": "array", "items": { "type": "string" } },
+              "forbid": { "type": "array", "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "diversity": { "type": "object", "additionalProperties": true },
+      "coherence": { "type": "object", "additionalProperties": true },
+      "color": { "type": "object", "additionalProperties": true }
+    },
+    "additionalProperties": false
+  }
+}

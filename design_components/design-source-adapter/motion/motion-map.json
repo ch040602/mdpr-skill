@@ -1,0 +1,9 @@
+{
+  "spring": { "pptx": "static-equivalent", "html": "css-spring", "pdf": "static-equivalent" },
+  "silk": { "pptx": "static-equivalent", "html": "css-silk", "pdf": "static-equivalent" },
+  "snap": { "pptx": "static-equivalent", "html": "css-snap", "pdf": "static-equivalent" },
+  "float": { "pptx": "static-equivalent", "html": "css-float", "pdf": "static-equivalent" },
+  "pulse": { "pptx": "static-halo", "html": "css-pulse", "pdf": "static-halo" },
+  "reveal-blur": { "pptx": "soft-entrance-marker", "html": "css-blur-in", "pdf": "static-equivalent" },
+  "shimmer": { "pptx": "static-gradient-bar", "html": "animated-shimmer", "pdf": "static-gradient-bar" }
+}

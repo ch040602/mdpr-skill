@@ -1,0 +1,82 @@
+version: "1.0"
+
+pipeline:
+  mode: design-components-rule-based
+
+mdpr:
+  role: element-splitter
+  output: slide-element-ir
+  split:
+    inferIntent: true
+    inferElementTypes: true
+    inferImportance: true
+    inferGroups: true
+    computeContentMetrics: true
+
+designComponents:
+  selection:
+    mode: rule-based
+    profile:
+      strategy: auto
+      candidates:
+        - friendly-dashboard
+        - layered-product
+        - sharp-technical
+        - editorial-brief
+        - command-dense
+        - expressive-hero
+        - minimal-system
+    allowAgentHints:
+      enabled: false
+      allowedFields:
+        - possibleIntent
+        - possibleGroups
+        - possiblePrimaryElementId
+        - possibleImportance
+      forbid:
+        - recipeId
+        - variantId
+        - x
+        - y
+        - w
+        - h
+        - color
+        - effect
+
+  diversity:
+    avoidSameLayoutKindInLast: 3
+    avoidSameAccentPositionInLast: 2
+    maxDecorativeEffectsPerSlide: 2
+    allowExpressiveOnlyFor:
+      - cover
+      - section
+      - summary
+
+  coherence:
+    lockDeckAxes: true
+    lintMixedRadius: error
+    lintMixedShadow: error
+    lintMixedTypeScale: error
+    lintMixedSpacing: error
+    lintMultiplePrimaryAccents: error
+
+  color:
+    mode: ppt-theme
+    allowRawHexInPptx: false
+    themeBinding:
+      background: background1
+      surface: background1
+      foreground: text1
+      muted: text2
+      primaryAccent: accent1
+      secondaryAccent: accent2
+      success: accent3
+      warning: accent4
+      danger: accent5
+      info: accent6
+
+renderer:
+  pptx:
+    editableObjects: true
+    flattenTextToImage: false
+    useThemeColors: true

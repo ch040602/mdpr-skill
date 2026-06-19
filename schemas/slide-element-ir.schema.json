@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/slide-element-ir.schema.json",
+  "title": "MDPR Slide Element IR",
+  "type": "object",
+  "required": [
+    "version",
+    "deck",
+    "slides"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "deck": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "ratio": {
+          "enum": [
+            "16:9",
+            "4:3"
+          ]
+        },
+        "language": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "slides": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/slide"
+      }
+    }
+  },
+  "$defs": {
+    "slide": {
+      "type": "object",
+      "required": [
+        "id",
+        "intent",
+        "density",
+        "elements",
+        "readingOrder"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "intent": {
+          "enum": [
+            "cover",
+            "section",
+            "agenda",
+            "content",
+            "data",
+            "comparison",
+            "process",
+            "timeline",
+            "diagram",
+            "code",
+            "summary",
+            "appendix"
+          ]
+        },
+        "density": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/element"
+          }
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/group"
+          }
+        },
+        "readingOrder": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "x"
+            ]
+          },
+          {
+            "required": [
+              "y"
+            ]
+          },
+          {
+            "required": [
+              "w"
+            ]
+          },
+          {
+            "required": [
+              "h"
+            ]
+          },
+          {
+            "required": [
+              "color"
+            ]
+          },
+          {
+            "required": [
+              "fontSize"
+            ]
+          },
+          {
+            "required": [
+              "radius"
+            ]
+          },
+          {
+            "required": [
+              "shadow"
+            ]
+          },
+          {
+            "required": [
+              "effect"
+            ]
+          }
+        ]
+      },
+      "additionalProperties": false
+    },
+    "element": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "role",
+        "importance",
+        "content",
+        "contentMetrics"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "title",
+            "subtitle",
+            "paragraph",
+            "bulletList",
+            "numberedList",
+            "quote",
+            "callout",
+            "table",
+            "chart",
+            "image",
+            "figure",
+            "code",
+            "equation",
+            "kpi",
+            "metric",
+            "timeline",
+            "process",
+            "comparison",
+            "prosCons",
+            "definition",
+            "warning",
+            "success",
+            "reference",
+            "footnote",
+            "caption"
+          ]
+        },
+        "role": {
+          "enum": [
+            "primary",
+            "secondary",
+            "supporting",
+            "evidence",
+            "annotation",
+            "metadata",
+            "action"
+          ]
+        },
+        "importance": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "content": {},
+        "contentMetrics": {
+          "type": "object",
+          "properties": {
+            "textChars": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "lineCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "itemCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "rowCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "columnCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "numericDensity": {
+              "type": "number",
+              "minimum": 0
+            },
+            "imageAspectRatio": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "codeLineCount": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "constraints": {
+          "type": "object",
+          "properties": {
+            "mustStayTogether": {
+              "type": "boolean"
+            },
+            "canCollapse": {
+              "type": "boolean"
+            },
+            "canSummarize": {
+              "type": "boolean"
+            },
+            "preferredAspectRatio": {
+              "type": "number"
+            },
+            "minReadableSize": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "x"
+            ]
+          },
+          {
+            "required": [
+              "y"
+            ]
+          },
+          {
+            "required": [
+              "w"
+            ]
+          },
+          {
+            "required": [
+              "h"
+            ]
+          },
+          {
+            "required": [
+              "color"
+            ]
+          },
+          {
+            "required": [
+              "background"
+            ]
+          },
+          {
+            "required": [
+              "fontSize"
+            ]
+          },
+          {
+            "required": [
+              "radius"
+            ]
+          },
+          {
+            "required": [
+              "shadow"
+            ]
+          },
+          {
+            "required": [
+              "effect"
+            ]
+          },
+          {
+            "required": [
+              "variantId"
+            ]
+          }
+        ]
+      },
+      "additionalProperties": false
+    },
+    "group": {
+      "type": "object",
+      "required": [
+        "id",
+        "role",
+        "elementIds",
+        "relation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "hero",
+            "metricSet",
+            "evidenceSet",
+            "steps",
+            "comparisonPair",
+            "chartContext",
+            "references"
+          ]
+        },
+        "elementIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "relation": {
+          "enum": [
+            "sequence",
+            "parallel",
+            "contrast",
+            "causeEffect",
+            "support",
+            "detail"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

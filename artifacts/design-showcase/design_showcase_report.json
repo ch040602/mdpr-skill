@@ -1,0 +1,189 @@
+{
+  "pptx": "artifacts\\design-showcase\\design_components_showcase.pptx",
+  "slideCount": 5,
+  "skins": [
+    "mixed-object-stress",
+    "notion",
+    "linear",
+    "stripe",
+    "toss"
+  ],
+  "showcaseOrder": [
+    "mixed-object-stress",
+    "notion",
+    "linear",
+    "stripe",
+    "toss"
+  ],
+  "renderedSlides": [
+    "artifacts\\design-showcase\\showcase_slide_1.png",
+    "artifacts\\design-showcase\\showcase_slide_2.png",
+    "artifacts\\design-showcase\\showcase_slide_3.png",
+    "artifacts\\design-showcase\\showcase_slide_4.png",
+    "artifacts\\design-showcase\\showcase_slide_5.png"
+  ],
+  "renderValidation": [
+    {
+      "file": "artifacts\\design-showcase\\showcase_slide_1.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 2668,
+      "nonWhitePixels": 1121107,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\design-showcase\\showcase_slide_2.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 1478,
+      "nonWhitePixels": 1045816,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\design-showcase\\showcase_slide_3.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 792,
+      "nonWhitePixels": 1439892,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\design-showcase\\showcase_slide_4.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 1444,
+      "nonWhitePixels": 1038708,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\design-showcase\\showcase_slide_5.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 1148,
+      "nonWhitePixels": 1131536,
+      "hasContent": true
+    }
+  ],
+  "coherence": [
+    {
+      "skin": "notion",
+      "brand": "0075DE",
+      "radiusFamily": "soft",
+      "shadowFamily": "none",
+      "status": "pass",
+      "rules": [
+        "single brand accent",
+        "single radius family",
+        "single shadow family",
+        "font size >= 8pt",
+        "editable text inside shape/text boxes"
+      ]
+    },
+    {
+      "skin": "linear",
+      "brand": "5E6AD2",
+      "radiusFamily": "sharp",
+      "shadowFamily": "hairline",
+      "status": "pass",
+      "rules": [
+        "single brand accent",
+        "single radius family",
+        "single shadow family",
+        "font size >= 8pt",
+        "editable text inside shape/text boxes"
+      ]
+    },
+    {
+      "skin": "stripe",
+      "brand": "533AFD",
+      "radiusFamily": "rounded",
+      "shadowFamily": "layered",
+      "status": "pass",
+      "rules": [
+        "single brand accent",
+        "single radius family",
+        "single shadow family",
+        "font size >= 8pt",
+        "editable text inside shape/text boxes"
+      ]
+    },
+    {
+      "skin": "toss",
+      "brand": "721FE5",
+      "radiusFamily": "rounded",
+      "shadowFamily": "soft",
+      "status": "pass",
+      "rules": [
+        "single brand accent",
+        "single radius family",
+        "single shadow family",
+        "font size >= 8pt",
+        "editable text inside shape/text boxes"
+      ]
+    }
+  ],
+  "objectValidation": {
+    "counts": {
+      "autoShape": 107,
+      "textFrame": 191,
+      "picture": 1,
+      "table": 1,
+      "chart": 1,
+      "totalShapes": 194
+    },
+    "slideShapeCounts": [
+      {
+        "slide": 1,
+        "shapeCount": 47
+      },
+      {
+        "slide": 2,
+        "shapeCount": 29
+      },
+      {
+        "slide": 3,
+        "shapeCount": 29
+      },
+      {
+        "slide": 4,
+        "shapeCount": 41
+      },
+      {
+        "slide": 5,
+        "shapeCount": 48
+      }
+    ],
+    "requiredObjectTypes": [
+      "autoShape",
+      "textFrame",
+      "picture",
+      "table",
+      "chart"
+    ],
+    "missingObjectTypes": [],
+    "minFontSizeRequiredPt": 8,
+    "minFontSizeObservedPt": 8.0,
+    "fontViolations": [],
+    "objectVarietyOk": true,
+    "fontSizeOk": true
+  },
+  "ok": true,
+  "sourceReferences": [
+    ".cache/design-source/skins/*/skin.json",
+    ".cache/design-source/engine/components/patterns/stat-card.tsx",
+    ".cache/design-source/engine/components/patterns/chart-card.tsx",
+    ".cache/design-source/engine/components/patterns/ranked-list.tsx",
+    ".cache/design-source/engine/components/patterns/insight-card.tsx",
+    "artifacts/design-showcase/assets/mixed_object_reference.png"
+  ]
+}

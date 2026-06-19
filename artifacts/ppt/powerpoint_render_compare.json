@@ -1,0 +1,94 @@
+{
+  "pptx": "artifacts\\ppt\\design_components_z_order_validation.pptx",
+  "xmlProofPng": "artifacts\\ppt\\design_components_z_order_validation.png",
+  "powerPointPng": "artifacts\\ppt\\powerpoint_render.png",
+  "powerPointRawExportPng": "artifacts\\ppt\\powerpoint-export\\슬라이드1.PNG",
+  "imageComparison": {
+    "expected": "artifacts\\ppt\\design_components_z_order_validation.png",
+    "actual": "artifacts\\ppt\\powerpoint_render.png",
+    "size": [
+      1280,
+      720
+    ],
+    "meanAbsDiff": 1.0701660156250001,
+    "maxAbsDiff": 184,
+    "changedPixelRatio": 0.04031358506944444,
+    "comparisonOk": true
+  },
+  "actualRenderPixelSamples": [
+    {
+      "point": [
+        720,
+        305
+      ],
+      "expected": [
+        239,
+        71,
+        111
+      ],
+      "label": "top badge covers callout/ribbon/chart",
+      "actualPowerPoint": [
+        239,
+        71,
+        111
+      ],
+      "ok": true
+    },
+    {
+      "point": [
+        600,
+        285
+      ],
+      "expected": [
+        255,
+        209,
+        102
+      ],
+      "label": "callout overlays ribbon/chart",
+      "actualPowerPoint": [
+        255,
+        209,
+        102
+      ],
+      "ok": true
+    },
+    {
+      "point": [
+        660,
+        500
+      ],
+      "expected": [
+        0,
+        194,
+        168
+      ],
+      "label": "ribbon overlays card",
+      "actualPowerPoint": [
+        0,
+        194,
+        168
+      ],
+      "ok": true
+    },
+    {
+      "point": [
+        310,
+        365
+      ],
+      "expected": [
+        99,
+        91,
+        255
+      ],
+      "label": "chart bar overlays chart panel",
+      "actualPowerPoint": [
+        99,
+        91,
+        255
+      ],
+      "ok": true
+    }
+  ],
+  "actualRenderOk": true,
+  "note": "This report uses Microsoft PowerPoint COM export for the actual rendered PNG, then compares it with the XML-derived visual proof and overlap sample colors."
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/slide-recipe.schema.json",
+  "title": "Design Components Slide Recipe",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "intent": { "type": "string" },
+    "supports": { "type": "array", "items": { "type": "string" } },
+    "hardReject": { "type": "array", "items": { "type": "string" } },
+    "score": { "type": "array", "items": { "type": "string" } },
+    "regions": { "type": "array", "items": { "type": "object" } },
+    "effectBudget": { "type": "integer", "minimum": 0 }
+  },
+  "required": ["id", "intent", "supports", "hardReject", "score", "regions", "effectBudget"]
+}

@@ -1,0 +1,57 @@
+{
+  "slideId": "s04",
+  "profileId": "layered-product",
+  "features": {
+    "slideIntent": "data",
+    "density": "medium",
+    "elementCount": 6,
+    "hasTitle": true,
+    "hasChart": true,
+    "hasKpi": true,
+    "hasCallout": true,
+    "kpiCount": 3,
+    "chartCount": 1,
+    "totalTextChars": 260,
+    "dataWeight": 5,
+    "narrativeWeight": 2
+  },
+  "selectedRecipe": "data.kpiRailChart",
+  "selectedVariants": {
+    "title-1": "title.sectionRule",
+    "kpi-1": "kpi.cardWithTrend",
+    "kpi-2": "kpi.cardWithTrend",
+    "kpi-3": "kpi.cardWithTrend",
+    "chart-1": "chart.cardWithContext",
+    "callout-1": "callout.insight"
+  },
+  "candidates": [
+    {
+      "recipeId": "data.kpiRailChart",
+      "accepted": true,
+      "finalScore": 122,
+      "hardRejectReasons": []
+    },
+    {
+      "recipeId": "data.chartWithContext",
+      "accepted": true,
+      "finalScore": 105,
+      "hardRejectReasons": []
+    },
+    {
+      "recipeId": "content.editorialBody",
+      "accepted": false,
+      "finalScore": null,
+      "hardRejectReasons": [
+        "hasChart true and dataWeight high"
+      ]
+    }
+  ],
+  "coherence": {
+    "radiusFamily": "soft",
+    "shadowFamily": "layered",
+    "spacingScale": "standard",
+    "typeScale": "standard",
+    "accentPolicy": "scarce",
+    "effectPolicy": "subtle"
+  }
+}

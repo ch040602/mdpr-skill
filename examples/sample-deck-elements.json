@@ -1,0 +1,134 @@
+{
+  "version": "1.0",
+  "deck": {
+    "id": "demo",
+    "title": "Demo",
+    "ratio": "16:9",
+    "language": "ko"
+  },
+  "slides": [
+    {
+      "id": "s04",
+      "intent": "data",
+      "density": "medium",
+      "readingOrder": [
+        "title-1",
+        "kpi-1",
+        "kpi-2",
+        "kpi-3",
+        "chart-1",
+        "callout-1"
+      ],
+      "groups": [
+        {
+          "id": "g1",
+          "role": "metricSet",
+          "elementIds": [
+            "kpi-1",
+            "kpi-2",
+            "kpi-3"
+          ],
+          "relation": "parallel"
+        },
+        {
+          "id": "g2",
+          "role": "chartContext",
+          "elementIds": [
+            "chart-1",
+            "callout-1"
+          ],
+          "relation": "support"
+        }
+      ],
+      "elements": [
+        {
+          "id": "title-1",
+          "type": "title",
+          "role": "primary",
+          "importance": 5,
+          "content": {
+            "text": "Revenue dashboard"
+          },
+          "contentMetrics": {
+            "textChars": 17,
+            "lineCount": 1
+          }
+        },
+        {
+          "id": "kpi-1",
+          "type": "kpi",
+          "role": "primary",
+          "importance": 5,
+          "content": {
+            "label": "Revenue",
+            "value": "48.2",
+            "unit": "K",
+            "trend": "+12.4%"
+          },
+          "contentMetrics": {
+            "textChars": 18,
+            "numericDensity": 0.8
+          }
+        },
+        {
+          "id": "kpi-2",
+          "type": "kpi",
+          "role": "primary",
+          "importance": 4,
+          "content": {
+            "label": "Users",
+            "value": "12.1",
+            "unit": "K",
+            "trend": "+8.1%"
+          },
+          "contentMetrics": {
+            "textChars": 16,
+            "numericDensity": 0.8
+          }
+        },
+        {
+          "id": "kpi-3",
+          "type": "kpi",
+          "role": "primary",
+          "importance": 4,
+          "content": {
+            "label": "Conversion",
+            "value": "7.8",
+            "unit": "%",
+            "trend": "+1.2p"
+          },
+          "contentMetrics": {
+            "textChars": 20,
+            "numericDensity": 0.8
+          }
+        },
+        {
+          "id": "chart-1",
+          "type": "chart",
+          "role": "evidence",
+          "importance": 5,
+          "content": {
+            "kind": "line",
+            "series": []
+          },
+          "contentMetrics": {
+            "numericDensity": 0.9
+          }
+        },
+        {
+          "id": "callout-1",
+          "type": "callout",
+          "role": "annotation",
+          "importance": 3,
+          "content": {
+            "text": "North America drove most of the growth."
+          },
+          "contentMetrics": {
+            "textChars": 39,
+            "lineCount": 2
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+version: "1.0"
+
+recipes:
+  data.kpiRailChart:
+    priority: 90
+    accept:
+      all:
+        - slide.intent: data
+        - hasChart: true
+        - kpiCount:
+            min: 2
+            max: 4
+    reject:
+      any:
+        - density: high
+        - totalTextChars:
+            gt: 700
+        - chartCount:
+            gt: 1
+    score:
+      intentFit: 30
+      elementFit:
+        hasChart: 15
+        hasKpi: 15
+      densityFit:
+        low: 8
+        medium: 20
+        high: -30
+      profileFit:
+        friendly-dashboard: 15
+        layered-product: 14
+        sharp-technical: 8
+        minimal-system: 10
+        editorial-brief: -8
+    composition:
+      layoutKind: dashboard
+      regions:
+        - id: title
+          role: title
+          size: header
+        - id: kpiRail
+          role: metricSet
+          size: compact-row
+        - id: mainChart
+          role: primary
+          size: dominant
+        - id: insight
+          role: annotation
+          size: side-note
+    elementVariants:
+      title: title.sectionRule
+      kpi: kpi.cardWithTrend
+      chart: chart.cardWithContext
+      callout: callout.insight
+    effects:
+      maxDecorativeEffects: 1
+      allowed: [titleRule, subtleAccentRail]
+
+  content.editorialBody:
+    priority: 70
+    accept:
+      all:
+        - slide.intent:
+            in: [content, appendix]
+        - totalTextChars:
+            gte: 400
+    reject:
+      any:
+        - hasChart: true
+        - kpiCount:
+            gt: 0
+    score:
+      intentFit: 24
+      densityFit:
+        low: 6
+        medium: 16
+        high: 18
+      profileFit:
+        editorial-brief: 16
+        minimal-system: 12
+        layered-product: 8
+    composition:
+      layoutKind: editorial
+      regions:
+        - id: title
+          role: title
+          size: header
+        - id: body
+          role: primary
+          size: dominant
+        - id: side
+          role: annotation
+          size: side-note
+    elementVariants:
+      title: title.editorial
+      paragraph: paragraph.body
+      quote: quote.pullQuote
+      bulletList: list.compactChecklist
+    effects:
+      maxDecorativeEffects: 0
+
+  code.splitExplanation:
+    priority: 85
+    accept:
+      all:
+        - hasCode: true
+        - codeLineCount:
+            min: 12
+    reject:
+      any:
+        - density: low
+    score:
+      intentFit: 28
+      elementFit:
+        hasCode: 25
+      profileFit:
+        sharp-technical: 16
+        command-dense: 14
+        minimal-system: 10
+    composition:
+      layoutKind: code-focus
+      regions:
+        - id: title
+          role: title
+          size: header
+        - id: code
+          role: primary
+          size: dominant
+        - id: explanation
+          role: annotation
+          size: side-note
+    elementVariants:
+      title: title.commandHeader
+      code: code.window
+      paragraph: paragraph.sideNote
+    effects:
+      maxDecorativeEffects: 0
+
+  cover.heroMinimal: { priority: 80, accept: { all: [ { slide.intent: cover } ] }, reject: { any: [ { density: high } ] }, score: { intentFit: 30 }, composition: { layoutKind: hero, regions: [ { id: hero, role: primary, size: dominant } ] }, elementVariants: { title: title.hero, subtitle: paragraph.supportingText }, effects: { maxDecorativeEffects: 1 } }
+  cover.brandBlock: { priority: 78, accept: { all: [ { slide.intent: cover } ] }, reject: { any: [] }, score: { intentFit: 28 }, composition: { layoutKind: brand-block, regions: [ { id: title, role: primary, size: dominant } ] }, elementVariants: { title: title.hero }, effects: { maxDecorativeEffects: 1 } }
+  cover.editorialTitle: { priority: 76, accept: { all: [ { slide.intent: cover } ] }, reject: { any: [] }, score: { intentFit: 26 }, composition: { layoutKind: editorial-cover, regions: [ { id: title, role: primary, size: dominant } ] }, elementVariants: { title: title.editorial }, effects: { maxDecorativeEffects: 0 } }
+  section.bigNumber: { priority: 75, accept: { all: [ { slide.intent: section } ] }, reject: { any: [] }, score: { intentFit: 25 }, composition: { layoutKind: section-number, regions: [ { id: number, role: annotation, size: large } ] }, elementVariants: { title: title.sectionRule }, effects: { maxDecorativeEffects: 1 } }
+  section.ruleAndLabel: { priority: 74, accept: { all: [ { slide.intent: section } ] }, reject: { any: [] }, score: { intentFit: 24 }, composition: { layoutKind: section-rule, regions: [ { id: title, role: primary, size: header } ] }, elementVariants: { title: title.sectionRule }, effects: { maxDecorativeEffects: 0 } }
+  section.fullBleedAccent: { priority: 72, accept: { all: [ { slide.intent: section } ] }, reject: { any: [ { density: high } ] }, score: { intentFit: 22 }, composition: { layoutKind: full-bleed-accent, regions: [ { id: title, role: primary, size: dominant } ] }, elementVariants: { title: title.hero }, effects: { maxDecorativeEffects: 1 } }
+  content.cardStack: { priority: 70, accept: { all: [ { slide.intent: content } ] }, reject: { any: [] }, score: { intentFit: 20 }, composition: { layoutKind: card-stack, regions: [ { id: cards, role: primary, size: dominant } ] }, elementVariants: { title: title.sectionRule, bulletList: list.cardStack }, effects: { maxDecorativeEffects: 1 } }
+  content.twoColumnText: { priority: 68, accept: { all: [ { slide.intent: content } ] }, reject: { any: [] }, score: { intentFit: 18 }, composition: { layoutKind: two-column, regions: [ { id: left, role: primary, size: half }, { id: right, role: secondary, size: half } ] }, elementVariants: { paragraph: paragraph.body }, effects: { maxDecorativeEffects: 0 } }
+  content.calloutLead: { priority: 66, accept: { all: [ { slide.intent: content } ] }, reject: { any: [] }, score: { intentFit: 16 }, composition: { layoutKind: callout-lead, regions: [ { id: callout, role: primary, size: large } ] }, elementVariants: { callout: callout.insight, paragraph: paragraph.supportingText }, effects: { maxDecorativeEffects: 1 } }
+  data.kpiDashboard: { priority: 88, accept: { all: [ { slide.intent: data } ] }, reject: { any: [] }, score: { hasKpi: 20 }, composition: { layoutKind: dashboard, regions: [ { id: grid, role: metricSet, size: dominant } ] }, elementVariants: { kpi: kpi.cardWithTrend }, effects: { maxDecorativeEffects: 1 } }
+  data.chartWithContext: { priority: 84, accept: { all: [ { hasChart: true } ] }, reject: { any: [] }, score: { hasChart: 20 }, composition: { layoutKind: chart-context, regions: [ { id: chart, role: primary, size: dominant } ] }, elementVariants: { chart: chart.cardWithContext }, effects: { maxDecorativeEffects: 1 } }
+  data.tableWithInsight: { priority: 82, accept: { all: [ { hasTable: true } ] }, reject: { any: [] }, score: { hasTable: 20 }, composition: { layoutKind: table-first, regions: [ { id: table, role: primary, size: dominant } ] }, elementVariants: { table: table.compactGrid, callout: callout.insight }, effects: { maxDecorativeEffects: 0 } }
+  comparison.twoColumnCards: { priority: 78, accept: { all: [ { slide.intent: comparison } ] }, reject: { any: [] }, score: { intentFit: 20 }, composition: { layoutKind: comparison-two-column, regions: [ { id: left, role: primary, size: half }, { id: right, role: secondary, size: half } ] }, elementVariants: { bulletList: list.twoColumn }, effects: { maxDecorativeEffects: 1 } }
+  comparison.prosCons: { priority: 76, accept: { all: [ { slide.intent: comparison } ] }, reject: { any: [] }, score: { intentFit: 18 }, composition: { layoutKind: pros-cons, regions: [ { id: pros, role: primary, size: half }, { id: cons, role: secondary, size: half } ] }, elementVariants: { bulletList: list.checklist }, effects: { maxDecorativeEffects: 1 } }
+  comparison.matrix: { priority: 74, accept: { all: [ { slide.intent: comparison } ] }, reject: { any: [] }, score: { intentFit: 16 }, composition: { layoutKind: matrix, regions: [ { id: matrix, role: primary, size: dominant } ] }, elementVariants: { table: table.comparisonTable }, effects: { maxDecorativeEffects: 0 } }
+  process.horizontalSteps: { priority: 80, accept: { all: [ { slide.intent: process } ] }, reject: { any: [] }, score: { intentFit: 20 }, composition: { layoutKind: horizontal-steps, regions: [ { id: steps, role: steps, size: dominant } ] }, elementVariants: { bulletList: list.stepCards }, effects: { maxDecorativeEffects: 1 } }
+  process.verticalRail: { priority: 78, accept: { all: [ { slide.intent: process } ] }, reject: { any: [] }, score: { intentFit: 18 }, composition: { layoutKind: vertical-rail, regions: [ { id: steps, role: steps, size: dominant } ] }, elementVariants: { bulletList: list.timeline }, effects: { maxDecorativeEffects: 0 } }
+  timeline.roadmap: { priority: 80, accept: { all: [ { slide.intent: timeline } ] }, reject: { any: [] }, score: { intentFit: 20 }, composition: { layoutKind: roadmap, regions: [ { id: timeline, role: steps, size: dominant } ] }, elementVariants: { bulletList: list.timeline }, effects: { maxDecorativeEffects: 1 } }
+  code.windowFocus: { priority: 86, accept: { all: [ { hasCode: true } ] }, reject: { any: [] }, score: { hasCode: 25 }, composition: { layoutKind: code-window, regions: [ { id: code, role: primary, size: dominant } ] }, elementVariants: { code: code.window }, effects: { maxDecorativeEffects: 0 } }
+  code.diffReview: { priority: 84, accept: { all: [ { hasCode: true } ] }, reject: { any: [] }, score: { hasCode: 23 }, composition: { layoutKind: diff-review, regions: [ { id: code, role: primary, size: dominant } ] }, elementVariants: { code: code.diff }, effects: { maxDecorativeEffects: 0 } }
+  summary.keyTakeaways: { priority: 80, accept: { all: [ { slide.intent: summary } ] }, reject: { any: [] }, score: { intentFit: 20 }, composition: { layoutKind: takeaways, regions: [ { id: takeaways, role: primary, size: dominant } ] }, elementVariants: { bulletList: list.checklist }, effects: { maxDecorativeEffects: 1 } }
+  summary.actionList: { priority: 78, accept: { all: [ { slide.intent: summary } ] }, reject: { any: [] }, score: { intentFit: 18 }, composition: { layoutKind: action-list, regions: [ { id: actions, role: action, size: dominant } ] }, elementVariants: { bulletList: list.stepCards }, effects: { maxDecorativeEffects: 0 } }
+  summary.metricRecap: { priority: 76, accept: { all: [ { slide.intent: summary } ] }, reject: { any: [] }, score: { intentFit: 16 }, composition: { layoutKind: metric-recap, regions: [ { id: metrics, role: metricSet, size: dominant } ] }, elementVariants: { kpi: kpi.metricMatrixCell }, effects: { maxDecorativeEffects: 1 } }

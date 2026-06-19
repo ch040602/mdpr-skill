@@ -1,0 +1,19 @@
+{
+  "deckProfile": "friendly-dashboard",
+  "coherenceLock": {
+    "radiusFamily": "rounded",
+    "shadowFamily": "soft",
+    "spacingScale": "standard",
+    "typeScale": "standard",
+    "accentPolicy": "moderate",
+    "effectPolicy": "subtle"
+  },
+  "slideFeatures": [{ "slideId": "s1", "hasKpi": true, "hasChart": true, "density": "medium" }],
+  "recipeCandidates": [
+    { "recipeId": "data.kpiRailChart", "accepted": true, "finalScore": 14 },
+    { "recipeId": "cover.heroMinimal", "accepted": false, "hardRejectReasons": ["unsupported element type"] }
+  ],
+  "selectedRecipe": "data.kpiRailChart",
+  "selectedVariants": { "e1": "title.hero", "e2": "kpi.heroNumber", "e3": "chart.cardWithContext" },
+  "lintFindings": []
+}

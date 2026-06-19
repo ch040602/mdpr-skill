@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/styled-deck-ir.schema.json",
+  "title": "MDPR Styled Deck IR",
+  "type": "object",
+  "required": [
+    "version",
+    "profile",
+    "coherenceLock",
+    "slides"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "profile": {
+      "type": "object",
+      "required": [
+        "id",
+        "baseSeed",
+        "axes"
+      ],
+      "additionalProperties": true
+    },
+    "coherenceLock": {
+      "type": "object",
+      "required": [
+        "profileId",
+        "radiusFamily",
+        "shadowFamily",
+        "spacingScale",
+        "typeScale",
+        "accentPolicy",
+        "effectPolicy",
+        "colorBinding"
+      ],
+      "additionalProperties": true
+    },
+    "slides": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/styledSlide"
+      }
+    }
+  },
+  "$defs": {
+    "themeColorRef": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "slot"
+          ],
+          "properties": {
+            "kind": {
+              "const": "pptTheme"
+            },
+            "slot": {
+              "enum": [
+                "background1",
+                "background2",
+                "text1",
+                "text2",
+                "accent1",
+                "accent2",
+                "accent3",
+                "accent4",
+                "accent5",
+                "accent6"
+              ]
+            },
+            "transparency": {
+              "type": "number"
+            },
+            "tint": {
+              "type": "number"
+            },
+            "shade": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "value",
+            "previewOnly"
+          ],
+          "properties": {
+            "kind": {
+              "const": "fallbackHex"
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^#?[0-9A-Fa-f]{6}$"
+            },
+            "previewOnly": {
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "box": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "w",
+        "h"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "w": {
+          "type": "number"
+        },
+        "h": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "styledSlide": {
+      "type": "object",
+      "required": [
+        "id",
+        "sourceSlideId",
+        "recipeId",
+        "canvas",
+        "elements"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sourceSlideId": {
+          "type": "string"
+        },
+        "recipeId": {
+          "type": "string"
+        },
+        "canvas": {
+          "type": "object",
+          "required": [
+            "background",
+            "padding"
+          ],
+          "properties": {
+            "background": {
+              "$ref": "#/$defs/themeColorRef"
+            },
+            "padding": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/styledElement"
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "lint": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "styledElement": {
+      "type": "object",
+      "required": [
+        "id",
+        "sourceElementId",
+        "variantId",
+        "box"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sourceElementId": {
+          "type": "string"
+        },
+        "variantId": {
+          "type": "string"
+        },
+        "box": {
+          "$ref": "#/$defs/box"
+        },
+        "typography": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "surface": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "border": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "radius": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "shadow": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "accent": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "effect": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,205 @@
+{
+  "version": "1.0",
+  "project": "MDPR Design Components Rule-based Design Engine",
+  "phases": [
+    {
+      "id": "P00",
+      "name": "Preflight",
+      "dependsOn": [],
+      "doneWhen": [
+        "legacy snapshots unchanged",
+        "feature flag decided",
+        "Design Components license metadata recorded"
+      ]
+    },
+    {
+      "id": "P01",
+      "name": "Slide Element IR",
+      "dependsOn": [
+        "P00"
+      ],
+      "doneWhen": [
+        "schema added",
+        "adapter added",
+        "visual field validator passes"
+      ]
+    },
+    {
+      "id": "P02",
+      "name": "Feature Extractor",
+      "dependsOn": [
+        "P01"
+      ],
+      "doneWhen": [
+        "features computed",
+        "golden snapshots pass"
+      ]
+    },
+    {
+      "id": "P03",
+      "name": "Rule Engine Foundation",
+      "dependsOn": [
+        "P02"
+      ],
+      "doneWhen": [
+        "hard filter",
+        "scoring",
+        "tie-break",
+        "trace"
+      ]
+    },
+    {
+      "id": "P04",
+      "name": "Profile Catalog",
+      "dependsOn": [
+        "P03"
+      ],
+      "doneWhen": [
+        "profiles load",
+        "coherence lock created"
+      ]
+    },
+    {
+      "id": "P05",
+      "name": "Slide Recipes",
+      "dependsOn": [
+        "P03",
+        "P04"
+      ],
+      "doneWhen": [
+        "core recipe groups implemented",
+        "recipe tests pass"
+      ]
+    },
+    {
+      "id": "P06",
+      "name": "Element Variants",
+      "dependsOn": [
+        "P05"
+      ],
+      "doneWhen": [
+        "variant registry implemented",
+        "variant tests pass"
+      ]
+    },
+    {
+      "id": "P07",
+      "name": "Composition Engine",
+      "dependsOn": [
+        "P05",
+        "P06"
+      ],
+      "doneWhen": [
+        "boxes generated",
+        "safe area and fit tests pass"
+      ]
+    },
+    {
+      "id": "P08",
+      "name": "Decoration Engine",
+      "dependsOn": [
+        "P07"
+      ],
+      "doneWhen": [
+        "style specs generated",
+        "coherence axes applied"
+      ]
+    },
+    {
+      "id": "P09",
+      "name": "Design Source Port",
+      "dependsOn": [
+        "P00"
+      ],
+      "doneWhen": [
+        "upstream metadata",
+        "token/skin/motion mapping"
+      ]
+    },
+    {
+      "id": "P10",
+      "name": "PPT Theme Colors",
+      "dependsOn": [
+        "P08"
+      ],
+      "doneWhen": [
+        "ThemeColorRef",
+        "raw hex lint",
+        "renderer adapter"
+      ]
+    },
+    {
+      "id": "P11",
+      "name": "Renderer Integration",
+      "dependsOn": [
+        "P08",
+        "P10"
+      ],
+      "doneWhen": [
+        "PPTX/HTML/PDF render StyledDeckIR"
+      ]
+    },
+    {
+      "id": "P12",
+      "name": "CLI Config Inspect",
+      "dependsOn": [
+        "P03",
+        "P11"
+      ],
+      "doneWhen": [
+        "inspect-style",
+        "lint-style",
+        "style options"
+      ]
+    },
+    {
+      "id": "P13",
+      "name": "Coherence Lint",
+      "dependsOn": [
+        "P08",
+        "P12"
+      ],
+      "doneWhen": [
+        "lint rules",
+        "strict mode"
+      ]
+    },
+    {
+      "id": "P14",
+      "name": "Style Gallery",
+      "dependsOn": [
+        "P11",
+        "P12"
+      ],
+      "doneWhen": [
+        "profile gallery outputs",
+        "manifest"
+      ]
+    },
+    {
+      "id": "P15",
+      "name": "Agent Hints",
+      "dependsOn": [
+        "P03",
+        "P12"
+      ],
+      "doneWhen": [
+        "hint schema",
+        "forbidden fields rejected"
+      ]
+    },
+    {
+      "id": "P16",
+      "name": "Regression Docs Release",
+      "dependsOn": [
+        "P14",
+        "P15"
+      ],
+      "doneWhen": [
+        "docs",
+        "examples",
+        "release checklist"
+      ]
+    }
+  ]
+}

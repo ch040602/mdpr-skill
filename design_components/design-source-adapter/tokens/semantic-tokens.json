@@ -1,0 +1,15 @@
+{
+  "color.background": "background1",
+  "color.surface": "background1",
+  "color.foreground": "text1",
+  "color.muted": "text2",
+  "color.accent.primary": "accent1",
+  "color.accent.secondary": "accent2",
+  "radius.soft": "soft",
+  "radius.sharp": "sharp",
+  "shadow.hairline": "hairline",
+  "shadow.layered": "layered",
+  "space.compact": 8,
+  "space.standard": 16,
+  "space.generous": 28
+}

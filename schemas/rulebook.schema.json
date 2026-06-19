@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/design-components-rulebook.schema.json",
+  "title": "Design Components Rulebook",
+  "type": "object",
+  "required": [
+    "version",
+    "profiles",
+    "recipes",
+    "variants"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "recipes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/recipe"
+      }
+    },
+    "variants": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/variant"
+      }
+    },
+    "diversity": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "coherence": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "recipe": {
+      "type": "object",
+      "required": [
+        "priority",
+        "accept",
+        "composition"
+      ],
+      "properties": {
+        "priority": {
+          "type": "integer"
+        },
+        "accept": {
+          "type": "object"
+        },
+        "reject": {
+          "type": "object"
+        },
+        "score": {
+          "type": "object"
+        },
+        "composition": {
+          "type": "object"
+        },
+        "elementVariants": {
+          "type": "object"
+        },
+        "effects": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "variant": {
+      "type": "object",
+      "required": [
+        "elementType",
+        "accept"
+      ],
+      "properties": {
+        "elementType": {
+          "type": "string"
+        },
+        "accept": {
+          "type": "object"
+        },
+        "reject": {
+          "type": "object"
+        },
+        "size": {
+          "type": "object"
+        },
+        "typography": {
+          "type": "object"
+        },
+        "surface": {
+          "type": "object"
+        },
+        "accent": {
+          "type": "object"
+        },
+        "effects": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,113 @@
+{
+  "pptx": "artifacts\\ppt\\design_components_z_order_validation.pptx",
+  "svg": "artifacts\\ppt\\design_components_z_order_validation.svg",
+  "png": "artifacts\\ppt\\design_components_z_order_validation.png",
+  "expectedOrder": [
+    "z00_background_theme",
+    "z10_surface_card",
+    "z20_chart_panel",
+    "z30_chart_bar_accent",
+    "z40_accent_ribbon",
+    "z50_callout_overlay",
+    "z60_top_badge",
+    "z70_primary_text"
+  ],
+  "actualOrder": [
+    "z00_background_theme",
+    "z10_surface_card",
+    "z20_chart_panel",
+    "z30_chart_bar_accent",
+    "z40_accent_ribbon",
+    "z50_callout_overlay",
+    "z60_top_badge",
+    "z70_primary_text"
+  ],
+  "parsedShapeCount": 8,
+  "parsedShapeNames": [
+    "z00_background_theme",
+    "z10_surface_card",
+    "z20_chart_panel",
+    "z30_chart_bar_accent",
+    "z40_accent_ribbon",
+    "z50_callout_overlay",
+    "z60_top_badge",
+    "z70_primary_text"
+  ],
+  "zOrderOk": true,
+  "pixelSamples": [
+    {
+      "point": [
+        720,
+        305
+      ],
+      "expected": [
+        239,
+        71,
+        111
+      ],
+      "label": "top badge covers callout/ribbon/chart",
+      "actual": [
+        239,
+        71,
+        111
+      ],
+      "ok": true
+    },
+    {
+      "point": [
+        600,
+        285
+      ],
+      "expected": [
+        255,
+        209,
+        102
+      ],
+      "label": "callout overlays ribbon/chart",
+      "actual": [
+        255,
+        209,
+        102
+      ],
+      "ok": true
+    },
+    {
+      "point": [
+        660,
+        500
+      ],
+      "expected": [
+        0,
+        194,
+        168
+      ],
+      "label": "ribbon overlays card",
+      "actual": [
+        0,
+        194,
+        168
+      ],
+      "ok": true
+    },
+    {
+      "point": [
+        310,
+        365
+      ],
+      "expected": [
+        99,
+        91,
+        255
+      ],
+      "label": "chart bar overlays chart panel",
+      "actual": [
+        99,
+        91,
+        255
+      ],
+      "ok": true
+    }
+  ],
+  "visualOk": true,
+  "note": "PPTX shape order and visual proof are derived from slide1.xml. LibreOffice/PowerPoint rendering is unavailable in this environment, so the PNG is rendered from parsed PPTX shape geometry and colors."
+}

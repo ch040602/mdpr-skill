@@ -1,0 +1,6 @@
+{
+  "mode": "legacy",
+  "commands": ["build", "inspect", "plan", "validate"],
+  "snapshotPolicy": "unchanged-before-and-after-design-components-flag",
+  "status": "reference-pack-only"
+}

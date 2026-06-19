@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "deck": { "id": "sample", "title": "Sample", "ratio": "16:9" },
+  "slides": [
+    {
+      "id": "s1",
+      "intent": "data",
+      "density": "medium",
+      "readingOrder": ["e1", "e2", "e3"],
+      "elements": [
+        { "id": "e1", "type": "title", "role": "primary", "importance": 5, "content": { "text": "Revenue" }, "contentMetrics": { "textChars": 7 } },
+        { "id": "e2", "type": "kpi", "role": "secondary", "importance": 4, "content": { "text": "42%" }, "contentMetrics": { "textChars": 3, "numericDensity": 0.67 } },
+        { "id": "e3", "type": "chart", "role": "evidence", "importance": 4, "content": { "text": "Quarterly trend" }, "contentMetrics": { "textChars": 15 } }
+      ],
+      "groups": [{ "id": "g1", "role": "metricSet", "elementIds": ["e2", "e3"], "relation": "support" }]
+    }
+  ]
+}
