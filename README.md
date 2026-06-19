@@ -1,32 +1,6 @@
 # MDPR x Design Components Rule-based Design Skill Pack
 
-```mermaid
-flowchart LR
-  A["Markdown / User Content"] --> B["MDPR Parser & Splitter<br/>slides, elements, semantic structure"]
-  B --> C["Slide Element IR<br/>content only, no visual decisions"]
-  C -. optional hints .-> L["LLM Assistant<br/>intent, grouping, importance candidates<br/>no coordinates, colors, variants, or z-order"]
-  C --> D["Feature Extractor<br/>density, element mix, size risk"]
-  L -. validated hints .-> D
-  D --> E["Design Components Rule Engine<br/>profile, recipe, variant selection"]
-  E --> F["Composition Engine<br/>regions, boxes, fit, overflow"]
-  F --> G["Decoration Engine<br/>type scale, radius, shadow, accents, effects"]
-  G --> H["Coherence & Readability Lint<br/>single visual language, font size >= 8pt"]
-  H --> I["Styled Deck IR<br/>renderer-neutral visual contract"]
-  I --> J["Renderers<br/>editable PPTX, HTML, PDF"]
-
-  subgraph RuleBased["Rule-based deterministic boundary"]
-    D
-    E
-    F
-    G
-    H
-    I
-  end
-
-  subgraph LLMRole["LLM role"]
-    L
-  end
-```
+![MDPR Design Components Pipeline](docs/assets/pipeline-overview.svg)
 
 The LLM is an assistant, not the design authority. It may propose semantic hints, but all final design choices are made by deterministic rules inside `design_components/`.
 
