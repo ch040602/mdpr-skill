@@ -30,6 +30,7 @@ The renderer must not use untracked web icons or multicolor icon packs.
 - Use one icon only.
 - Use black on light backgrounds or white on dark backgrounds.
 - Keep the icon quiet: no gradients, multicolor fills, heavy shadow, or decorative container.
+- Keep the icon small. It is a semantic marker, not a large card used to fill empty space.
 - Align the icon center to the adjacent text block midpoint.
 - Keep a gutter of at least one body line-height between icon and text.
 - The icon region is secondary; it must never replace title, body, evidence, or callout content.
@@ -44,4 +45,3 @@ iconAside  quiet visual support slot
 ```
 
 The matching variant is `icon.monotoneAside`.
-

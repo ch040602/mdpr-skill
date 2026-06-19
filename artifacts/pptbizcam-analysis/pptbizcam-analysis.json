@@ -1,0 +1,2929 @@
+{
+  "source": "https://pptbizcam.co.kr/?cat=3 and sampled adjacent category ids",
+  "categoryIds": [
+    2,
+    3,
+    7,
+    9,
+    10,
+    11,
+    12,
+    14,
+    19,
+    21,
+    30,
+    37,
+    39,
+    67
+  ],
+  "categorySummaries": [
+    {
+      "cat": 2,
+      "posts": 42,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11677",
+        "https://pptbizcam.co.kr/?p=11672",
+        "https://pptbizcam.co.kr/?p=11668",
+        "https://pptbizcam.co.kr/?p=11664",
+        "https://pptbizcam.co.kr/?p=11659"
+      ]
+    },
+    {
+      "cat": 3,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11677",
+        "https://pptbizcam.co.kr/?p=11672",
+        "https://pptbizcam.co.kr/?p=11668",
+        "https://pptbizcam.co.kr/?p=11664",
+        "https://pptbizcam.co.kr/?p=11659"
+      ]
+    },
+    {
+      "cat": 7,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11659",
+        "https://pptbizcam.co.kr/?p=11655",
+        "https://pptbizcam.co.kr/?p=11647",
+        "https://pptbizcam.co.kr/?p=11629",
+        "https://pptbizcam.co.kr/?p=11603"
+      ]
+    },
+    {
+      "cat": 9,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11643",
+        "https://pptbizcam.co.kr/?p=11403",
+        "https://pptbizcam.co.kr/?p=11330",
+        "https://pptbizcam.co.kr/?p=11295",
+        "https://pptbizcam.co.kr/?p=11228"
+      ]
+    },
+    {
+      "cat": 10,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11595",
+        "https://pptbizcam.co.kr/?p=11590",
+        "https://pptbizcam.co.kr/?p=11551",
+        "https://pptbizcam.co.kr/?p=11228",
+        "https://pptbizcam.co.kr/?p=11145"
+      ]
+    },
+    {
+      "cat": 11,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11668",
+        "https://pptbizcam.co.kr/?p=11629",
+        "https://pptbizcam.co.kr/?p=11616",
+        "https://pptbizcam.co.kr/?p=11529",
+        "https://pptbizcam.co.kr/?p=11509"
+      ]
+    },
+    {
+      "cat": 12,
+      "posts": 35,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11572",
+        "https://pptbizcam.co.kr/?p=11543",
+        "https://pptbizcam.co.kr/?p=11442",
+        "https://pptbizcam.co.kr/?p=11232",
+        "https://pptbizcam.co.kr/?p=11162"
+      ]
+    },
+    {
+      "cat": 14,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11647",
+        "https://pptbizcam.co.kr/?p=11547",
+        "https://pptbizcam.co.kr/?p=11533",
+        "https://pptbizcam.co.kr/?p=11519",
+        "https://pptbizcam.co.kr/?p=11459"
+      ]
+    },
+    {
+      "cat": 19,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11547",
+        "https://pptbizcam.co.kr/?p=11438",
+        "https://pptbizcam.co.kr/?p=11417",
+        "https://pptbizcam.co.kr/?p=11261",
+        "https://pptbizcam.co.kr/?p=11252"
+      ]
+    },
+    {
+      "cat": 21,
+      "posts": 61,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11276",
+        "https://pptbizcam.co.kr/?p=11240",
+        "https://pptbizcam.co.kr/?p=11218",
+        "https://pptbizcam.co.kr/?p=11208",
+        "https://pptbizcam.co.kr/?p=11181"
+      ]
+    },
+    {
+      "cat": 30,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11568",
+        "https://pptbizcam.co.kr/?p=11519",
+        "https://pptbizcam.co.kr/?p=11505",
+        "https://pptbizcam.co.kr/?p=11417",
+        "https://pptbizcam.co.kr/?p=11413"
+      ]
+    },
+    {
+      "cat": 37,
+      "posts": 10,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=10419",
+        "https://pptbizcam.co.kr/?p=7847",
+        "https://pptbizcam.co.kr/?p=6046",
+        "https://pptbizcam.co.kr/?p=5089",
+        "https://pptbizcam.co.kr/?p=3459"
+      ]
+    },
+    {
+      "cat": 39,
+      "posts": 46,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11054",
+        "https://pptbizcam.co.kr/?p=10756",
+        "https://pptbizcam.co.kr/?p=10540",
+        "https://pptbizcam.co.kr/?p=10497",
+        "https://pptbizcam.co.kr/?p=10463"
+      ]
+    },
+    {
+      "cat": 67,
+      "posts": 63,
+      "sample": [
+        "https://pptbizcam.co.kr/?p=11381",
+        "https://pptbizcam.co.kr/?p=11349",
+        "https://pptbizcam.co.kr/?p=11311",
+        "https://pptbizcam.co.kr/?p=11252",
+        "https://pptbizcam.co.kr/?p=11246"
+      ]
+    }
+  ],
+  "postsVisited": 120,
+  "pptxFound": 32,
+  "pptxAnalyzed": 32,
+  "slidesAnalyzed": 314,
+  "aggregateCounts": {
+    "shapes": 3065,
+    "shapeType:6": 558,
+    "textFrames": 2282,
+    "wordWrapTrue": 1024,
+    "shapeType:5": 258,
+    "indentLevel2": 120,
+    "shapeType:17": 243,
+    "shapeType:1": 1781,
+    "shapeType:9": 136,
+    "shapeType:13": 31,
+    "tables": 38,
+    "shapeType:19": 38,
+    "charts": 14,
+    "shapeType:3": 14,
+    "indentLevel1": 3
+  },
+  "postMetaSample": [
+    {
+      "url": "https://pptbizcam.co.kr/?p=11677",
+      "title": "심플한 ppt 템플릿 디자인을 하고자 한다면 딱 2가지 기억",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2036.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11672",
+      "title": "피피티 배경에 구멍을 내고 끈을 묶어주면",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2035.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11668",
+      "title": "파워포인트 디자인에 파스텔 써보세요",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2034.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11664",
+      "title": "블랙 보라색 조합 모던한 ppt 템플릿 이것도 포인트네",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2033.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11659",
+      "title": "운동 주제 피피티 배경이 필요할 때",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2032.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11655",
+      "title": "단순한 파워포인트 배경에 딱 좋은 스케치북",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2031.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11651",
+      "title": "뉴모피즘 ppt 단정하니 깔끔하죠",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2030.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11647",
+      "title": "귀여운 피피티 배경 청록색과 브라우저 만남",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2029.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11643",
+      "title": "파워포인트 디자인 심플함과 보라색의 만남",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2028.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11637",
+      "title": "ppt 다이어그램에서 원호가 주는 매력과 힘",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2027.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11633",
+      "title": "피피티 템플릿 2026번 자료 공유",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2026.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11629",
+      "title": "써브웨이 컬러를 이 파워포인트에 적용해 보세요",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2025.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11624",
+      "title": "ppt 글라스모피즘의 응용 버전이라 해야 될까요",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2024.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11620",
+      "title": "피피티 디자인은 단순해질 수록 이게 큰 역할해요",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2023.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11616",
+      "title": "노란색의 파워포인트 색상 귀엽기만 한가요",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2022.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11612",
+      "title": "민트 색상 귀여운 파워포인트 테마",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2021.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11608",
+      "title": "SWOT 분석 뿐만 아니라 목차로도 쓸 수 있어요",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2020.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11603",
+      "title": "딱 조땡 스타일 ppt 템플릿 입니다",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2019.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11599",
+      "title": "2018번째 피피티 템플릿 뭐가 달라졌나",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2018.pptx"
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/?p=11595",
+      "title": "색다른 파워포인트 색상과 스프링의 만남",
+      "tags": [],
+      "pptx_links": [
+        "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2017.pptx"
+      ]
+    }
+  ],
+  "analyses": [
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2036.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\01__-_-_-_-_-_-free-ppt-template-2036.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 91,
+        "shapeType:6": 15,
+        "textFrames": 75,
+        "wordWrapTrue": 48,
+        "shapeType:5": 17,
+        "indentLevel2": 4,
+        "shapeType:17": 8,
+        "shapeType:1": 50,
+        "shapeType:9": 1
+      },
+      "fontSizeMin": 9.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4975124378109453,
+      "italicRunRatio": 0.004975124378109453,
+      "topFills": [
+        [
+          "5684F4",
+          6
+        ],
+        [
+          "47E4B9",
+          6
+        ],
+        [
+          "53585B",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 8,
+          "shapeType:6": 1,
+          "textFrames": 7,
+          "shapeType:5": 6,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 14,
+          "shapeType:6": 5,
+          "textFrames": 8,
+          "shapeType:5": 4,
+          "shapeType:1": 4,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 17,
+          "shapeType:6": 4,
+          "textFrames": 13,
+          "shapeType:5": 3,
+          "shapeType:17": 6,
+          "shapeType:1": 4
+        },
+        {
+          "shapes": 23,
+          "shapeType:6": 2,
+          "textFrames": 21,
+          "shapeType:1": 18,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 7,
+          "shapeType:6": 2,
+          "textFrames": 5,
+          "shapeType:1": 5
+        },
+        {
+          "shapes": 11,
+          "shapeType:6": 1,
+          "textFrames": 10,
+          "shapeType:1": 9,
+          "shapeType:5": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2035.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\02__-_-_-_-_-_-free-ppt-template-2035.pptx",
+      "slides": 9,
+      "counts": {
+        "shapes": 75,
+        "textFrames": 57,
+        "shapeType:1": 46,
+        "shapeType:6": 9,
+        "wordWrapTrue": 30,
+        "indentLevel2": 6,
+        "shapeType:17": 8,
+        "shapeType:9": 4,
+        "shapeType:13": 5,
+        "shapeType:5": 3
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4387755102040816,
+      "italicRunRatio": 0.05102040816326531,
+      "topFills": [
+        [
+          "FEFEFC",
+          5
+        ],
+        [
+          "52D8C5",
+          5
+        ],
+        [
+          "001A47",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 3,
+          "textFrames": 2,
+          "shapeType:1": 1,
+          "shapeType:6": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 19,
+          "textFrames": 14,
+          "shapeType:1": 13,
+          "shapeType:6": 1,
+          "shapeType:17": 1,
+          "shapeType:9": 4
+        },
+        {
+          "shapes": 10,
+          "textFrames": 7,
+          "shapeType:1": 6,
+          "shapeType:6": 3,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 20,
+          "textFrames": 12,
+          "shapeType:1": 9,
+          "shapeType:6": 3,
+          "shapeType:17": 3,
+          "shapeType:13": 5
+        },
+        {
+          "shapes": 13,
+          "textFrames": 12,
+          "shapeType:1": 8,
+          "shapeType:6": 1,
+          "shapeType:17": 1,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2034.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\03__-_-_-_-_-_-free-ppt-template-2034.pptx",
+      "slides": 9,
+      "counts": {
+        "shapes": 119,
+        "shapeType:6": 14,
+        "textFrames": 98,
+        "wordWrapTrue": 27,
+        "shapeType:17": 2,
+        "shapeType:1": 90,
+        "shapeType:9": 3,
+        "tables": 3,
+        "shapeType:19": 3,
+        "charts": 1,
+        "shapeType:3": 1,
+        "shapeType:5": 6
+      },
+      "fontSizeMin": 9.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.5227272727272727,
+      "italicRunRatio": 0.011363636363636364,
+      "topFills": [
+        [
+          "A1D7D9",
+          25
+        ],
+        [
+          "CBB8A7",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 2,
+          "shapeType:6": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 19,
+          "shapeType:6": 4,
+          "textFrames": 9,
+          "shapeType:1": 9,
+          "shapeType:9": 3,
+          "tables": 3,
+          "shapeType:19": 3
+        },
+        {
+          "shapes": 55,
+          "shapeType:6": 7,
+          "charts": 1,
+          "shapeType:3": 1,
+          "textFrames": 47,
+          "shapeType:1": 47
+        },
+        {
+          "shapes": 16,
+          "shapeType:6": 1,
+          "textFrames": 15,
+          "shapeType:5": 6,
+          "shapeType:1": 9
+        },
+        {
+          "shapes": 16,
+          "shapeType:6": 1,
+          "textFrames": 15,
+          "shapeType:1": 15
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2033.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\04__-_-_-_-_-_-free-ppt-template-2033.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 119,
+        "textFrames": 102,
+        "wordWrapTrue": 56,
+        "indentLevel2": 7,
+        "shapeType:1": 72,
+        "shapeType:5": 20,
+        "shapeType:6": 15,
+        "shapeType:17": 10,
+        "shapeType:9": 2
+      },
+      "fontSizeMin": 6.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.452914798206278,
+      "italicRunRatio": 0.053811659192825115,
+      "topFills": [
+        [
+          "DF70FD",
+          23
+        ],
+        [
+          "171427",
+          3
+        ],
+        [
+          "080810",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 3,
+          "textFrames": 2,
+          "shapeType:1": 1,
+          "shapeType:5": 1,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 26,
+          "textFrames": 25,
+          "shapeType:1": 16,
+          "shapeType:5": 6,
+          "shapeType:17": 3,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 15,
+          "shapeType:6": 5,
+          "textFrames": 10,
+          "shapeType:1": 7,
+          "shapeType:17": 3
+        },
+        {
+          "shapes": 24,
+          "textFrames": 19,
+          "shapeType:1": 15,
+          "shapeType:5": 4,
+          "shapeType:6": 5
+        },
+        {
+          "shapes": 16,
+          "textFrames": 13,
+          "shapeType:1": 7,
+          "shapeType:17": 3,
+          "shapeType:5": 3,
+          "shapeType:6": 2,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 25,
+          "textFrames": 23,
+          "shapeType:1": 17,
+          "shapeType:9": 1,
+          "shapeType:5": 6,
+          "shapeType:6": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2032.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\05__-_-_-_-_-_-free-ppt-template-2032.pptx",
+      "slides": 9,
+      "counts": {
+        "shapes": 93,
+        "textFrames": 63,
+        "wordWrapTrue": 29,
+        "shapeType:5": 13,
+        "shapeType:9": 8,
+        "shapeType:1": 40,
+        "shapeType:6": 17,
+        "indentLevel2": 6,
+        "shapeType:17": 10,
+        "shapeType:13": 2,
+        "tables": 3,
+        "shapeType:19": 3
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4635416666666667,
+      "italicRunRatio": 0.052083333333333336,
+      "topFills": [
+        [
+          "FFC000",
+          10
+        ],
+        [
+          "145849",
+          3
+        ],
+        [
+          "AE4235",
+          2
+        ],
+        [
+          "166050",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 11,
+          "textFrames": 4,
+          "shapeType:5": 1,
+          "shapeType:9": 1,
+          "shapeType:1": 1,
+          "shapeType:6": 4,
+          "shapeType:17": 2,
+          "shapeType:13": 2
+        },
+        {
+          "shapes": 20,
+          "textFrames": 10,
+          "shapeType:17": 1,
+          "shapeType:6": 4,
+          "shapeType:1": 9,
+          "shapeType:9": 3,
+          "tables": 3,
+          "shapeType:19": 3
+        },
+        {
+          "shapes": 17,
+          "textFrames": 16,
+          "shapeType:17": 4,
+          "shapeType:6": 1,
+          "shapeType:1": 6,
+          "shapeType:5": 6
+        },
+        {
+          "shapes": 14,
+          "textFrames": 13,
+          "shapeType:17": 1,
+          "shapeType:6": 1,
+          "shapeType:5": 6,
+          "shapeType:1": 6
+        },
+        {
+          "shapes": 20,
+          "textFrames": 9,
+          "shapeType:17": 1,
+          "shapeType:6": 7,
+          "shapeType:9": 4,
+          "shapeType:1": 8
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2031.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\06__-_-_-_-_-_-free-ppt-template-2031.pptx",
+      "slides": 9,
+      "counts": {
+        "shapes": 129,
+        "textFrames": 68,
+        "shapeType:1": 48,
+        "shapeType:6": 50,
+        "wordWrapTrue": 36,
+        "indentLevel2": 11,
+        "shapeType:17": 14,
+        "shapeType:5": 6,
+        "shapeType:9": 9,
+        "tables": 2,
+        "shapeType:19": 2
+      },
+      "fontSizeMin": 6.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.43147208121827413,
+      "italicRunRatio": 0.10152284263959391,
+      "topFills": [
+        [
+          "FF9966",
+          3
+        ],
+        [
+          "D6E2D8",
+          1
+        ],
+        [
+          "A1BBAD",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 42,
+          "textFrames": 4,
+          "shapeType:1": 2,
+          "shapeType:6": 38,
+          "shapeType:17": 2
+        },
+        {
+          "shapes": 23,
+          "shapeType:6": 8,
+          "textFrames": 10,
+          "shapeType:17": 2,
+          "shapeType:5": 3,
+          "shapeType:1": 5,
+          "shapeType:9": 5
+        },
+        {
+          "shapes": 17,
+          "shapeType:6": 2,
+          "textFrames": 15,
+          "shapeType:17": 5,
+          "shapeType:1": 7,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 21,
+          "shapeType:6": 1,
+          "textFrames": 20,
+          "shapeType:17": 2,
+          "shapeType:1": 18
+        },
+        {
+          "shapes": 15,
+          "shapeType:6": 1,
+          "textFrames": 8,
+          "shapeType:17": 2,
+          "shapeType:1": 6,
+          "tables": 2,
+          "shapeType:19": 2,
+          "shapeType:9": 4
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2030.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\07__-_-_-_-_-_-free-ppt-template-2030.pptx",
+      "slides": 9,
+      "counts": {
+        "shapes": 87,
+        "textFrames": 54,
+        "shapeType:1": 46,
+        "indentLevel2": 4,
+        "wordWrapTrue": 29,
+        "shapeType:6": 28,
+        "shapeType:5": 5,
+        "shapeType:9": 4,
+        "shapeType:17": 3,
+        "charts": 1,
+        "shapeType:3": 1
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4319526627218935,
+      "italicRunRatio": 0.03550295857988166,
+      "topFills": [
+        [
+          "E8E9ED",
+          11
+        ],
+        [
+          "707AB7",
+          5
+        ],
+        [
+          "DADEE7",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 5,
+          "textFrames": 4,
+          "shapeType:1": 4,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 20,
+          "textFrames": 8,
+          "shapeType:1": 7,
+          "shapeType:5": 1,
+          "shapeType:6": 12
+        },
+        {
+          "shapes": 26,
+          "textFrames": 15,
+          "shapeType:1": 12,
+          "shapeType:5": 3,
+          "shapeType:6": 7,
+          "shapeType:9": 4
+        },
+        {
+          "shapes": 19,
+          "shapeType:6": 7,
+          "textFrames": 12,
+          "shapeType:1": 10,
+          "shapeType:17": 2
+        },
+        {
+          "shapes": 5,
+          "shapeType:6": 1,
+          "charts": 1,
+          "shapeType:3": 1,
+          "textFrames": 3,
+          "shapeType:1": 2,
+          "shapeType:5": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2029.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\08__-_-_-_-_-_-free-ppt-template-2029.pptx",
+      "slides": 9,
+      "counts": {
+        "shapes": 116,
+        "shapeType:6": 21,
+        "textFrames": 90,
+        "wordWrapTrue": 27,
+        "indentLevel2": 2,
+        "shapeType:17": 5,
+        "shapeType:1": 82,
+        "shapeType:5": 3,
+        "shapeType:9": 4,
+        "charts": 1,
+        "shapeType:3": 1
+      },
+      "fontSizeMin": 9.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.5333333333333333,
+      "italicRunRatio": 0.011111111111111112,
+      "topFills": [
+        [
+          "208597",
+          21
+        ],
+        [
+          "E2E6EF",
+          3
+        ],
+        [
+          "FFC000",
+          2
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 2,
+          "shapeType:6": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 13,
+          "shapeType:6": 4,
+          "textFrames": 9,
+          "shapeType:1": 6,
+          "shapeType:17": 3
+        },
+        {
+          "shapes": 18,
+          "shapeType:6": 7,
+          "textFrames": 11,
+          "shapeType:1": 11
+        },
+        {
+          "shapes": 18,
+          "shapeType:6": 2,
+          "textFrames": 12,
+          "shapeType:1": 9,
+          "shapeType:5": 3,
+          "shapeType:9": 4
+        },
+        {
+          "shapes": 55,
+          "shapeType:6": 7,
+          "charts": 1,
+          "shapeType:3": 1,
+          "textFrames": 47,
+          "shapeType:1": 47
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/06/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2028.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\09__-_-_-_-_-_-free-ppt-template-2028.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 78,
+        "shapeType:6": 13,
+        "textFrames": 55,
+        "wordWrapTrue": 16,
+        "indentLevel2": 3,
+        "shapeType:17": 6,
+        "shapeType:5": 1,
+        "charts": 2,
+        "shapeType:3": 2,
+        "shapeType:1": 48,
+        "shapeType:9": 6,
+        "shapeType:13": 1,
+        "tables": 1,
+        "shapeType:19": 1
+      },
+      "fontSizeMin": 8.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.5202312138728323,
+      "italicRunRatio": 0.011560693641618497,
+      "topFills": [
+        [
+          "A089FF",
+          8
+        ],
+        [
+          "403F45",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 2,
+          "shapeType:6": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 12,
+          "shapeType:6": 1,
+          "textFrames": 9,
+          "shapeType:5": 1,
+          "charts": 1,
+          "shapeType:3": 1,
+          "shapeType:1": 6,
+          "shapeType:17": 2,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 10,
+          "shapeType:6": 4,
+          "textFrames": 5,
+          "shapeType:1": 3,
+          "shapeType:17": 2,
+          "shapeType:13": 1
+        },
+        {
+          "shapes": 6,
+          "shapeType:6": 1,
+          "charts": 1,
+          "shapeType:3": 1,
+          "textFrames": 3,
+          "shapeType:1": 3,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 21,
+          "shapeType:6": 5,
+          "tables": 1,
+          "shapeType:19": 1,
+          "shapeType:9": 4,
+          "textFrames": 11,
+          "shapeType:1": 11
+        },
+        {
+          "shapes": 17,
+          "shapeType:6": 1,
+          "textFrames": 16,
+          "shapeType:1": 16
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2027.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\10__-_-_-_-_-_-free-ppt-template-2027.pptx",
+      "slides": 8,
+      "counts": {
+        "shapes": 55,
+        "textFrames": 45,
+        "shapeType:1": 34,
+        "shapeType:6": 10,
+        "wordWrapTrue": 25,
+        "shapeType:5": 4,
+        "indentLevel2": 6,
+        "shapeType:17": 7
+      },
+      "fontSizeMin": 8.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.42857142857142855,
+      "italicRunRatio": 0.02857142857142857,
+      "topFills": [
+        [
+          "00B0F0",
+          4
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 14,
+          "textFrames": 7,
+          "shapeType:1": 5,
+          "shapeType:6": 7,
+          "shapeType:5": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 15,
+          "textFrames": 13,
+          "shapeType:1": 12,
+          "shapeType:6": 2,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 15,
+          "textFrames": 14,
+          "shapeType:5": 3,
+          "shapeType:1": 8,
+          "shapeType:17": 3,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2026.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\11__-_-_-_-_-_-free-ppt-template-2026.pptx",
+      "slides": 9,
+      "counts": {
+        "shapes": 91,
+        "shapeType:6": 10,
+        "textFrames": 72,
+        "wordWrapTrue": 29,
+        "shapeType:17": 14,
+        "shapeType:1": 48,
+        "shapeType:9": 6,
+        "shapeType:5": 10,
+        "tables": 3,
+        "shapeType:19": 3
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4708333333333333,
+      "italicRunRatio": 0.041666666666666664,
+      "topFills": [
+        [
+          "0070C0",
+          13
+        ],
+        [
+          "CAD9FA",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 4,
+          "shapeType:6": 1,
+          "textFrames": 3,
+          "shapeType:17": 1,
+          "shapeType:1": 2
+        },
+        {
+          "shapes": 19,
+          "shapeType:6": 1,
+          "textFrames": 18,
+          "shapeType:17": 3,
+          "shapeType:1": 15
+        },
+        {
+          "shapes": 18,
+          "shapeType:6": 4,
+          "textFrames": 14,
+          "shapeType:17": 3,
+          "shapeType:1": 11
+        },
+        {
+          "shapes": 38,
+          "shapeType:6": 4,
+          "textFrames": 25,
+          "shapeType:1": 10,
+          "shapeType:17": 5,
+          "shapeType:9": 6,
+          "shapeType:5": 10,
+          "tables": 3,
+          "shapeType:19": 3
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2025.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\12__-_-_-_-_-_-free-ppt-template-2025.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 85,
+        "textFrames": 44,
+        "indentLevel2": 2,
+        "shapeType:1": 40,
+        "shapeType:6": 39,
+        "wordWrapTrue": 19,
+        "shapeType:13": 2,
+        "shapeType:5": 2,
+        "shapeType:17": 2
+      },
+      "fontSizeMin": 8.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.47435897435897434,
+      "italicRunRatio": 0.008547008547008548,
+      "topFills": [
+        [
+          "239B82",
+          8
+        ],
+        [
+          "F6EBBE",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 6,
+          "textFrames": 4,
+          "shapeType:1": 4,
+          "shapeType:6": 2
+        },
+        {
+          "shapes": 16,
+          "shapeType:6": 4,
+          "textFrames": 12,
+          "shapeType:1": 12
+        },
+        {
+          "shapes": 16,
+          "shapeType:6": 6,
+          "shapeType:13": 2,
+          "textFrames": 8,
+          "shapeType:1": 8
+        },
+        {
+          "shapes": 31,
+          "shapeType:6": 23,
+          "textFrames": 8,
+          "shapeType:5": 2,
+          "shapeType:1": 6
+        },
+        {
+          "shapes": 4,
+          "shapeType:6": 4
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2024.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\13__-_-_-_-_-_-free-ppt-template-2024.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 111,
+        "textFrames": 94,
+        "shapeType:1": 69,
+        "wordWrapTrue": 41,
+        "shapeType:5": 11,
+        "shapeType:17": 14,
+        "shapeType:6": 12,
+        "indentLevel2": 4,
+        "shapeType:13": 5
+      },
+      "fontSizeMin": 5.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4219409282700422,
+      "italicRunRatio": 0.04219409282700422,
+      "topFills": [
+        [
+          "BFE5F2",
+          12
+        ],
+        [
+          "EEF8FC",
+          5
+        ],
+        [
+          "00B0F0",
+          3
+        ],
+        [
+          "001A47",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 4,
+          "textFrames": 4,
+          "shapeType:1": 2,
+          "shapeType:5": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 21,
+          "textFrames": 17,
+          "shapeType:1": 6,
+          "shapeType:6": 4,
+          "shapeType:5": 4,
+          "shapeType:17": 7
+        },
+        {
+          "shapes": 24,
+          "textFrames": 23,
+          "shapeType:1": 21,
+          "shapeType:6": 1,
+          "shapeType:5": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 28,
+          "shapeType:6": 4,
+          "textFrames": 24,
+          "shapeType:1": 19,
+          "shapeType:5": 4,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 22,
+          "textFrames": 14,
+          "shapeType:1": 11,
+          "shapeType:6": 3,
+          "shapeType:5": 1,
+          "shapeType:17": 2,
+          "shapeType:13": 5
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2023.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\14__-_-_-_-_-_-free-ppt-template-2023.pptx",
+      "slides": 11,
+      "counts": {
+        "shapes": 84,
+        "shapeType:6": 16,
+        "textFrames": 62,
+        "wordWrapTrue": 28,
+        "shapeType:1": 54,
+        "shapeType:13": 1,
+        "shapeType:5": 4,
+        "charts": 1,
+        "shapeType:3": 1,
+        "shapeType:17": 4,
+        "shapeType:9": 3,
+        "tables": 1,
+        "shapeType:19": 1
+      },
+      "fontSizeMin": 8.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.48412698412698413,
+      "italicRunRatio": 0.0,
+      "topFills": [
+        [
+          "4867F6",
+          5
+        ],
+        [
+          "33D043",
+          4
+        ],
+        [
+          "403F45",
+          1
+        ],
+        [
+          "ECF0FB",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 1,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 13,
+          "shapeType:6": 8,
+          "textFrames": 4,
+          "shapeType:1": 4,
+          "shapeType:13": 1
+        },
+        {
+          "shapes": 20,
+          "shapeType:6": 4,
+          "textFrames": 16,
+          "shapeType:1": 16
+        },
+        {
+          "shapes": 11,
+          "shapeType:6": 1,
+          "textFrames": 10,
+          "shapeType:1": 7,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 12,
+          "shapeType:6": 1,
+          "textFrames": 9,
+          "shapeType:5": 1,
+          "charts": 1,
+          "shapeType:3": 1,
+          "shapeType:1": 6,
+          "shapeType:17": 2,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 14,
+          "shapeType:6": 1,
+          "textFrames": 10,
+          "shapeType:1": 10,
+          "shapeType:9": 2,
+          "tables": 1,
+          "shapeType:19": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2022.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\15__-_-_-_-_-_-free-ppt-template-2022.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 126,
+        "textFrames": 106,
+        "shapeType:1": 103,
+        "shapeType:6": 20,
+        "wordWrapTrue": 25,
+        "shapeType:5": 1,
+        "shapeType:17": 2
+      },
+      "fontSizeMin": 5.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.42857142857142855,
+      "italicRunRatio": 0.0,
+      "topFills": [
+        [
+          "FFEDA9",
+          2
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 3,
+          "textFrames": 1,
+          "shapeType:1": 1,
+          "shapeType:6": 2
+        },
+        {
+          "shapes": 13,
+          "shapeType:6": 4,
+          "textFrames": 9,
+          "shapeType:1": 9
+        },
+        {
+          "shapes": 9,
+          "shapeType:6": 5,
+          "textFrames": 4,
+          "shapeType:1": 4
+        },
+        {
+          "shapes": 31,
+          "shapeType:6": 1,
+          "textFrames": 30,
+          "shapeType:1": 30
+        },
+        {
+          "shapes": 58,
+          "shapeType:6": 8,
+          "textFrames": 50,
+          "shapeType:5": 1,
+          "shapeType:1": 49
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2021.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\16__-_-_-_-_-_-free-ppt-template-2021.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 97,
+        "textFrames": 69,
+        "shapeType:1": 62,
+        "shapeType:6": 20,
+        "wordWrapTrue": 27,
+        "shapeType:9": 3,
+        "tables": 3,
+        "shapeType:19": 3,
+        "shapeType:13": 2,
+        "shapeType:17": 5,
+        "shapeType:5": 2
+      },
+      "fontSizeMin": 9.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.5,
+      "italicRunRatio": 0.0,
+      "topFills": [
+        [
+          "C8EEF9",
+          1
+        ],
+        [
+          "8CDCDD",
+          1
+        ],
+        [
+          "198B80",
+          1
+        ],
+        [
+          "FFCCCC",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 4,
+          "textFrames": 3,
+          "shapeType:1": 3,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 23,
+          "textFrames": 13,
+          "shapeType:1": 13,
+          "shapeType:9": 3,
+          "tables": 3,
+          "shapeType:19": 3,
+          "shapeType:6": 4
+        },
+        {
+          "shapes": 20,
+          "textFrames": 12,
+          "shapeType:1": 12,
+          "shapeType:6": 6,
+          "shapeType:13": 2
+        },
+        {
+          "shapes": 17,
+          "textFrames": 13,
+          "shapeType:1": 10,
+          "shapeType:6": 4,
+          "shapeType:17": 3
+        },
+        {
+          "shapes": 19,
+          "textFrames": 14,
+          "shapeType:1": 12,
+          "shapeType:6": 5,
+          "shapeType:5": 2
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2020.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\17__-_-_-_-_-_-free-ppt-template-2020.pptx",
+      "slides": 6,
+      "counts": {
+        "shapes": 37,
+        "textFrames": 37,
+        "shapeType:1": 22,
+        "shapeType:5": 8,
+        "wordWrapTrue": 14,
+        "shapeType:17": 7
+      },
+      "fontSizeMin": 9.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4110169491525424,
+      "italicRunRatio": 0.00423728813559322,
+      "topFills": [
+        [
+          "3CC9D2",
+          2
+        ],
+        [
+          "00B0F0",
+          2
+        ],
+        [
+          "C8EEF9",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 25,
+          "textFrames": 25,
+          "shapeType:1": 12,
+          "shapeType:5": 8,
+          "shapeType:17": 5
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 4,
+          "textFrames": 4,
+          "shapeType:1": 4
+        },
+        {
+          "shapes": 5,
+          "textFrames": 5,
+          "shapeType:1": 5
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2019.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\18__-_-_-_-_-_-free-ppt-template-2019.pptx",
+      "slides": 14,
+      "counts": {
+        "shapes": 104,
+        "shapeType:6": 30,
+        "textFrames": 66,
+        "wordWrapTrue": 35,
+        "shapeType:17": 11,
+        "shapeType:1": 48,
+        "shapeType:5": 7,
+        "shapeType:9": 5,
+        "tables": 1,
+        "shapeType:19": 1,
+        "charts": 2,
+        "shapeType:3": 2
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.45454545454545453,
+      "italicRunRatio": 0.01893939393939394,
+      "topFills": [
+        [
+          "EEFA05",
+          2
+        ],
+        [
+          "326B4A",
+          2
+        ],
+        [
+          "CCCCCC",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 2,
+          "shapeType:6": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 3,
+          "textFrames": 1,
+          "shapeType:1": 1,
+          "shapeType:6": 2
+        },
+        {
+          "shapes": 15,
+          "shapeType:6": 2,
+          "textFrames": 13,
+          "shapeType:1": 7,
+          "shapeType:17": 3,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 21,
+          "shapeType:6": 8,
+          "textFrames": 8,
+          "shapeType:5": 3,
+          "shapeType:1": 5,
+          "shapeType:9": 5
+        },
+        {
+          "shapes": 13,
+          "shapeType:6": 4,
+          "textFrames": 9,
+          "shapeType:1": 9
+        },
+        {
+          "shapes": 4,
+          "shapeType:6": 1,
+          "tables": 1,
+          "shapeType:19": 1,
+          "textFrames": 2,
+          "shapeType:1": 2
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2018.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\19__-_-_-_-_-_-free-ppt-template-2018.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 135,
+        "textFrames": 98,
+        "wordWrapTrue": 27,
+        "shapeType:5": 8,
+        "shapeType:6": 33,
+        "shapeType:17": 3,
+        "shapeType:1": 87,
+        "shapeType:13": 4
+      },
+      "fontSizeMin": 8.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.45454545454545453,
+      "italicRunRatio": 0.003952569169960474,
+      "topFills": [
+        [
+          "FFD064",
+          30
+        ],
+        [
+          "53C5CF",
+          5
+        ],
+        [
+          "34B0BA",
+          1
+        ],
+        [
+          "F1ECE8",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 7,
+          "textFrames": 3,
+          "shapeType:5": 2,
+          "shapeType:6": 4,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 16,
+          "shapeType:6": 4,
+          "textFrames": 12,
+          "shapeType:1": 12
+        },
+        {
+          "shapes": 31,
+          "shapeType:6": 23,
+          "textFrames": 8,
+          "shapeType:5": 2,
+          "shapeType:1": 6
+        },
+        {
+          "shapes": 53,
+          "shapeType:6": 1,
+          "textFrames": 48,
+          "shapeType:1": 48,
+          "shapeType:13": 4
+        },
+        {
+          "shapes": 15,
+          "shapeType:6": 1,
+          "textFrames": 14,
+          "shapeType:5": 4,
+          "shapeType:1": 10
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/05/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2017.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\20__-_-_-_-_-_-free-ppt-template-2017.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 90,
+        "textFrames": 61,
+        "shapeType:1": 43,
+        "shapeType:6": 28,
+        "wordWrapTrue": 34,
+        "shapeType:17": 11,
+        "shapeType:5": 7,
+        "charts": 1,
+        "shapeType:3": 1
+      },
+      "fontSizeMin": 8.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.47058823529411764,
+      "italicRunRatio": 0.01568627450980392,
+      "topFills": [
+        [
+          "C22F37",
+          5
+        ],
+        [
+          "7A1C29",
+          1
+        ],
+        [
+          "9BB7DD",
+          1
+        ],
+        [
+          "B0DADC",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 25,
+          "textFrames": 4,
+          "shapeType:1": 3,
+          "shapeType:6": 21,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 16,
+          "shapeType:6": 2,
+          "textFrames": 14,
+          "shapeType:17": 4,
+          "shapeType:1": 7,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 18,
+          "shapeType:6": 1,
+          "textFrames": 17,
+          "shapeType:17": 1,
+          "shapeType:1": 12,
+          "shapeType:5": 4
+        },
+        {
+          "shapes": 8,
+          "textFrames": 6,
+          "shapeType:17": 1,
+          "shapeType:6": 2,
+          "shapeType:1": 5
+        },
+        {
+          "shapes": 10,
+          "textFrames": 7,
+          "shapeType:17": 2,
+          "shapeType:6": 2,
+          "charts": 1,
+          "shapeType:3": 1,
+          "shapeType:1": 5
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2016.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\21__-_-_-_-_-_-free-ppt-template-2016.pptx",
+      "slides": 11,
+      "counts": {
+        "shapes": 130,
+        "textFrames": 104,
+        "wordWrapTrue": 56,
+        "indentLevel2": 7,
+        "shapeType:17": 22,
+        "shapeType:6": 9,
+        "shapeType:1": 67,
+        "shapeType:13": 5,
+        "charts": 1,
+        "shapeType:3": 1,
+        "shapeType:9": 11,
+        "shapeType:5": 15,
+        "indentLevel1": 3
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4157706093189964,
+      "italicRunRatio": 0.043010752688172046,
+      "topFills": [
+        [
+          "FF444B",
+          11
+        ],
+        [
+          "F2F2F2",
+          5
+        ],
+        [
+          "4B4E55",
+          3
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 2,
+          "textFrames": 1,
+          "shapeType:17": 1,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 12,
+          "textFrames": 8,
+          "shapeType:1": 5,
+          "shapeType:17": 3,
+          "shapeType:13": 1,
+          "charts": 1,
+          "shapeType:3": 1,
+          "shapeType:9": 2
+        },
+        {
+          "shapes": 19,
+          "textFrames": 14,
+          "shapeType:1": 12,
+          "shapeType:17": 1,
+          "shapeType:13": 1,
+          "shapeType:6": 4,
+          "shapeType:5": 1
+        },
+        {
+          "shapes": 34,
+          "textFrames": 27,
+          "shapeType:1": 17,
+          "shapeType:17": 7,
+          "shapeType:13": 1,
+          "shapeType:5": 3,
+          "shapeType:9": 6
+        },
+        {
+          "shapes": 21,
+          "textFrames": 16,
+          "shapeType:1": 13,
+          "shapeType:17": 1,
+          "shapeType:13": 1,
+          "shapeType:5": 2,
+          "shapeType:9": 3,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 30,
+          "textFrames": 26,
+          "shapeType:1": 10,
+          "shapeType:17": 7,
+          "shapeType:13": 1,
+          "shapeType:5": 9,
+          "shapeType:6": 3
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2015.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\22__-_-_-_-_-_-free-ppt-template-2015.pptx",
+      "slides": 11,
+      "counts": {
+        "shapes": 112,
+        "textFrames": 64,
+        "shapeType:1": 39,
+        "indentLevel2": 4,
+        "wordWrapTrue": 38,
+        "shapeType:5": 16,
+        "shapeType:6": 22,
+        "shapeType:9": 23,
+        "shapeType:17": 9,
+        "tables": 3,
+        "shapeType:19": 3
+      },
+      "fontSizeMin": 6.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4573643410852713,
+      "italicRunRatio": 0.007751937984496124,
+      "topFills": [
+        [
+          "01B8F2",
+          10
+        ],
+        [
+          "EDEBDF",
+          1
+        ],
+        [
+          "F8F7F2",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 26,
+          "textFrames": 5,
+          "shapeType:1": 3,
+          "shapeType:5": 1,
+          "shapeType:6": 2,
+          "shapeType:9": 19,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 19,
+          "shapeType:6": 4,
+          "textFrames": 9,
+          "shapeType:1": 9,
+          "shapeType:9": 3,
+          "tables": 3,
+          "shapeType:19": 3
+        },
+        {
+          "shapes": 16,
+          "shapeType:6": 4,
+          "textFrames": 12,
+          "shapeType:5": 3,
+          "shapeType:17": 6,
+          "shapeType:1": 3
+        },
+        {
+          "shapes": 18,
+          "shapeType:6": 7,
+          "textFrames": 11,
+          "shapeType:1": 11
+        },
+        {
+          "shapes": 4,
+          "shapeType:6": 4
+        },
+        {
+          "shapes": 17,
+          "shapeType:6": 1,
+          "textFrames": 15,
+          "shapeType:5": 12,
+          "shapeType:1": 3,
+          "shapeType:9": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2014.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\23__-_-_-_-_-_-free-ppt-template-2014.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 88,
+        "shapeType:6": 12,
+        "textFrames": 59,
+        "shapeType:17": 17,
+        "wordWrapTrue": 21,
+        "indentLevel2": 5,
+        "shapeType:1": 42,
+        "shapeType:9": 6,
+        "tables": 10,
+        "shapeType:19": 10,
+        "charts": 1,
+        "shapeType:3": 1
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.5185185185185185,
+      "italicRunRatio": 0.0,
+      "topFills": [
+        [
+          "FFD064",
+          10
+        ],
+        [
+          "01502F",
+          2
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 5,
+          "shapeType:6": 1,
+          "textFrames": 4,
+          "shapeType:17": 3,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 22,
+          "shapeType:6": 4,
+          "textFrames": 12,
+          "shapeType:17": 3,
+          "shapeType:1": 9,
+          "shapeType:9": 3,
+          "tables": 3,
+          "shapeType:19": 3
+        },
+        {
+          "shapes": 12,
+          "shapeType:6": 3,
+          "textFrames": 7,
+          "shapeType:17": 3,
+          "charts": 1,
+          "shapeType:3": 1,
+          "shapeType:1": 4,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 20,
+          "shapeType:6": 3,
+          "textFrames": 9,
+          "shapeType:17": 3,
+          "tables": 6,
+          "shapeType:19": 6,
+          "shapeType:9": 2,
+          "shapeType:1": 6
+        },
+        {
+          "shapes": 17,
+          "shapeType:6": 1,
+          "textFrames": 15,
+          "shapeType:17": 3,
+          "tables": 1,
+          "shapeType:19": 1,
+          "shapeType:1": 12
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2013.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\24__-_-_-_-_-_-free-ppt-template-2013.pptx",
+      "slides": 6,
+      "counts": {
+        "shapes": 29,
+        "shapeType:6": 4,
+        "shapeType:9": 1,
+        "textFrames": 24,
+        "wordWrapTrue": 20,
+        "shapeType:5": 5,
+        "indentLevel2": 5,
+        "shapeType:17": 3,
+        "shapeType:1": 16
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4387755102040816,
+      "italicRunRatio": 0.0,
+      "topFills": [
+        [
+          "FF6600",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 18,
+          "shapeType:6": 4,
+          "shapeType:9": 1,
+          "textFrames": 13,
+          "shapeType:5": 5,
+          "shapeType:17": 1,
+          "shapeType:1": 7
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 3,
+          "textFrames": 3,
+          "shapeType:1": 3
+        },
+        {
+          "shapes": 5,
+          "textFrames": 5,
+          "shapeType:1": 5
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2012.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\25__-_-_-_-_-_-free-ppt-template-2012.pptx",
+      "slides": 11,
+      "counts": {
+        "shapes": 85,
+        "textFrames": 63,
+        "indentLevel2": 2,
+        "shapeType:1": 50,
+        "shapeType:6": 14,
+        "shapeType:9": 4,
+        "wordWrapTrue": 20,
+        "shapeType:17": 4,
+        "charts": 1,
+        "shapeType:3": 1,
+        "shapeType:5": 9
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.45,
+      "italicRunRatio": 0.016666666666666666,
+      "topFills": [
+        [
+          "1D1D1D",
+          6
+        ],
+        [
+          "2FEE55",
+          6
+        ],
+        [
+          "272727",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 4,
+          "textFrames": 2,
+          "shapeType:1": 2,
+          "shapeType:6": 1,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 19,
+          "textFrames": 18,
+          "shapeType:1": 18,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 10,
+          "textFrames": 6,
+          "shapeType:1": 4,
+          "shapeType:6": 4,
+          "shapeType:17": 2
+        },
+        {
+          "shapes": 14,
+          "textFrames": 11,
+          "shapeType:1": 8,
+          "shapeType:6": 1,
+          "charts": 1,
+          "shapeType:3": 1,
+          "shapeType:9": 1,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 20,
+          "textFrames": 13,
+          "shapeType:1": 7,
+          "shapeType:6": 5,
+          "shapeType:5": 6,
+          "shapeType:9": 2
+        },
+        {
+          "shapes": 6,
+          "textFrames": 1,
+          "shapeType:1": 1,
+          "shapeType:6": 2
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2011.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\26__-_-_-_-_-_-free-ppt-template-2011.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 118,
+        "textFrames": 96,
+        "shapeType:1": 73,
+        "indentLevel2": 6,
+        "shapeType:6": 15,
+        "wordWrapTrue": 40,
+        "shapeType:5": 18,
+        "shapeType:9": 7,
+        "shapeType:17": 5
+      },
+      "fontSizeMin": 6.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.44921875,
+      "italicRunRatio": 0.0390625,
+      "topFills": [
+        [
+          "453ECE",
+          12
+        ],
+        [
+          "E6E7EB",
+          8
+        ],
+        [
+          "C7C9D0",
+          5
+        ],
+        [
+          "C4C7CE",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 3,
+          "textFrames": 2,
+          "shapeType:1": 2,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 27,
+          "textFrames": 21,
+          "shapeType:1": 9,
+          "shapeType:6": 5,
+          "shapeType:5": 12,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 22,
+          "textFrames": 21,
+          "shapeType:1": 16,
+          "shapeType:6": 1,
+          "shapeType:5": 2,
+          "shapeType:17": 3
+        },
+        {
+          "shapes": 29,
+          "textFrames": 21,
+          "shapeType:1": 20,
+          "shapeType:6": 6,
+          "shapeType:5": 1,
+          "shapeType:9": 2
+        },
+        {
+          "shapes": 24,
+          "textFrames": 18,
+          "shapeType:1": 15,
+          "shapeType:6": 2,
+          "shapeType:5": 3,
+          "shapeType:9": 4
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2010.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\27__-_-_-_-_-_-free-ppt-template-2010.pptx",
+      "slides": 11,
+      "counts": {
+        "shapes": 86,
+        "textFrames": 61,
+        "shapeType:1": 45,
+        "wordWrapTrue": 36,
+        "shapeType:5": 7,
+        "shapeType:6": 19,
+        "indentLevel2": 8,
+        "shapeType:17": 9,
+        "shapeType:9": 6
+      },
+      "fontSizeMin": 5.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4117647058823529,
+      "italicRunRatio": 0.047058823529411764,
+      "topFills": [
+        [
+          "1B4DAC",
+          10
+        ],
+        [
+          "B2D9EA",
+          5
+        ],
+        [
+          "123374",
+          1
+        ],
+        [
+          "3F75E1",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 7,
+          "textFrames": 5,
+          "shapeType:1": 1,
+          "shapeType:5": 2,
+          "shapeType:6": 2,
+          "shapeType:17": 2
+        },
+        {
+          "shapes": 3,
+          "shapeType:6": 1,
+          "textFrames": 2,
+          "shapeType:5": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 19,
+          "shapeType:6": 7,
+          "textFrames": 12,
+          "shapeType:17": 1,
+          "shapeType:1": 11
+        },
+        {
+          "shapes": 23,
+          "shapeType:6": 3,
+          "textFrames": 15,
+          "shapeType:17": 1,
+          "shapeType:1": 10,
+          "shapeType:5": 4,
+          "shapeType:9": 5
+        },
+        {
+          "shapes": 8,
+          "textFrames": 2,
+          "shapeType:17": 1,
+          "shapeType:6": 5,
+          "shapeType:9": 1,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 14,
+          "textFrames": 13,
+          "shapeType:17": 1,
+          "shapeType:6": 1,
+          "shapeType:1": 12
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2009.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\28__-_-_-_-_-_-free-ppt-template-2009.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 109,
+        "textFrames": 89,
+        "shapeType:1": 78,
+        "wordWrapTrue": 31,
+        "indentLevel2": 11,
+        "shapeType:5": 8,
+        "shapeType:17": 3,
+        "shapeType:6": 9,
+        "shapeType:13": 4,
+        "shapeType:9": 4,
+        "tables": 3,
+        "shapeType:19": 3
+      },
+      "fontSizeMin": 5.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.46296296296296297,
+      "italicRunRatio": 0.037037037037037035,
+      "topFills": [
+        [
+          "FE0051",
+          9
+        ],
+        [
+          "A4AEB7",
+          1
+        ],
+        [
+          "FF3F7A",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 6,
+          "textFrames": 5,
+          "shapeType:1": 3,
+          "shapeType:5": 1,
+          "shapeType:17": 1,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 22,
+          "textFrames": 20,
+          "shapeType:1": 19,
+          "shapeType:5": 1,
+          "shapeType:6": 1,
+          "shapeType:13": 1
+        },
+        {
+          "shapes": 22,
+          "textFrames": 18,
+          "shapeType:1": 14,
+          "shapeType:5": 4,
+          "shapeType:6": 2,
+          "shapeType:13": 1,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 23,
+          "textFrames": 21,
+          "shapeType:1": 20,
+          "shapeType:5": 1,
+          "shapeType:6": 1,
+          "shapeType:13": 1
+        },
+        {
+          "shapes": 23,
+          "textFrames": 12,
+          "shapeType:1": 11,
+          "shapeType:5": 1,
+          "shapeType:6": 4,
+          "shapeType:13": 1,
+          "shapeType:9": 3,
+          "tables": 3,
+          "shapeType:19": 3
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2008.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\29__-_-_-_-_-_-free-ppt-template-2008.pptx",
+      "slides": 11,
+      "counts": {
+        "shapes": 88,
+        "textFrames": 59,
+        "wordWrapTrue": 32,
+        "shapeType:5": 4,
+        "indentLevel2": 2,
+        "shapeType:17": 4,
+        "shapeType:6": 24,
+        "shapeType:1": 51,
+        "shapeType:9": 2
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.45267489711934156,
+      "italicRunRatio": 0.00823045267489712,
+      "topFills": [
+        [
+          "22649A",
+          6
+        ],
+        [
+          "F1F2F6",
+          6
+        ],
+        [
+          "FFFFFF",
+          1
+        ],
+        [
+          "133753",
+          1
+        ],
+        [
+          "FF8232",
+          1
+        ],
+        [
+          "8BE1FF",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 2,
+          "textFrames": 2,
+          "shapeType:5": 1,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 6,
+          "shapeType:6": 2,
+          "textFrames": 1,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 10,
+          "shapeType:6": 6,
+          "textFrames": 4,
+          "shapeType:1": 3,
+          "shapeType:5": 1
+        },
+        {
+          "shapes": 21,
+          "shapeType:6": 6,
+          "textFrames": 15,
+          "shapeType:1": 14,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 19,
+          "shapeType:6": 9,
+          "textFrames": 8,
+          "shapeType:1": 8,
+          "shapeType:9": 2
+        },
+        {
+          "shapes": 18,
+          "shapeType:6": 1,
+          "textFrames": 17,
+          "shapeType:1": 15,
+          "shapeType:5": 2
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2007.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\30__-_-_-_-_-_-free-ppt-template-2007.pptx",
+      "slides": 11,
+      "counts": {
+        "shapes": 89,
+        "tables": 4,
+        "shapeType:19": 4,
+        "shapeType:6": 11,
+        "textFrames": 63,
+        "wordWrapTrue": 29,
+        "shapeType:17": 6,
+        "shapeType:9": 10,
+        "shapeType:1": 53,
+        "charts": 1,
+        "shapeType:3": 1,
+        "shapeType:5": 4
+      },
+      "fontSizeMin": 7.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4686192468619247,
+      "italicRunRatio": 0.012552301255230125,
+      "topFills": [
+        [
+          "F8625E",
+          6
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 5,
+          "tables": 1,
+          "shapeType:19": 1,
+          "shapeType:6": 1,
+          "textFrames": 2,
+          "shapeType:17": 1,
+          "shapeType:9": 1,
+          "shapeType:1": 1
+        },
+        {
+          "shapes": 7,
+          "tables": 1,
+          "shapeType:19": 1,
+          "shapeType:6": 1,
+          "charts": 1,
+          "shapeType:3": 1,
+          "textFrames": 4,
+          "shapeType:1": 3,
+          "shapeType:5": 1
+        },
+        {
+          "shapes": 20,
+          "tables": 1,
+          "shapeType:19": 1,
+          "shapeType:6": 1,
+          "textFrames": 15,
+          "shapeType:1": 12,
+          "shapeType:17": 3,
+          "shapeType:9": 3
+        },
+        {
+          "shapes": 15,
+          "tables": 1,
+          "shapeType:19": 1,
+          "shapeType:6": 2,
+          "textFrames": 12,
+          "shapeType:1": 9,
+          "shapeType:5": 3
+        },
+        {
+          "shapes": 12,
+          "shapeType:6": 2,
+          "textFrames": 10,
+          "shapeType:1": 10
+        },
+        {
+          "shapes": 19,
+          "shapeType:6": 4,
+          "textFrames": 9,
+          "shapeType:1": 9,
+          "shapeType:9": 6
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2006.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\31__-_-_-_-_-_-free-ppt-template-2006.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 89,
+        "textFrames": 81,
+        "wordWrapTrue": 37,
+        "shapeType:5": 13,
+        "shapeType:1": 58,
+        "indentLevel2": 7,
+        "shapeType:17": 10,
+        "charts": 1,
+        "shapeType:3": 1,
+        "shapeType:6": 6,
+        "tables": 1,
+        "shapeType:19": 1
+      },
+      "fontSizeMin": 6.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.44813278008298757,
+      "italicRunRatio": 0.04149377593360996,
+      "topFills": [
+        [
+          "68727B",
+          20
+        ],
+        [
+          "45EFF0",
+          7
+        ],
+        [
+          "151517",
+          2
+        ],
+        [
+          "8B959F",
+          1
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 7,
+          "textFrames": 7,
+          "shapeType:5": 3,
+          "shapeType:1": 2,
+          "shapeType:17": 2
+        },
+        {
+          "shapes": 17,
+          "textFrames": 17,
+          "shapeType:1": 12,
+          "shapeType:5": 4,
+          "shapeType:17": 1
+        },
+        {
+          "shapes": 15,
+          "textFrames": 13,
+          "shapeType:1": 10,
+          "shapeType:5": 1,
+          "shapeType:17": 2,
+          "charts": 1,
+          "shapeType:3": 1,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 17,
+          "textFrames": 14,
+          "shapeType:1": 11,
+          "shapeType:5": 1,
+          "shapeType:17": 2,
+          "tables": 1,
+          "shapeType:19": 1,
+          "shapeType:6": 2
+        },
+        {
+          "shapes": 20,
+          "textFrames": 17,
+          "shapeType:1": 12,
+          "shapeType:5": 4,
+          "shapeType:17": 1,
+          "shapeType:6": 3
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    },
+    {
+      "url": "https://pptbizcam.co.kr/wp-content/uploads/2026/04/파워포인트-템플릿-원본-파일-다운로드-받기-free-ppt-template-2005.pptx",
+      "file": "artifacts\\pptbizcam-analysis\\downloads\\32__-_-_-_-_-_-free-ppt-template-2005.pptx",
+      "slides": 10,
+      "counts": {
+        "shapes": 120,
+        "textFrames": 103,
+        "wordWrapTrue": 62,
+        "shapeType:5": 21,
+        "shapeType:17": 5,
+        "shapeType:6": 13,
+        "shapeType:1": 77,
+        "indentLevel2": 8,
+        "shapeType:9": 4
+      },
+      "fontSizeMin": 5.0,
+      "fontSizeMedian": 16.0,
+      "boldRunRatio": 0.4482758620689655,
+      "italicRunRatio": 0.03065134099616858,
+      "topFills": [
+        [
+          "D9FF3A",
+          32
+        ],
+        [
+          "181826",
+          4
+        ]
+      ],
+      "slideProfilesSample": [
+        {
+          "shapes": 10,
+          "textFrames": 9,
+          "shapeType:5": 2,
+          "shapeType:17": 3,
+          "shapeType:6": 1,
+          "shapeType:1": 4
+        },
+        {
+          "shapes": 23,
+          "textFrames": 22,
+          "shapeType:5": 1,
+          "shapeType:1": 21,
+          "shapeType:6": 1
+        },
+        {
+          "shapes": 21,
+          "textFrames": 17,
+          "shapeType:5": 1,
+          "shapeType:1": 16,
+          "shapeType:6": 1,
+          "shapeType:9": 3
+        },
+        {
+          "shapes": 27,
+          "textFrames": 22,
+          "shapeType:5": 5,
+          "shapeType:1": 17,
+          "shapeType:6": 5
+        },
+        {
+          "shapes": 28,
+          "textFrames": 22,
+          "shapeType:5": 12,
+          "shapeType:1": 10,
+          "shapeType:6": 5,
+          "shapeType:9": 1
+        },
+        {
+          "shapes": 1,
+          "textFrames": 1,
+          "shapeType:1": 1
+        }
+      ]
+    }
+  ]
+}

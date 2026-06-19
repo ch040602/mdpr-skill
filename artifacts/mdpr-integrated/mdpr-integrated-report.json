@@ -6,8 +6,8 @@
   "contactSheet": "artifacts/mdpr-integrated/mdpr-integrated-contact-sheet.png",
   "validation": {
     "slides": 9,
-    "shapes": 196,
-    "textFrames": 194,
+    "shapes": 194,
+    "textFrames": 192,
     "pictures": 0,
     "tables": 1,
     "charts": 1,
@@ -60,7 +60,7 @@
         1600,
         900
       ],
-      "uniqueColors": 426,
+      "uniqueColors": 417,
       "nonWhitePixels": 1437483,
       "hasContent": true
     },
@@ -70,7 +70,7 @@
         1600,
         900
       ],
-      "uniqueColors": 208,
+      "uniqueColors": 143,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -100,7 +100,7 @@
         1600,
         900
       ],
-      "uniqueColors": 208,
+      "uniqueColors": 143,
       "nonWhitePixels": 1440000,
       "hasContent": true
     }

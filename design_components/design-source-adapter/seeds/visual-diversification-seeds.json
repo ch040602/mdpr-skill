@@ -250,6 +250,52 @@
       "layoutRule": "Use only when MDPR detects or the user provides a needed image/metaphor; otherwise prefer an abstract chart family."
     }
   ],
+  "observedReferenceAnalysis": {
+    "source": "PPT BIZCAM public category pages and downloadable PPTX samples",
+    "categoryIdsSampled": [2, 3, 7, 9, 10, 11, 12, 14, 19, 21, 30, 37, 39, 67],
+    "pptxAnalyzed": 32,
+    "slidesAnalyzed": 314,
+    "aggregateObjects": {
+      "shapes": 3065,
+      "textFrames": 2282,
+      "tables": 38,
+      "charts": 14,
+      "pictures": 31
+    },
+    "methodNote": "The samples are used only to derive reusable design-method vocabulary and structural statistics. Source assets are not redistributed or copied into MDPR output."
+  },
+  "referenceDerivedElementFamilies": [
+    {
+      "id": "simple-shape-system",
+      "observedSignal": "Most sampled slides rely on many editable auto-shapes and text frames rather than large raster compositions.",
+      "ruleUse": ["section label", "support panel", "number badge", "thin accent rule"],
+      "coherenceGuard": "Prefer one shape grammar per slide: consistent corner radius, border weight, and accent side. Do not add a shape unless it encodes grouping, ordering, evidence, or emphasis."
+    },
+    {
+      "id": "table-grid-system",
+      "observedSignal": "Tables appear as formal row/column grammar, not as decorative cards.",
+      "ruleUse": ["comparison", "risk matrix", "requirements checklist", "validation summary"],
+      "coherenceGuard": "Header row owns the strongest fill; first column may be bold as row labels; numeric columns align right; body rows use only subtle banding and never multiple unrelated accent colors."
+    },
+    {
+      "id": "small-icon-marker",
+      "observedSignal": "Icons work best as local semantic markers or small pictorial cues, not as filler for unused white space.",
+      "ruleUse": ["text-only support", "row marker", "validation status", "section cue"],
+      "coherenceGuard": "Icon size must stay below nearby title/body hierarchy, use monotone fill, and never occupy a large empty card just to balance composition."
+    },
+    {
+      "id": "pictorial-metaphor-anchor",
+      "observedSignal": "Human/object metaphors are effective when the image is the slide concept, but risky as generic decoration.",
+      "ruleUse": ["image-provided metaphor", "cover concept", "single proof metaphor"],
+      "coherenceGuard": "Use only when source content or user-provided image justifies the metaphor; keep labels anchored to the object and avoid invented brand-like icons."
+    },
+    {
+      "id": "chart-as-proof-object",
+      "observedSignal": "Charts are fewer than shapes/text frames and should carry a specific proof point.",
+      "ruleUse": ["native chart", "arc/ring chart", "gauge", "connected strip", "trend backdrop"],
+      "coherenceGuard": "Use one dominant chart family per slide; direct labels should attach to marks; background charts must remain lower contrast than foreground claims."
+    }
+  ],
   "alignmentLayouts": [
     {
       "id": "center-focus-radial",
