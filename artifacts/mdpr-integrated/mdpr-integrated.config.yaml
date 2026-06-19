@@ -1,0 +1,15 @@
+theme:
+  fontFamily: Aptos
+  backgroundColor: "#FBFAF7"
+  textColor: "#1F2933"
+  primaryColor: "#0F766E"
+  titleFontSize: 30
+  bodyFontSize: 19
+  captionFontSize: 11
+  minFontSize: 14
+  lineHeight: 1.16
+  designPreset: editorial
+  colorCombination: split-complementary
+pptx:
+  designPreset: editorial
+  lockBackgroundToMaster: false

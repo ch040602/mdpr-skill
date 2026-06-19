@@ -14,6 +14,8 @@ The pipeline is documented in `pipeline.md`. The pipeline image is generated fro
 
 Visual diversification seeds in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json` are reference material for MDPR implementation and optional agent hints. Runtime design logic belongs in MDPR packages, not in this skill repository.
 
+The integrated MDPR-only proof deck is stored at `artifacts/mdpr-integrated/mdpr-build/deck.pptx`, with PowerPoint-exported previews in `artifacts/mdpr-integrated/powerpoint-export/` and a contact sheet at `artifacts/mdpr-integrated/mdpr-integrated-contact-sheet.png`. It is generated from `artifacts/mdpr-integrated/mdpr-integrated-demo.md` through the MDPR CLI, not through the earlier handmade prototype renderer. The validation report verifies native chart/table output, editable text boxes, PowerPoint-rendered PNG content, and a 15pt minimum detected text size.
+
 MDPR color selection follows Adobe Color Wheel harmony rules through `theme.colorCombination`: `preset`, `monochromatic`, `analogous`, `complementary`, `split-complementary`, and `triadic`. The derived palette feeds element colors, chart color tokens, and the generated PowerPoint document theme.
 
 Review guidance still checks WCAG contrast-ratio expectations for readable text and emphasis colors before accepting generated PPTX artifacts.

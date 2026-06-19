@@ -1,0 +1,109 @@
+{
+  "sourceMarkdown": "artifacts/mdpr-integrated/mdpr-integrated-demo.md",
+  "config": "artifacts/mdpr-integrated/mdpr-integrated.config.yaml",
+  "pptx": "artifacts/mdpr-integrated/mdpr-build/deck.pptx",
+  "html": "artifacts/mdpr-integrated/mdpr-build/deck.html",
+  "contactSheet": "artifacts/mdpr-integrated/mdpr-integrated-contact-sheet.png",
+  "validation": {
+    "slides": 9,
+    "shapes": 196,
+    "textFrames": 194,
+    "pictures": 0,
+    "tables": 1,
+    "charts": 1,
+    "minFontSizePt": 15.0
+  },
+  "powerPointRenderPreview": [
+    {
+      "file": "powerpoint-export\\슬라이드1.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 36,
+      "nonWhitePixels": 1414312,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드2.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 36,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드3.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 237,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드4.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 261,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드5.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 426,
+      "nonWhitePixels": 1437483,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드6.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 208,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드7.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 194,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드8.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 290,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "powerpoint-export\\슬라이드9.PNG",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 208,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    }
+  ],
+  "ok": true
+}

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MDPR Visual Diversity Integration</title>
+<style>
+:root {
+  --bg: #F7F3EF;
+  --text: #1F2937;
+  --primary: #0F766E;
+  --secondary: #760F4A;
+  --surface: #FBF7F2;
+  --surface-line: #D6D0C2;
+  --muted: #57534E;
+  --font: "Pretendard";
+}
+body { margin: 0; background: #111; font-family: var(--font); }
+.deck { display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.slide { position: relative; width: 13.333in; height: 7.5in; background: var(--bg); color: var(--text); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.region { position: absolute; box-sizing: border-box; }
+.title { font-weight: 700; }
+.body.key-message { background: var(--surface); border-left: .08in solid var(--primary); padding: .18in .28in; }
+.body.key-message blockquote { margin: 0; font-weight: 700; color: var(--text); }
+.item { background: var(--surface); border-left: .06in solid var(--primary); padding: .12in .18in; }
+.region ul, .region ol { margin: 0; padding-left: 1.2em; }
+.structured-list { list-style: none; padding-left: 0; }
+.region li.level-1 { margin-left: 1.1em; }
+.region li.level-2 { margin-left: 2.2em; }
+.region p { margin: 0 0 .45em; }
+.region img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item-number { display: inline-flex; width: .28in; height: .28in; align-items: center; justify-content: center; margin-right: .1in; border-radius: 999px; background: var(--primary); color: var(--bg); font-weight: 700; }
+.item-label { font-weight: 700; display: block; margin-bottom: .12in; color: var(--primary); }
+.item-description { display: block; margin-left: .18in; color: var(--muted); }
+strong { color: var(--primary); }
+.pipeline { position: relative; height: 100%; min-height: 3.6in; }
+.pipeline-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+.pipeline-connector { fill: none; stroke: var(--primary); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pipeline-node { position: absolute; z-index: 2; min-width: 0; border: 1px solid var(--surface-line); background: var(--surface); padding: .12in; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: .12in; font-weight: 700; line-height: 1.18; }
+.chart { width: 100%; height: 100%; display: flex; flex-direction: column; gap: .12in; justify-content: center; }
+.chart-row { display: grid; grid-template-columns: 1.1in 1fr .45in; gap: .1in; align-items: center; font-size: .13in; }
+.chart-label { color: var(--text); font-weight: 700; }
+.chart-track { height: .18in; background: color-mix(in srgb, var(--surface-line) 60%, transparent); border-radius: 999px; overflow: hidden; }
+.chart-bar { height: 100%; background: var(--primary); border-radius: 999px; }
+.chart-value { color: var(--muted); text-align: right; }
+</style>
+</head>
+<body>
+<main class="deck">
+<section class="slide" data-slide-id="mdpr-visual-diversity-integration-b1e9a4" data-layout="cover"><div class="region title title" style="left:1in;top:2.25in;width:11.3in;height:1.25in;z-index:10;font-size:48pt;line-height:1.2">MDPR Visual Diversity Integration</div></section>
+<section class="slide" data-slide-id="toc-53a981" data-layout="toc"><div class="region title title" style="left:0.8in;top:0.42in;width:11.7in;height:0.9in;z-index:10;font-size:38pt;line-height:1.2">목차</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Responsibility Boundary</p>
+<p>Pipeline After Integration</p>
+<p>Chart And Table Coherence</p>
+<p>Text Only Relief</p>
+<p>Visual Rules</p>
+<p>Design Components</p>
+<p>Validation Summary</p></div></section>
+<section class="slide" data-slide-id="responsibility-boundary-827eb4" data-layout="grid"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Responsibility Boundary</div>
+<div class="region item item-1" style="left:0.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">MDPR</span><span class="item-description">parser, slide splitting, layout selection, editable PowerPoint rendering, theme colors, charts, tables, diagrams, and text fit.</span></li></ul></div>
+<div class="region item item-2" style="left:6.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Skill</span><span class="item-description">optional agent hints that describe emphasis, importance, and likely visual intent before MDPR makes deterministic choices.</span></li></ul></div>
+<div class="region item item-3" style="left:0.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Validation</span><span class="item-description">PowerPoint export, PNG previews, minimum font checks, and shape-level inspection.</span></li></ul></div>
+<div class="region item item-4" style="left:6.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Output</span><span class="item-description">one Markdown source can produce coherent PPTX and HTML without a separate handmade renderer.</span></li></ul></div></section>
+<section class="slide" data-slide-id="pipeline-after-integration-4f3718" data-layout="pipeline"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Pipeline After Integration</div>
+<div class="region diagram diagram" style="left:0.7in;top:1.32in;width:11.95in;height:5.75in;z-index:10;font-size:22pt;line-height:1.2"><div class="pipeline pipeline-u" data-arrangement="u">
+<svg class="pipeline-connectors" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+<defs><marker id="pipeline-arrow-node-1-node-2-node-3-node-4-node-5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--primary)" /></marker></defs>
+<polyline class="pipeline-connector" data-edge="1" points="31.20,39.40 34.40,39.40" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5)" /><polyline class="pipeline-connector" data-edge="2" points="65.60,39.40 68.80,39.40" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5)" /><polyline class="pipeline-connector" data-edge="3" points="84.40,48.40 84.40,51.60" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5)" /><polyline class="pipeline-connector" data-edge="4" points="68.80,60.60 65.60,60.60" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5)" />
+</svg>
+<div class="pipeline-node" data-node="1" style="left:0.00%;top:30.40%;width:31.20%;height:18.00%">Markdown and Pandoc AST</div><div class="pipeline-node" data-node="2" style="left:34.40%;top:30.40%;width:31.20%;height:18.00%">Presentation IR</div><div class="pipeline-node" data-node="3" style="left:68.80%;top:30.40%;width:31.20%;height:18.00%">Layout IR</div><div class="pipeline-node" data-node="4" style="left:68.80%;top:51.60%;width:31.20%;height:18.00%">PowerPoint Renderer</div><div class="pipeline-node" data-node="5" style="left:34.40%;top:51.60%;width:31.20%;height:18.00%">Visual Validation</div>
+</div></div></section>
+<section class="slide" data-slide-id="chart-and-table-coherence-8fd6a7" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Chart And Table Coherence</div>
+<div class="region chart chart" style="left:0.82in;top:1.65in;width:5.05in;height:3.75in;z-index:10;font-size:17pt;line-height:1.2"><div class="chart" aria-label="Rules"><div class="chart-row"><span class="chart-label">Core</span><span class="chart-track"><span class="chart-bar" style="width:81.8%"></span></span><span class="chart-value">18</span></div><div class="chart-row"><span class="chart-label">Layout</span><span class="chart-track"><span class="chart-bar" style="width:63.6%"></span></span><span class="chart-value">14</span></div><div class="chart-row"><span class="chart-label">PPTX</span><span class="chart-track"><span class="chart-bar" style="width:100.0%"></span></span><span class="chart-value">22</span></div><div class="chart-row"><span class="chart-label">Skill</span><span class="chart-track"><span class="chart-bar" style="width:22.7%"></span></span><span class="chart-value">5</span></div></div></div>
+<div class="region table table" style="left:6.1in;top:1.72in;width:6.05in;height:3.28in;z-index:10;font-size:17pt;line-height:1.2"><p>Area | MDPR-owned behavior | Skill-owned behavior
+Theme | Adobe-style color combination and PPT theme colors | Suggest emphasis only
+Chart | Native editable PowerPoint chart | Provide data importance hints
+Table | Middle vertical alignment and compact text | Identify comparison intent
+Layout | No chart/table split across slides | Warn about visual density</p></div></section>
+<section class="slide" data-slide-id="text-only-relief-129573" data-layout="text-icon-aside"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Text Only Relief</div>
+<div class="region body body-panel" style="left:0.9in;top:1.72in;width:7.25in;height:3.62in;z-index:10;font-size:22pt;line-height:1.2"><p>Long text-only slides should not become plain prose walls. MDPR can add a restrained black or white icon aside, keep it secondary, and preserve enough breathing room around the copy. The icon is decorative, the text remains editable, and the minimum readable font size is still enforced by the renderer.</p></div>
+<div class="region icon icon-aside" style="left:8.7in;top:2.18in;width:2.34in;height:2.34in;z-index:8">icon</div></section>
+<section class="slide" data-slide-id="visual-rules-4ad7c2" data-layout="grid"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Visual Rules</div>
+<div class="region item item-1" style="left:0.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Parent labels use font sizes greater than or equal to child labels.</li></ul></div>
+<div class="region item item-2" style="left:6.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Text boxes use internal alignment and margins so text does not visually drift inside a shape.</li></ul></div>
+<div class="region item item-3" style="left:0.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Bullets and small lead symbols are vertically centered against their text.</li></ul></div>
+<div class="region item item-4" style="left:6.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Shadows, accent rules, and card surfaces are applied by PPT-compatible renderer rules.</li></ul></div></section>
+<section class="slide" data-slide-id="design-components-bedea8" data-layout="pentagon"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Design Components</div>
+<div class="region item item-1" style="left:5.1in;top:1.4in;width:3in;height:1.2in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Native charts for quantitative summaries.</li></ul></div>
+<div class="region item item-2" style="left:8.4in;top:2.8in;width:3in;height:1.2in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Tables for exact comparisons.</li></ul></div>
+<div class="region item item-3" style="left:7.1in;top:5in;width:3in;height:1.2in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Pipeline diagrams for ordered process and responsibility flow.</li></ul></div>
+<div class="region item item-4" style="left:3.2in;top:5in;width:3in;height:1.2in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Item cards for compact rule sets.</li></ul></div>
+<div class="region item item-5" style="left:1.9in;top:2.8in;width:3in;height:1.2in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Monotone icons only when a text-only slide needs a quiet visual anchor.</li></ul></div></section>
+<section class="slide" data-slide-id="validation-summary-c62788" data-layout="text-icon-aside"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Validation Summary</div>
+<div class="region body body-panel" style="left:0.9in;top:1.72in;width:7.25in;height:3.62in;z-index:10;font-size:22pt;line-height:1.2"><p>The generated deck should contain editable text boxes, native charts, table objects, diagram shapes, icon-aside decoration, and consistent theme colors. The PNG preview is exported from Microsoft PowerPoint so visual validation checks actual PPT rendering, not only XML structure.</p></div>
+<div class="region icon icon-aside" style="left:8.7in;top:2.18in;width:2.34in;height:2.34in;z-index:8">icon</div></section>
+</main>
+</body>
+</html>
