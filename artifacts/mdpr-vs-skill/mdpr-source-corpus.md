@@ -13,7 +13,7 @@ This deck is generated from Markdown files inside the local MDPR checkout.
 
 ## Source manifest
 
-- README.md: mdpresent (10 headings, 6157 chars)
+- README.md: mdpresent (12 headings, 10521 chars)
 - README.ko.md: mdpresent (10 headings, 3747 chars)
 - CODEX_PROMPT.md: Codex 구현 프롬프트 (5 headings, 1065 chars)
 - docs/00-product-definition.md: 00. 제품 정의 (6 headings, 745 chars)
@@ -22,12 +22,12 @@ This deck is generated from Markdown files inside the local MDPR checkout.
 - docs/03-page-splitting.md: 03. 페이지 분할 규칙 (17 headings, 4977 chars)
 - docs/04-layout-rules.md: 04. 레이아웃 선택 규칙 (10 headings, 2641 chars)
 - docs/05-overrides-for-llm.md: 05. LLM/Codex 친화적 Override Manifest (11 headings, 2931 chars)
-- docs/06-cli-spec.md: 06. CLI 명령 설계 (10 headings, 3948 chars)
-- docs/07-rendering-rules.md: 07. Renderer 규칙 (6 headings, 6204 chars)
+- docs/06-cli-spec.md: 06. CLI 명령 설계 (10 headings, 4146 chars)
+- docs/07-rendering-rules.md: 07. Renderer 규칙 (6 headings, 7916 chars)
 - docs/08-roadmap.md: 08. 구현 로드맵 (10 headings, 1470 chars)
 - docs/09-codex-implementation-guide.md: 09. Codex 구현 가이드 (9 headings, 1433 chars)
 - docs/10-template-and-master-policy.md: 10. PPT 템플릿과 Slide Master 정책 (7 headings, 966 chars)
-- docs/11-qa-overflow.md: 11. QA와 Overflow 정책 (8 headings, 2892 chars)
+- docs/11-qa-overflow.md: 11. QA와 Overflow 정책 (8 headings, 3335 chars)
 - docs/references.md: References (8 headings, 582 chars)
 - docs/adr/0001-presentation-ir-schema-contract.md: ADR 0001: Presentation IR Schema Contract (5 headings, 1226 chars)
 - examples/basic/deck.md: AI 업무 자동화 제안서 (10 headings, 581 chars)

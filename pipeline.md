@@ -1,18 +1,18 @@
-# MDPR Design Components Pipeline
+# MDPR Deterministic Presentation Pipeline
 
-MDPR owns the content contract. The LLM is optional and only provides short semantic tags when needed; it does not reason through layout, choose coordinates, colors, variants, effects, or z-order. The Design Components rule layer makes those decisions deterministically and emits renderer-neutral output that can be rendered to editable PPTX, HTML, and PDF.
+MDPR owns the presentation runtime. The LLM is optional and only provides short semantic tags when needed; it does not reason through layout, choose coordinates, colors, variants, effects, or z-order. MDPR makes those decisions deterministically and emits renderer-neutral output that can be rendered to editable PPTX, HTML, and PDF.
 
 Optional agent tags are hints only. Deterministic rules own layout, style, z-order, theme colors, proof objects, icon slots, and renderer-specific output.
 
-The generated pipeline overview uses this file as its content source. The image generator reads the `pipeline-image` block below, applies the project layout rules, embeds the SVG into a one-slide PowerPoint deck, and exports the final PNG through Microsoft PowerPoint.
+The generated pipeline overview uses this file as its content source. The image generator reads the `pipeline-image` block below, applies the project layout rules, builds a one-slide PowerPoint deck from editable shapes, text boxes, and role-aware arrows, and exports the final PNG through Microsoft PowerPoint.
 
 The selected theme is `sage-editorial`: a warm editorial palette that combines flow colors, section accents, validation contrast, and quiet support surfaces. Point elements such as `visual validation` use a different proof-callout pattern, not only a stronger hue.
 
 <!-- pipeline-image
 {
   "theme": "sage-editorial",
-  "title": "MDPR Design Components Pipeline",
-  "subtitle": "MDPR parses Markdown, keeps graph objects intact, derives theme colors, and renders editable PPTX/HTML/PDF without LLM runtime decisions.",
+  "title": "MDPR Deterministic Presentation Pipeline",
+  "subtitle": "Markdown becomes coherent PPTX/HTML/PDF through MDPR rules; mdpr-skill can add compact reasoning hints but never owns final design.",
   "seed": "visual-diversification-seeds/proof-point-callout",
   "regions": {
     "content": {
@@ -46,7 +46,7 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
       }
     },
     "rules": {
-      "title": "3. Deterministic Design",
+      "title": "3. MDPR Design Rules",
       "subtitle": "final visual choices",
       "engine": {
         "title": "Rule Engine Boundary",
@@ -97,8 +97,7 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
   },
   "coherence": {
     "title": "Coherence checks",
-    "line": "One graph stays on one slide; text is bounded; icons are centered; arrows use role-level style; theme accents remain readable.",
-    "badge": "coherence gate"
+    "line": "One graph per slide; text is bounded; icons are centered; arrows keep role-level style."
   }
 }
 -->

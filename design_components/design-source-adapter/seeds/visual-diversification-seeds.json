@@ -4,47 +4,110 @@
   "colorRoles": {
     "flow": {
       "description": "Used for primary reading order, connecting arrows, and stable pipeline motion.",
-      "themeSlots": ["text1", "text2"],
-      "exampleHex": ["#111827", "#475569"]
+      "themeSlots": [
+        "text1",
+        "text2"
+      ],
+      "exampleHex": [
+        "#111827",
+        "#475569"
+      ]
     },
     "accent": {
       "description": "Used for local section identity and normal emphasis.",
-      "themeSlots": ["accent1", "accent2", "accent3"],
-      "exampleHex": ["#86A789", "#14B8A6", "#818CF8"]
+      "themeSlots": [
+        "accent1",
+        "accent2",
+        "accent3"
+      ],
+      "exampleHex": [
+        "#86A789",
+        "#14B8A6",
+        "#818CF8"
+      ]
     },
     "contrast": {
       "description": "Used only when an object must read as a point, warning, proof, or editorial interruption.",
-      "themeSlots": ["accent4", "accent5"],
-      "exampleHex": ["#BE123C", "#F59E0B"]
+      "themeSlots": [
+        "accent4",
+        "accent5"
+      ],
+      "exampleHex": [
+        "#BE123C",
+        "#F59E0B"
+      ]
     },
     "support": {
       "description": "Warm or cool surface colors used to avoid one-hue diagrams while preserving coherence.",
-      "themeSlots": ["background1", "background2"],
-      "exampleHex": ["#F7F2EA", "#FFF3DE", "#F1F0FA", "#EAF7F3"]
+      "themeSlots": [
+        "background1",
+        "background2"
+      ],
+      "exampleHex": [
+        "#F7F2EA",
+        "#FFF3DE",
+        "#F1F0FA",
+        "#EAF7F3"
+      ]
     },
     "monotoneIcon": {
       "description": "A quiet black-or-white icon used only when a text-only slide needs a small visual anchor.",
-      "themeSlots": ["text1", "background1"],
-      "exampleHex": ["#111827", "#FFFFFF"]
+      "themeSlots": [
+        "text1",
+        "background1"
+      ],
+      "exampleHex": [
+        "#111827",
+        "#FFFFFF"
+      ]
     }
   },
   "colorHarmonyPolicy": {
     "sourceReference": "Adobe Color Wheel harmony rules",
-    "supportedRules": ["monochromatic", "analogous", "complementary", "split-complementary", "triadic"],
+    "supportedRules": [
+      "monochromatic",
+      "analogous",
+      "complementary",
+      "split-complementary",
+      "triadic"
+    ],
     "slotMapping": {
       "base": "accent1",
-      "nearby": ["accent2", "accent3"],
-      "contrast": ["accent4", "accent5"],
-      "support": ["background1", "background2"],
-      "text": ["text1", "text2"]
+      "nearby": [
+        "accent2",
+        "accent3"
+      ],
+      "contrast": [
+        "accent4",
+        "accent5"
+      ],
+      "support": [
+        "background1",
+        "background2"
+      ],
+      "text": [
+        "text1",
+        "text2"
+      ]
     },
     "brightnessSequence": {
       "rule": "Use tint for lower or earlier sequence states, base color for normal emphasis, and shade for current or strongest sequence states.",
       "themeRefExamples": [
-        { "slot": "accent1", "tint": 45 },
-        { "slot": "accent1", "tint": 20 },
-        { "slot": "accent1" },
-        { "slot": "accent1", "shade": 18 }
+        {
+          "slot": "accent1",
+          "tint": 45
+        },
+        {
+          "slot": "accent1",
+          "tint": 20
+        },
+        {
+          "slot": "accent1"
+        },
+        {
+          "slot": "accent1",
+          "shade": 18
+        }
       ]
     },
     "usageRules": [
@@ -63,15 +126,29 @@
   },
   "iconSourcePolicy": {
     "preferred": "ppt-builtin-icon",
-    "allowed": ["ppt-builtin-icon", "free-svg-icon"],
+    "allowed": [
+      "ppt-builtin-icon",
+      "free-svg-icon"
+    ],
     "licenseRule": "Free SVG icons must carry a permissive license record and attribution before being used in a generated deck.",
     "coherenceRule": "Use one icon per text-only support slot, rendered in either black or white, with no multicolor fills."
   },
   "infographicPatterns": [
     {
       "id": "proof-point-callout",
-      "useWhen": ["validation", "quality-gate", "render-proof", "z-order-proof"],
-      "structure": ["contrast stripe", "seal icon", "small label", "large proof text", "short spark mark"],
+      "useWhen": [
+        "validation",
+        "quality-gate",
+        "render-proof",
+        "z-order-proof"
+      ],
+      "structure": [
+        "contrast stripe",
+        "seal icon",
+        "small label",
+        "large proof text",
+        "short spark mark"
+      ],
       "coherenceRules": [
         "uses contrast color only once per local group",
         "label and proof text align to the same left start",
@@ -81,8 +158,16 @@
     },
     {
       "id": "editorial-annotation",
-      "useWhen": ["reasoning-limit", "human-review-note", "scope-boundary"],
-      "structure": ["thin bracket", "small uppercase label", "one-line note"],
+      "useWhen": [
+        "reasoning-limit",
+        "human-review-note",
+        "scope-boundary"
+      ],
+      "structure": [
+        "thin bracket",
+        "small uppercase label",
+        "one-line note"
+      ],
       "coherenceRules": [
         "inherits parent typography family",
         "uses warm support color instead of a new hue",
@@ -91,8 +176,17 @@
     },
     {
       "id": "connected-rail",
-      "useWhen": ["steps", "process", "timeline", "split-flow"],
-      "structure": ["rail line", "numbered nodes", "short captions"],
+      "useWhen": [
+        "steps",
+        "process",
+        "timeline",
+        "split-flow"
+      ],
+      "structure": [
+        "rail line",
+        "numbered nodes",
+        "short captions"
+      ],
       "coherenceRules": [
         "same-role nodes share fill and stroke",
         "rail color follows flow role unless a branch has a different meaning",
@@ -101,8 +195,16 @@
     },
     {
       "id": "contrast-chip",
-      "useWhen": ["exception", "important-output", "constraint"],
-      "structure": ["compact chip", "left color notch", "bold short text"],
+      "useWhen": [
+        "exception",
+        "important-output",
+        "constraint"
+      ],
+      "structure": [
+        "compact chip",
+        "left color notch",
+        "bold short text"
+      ],
       "coherenceRules": [
         "chip copy stays under four words",
         "contrast color does not repeat as a section color",
@@ -111,8 +213,18 @@
     },
     {
       "id": "metric-swatch",
-      "useWhen": ["kpi", "coverage", "test-count", "quality-score"],
-      "structure": ["large number", "tiny unit", "supporting label", "mini bar"],
+      "useWhen": [
+        "kpi",
+        "coverage",
+        "test-count",
+        "quality-score"
+      ],
+      "structure": [
+        "large number",
+        "tiny unit",
+        "supporting label",
+        "mini bar"
+      ],
       "coherenceRules": [
         "number role is larger than its label",
         "mini bar uses accent color, not validation contrast",
@@ -121,8 +233,18 @@
     },
     {
       "id": "monotone-icon-aside",
-      "useWhen": ["text-only", "low-object-variety", "plain-explanation", "quiet-support"],
-      "structure": ["reserved aside slot", "one black-or-white icon", "aligned text block", "minimum padding gutter"],
+      "useWhen": [
+        "text-only",
+        "low-object-variety",
+        "plain-explanation",
+        "quiet-support"
+      ],
+      "structure": [
+        "reserved aside slot",
+        "one black-or-white icon",
+        "aligned text block",
+        "minimum padding gutter"
+      ],
       "coherenceRules": [
         "icon is secondary and never replaces the title or body text",
         "use a PowerPoint built-in icon first, otherwise use a licensed free SVG icon",
@@ -135,46 +257,121 @@
   "layoutFamilies": [
     {
       "id": "cycle-loop",
-      "intent": ["cycle", "feedback", "iteration", "closed-loop"],
-      "itemCount": { "min": 3, "max": 6 },
-      "textCharsPerItem": { "idealMax": 42, "hardMax": 72 },
+      "intent": [
+        "cycle",
+        "feedback",
+        "iteration",
+        "closed-loop"
+      ],
+      "itemCount": {
+        "min": 3,
+        "max": 6
+      },
+      "textCharsPerItem": {
+        "idealMax": 42,
+        "hardMax": 72
+      },
       "importanceUse": "highest importance item becomes the entry node and receives the contrast rim; secondary items share accent rims.",
       "svgRecipe": {
-        "structure": ["center label", "orbit nodes", "curved arrows", "entry node contrast rim"],
-        "emphasisSlots": ["entry-node", "center-insight"],
-        "avoid": ["equal-size circles when importance differs", "labels outside orbit safe area"]
+        "structure": [
+          "center label",
+          "orbit nodes",
+          "curved arrows",
+          "entry node contrast rim"
+        ],
+        "emphasisSlots": [
+          "entry-node",
+          "center-insight"
+        ],
+        "avoid": [
+          "equal-size circles when importance differs",
+          "labels outside orbit safe area"
+        ]
       }
     },
     {
       "id": "ordered-rail",
-      "intent": ["sequence", "process", "steps", "ordered"],
-      "itemCount": { "min": 2, "max": 7 },
-      "textCharsPerItem": { "idealMax": 56, "hardMax": 88 },
+      "intent": [
+        "sequence",
+        "process",
+        "steps",
+        "ordered"
+      ],
+      "itemCount": {
+        "min": 2,
+        "max": 7
+      },
+      "textCharsPerItem": {
+        "idealMax": 56,
+        "hardMax": 88
+      },
       "importanceUse": "importance controls node diameter, label weight, and whether the node receives a local callout tab.",
       "svgRecipe": {
-        "structure": ["primary rail", "numbered nodes", "alternating labels", "one highlighted inflection point"],
-        "emphasisSlots": ["inflection-node", "result-node"],
-        "avoid": ["different arrow styles for same-role steps", "unbalanced label baselines"]
+        "structure": [
+          "primary rail",
+          "numbered nodes",
+          "alternating labels",
+          "one highlighted inflection point"
+        ],
+        "emphasisSlots": [
+          "inflection-node",
+          "result-node"
+        ],
+        "avoid": [
+          "different arrow styles for same-role steps",
+          "unbalanced label baselines"
+        ]
       }
     },
     {
       "id": "ranked-stack",
-      "intent": ["list", "enumeration", "ranking", "takeaways"],
-      "itemCount": { "min": 3, "max": 8 },
-      "textCharsPerItem": { "idealMax": 68, "hardMax": 110 },
+      "intent": [
+        "list",
+        "enumeration",
+        "ranking",
+        "takeaways"
+      ],
+      "itemCount": {
+        "min": 3,
+        "max": 8
+      },
+      "textCharsPerItem": {
+        "idealMax": 68,
+        "hardMax": 110
+      },
       "importanceUse": "highest importance item becomes a lead tile; remaining items become compact rows sorted by importance then source order.",
       "svgRecipe": {
-        "structure": ["lead tile", "ranked rows", "left accent meter", "compact evidence captions"],
-        "emphasisSlots": ["lead-tile", "top-ranked-row"],
-        "avoid": ["all rows with equal visual weight", "long text without a secondary line break"]
+        "structure": [
+          "lead tile",
+          "ranked rows",
+          "left accent meter",
+          "compact evidence captions"
+        ],
+        "emphasisSlots": [
+          "lead-tile",
+          "top-ranked-row"
+        ],
+        "avoid": [
+          "all rows with equal visual weight",
+          "long text without a secondary line break"
+        ]
       }
     }
   ],
   "chartDiagramFamilies": [
     {
       "id": "arc-ring-chart",
-      "inspiredBy": ["arc diagrams", "circular chart emphasis", "embossed arc treatments"],
-      "bestFor": ["ratio", "progress", "part-to-whole", "single highlighted segment"],
+      "inspiredBy": [
+        "arc diagrams",
+        "circular chart emphasis",
+        "embossed arc treatments"
+      ],
+      "bestFor": [
+        "ratio",
+        "progress",
+        "part-to-whole",
+        "single highlighted segment"
+      ],
       "requiresImage": false,
       "textPolicy": {
         "idealLabelChars": 28,
@@ -188,8 +385,16 @@
     },
     {
       "id": "gauge-dial-chart",
-      "inspiredBy": ["dashboard gauge", "speedometer-like concept chart"],
-      "bestFor": ["score", "risk", "readiness", "range status"],
+      "inspiredBy": [
+        "dashboard gauge",
+        "speedometer-like concept chart"
+      ],
+      "bestFor": [
+        "score",
+        "risk",
+        "readiness",
+        "range status"
+      ],
       "requiresImage": false,
       "textPolicy": {
         "idealLabelChars": 22,
@@ -203,8 +408,16 @@
     },
     {
       "id": "line-graph-background",
-      "inspiredBy": ["line chart used as background", "cover-style chart backdrop"],
-      "bestFor": ["trend", "forecast", "before-after", "time-series context"],
+      "inspiredBy": [
+        "line chart used as background",
+        "cover-style chart backdrop"
+      ],
+      "bestFor": [
+        "trend",
+        "forecast",
+        "before-after",
+        "time-series context"
+      ],
       "requiresImage": false,
       "textPolicy": {
         "idealLabelChars": 64,
@@ -216,8 +429,15 @@
     },
     {
       "id": "connected-chart-strip",
-      "inspiredBy": ["connected charts", "small multiples joined into one story"],
-      "bestFor": ["multi-stage metrics", "pipeline scores", "comparative trend"],
+      "inspiredBy": [
+        "connected charts",
+        "small multiples joined into one story"
+      ],
+      "bestFor": [
+        "multi-stage metrics",
+        "pipeline scores",
+        "comparative trend"
+      ],
       "requiresImage": false,
       "textPolicy": {
         "idealLabelChars": 40,
@@ -231,8 +451,17 @@
     },
     {
       "id": "target-ring-frame",
-      "inspiredBy": ["target frame", "circular focus frame", "highlighted ring"],
-      "bestFor": ["goal", "accuracy", "focus", "benchmark"],
+      "inspiredBy": [
+        "target frame",
+        "circular focus frame",
+        "highlighted ring"
+      ],
+      "bestFor": [
+        "goal",
+        "accuracy",
+        "focus",
+        "benchmark"
+      ],
       "requiresImage": false,
       "textPolicy": {
         "idealLabelChars": 32,
@@ -244,8 +473,17 @@
     },
     {
       "id": "pictorial-metaphor-chart",
-      "inspiredBy": ["paint roller chart", "paint brush circular graph", "object metaphor chart", "speech bubble chart"],
-      "bestFor": ["friendly explanation", "theme-specific chart", "image-supported slide"],
+      "inspiredBy": [
+        "paint roller chart",
+        "paint brush circular graph",
+        "object metaphor chart",
+        "speech bubble chart"
+      ],
+      "bestFor": [
+        "friendly explanation",
+        "theme-specific chart",
+        "image-supported slide"
+      ],
       "requiresImage": true,
       "textPolicy": {
         "idealLabelChars": 36,
@@ -257,76 +495,543 @@
     }
   ],
   "observedReferenceAnalysis": {
-    "source": "PPT BIZCAM public category pages and downloadable PPTX samples",
-    "categoryIdsSampled": [2, 3, 7, 9, 10, 11, 12, 14, 19, 21, 30, 37, 39, 67],
-    "pptxAnalyzed": 32,
-    "slidesAnalyzed": 314,
+    "source": "PPT BIZCAM public post pages and downloadable PPT samples",
+    "startPost": 11677,
+    "downloadedPptFiles": 30,
+    "decksAnalyzed": 30,
+    "slidesAnalyzed": 294,
+    "renderedPngSlides": 588,
     "aggregateObjects": {
-      "shapes": 3065,
-      "textFrames": 2282,
-      "tables": 38,
-      "charts": 14,
-      "pictures": 31
+      "shapes": 2856,
+      "shapeType:6": 539,
+      "shapeType:5": 224,
+      "textFrames": 2098,
+      "shapeType:17": 228,
+      "shapeType:1": 1646,
+      "shapeType:9": 132,
+      "shapeType:13": 31,
+      "pictures": 31,
+      "shapeType:19": 37,
+      "tables": 37,
+      "shapeType:3": 13,
+      "charts": 13,
+      "shapeType:unknown": 6
     },
-    "methodNote": "The samples are used only to derive reusable design-method vocabulary and structural statistics. Source assets are not redistributed or copied into MDPR output."
+    "methodNote": "Original PPT files are kept only in .cache/pptbizcam for local structural analysis. MDPR stores derived object vocabulary and rules, not copied assets or layouts."
   },
   "referenceDerivedElementFamilies": [
     {
       "id": "simple-shape-system",
       "observedSignal": "Most sampled slides rely on many editable auto-shapes and text frames rather than large raster compositions.",
-      "ruleUse": ["section label", "support panel", "number badge", "thin accent rule"],
+      "ruleUse": [
+        "section label",
+        "support panel",
+        "number badge",
+        "thin accent rule"
+      ],
       "coherenceGuard": "Prefer one shape grammar per slide: consistent corner radius, border weight, and accent side. Do not add a shape unless it encodes grouping, ordering, evidence, or emphasis."
     },
     {
       "id": "table-grid-system",
       "observedSignal": "Tables appear as formal row/column grammar, not as decorative cards.",
-      "ruleUse": ["comparison", "risk matrix", "requirements checklist", "validation summary"],
+      "ruleUse": [
+        "comparison",
+        "risk matrix",
+        "requirements checklist",
+        "validation summary"
+      ],
       "coherenceGuard": "Header row owns the strongest fill; first column may be bold as row labels; numeric columns align right; body rows use only subtle banding and never multiple unrelated accent colors."
     },
     {
       "id": "small-icon-marker",
       "observedSignal": "Icons work best as local semantic markers or small pictorial cues, not as filler for unused white space.",
-      "ruleUse": ["text-only support", "row marker", "validation status", "section cue"],
+      "ruleUse": [
+        "text-only support",
+        "row marker",
+        "validation status",
+        "section cue"
+      ],
       "coherenceGuard": "Icon size must stay below nearby title/body hierarchy, use monotone fill, and never occupy a large empty card just to balance composition."
     },
     {
       "id": "pictorial-metaphor-anchor",
       "observedSignal": "Human/object metaphors are effective when the image is the slide concept, but risky as generic decoration.",
-      "ruleUse": ["image-provided metaphor", "cover concept", "single proof metaphor"],
+      "ruleUse": [
+        "image-provided metaphor",
+        "cover concept",
+        "single proof metaphor"
+      ],
       "coherenceGuard": "Use only when source content or user-provided image justifies the metaphor; keep labels anchored to the object and avoid invented brand-like icons."
     },
     {
       "id": "chart-as-proof-object",
       "observedSignal": "Charts are fewer than shapes/text frames and should carry a specific proof point.",
-      "ruleUse": ["native chart", "arc/ring chart", "gauge", "connected strip", "trend backdrop"],
+      "ruleUse": [
+        "native chart",
+        "arc/ring chart",
+        "gauge",
+        "connected strip",
+        "trend backdrop"
+      ],
       "coherenceGuard": "Use one dominant chart family per slide; direct labels should attach to marks; background charts must remain lower contrast than foreground claims."
+    }
+  ],
+  "cardDecorationStyles": [
+    {
+      "id": "left-accent-rail",
+      "bestFor": [
+        "plain-list",
+        "medium-text"
+      ],
+      "ruleUse": [
+        "single vertical rail",
+        "aligned title/body start"
+      ],
+      "coherenceGuard": "Rail color uses accent1 and all sibling cards keep the same rail width."
+    },
+    {
+      "id": "top-hairline-rule",
+      "bestFor": [
+        "short-list",
+        "low-importance"
+      ],
+      "ruleUse": [
+        "thin top rule",
+        "quiet surface"
+      ],
+      "coherenceGuard": "Rule weight stays below text stroke weight and never becomes a banner."
+    },
+    {
+      "id": "number-tab",
+      "bestFor": [
+        "sequence",
+        "ordered-list"
+      ],
+      "ruleUse": [
+        "small number tab",
+        "baseline-aligned title"
+      ],
+      "coherenceGuard": "All tabs share size and use brightness sequence, not random hues."
+    },
+    {
+      "id": "corner-chip",
+      "bestFor": [
+        "importance-4",
+        "short-label"
+      ],
+      "ruleUse": [
+        "compact corner chip",
+        "one label"
+      ],
+      "coherenceGuard": "Chip never overlaps the text safe area."
+    },
+    {
+      "id": "bracket-callout",
+      "bestFor": [
+        "proof",
+        "constraint"
+      ],
+      "ruleUse": [
+        "thin bracket",
+        "bold label",
+        "indented description"
+      ],
+      "coherenceGuard": "Bracket height matches the text block, not the full card."
+    },
+    {
+      "id": "dot-marker-row",
+      "bestFor": [
+        "plain-list",
+        "low-density"
+      ],
+      "ruleUse": [
+        "small dot",
+        "body text"
+      ],
+      "coherenceGuard": "Dot center aligns to the first text line midpoint."
+    },
+    {
+      "id": "split-tone-row",
+      "bestFor": [
+        "comparison",
+        "two-part-item"
+      ],
+      "ruleUse": [
+        "narrow tinted label zone",
+        "body zone"
+      ],
+      "coherenceGuard": "Tint comes from sequence colors and remains lower contrast than foreground text."
+    },
+    {
+      "id": "proof-chip-inline",
+      "bestFor": [
+        "validation",
+        "key-number"
+      ],
+      "ruleUse": [
+        "small proof chip",
+        "metric text"
+      ],
+      "coherenceGuard": "Only one proof chip per local group may use contrast color."
+    },
+    {
+      "id": "thin-outline-card",
+      "bestFor": [
+        "dense-list",
+        "table-adjacent"
+      ],
+      "ruleUse": [
+        "subtle outline",
+        "no fill change"
+      ],
+      "coherenceGuard": "Outline is surfaceLine unless the card is selected as lead."
+    },
+    {
+      "id": "bottom-meter",
+      "bestFor": [
+        "progress",
+        "score"
+      ],
+      "ruleUse": [
+        "bottom progress meter",
+        "short label"
+      ],
+      "coherenceGuard": "Meter length maps to value; do not use it as decoration without data."
+    },
+    {
+      "id": "side-notch",
+      "bestFor": [
+        "important-item",
+        "constraint"
+      ],
+      "ruleUse": [
+        "small side notch",
+        "aligned text"
+      ],
+      "coherenceGuard": "Notch width remains constant across siblings."
+    },
+    {
+      "id": "floating-label-pin",
+      "bestFor": [
+        "image-card",
+        "photo-present"
+      ],
+      "ruleUse": [
+        "small label pin over image edge"
+      ],
+      "coherenceGuard": "Pin sits inside image safe area and keeps text readable."
+    },
+    {
+      "id": "caption-underlay",
+      "bestFor": [
+        "photo-present",
+        "long-caption"
+      ],
+      "ruleUse": [
+        "caption band",
+        "single line label"
+      ],
+      "coherenceGuard": "Caption band opacity supports readability without hiding the image subject."
+    },
+    {
+      "id": "rank-ribbon",
+      "bestFor": [
+        "ranking",
+        "key-number"
+      ],
+      "ruleUse": [
+        "small rank ribbon",
+        "large number"
+      ],
+      "coherenceGuard": "Ribbon height is smaller than the number height."
+    },
+    {
+      "id": "micro-icon-marker",
+      "bestFor": [
+        "text-only",
+        "semantic-cue"
+      ],
+      "ruleUse": [
+        "one monotone icon",
+        "left gutter"
+      ],
+      "coherenceGuard": "Icon stays smaller than body line-height and never fills empty space."
+    },
+    {
+      "id": "double-rule-header",
+      "bestFor": [
+        "sectioned-list",
+        "medium-density"
+      ],
+      "ruleUse": [
+        "two thin header rules",
+        "title label"
+      ],
+      "coherenceGuard": "Rules share color and differ only by opacity."
+    },
+    {
+      "id": "soft-shadow-lift",
+      "bestFor": [
+        "lead-card",
+        "low-density"
+      ],
+      "ruleUse": [
+        "very shallow shadow",
+        "plain surface"
+      ],
+      "coherenceGuard": "Use one shadow depth per slide and avoid nested cards."
+    },
+    {
+      "id": "inset-label-bar",
+      "bestFor": [
+        "category-list",
+        "comparison"
+      ],
+      "ruleUse": [
+        "inset bar",
+        "category label"
+      ],
+      "coherenceGuard": "Bar width is content-driven and aligned across cards."
+    },
+    {
+      "id": "vertical-step-rail",
+      "bestFor": [
+        "sequence",
+        "long-text"
+      ],
+      "ruleUse": [
+        "vertical rail",
+        "node dot",
+        "wrapped text"
+      ],
+      "coherenceGuard": "Same-role nodes use one connector color."
+    },
+    {
+      "id": "horizontal-step-rail",
+      "bestFor": [
+        "sequence",
+        "short-text"
+      ],
+      "ruleUse": [
+        "horizontal rail",
+        "number nodes"
+      ],
+      "coherenceGuard": "Node centers align on one baseline."
+    },
+    {
+      "id": "paired-contrast-edge",
+      "bestFor": [
+        "before-after",
+        "comparison"
+      ],
+      "ruleUse": [
+        "two edge colors",
+        "split label"
+      ],
+      "coherenceGuard": "Use complementary colors only when the content is actually opposing."
+    },
+    {
+      "id": "quote-rule-card",
+      "bestFor": [
+        "quote",
+        "takeaway"
+      ],
+      "ruleUse": [
+        "left quote rule",
+        "italic-safe body"
+      ],
+      "coherenceGuard": "Italic can apply to quote body only; labels remain upright."
+    },
+    {
+      "id": "metric-lead-card",
+      "bestFor": [
+        "key-number",
+        "importance-5"
+      ],
+      "ruleUse": [
+        "large number",
+        "small unit",
+        "caption"
+      ],
+      "coherenceGuard": "Number uses display scale; caption stays body or caption scale."
+    },
+    {
+      "id": "checklist-grid-card",
+      "bestFor": [
+        "checklist",
+        "many-short-items"
+      ],
+      "ruleUse": [
+        "small check marker",
+        "two-column grid"
+      ],
+      "coherenceGuard": "Markers are monotone or accent1 only."
+    },
+    {
+      "id": "constraint-stack-card",
+      "bestFor": [
+        "constraint",
+        "risk"
+      ],
+      "ruleUse": [
+        "bold label line",
+        "indented description"
+      ],
+      "coherenceGuard": "Label font size is greater than or equal to description font size."
+    },
+    {
+      "id": "label-overline-card",
+      "bestFor": [
+        "category",
+        "short-title"
+      ],
+      "ruleUse": [
+        "small overline",
+        "title",
+        "body"
+      ],
+      "coherenceGuard": "Overline is uppercase only when under 18 characters."
+    },
+    {
+      "id": "subtle-band-card",
+      "bestFor": [
+        "medium-list",
+        "non-lead"
+      ],
+      "ruleUse": [
+        "background band",
+        "text group"
+      ],
+      "coherenceGuard": "Band uses surface tint and never competes with lead accent."
+    },
+    {
+      "id": "arc-corner-emphasis",
+      "bestFor": [
+        "ratio",
+        "progress"
+      ],
+      "ruleUse": [
+        "small arc corner",
+        "label"
+      ],
+      "coherenceGuard": "Arc maps to progress or status and uses actual arc geometry in PPTX."
+    },
+    {
+      "id": "target-ring-badge",
+      "bestFor": [
+        "goal",
+        "benchmark"
+      ],
+      "ruleUse": [
+        "small ring badge",
+        "metric"
+      ],
+      "coherenceGuard": "Ring thickness stays proportional and does not become a decorative blob."
+    },
+    {
+      "id": "image-sidecar-card",
+      "bestFor": [
+        "photo-present",
+        "medium-text"
+      ],
+      "ruleUse": [
+        "small image sidecar",
+        "text block"
+      ],
+      "coherenceGuard": "Image width is reserved before text fit so text cannot overlap it."
+    },
+    {
+      "id": "table-summary-card",
+      "bestFor": [
+        "table-adjacent",
+        "summary"
+      ],
+      "ruleUse": [
+        "header label",
+        "two compact facts"
+      ],
+      "coherenceGuard": "Uses table theme colors and aligns to table column rhythm."
+    },
+    {
+      "id": "connector-dot-card",
+      "bestFor": [
+        "flow",
+        "dependency"
+      ],
+      "ruleUse": [
+        "edge dot",
+        "connector anchor"
+      ],
+      "coherenceGuard": "Same-role connectors share arrow style and color unless flow meaning changes."
+    },
+    {
+      "id": "plain-safe-card",
+      "bestFor": [
+        "high-density",
+        "long-text"
+      ],
+      "ruleUse": [
+        "minimal padding",
+        "no extra ornament"
+      ],
+      "coherenceGuard": "Choose this when decoration would reduce readability or force overflow."
     }
   ],
   "alignmentLayouts": [
     {
       "id": "center-focus-radial",
-      "bestFor": ["cycle-loop", "target-ring-frame", "arc-ring-chart"],
+      "bestFor": [
+        "cycle-loop",
+        "target-ring-frame",
+        "arc-ring-chart"
+      ],
       "rule": "primary value or concept sits at center; labels align to radial tangent starts with equal safe padding."
     },
     {
       "id": "left-story-right-proof",
-      "bestFor": ["line-graph-background", "ranked-stack", "pictorial-metaphor-chart"],
+      "bestFor": [
+        "line-graph-background",
+        "ranked-stack",
+        "pictorial-metaphor-chart"
+      ],
       "rule": "long text or explanation stays left; proof, chart, or image anchor stays right with one contrast callout."
     },
     {
       "id": "horizontal-small-multiples",
-      "bestFor": ["connected-chart-strip", "ordered-rail"],
+      "bestFor": [
+        "connected-chart-strip",
+        "ordered-rail"
+      ],
       "rule": "same-role objects share width, height, baseline, connector color, and arrow style."
     },
     {
       "id": "quadrant-fold",
-      "bestFor": ["SWOT", "four-category comparison", "matrix"],
+      "bestFor": [
+        "SWOT",
+        "four-category comparison",
+        "matrix"
+      ],
       "rule": "four groups use equal geometry; emphasis is shown by stroke, tab, or lead text, not by resizing one quadrant."
     }
   ],
   "selectionPolicy": {
-    "primaryInputs": ["slide.intent", "element.relation", "element.importance", "contentMetrics.textChars", "contentMetrics.itemCount", "contentMetrics.hasChart", "contentMetrics.hasImage", "contentMetrics.needsImage", "contentMetrics.textOnly", "contentMetrics.objectVariety"],
-    "fallbackOrder": ["ordered-rail", "ranked-stack", "cycle-loop"],
+    "primaryInputs": [
+      "slide.intent",
+      "element.relation",
+      "element.importance",
+      "contentMetrics.textChars",
+      "contentMetrics.itemCount",
+      "contentMetrics.hasChart",
+      "contentMetrics.hasImage",
+      "contentMetrics.needsImage",
+      "contentMetrics.textOnly",
+      "contentMetrics.objectVariety"
+    ],
+    "fallbackOrder": [
+      "ordered-rail",
+      "ranked-stack",
+      "cycle-loop"
+    ],
     "densityRules": [
       "If average textChars is above the ideal maximum, prefer ranked-stack over cycle-loop.",
       "If relation is sequence or process and item count is seven or fewer, prefer ordered-rail.",
@@ -339,8 +1044,1054 @@
     ]
   },
   "backgroundPolicy": {
-    "removeWhen": ["large decorative container does not encode hierarchy", "surface duplicates a visible group panel"],
-    "allowedWhen": ["safe area reference", "subtle editorial texture", "export contrast support"],
-    "textureSeeds": ["thin alignment guide", "soft flow trace", "low-opacity ruled line"]
+    "removeWhen": [
+      "large decorative container does not encode hierarchy",
+      "surface duplicates a visible group panel"
+    ],
+    "allowedWhen": [
+      "safe area reference",
+      "subtle editorial texture",
+      "export contrast support"
+    ],
+    "textureSeeds": [
+      "thin alignment guide",
+      "soft flow trace",
+      "low-opacity ruled line"
+    ]
+  },
+  "pptbizcamDerivedObjectPatterns": [
+    {
+      "id": "accent-rail-card",
+      "family": "card",
+      "bestFor": [
+        "plain-list",
+        "medium-text"
+      ],
+      "structure": [
+        "vertical rail",
+        "title/body block"
+      ],
+      "selection": {
+        "hasImage": false,
+        "textCharsMax": 180,
+        "importanceMax": 3
+      },
+      "coherenceGuard": "Use one rail width and one accent role across sibling cards."
+    },
+    {
+      "id": "top-rule-card",
+      "family": "card",
+      "bestFor": [
+        "short-list",
+        "low-importance"
+      ],
+      "structure": [
+        "hairline rule",
+        "quiet surface"
+      ],
+      "selection": {
+        "density": "low",
+        "importanceMax": 2
+      },
+      "coherenceGuard": "Rule weight stays subordinate to title text."
+    },
+    {
+      "id": "number-tab-card",
+      "family": "card",
+      "bestFor": [
+        "sequence",
+        "ordered-list"
+      ],
+      "structure": [
+        "small tab",
+        "number",
+        "aligned title"
+      ],
+      "selection": {
+        "relation": "sequence",
+        "itemCountMax": 7
+      },
+      "coherenceGuard": "Tabs share size and use brightness sequence."
+    },
+    {
+      "id": "corner-chip-card",
+      "family": "card",
+      "bestFor": [
+        "short-label",
+        "importance-4"
+      ],
+      "structure": [
+        "corner chip",
+        "compact label"
+      ],
+      "selection": {
+        "textCharsMax": 80,
+        "importanceMin": 4
+      },
+      "coherenceGuard": "Chip never enters the text safe area."
+    },
+    {
+      "id": "bracket-note-card",
+      "family": "card",
+      "bestFor": [
+        "constraint",
+        "proof"
+      ],
+      "structure": [
+        "thin bracket",
+        "label",
+        "indented body"
+      ],
+      "selection": {
+        "relation": [
+          "constraint",
+          "proof"
+        ]
+      },
+      "coherenceGuard": "Bracket height follows text block height, not full card height."
+    },
+    {
+      "id": "dot-marker-row",
+      "family": "list",
+      "bestFor": [
+        "plain-list",
+        "semantic-cue"
+      ],
+      "structure": [
+        "small dot",
+        "first-line alignment"
+      ],
+      "selection": {
+        "textOnly": true,
+        "itemCountMin": 3
+      },
+      "coherenceGuard": "Dot center aligns to the first text line midpoint."
+    },
+    {
+      "id": "split-tone-row",
+      "family": "list",
+      "bestFor": [
+        "comparison",
+        "two-part-item"
+      ],
+      "structure": [
+        "label zone",
+        "body zone"
+      ],
+      "selection": {
+        "relation": "comparison"
+      },
+      "coherenceGuard": "Tint is lower contrast than text and consistent across rows."
+    },
+    {
+      "id": "proof-chip-inline",
+      "family": "callout",
+      "bestFor": [
+        "validation",
+        "key-number"
+      ],
+      "structure": [
+        "small chip",
+        "metric text"
+      ],
+      "selection": {
+        "hasKeyNumber": true,
+        "importanceMin": 4
+      },
+      "coherenceGuard": "Only one chip in a local group may use contrast color."
+    },
+    {
+      "id": "thin-outline-card",
+      "family": "card",
+      "bestFor": [
+        "dense-list",
+        "table-adjacent"
+      ],
+      "structure": [
+        "outline",
+        "plain surface"
+      ],
+      "selection": {
+        "density": "high"
+      },
+      "coherenceGuard": "Use surface-line stroke unless selected as the lead item."
+    },
+    {
+      "id": "bottom-meter-card",
+      "family": "metric",
+      "bestFor": [
+        "progress",
+        "score"
+      ],
+      "structure": [
+        "bottom meter",
+        "short label"
+      ],
+      "selection": {
+        "hasValue": true,
+        "relation": "progress"
+      },
+      "coherenceGuard": "Meter length must map to data value."
+    },
+    {
+      "id": "side-notch-card",
+      "family": "card",
+      "bestFor": [
+        "important-item",
+        "constraint"
+      ],
+      "structure": [
+        "side notch",
+        "aligned text"
+      ],
+      "selection": {
+        "importanceMin": 4
+      },
+      "coherenceGuard": "Notch width remains fixed across siblings."
+    },
+    {
+      "id": "floating-label-pin",
+      "family": "image",
+      "bestFor": [
+        "image-card",
+        "photo-present"
+      ],
+      "structure": [
+        "small pin",
+        "image edge"
+      ],
+      "selection": {
+        "hasImage": true,
+        "textCharsMax": 60
+      },
+      "coherenceGuard": "Pin stays inside image safe area with readable contrast."
+    },
+    {
+      "id": "caption-underlay",
+      "family": "image",
+      "bestFor": [
+        "photo-present",
+        "long-caption"
+      ],
+      "structure": [
+        "caption band",
+        "single line label"
+      ],
+      "selection": {
+        "hasImage": true,
+        "textCharsMin": 60
+      },
+      "coherenceGuard": "Underlay supports readability without hiding the subject."
+    },
+    {
+      "id": "rank-ribbon-card",
+      "family": "ranking",
+      "bestFor": [
+        "ranking",
+        "key-number"
+      ],
+      "structure": [
+        "rank ribbon",
+        "large number"
+      ],
+      "selection": {
+        "relation": "ranking",
+        "hasKeyNumber": true
+      },
+      "coherenceGuard": "Ribbon height is smaller than number height."
+    },
+    {
+      "id": "micro-icon-marker",
+      "family": "icon",
+      "bestFor": [
+        "text-only",
+        "semantic-cue"
+      ],
+      "structure": [
+        "one monotone icon",
+        "left gutter"
+      ],
+      "selection": {
+        "textOnly": true,
+        "density": "medium"
+      },
+      "coherenceGuard": "Icon stays smaller than body line-height."
+    },
+    {
+      "id": "double-rule-header",
+      "family": "header",
+      "bestFor": [
+        "sectioned-list",
+        "medium-density"
+      ],
+      "structure": [
+        "two rules",
+        "header label"
+      ],
+      "selection": {
+        "relation": "category"
+      },
+      "coherenceGuard": "Rules share color and differ only by opacity."
+    },
+    {
+      "id": "soft-shadow-lift",
+      "family": "surface",
+      "bestFor": [
+        "lead-card",
+        "low-density"
+      ],
+      "structure": [
+        "shallow shadow",
+        "plain surface"
+      ],
+      "selection": {
+        "importanceMin": 5,
+        "density": "low"
+      },
+      "coherenceGuard": "Use one shadow depth per slide."
+    },
+    {
+      "id": "inset-label-bar",
+      "family": "label",
+      "bestFor": [
+        "category-list",
+        "comparison"
+      ],
+      "structure": [
+        "inset bar",
+        "category label"
+      ],
+      "selection": {
+        "relation": [
+          "category",
+          "comparison"
+        ]
+      },
+      "coherenceGuard": "Bar widths align across peer cards."
+    },
+    {
+      "id": "vertical-step-rail",
+      "family": "diagram",
+      "bestFor": [
+        "sequence",
+        "long-text"
+      ],
+      "structure": [
+        "vertical rail",
+        "node dot",
+        "wrapped text"
+      ],
+      "selection": {
+        "relation": "sequence",
+        "textCharsMin": 120
+      },
+      "coherenceGuard": "Same-role nodes use one connector color."
+    },
+    {
+      "id": "horizontal-step-rail",
+      "family": "diagram",
+      "bestFor": [
+        "sequence",
+        "short-text"
+      ],
+      "structure": [
+        "horizontal rail",
+        "number nodes"
+      ],
+      "selection": {
+        "relation": "sequence",
+        "textCharsMax": 120
+      },
+      "coherenceGuard": "Node centers align on one baseline."
+    },
+    {
+      "id": "paired-contrast-edge",
+      "family": "comparison",
+      "bestFor": [
+        "before-after",
+        "opposition"
+      ],
+      "structure": [
+        "two edge colors",
+        "split label"
+      ],
+      "selection": {
+        "relation": "opposition"
+      },
+      "coherenceGuard": "Use complementary colors only for true oppositions."
+    },
+    {
+      "id": "quote-rule-card",
+      "family": "quote",
+      "bestFor": [
+        "quote",
+        "takeaway"
+      ],
+      "structure": [
+        "left quote rule",
+        "body"
+      ],
+      "selection": {
+        "relation": "quote"
+      },
+      "coherenceGuard": "Italic applies only to quote body; labels remain upright."
+    },
+    {
+      "id": "metric-lead-card",
+      "family": "metric",
+      "bestFor": [
+        "key-number",
+        "importance-5"
+      ],
+      "structure": [
+        "large number",
+        "unit",
+        "caption"
+      ],
+      "selection": {
+        "hasKeyNumber": true,
+        "importanceMin": 5
+      },
+      "coherenceGuard": "Number uses display scale; caption stays body/caption scale."
+    },
+    {
+      "id": "checklist-grid-card",
+      "family": "table",
+      "bestFor": [
+        "checklist",
+        "many-short-items"
+      ],
+      "structure": [
+        "check marker",
+        "two-column grid"
+      ],
+      "selection": {
+        "relation": "checklist",
+        "itemCountMin": 6
+      },
+      "coherenceGuard": "Markers are monotone or accent1 only."
+    },
+    {
+      "id": "constraint-stack-card",
+      "family": "constraint",
+      "bestFor": [
+        "constraint",
+        "risk"
+      ],
+      "structure": [
+        "bold label",
+        "indented description"
+      ],
+      "selection": {
+        "relation": [
+          "constraint",
+          "risk"
+        ]
+      },
+      "coherenceGuard": "Label font size is not smaller than description."
+    },
+    {
+      "id": "label-overline-card",
+      "family": "label",
+      "bestFor": [
+        "category",
+        "short-title"
+      ],
+      "structure": [
+        "overline",
+        "title",
+        "body"
+      ],
+      "selection": {
+        "textCharsMax": 110
+      },
+      "coherenceGuard": "Uppercase overline only when under 18 characters."
+    },
+    {
+      "id": "subtle-band-card",
+      "family": "surface",
+      "bestFor": [
+        "medium-list",
+        "non-lead"
+      ],
+      "structure": [
+        "surface band",
+        "text group"
+      ],
+      "selection": {
+        "importanceMax": 3
+      },
+      "coherenceGuard": "Band uses surface tint and never competes with lead accent."
+    },
+    {
+      "id": "arc-corner-emphasis",
+      "family": "metric",
+      "bestFor": [
+        "ratio",
+        "progress"
+      ],
+      "structure": [
+        "arc corner",
+        "label"
+      ],
+      "selection": {
+        "hasValue": true,
+        "relation": "progress"
+      },
+      "coherenceGuard": "Arc must map to status or progress using real arc geometry."
+    },
+    {
+      "id": "target-ring-badge",
+      "family": "metric",
+      "bestFor": [
+        "goal",
+        "benchmark"
+      ],
+      "structure": [
+        "ring badge",
+        "metric"
+      ],
+      "selection": {
+        "relation": "benchmark"
+      },
+      "coherenceGuard": "Ring thickness remains proportional."
+    },
+    {
+      "id": "image-sidecar-card",
+      "family": "image",
+      "bestFor": [
+        "photo-present",
+        "medium-text"
+      ],
+      "structure": [
+        "reserved image sidecar",
+        "text block"
+      ],
+      "selection": {
+        "hasImage": true
+      },
+      "coherenceGuard": "Reserve image width before text fitting."
+    },
+    {
+      "id": "table-summary-card",
+      "family": "table",
+      "bestFor": [
+        "table-adjacent",
+        "summary"
+      ],
+      "structure": [
+        "header label",
+        "two compact facts"
+      ],
+      "selection": {
+        "hasTable": true
+      },
+      "coherenceGuard": "Align to table column rhythm."
+    },
+    {
+      "id": "connector-dot-card",
+      "family": "diagram",
+      "bestFor": [
+        "flow",
+        "dependency"
+      ],
+      "structure": [
+        "edge dot",
+        "connector anchor"
+      ],
+      "selection": {
+        "relation": [
+          "flow",
+          "dependency"
+        ]
+      },
+      "coherenceGuard": "Same-role connectors share arrow style and color."
+    },
+    {
+      "id": "plain-safe-card",
+      "family": "fallback",
+      "bestFor": [
+        "high-density",
+        "long-text"
+      ],
+      "structure": [
+        "minimal padding",
+        "no ornament"
+      ],
+      "selection": {
+        "density": "high",
+        "textCharsMin": 180
+      },
+      "coherenceGuard": "Use when decoration would reduce readability."
+    },
+    {
+      "id": "rounded-ticket-panel",
+      "family": "surface",
+      "bestFor": [
+        "process",
+        "section-cover"
+      ],
+      "structure": [
+        "large rounded ticket",
+        "punched corner cue"
+      ],
+      "selection": {
+        "density": "low"
+      },
+      "coherenceGuard": "Ticket affordance must encode grouping or sectioning."
+    },
+    {
+      "id": "paperclip-corner",
+      "family": "decoration",
+      "bestFor": [
+        "document",
+        "worksheet"
+      ],
+      "structure": [
+        "small clip mark",
+        "corner overlap"
+      ],
+      "selection": {
+        "intent": "document"
+      },
+      "coherenceGuard": "Clip is small and never covers text."
+    },
+    {
+      "id": "binder-hole-strip",
+      "family": "decoration",
+      "bestFor": [
+        "notebook",
+        "process-note"
+      ],
+      "structure": [
+        "hole strip",
+        "ruled background"
+      ],
+      "selection": {
+        "intent": "notebook"
+      },
+      "coherenceGuard": "Holes are decorative only when document metaphor is explicit."
+    },
+    {
+      "id": "tape-label",
+      "family": "label",
+      "bestFor": [
+        "temporary-note",
+        "annotation"
+      ],
+      "structure": [
+        "short tape surface",
+        "caption"
+      ],
+      "selection": {
+        "relation": "annotation"
+      },
+      "coherenceGuard": "Tape opacity stays low and text remains normal weight."
+    },
+    {
+      "id": "speech-bubble-callout",
+      "family": "callout",
+      "bestFor": [
+        "comment",
+        "dialogue"
+      ],
+      "structure": [
+        "bubble",
+        "tail",
+        "short text"
+      ],
+      "selection": {
+        "relation": "comment"
+      },
+      "coherenceGuard": "Tail points to the referenced object."
+    },
+    {
+      "id": "diagonal-sash-label",
+      "family": "label",
+      "bestFor": [
+        "status",
+        "rank"
+      ],
+      "structure": [
+        "diagonal sash",
+        "short word"
+      ],
+      "selection": {
+        "textCharsMax": 24,
+        "importanceMin": 4
+      },
+      "coherenceGuard": "Sash cannot cross body copy."
+    },
+    {
+      "id": "pill-step-node",
+      "family": "diagram",
+      "bestFor": [
+        "process",
+        "short-steps"
+      ],
+      "structure": [
+        "pill node",
+        "short label"
+      ],
+      "selection": {
+        "relation": "sequence",
+        "textCharsMax": 72
+      },
+      "coherenceGuard": "All pills share height and baseline."
+    },
+    {
+      "id": "folded-corner-card",
+      "family": "card",
+      "bestFor": [
+        "document",
+        "summary"
+      ],
+      "structure": [
+        "fold mark",
+        "body"
+      ],
+      "selection": {
+        "intent": "document"
+      },
+      "coherenceGuard": "Fold is smaller than title cap height group."
+    },
+    {
+      "id": "stacked-paper-cards",
+      "family": "surface",
+      "bestFor": [
+        "multi-document",
+        "references"
+      ],
+      "structure": [
+        "offset sheets",
+        "front card"
+      ],
+      "selection": {
+        "relation": "collection"
+      },
+      "coherenceGuard": "Offsets are consistent and shallow."
+    },
+    {
+      "id": "overlap-lens-diagram",
+      "family": "diagram",
+      "bestFor": [
+        "overlap",
+        "intersection"
+      ],
+      "structure": [
+        "two translucent shapes",
+        "center label"
+      ],
+      "selection": {
+        "relation": "overlap"
+      },
+      "coherenceGuard": "Use only two or three sets; labels remain outside or centered."
+    },
+    {
+      "id": "axis-quadrant-map",
+      "family": "diagram",
+      "bestFor": [
+        "2x2",
+        "positioning"
+      ],
+      "structure": [
+        "cross axes",
+        "quadrant labels"
+      ],
+      "selection": {
+        "relation": "matrix"
+      },
+      "coherenceGuard": "Quadrants share geometry; emphasis uses stroke/tab."
+    },
+    {
+      "id": "ladder-step-diagram",
+      "family": "diagram",
+      "bestFor": [
+        "maturity",
+        "levels"
+      ],
+      "structure": [
+        "stepped blocks",
+        "ascending labels"
+      ],
+      "selection": {
+        "relation": "level"
+      },
+      "coherenceGuard": "Steps rise monotonically and labels keep one baseline offset."
+    },
+    {
+      "id": "loop-arrow-cycle",
+      "family": "diagram",
+      "bestFor": [
+        "cycle",
+        "iteration"
+      ],
+      "structure": [
+        "curved arrows",
+        "nodes"
+      ],
+      "selection": {
+        "relation": "cycle"
+      },
+      "coherenceGuard": "Arrow style stays constant around the loop."
+    },
+    {
+      "id": "center-hub-spokes",
+      "family": "diagram",
+      "bestFor": [
+        "hub",
+        "features"
+      ],
+      "structure": [
+        "center node",
+        "spokes",
+        "outer nodes"
+      ],
+      "selection": {
+        "relation": "hub"
+      },
+      "coherenceGuard": "Outer nodes use equal radius and do not cross connectors."
+    },
+    {
+      "id": "timeline-marker-strip",
+      "family": "diagram",
+      "bestFor": [
+        "timeline",
+        "milestones"
+      ],
+      "structure": [
+        "horizontal line",
+        "markers"
+      ],
+      "selection": {
+        "relation": "timeline"
+      },
+      "coherenceGuard": "Markers align to one line and labels alternate only when needed."
+    },
+    {
+      "id": "vertical-timeline-cards",
+      "family": "diagram",
+      "bestFor": [
+        "timeline",
+        "long labels"
+      ],
+      "structure": [
+        "vertical line",
+        "side cards"
+      ],
+      "selection": {
+        "relation": "timeline",
+        "textCharsMin": 120
+      },
+      "coherenceGuard": "Cards keep equal gutter from line."
+    },
+    {
+      "id": "stair-progress-meter",
+      "family": "metric",
+      "bestFor": [
+        "progress",
+        "maturity"
+      ],
+      "structure": [
+        "step blocks",
+        "current highlight"
+      ],
+      "selection": {
+        "relation": "progress"
+      },
+      "coherenceGuard": "Highlight only one current step unless multiple selected states exist."
+    },
+    {
+      "id": "donut-label-ring",
+      "family": "chart",
+      "bestFor": [
+        "part-to-whole",
+        "ratio"
+      ],
+      "structure": [
+        "donut ring",
+        "outside labels"
+      ],
+      "selection": {
+        "hasValue": true,
+        "relation": "ratio"
+      },
+      "coherenceGuard": "Labels align to tangent starts and do not overlap ring."
+    },
+    {
+      "id": "gauge-score-card",
+      "family": "chart",
+      "bestFor": [
+        "score",
+        "readiness"
+      ],
+      "structure": [
+        "semi gauge",
+        "score",
+        "caption"
+      ],
+      "selection": {
+        "hasValue": true,
+        "relation": "score"
+      },
+      "coherenceGuard": "Needle/arc maps to value; caption stays secondary."
+    },
+    {
+      "id": "small-multiple-bars",
+      "family": "chart",
+      "bestFor": [
+        "comparison",
+        "metrics"
+      ],
+      "structure": [
+        "equal mini bars",
+        "shared labels"
+      ],
+      "selection": {
+        "hasChart": true,
+        "itemCountMin": 3
+      },
+      "coherenceGuard": "All bars share scale and baseline."
+    },
+    {
+      "id": "trend-line-backdrop",
+      "family": "chart",
+      "bestFor": [
+        "trend",
+        "forecast"
+      ],
+      "structure": [
+        "low contrast line",
+        "foreground statement"
+      ],
+      "selection": {
+        "hasChart": true,
+        "relation": "trend"
+      },
+      "coherenceGuard": "Backdrop opacity stays below foreground text contrast."
+    },
+    {
+      "id": "pictorial-anchor-labels",
+      "family": "image",
+      "bestFor": [
+        "metaphor",
+        "provided-image"
+      ],
+      "structure": [
+        "image anchor",
+        "attached labels"
+      ],
+      "selection": {
+        "hasImage": true,
+        "needsImage": true
+      },
+      "coherenceGuard": "Labels attach to real image features, not invented decoration."
+    },
+    {
+      "id": "photo-window-mask",
+      "family": "image",
+      "bestFor": [
+        "photo-focus",
+        "product"
+      ],
+      "structure": [
+        "cropped window",
+        "caption"
+      ],
+      "selection": {
+        "hasImage": true
+      },
+      "coherenceGuard": "Use object-fit cover/contain according to subject inspection."
+    },
+    {
+      "id": "image-caption-split",
+      "family": "image",
+      "bestFor": [
+        "image-plus-explanation"
+      ],
+      "structure": [
+        "image region",
+        "caption rail"
+      ],
+      "selection": {
+        "hasImage": true,
+        "textCharsMin": 80
+      },
+      "coherenceGuard": "Caption rail never overlaps image subject."
+    },
+    {
+      "id": "tag-cloud-strip",
+      "family": "label",
+      "bestFor": [
+        "keywords",
+        "taxonomy"
+      ],
+      "structure": [
+        "small chips",
+        "wrap row"
+      ],
+      "selection": {
+        "relation": "keywords"
+      },
+      "coherenceGuard": "Chips wrap on grid; no random chip colors."
+    },
+    {
+      "id": "status-dot-table",
+      "family": "table",
+      "bestFor": [
+        "status-table",
+        "checklist"
+      ],
+      "structure": [
+        "dot status column",
+        "row labels"
+      ],
+      "selection": {
+        "hasTable": true,
+        "relation": "status"
+      },
+      "coherenceGuard": "Dots align to row midpoints and use limited semantic colors."
+    },
+    {
+      "id": "risk-heat-grid",
+      "family": "table",
+      "bestFor": [
+        "risk",
+        "matrix"
+      ],
+      "structure": [
+        "grid",
+        "severity tint"
+      ],
+      "selection": {
+        "relation": "risk",
+        "hasTable": true
+      },
+      "coherenceGuard": "Tint progression follows monochromatic or split-complementary rule."
+    }
+  ],
+  "pptbizcamRecursiveRulePolicy": {
+    "minimumDownloadedPptFiles": 30,
+    "minimumDerivedObjectPatterns": 50,
+    "analysisLoop": [
+      "scan numbered PPT BIZCAM post pages from the seed post id",
+      "download public PPT links to .cache only",
+      "render PPT slides to PNG through Microsoft PowerPoint",
+      "extract slide-object and PNG structure metrics",
+      "derive reusable object grammar and coherence guards",
+      "regenerate seed JSON without storing source PPT assets in git"
+    ],
+    "selectionInputs": [
+      "hasImage",
+      "hasTable",
+      "hasChart",
+      "hasKeyNumber",
+      "relation",
+      "importance",
+      "textChars",
+      "density",
+      "itemCount"
+    ],
+    "copyGuard": "Do not copy source slide layouts, images, or brand-like objects. Use only structural grammar: alignment, grouping, connector, surface, marker, chart, and text-fitting methods."
   }
 }

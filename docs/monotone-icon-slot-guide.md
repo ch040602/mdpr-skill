@@ -32,6 +32,8 @@ The renderer must not use untracked web icons or multicolor icon packs.
 - Keep the icon quiet: no gradients, multicolor fills, heavy shadow, or decorative container.
 - Keep the icon small. It is a semantic marker, not a large card used to fill empty space.
 - Align the icon center to the adjacent text block midpoint.
+- If the icon or an `a/b/c` marker is placed inside a circle or rounded badge, the glyph box must be horizontally and vertically centered inside that shape.
+- The badge center and adjacent text first-line center must share the same vertical coordinate.
 - Keep a gutter of at least one body line-height between icon and text.
 - The icon region is secondary; it must never replace title, body, evidence, or callout content.
 

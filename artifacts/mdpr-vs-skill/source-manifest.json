@@ -4,16 +4,16 @@
     {
       "path": "README.md",
       "title": "mdpresent",
-      "headingCount": 10,
+      "headingCount": 12,
       "headings": [
         "mdpresent",
         "Example PPT Slides",
+        "Runtime Pipeline",
         "Core Philosophy",
         "Pipeline",
         "Quick Usage",
         "Markdown Semantics",
-        "Design Presets",
-        "Implementation Priorities"
+        "Design Presets"
       ],
       "bullets": [
         "Korean README",
@@ -50,7 +50,7 @@
         "PPT templates provide only backgrounds and brand assets.",
         "Body layout is recalculated by the CLI."
       ],
-      "charCount": 6157
+      "charCount": 10521
     },
     {
       "path": "README.ko.md",
@@ -384,7 +384,7 @@
       "code": [
         "mdpresent init"
       ],
-      "charCount": 3948
+      "charCount": 4146
     },
     {
       "path": "docs/07-rendering-rules.md",
@@ -415,7 +415,7 @@
         "{ Presentation IR, Layout IR } → HTML",
         "{ Presentation IR, Layout IR } → PDF"
       ],
-      "charCount": 6204
+      "charCount": 7916
     },
     {
       "path": "docs/08-roadmap.md",
@@ -551,7 +551,7 @@
         "- minFontSize 위반",
         "- override target 미존재"
       ],
-      "charCount": 2892
+      "charCount": 3335
     },
     {
       "path": "docs/references.md",

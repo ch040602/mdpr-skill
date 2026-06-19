@@ -11,11 +11,22 @@ Reference entry points:
 
 Local structural report:
 
-- `artifacts/pptbizcam-analysis/pptbizcam-analysis.json`
-- visited posts: `120`
-- PPTX files analyzed: `32`
-- slides analyzed: `314`
-- aggregate objects: `3,065` shapes, `2,282` text frames, `38` tables, `14` charts, `31` pictures
+- `artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json`
+- downloaded PPT files: `30`
+- decks analyzed: `30`
+- slides analyzed structurally: `294`
+- PowerPoint-rendered PNG slides: `588`
+- PNG samples analyzed: `60`
+- aggregate objects: `2,856` shapes, `2,098` text frames, `37` tables, `13` charts, `31` pictures
+- contact sheet: `artifacts/pptbizcam-analysis/pptbizcam-downloaded-contact-sheet.png`
+
+Regenerate the pass:
+
+```bash
+npm run pptbizcam:rules
+```
+
+The original downloaded PPT files are cached under `.cache/pptbizcam` and are not source-controlled. Only derived structural rules and metrics are kept in the repo.
 
 ## Element Families
 
@@ -56,6 +67,8 @@ Icons are not a whitespace-filling device.
 - Render the icon as a small monotone marker, not a large card.
 - Do not use icon slots on chart, table, image, code, or already visually rich slides.
 - The icon must be subordinate to title/body hierarchy and should not compete with proof objects.
+- When a circle, rounded badge, alphabet marker, number marker, or icon is used like a bullet, the marker shape and the marker text/icon must share the same center point on both axes.
+- The adjacent text first-line midpoint must align to the marker center on the vertical axis; reserve a fixed gutter before measuring the text box.
 
 ## Rule-Based Diversity Roadmap
 
@@ -66,7 +79,34 @@ Accepted implementation families:
 - `chart-proof-object`: native bar charts plus editable `arc-ring`, `gauge`, and `connected-strip` variants in MDPR PPTX output.
 - `pictorial-metaphor-anchor`: only for provided or detected imagery.
 - `simple-shape-system`: deterministic section labels, rules, and proof callouts.
+- `pptbizcam-derived-object-patterns`: 60 reusable object/decorator seeds covering accent rails, tabs, brackets, chips, notches, image sidecars, metric lead cards, connector dots, paper/notebook metaphors, browser/window frames, speech callouts, timeline rails, hub/spoke diagrams, matrix layouts, chart proof objects, image-caption splits, status tables, and a plain-safe high-density fallback.
 
 Rejected pattern:
 
 - Large decorative icon cards added only to balance empty space. This breaks coherence and creates a template-like look.
+
+## Card Decoration Selection Inputs
+
+The seed catalog is selected by rulebase inputs rather than visual copying:
+
+- `hasImage`: enables image sidecar, caption underlay, and floating label pin styles.
+- `hasKeyNumber`: enables metric lead, rank ribbon, bottom meter, arc corner, and target-ring badge styles.
+- `importance`: reserves stronger treatments for importance 4 or 5.
+- `textChars`: keeps long text in plain-safe, vertical rail, side-notch, or image-sidecar forms.
+- `relation`: distinguishes plain list, sequence, ranking, comparison, proof, constraint, checklist, and flow cards.
+- `density`: prevents decoration from consuming space when readability is the primary risk.
+
+## Derived Object Pattern Families
+
+The recursive pass stores 60 object rules in `visual-diversification-seeds.json` under `pptbizcamDerivedObjectPatterns`. They are grouped as method vocabulary rather than copied slide templates:
+
+| Family | Example object rules | Selection signal |
+| --- | --- | --- |
+| Card/list decorators | `accent-rail-card`, `top-rule-card`, `number-tab-card`, `bracket-note-card`, `plain-safe-card` | relation, importance, text length, density |
+| Semantic markers | `dot-marker-row`, `micro-icon-marker`, `proof-chip-inline`, `status-dot-table` | text-only, status, proof, row labels |
+| Document metaphors | `rounded-ticket-panel`, `paperclip-corner`, `binder-hole-strip`, `folded-corner-card`, `stacked-paper-cards` | explicit document/notebook/workbook intent |
+| Diagram systems | `horizontal-step-rail`, `vertical-step-rail`, `loop-arrow-cycle`, `center-hub-spokes`, `axis-quadrant-map`, `timeline-marker-strip` | sequence, cycle, hub, matrix, timeline |
+| Chart proof objects | `donut-label-ring`, `gauge-score-card`, `small-multiple-bars`, `trend-line-backdrop`, `stair-progress-meter` | ratio, score, comparison, trend, progress |
+| Image-aware objects | `floating-label-pin`, `caption-underlay`, `image-sidecar-card`, `photo-window-mask`, `image-caption-split`, `pictorial-anchor-labels` | provided image, image caption, metaphor need |
+
+Selection rules must still prefer readability over decoration. High-density text, crowded tables, code, and already rich chart/image slides fall back to `plain-safe-card` or to the native object renderer rather than adding ornament.

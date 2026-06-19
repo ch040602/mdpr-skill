@@ -1018,15 +1018,15 @@
   },
   "elementCatalog": {
     "pptx": "artifacts\\intro-decks\\element-catalog\\deck.pptx",
-    "slideXmlCount": 27,
+    "slideXmlCount": 36,
     "nativeChartParts": 3,
-    "exportedPngCount": 27,
+    "exportedPngCount": 36,
     "contactSheet": {
       "path": "artifacts\\intro-decks\\element-catalog-contact-sheet.png",
-      "slides": 27,
+      "slides": 36,
       "size": [
         1280,
-        1442
+        1854
       ]
     },
     "pngChecks": [
@@ -1196,8 +1196,8 @@
           1600,
           900
         ],
-        "uniqueColors": 514,
-        "nonWhitePixels": 733761,
+        "uniqueColors": 614,
+        "nonWhitePixels": 733644,
         "hasContent": true
       },
       {
@@ -1236,8 +1236,8 @@
           1600,
           900
         ],
-        "uniqueColors": 251,
-        "nonWhitePixels": 465978,
+        "uniqueColors": 230,
+        "nonWhitePixels": 465890,
         "hasContent": true
       },
       {
@@ -1298,6 +1298,96 @@
         ],
         "uniqueColors": 126,
         "nonWhitePixels": 552062,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드28.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 223,
+        "nonWhitePixels": 673494,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드29.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 223,
+        "nonWhitePixels": 677702,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드30.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 222,
+        "nonWhitePixels": 484775,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드31.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 223,
+        "nonWhitePixels": 673561,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드32.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 67,
+        "nonWhitePixels": 68860,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드33.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 67,
+        "nonWhitePixels": 61942,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드34.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 223,
+        "nonWhitePixels": 673404,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드35.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 223,
+        "nonWhitePixels": 677502,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드36.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 222,
+        "nonWhitePixels": 484573,
         "hasContent": true
       }
     ]

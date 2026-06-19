@@ -11,7 +11,7 @@ This project already had several local sources related to infographic constructi
 
 The new infographic seed layer applies those pieces to teaser-grade page composition.
 
-PPT BIZCAM references were reviewed for design method vocabulary rather than copied assets. The latest structural pass sampled 32 public PPTX files across 14 category IDs and analyzed 314 slides. Relevant recurring methods include simple shape systems, table grid systems, small icon markers, arc/ring charts, line graphs used as background, gauge-like charts, connected chart strips, target-ring frames, pictorial metaphor charts, and equal-geometry quadrant layouts. See `docs/pptbizcam-pattern-taxonomy.md`.
+PPT BIZCAM references are reviewed for design method vocabulary rather than copied assets. The latest recursive pass scans numbered post pages from `https://pptbizcam.co.kr/?p=11677`, downloads 30 public PPT files into `.cache/pptbizcam`, renders 588 PNG slide images through Microsoft PowerPoint, analyzes 60 PNG samples, and derives 60 reusable object/decorator rules. Relevant recurring methods include simple shape systems, table grid systems, small icon markers, document/notebook metaphors, browser/window frames, arc/ring charts, line graphs used as background, gauge-like charts, connected chart strips, target-ring frames, pictorial metaphor charts, timelines, hub/spoke diagrams, and equal-geometry quadrant layouts. See `docs/pptbizcam-pattern-taxonomy.md`.
 
 ## Deterministic Inputs
 

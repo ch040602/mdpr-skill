@@ -97,6 +97,8 @@ REQUIRED_FILES = [
     "artifacts/ppt/powerpoint_render_compare.json",
     "scripts/create_pipeline_overview_asset.py",
     "scripts/create_infographic_seed_gallery.py",
+    "scripts/build_pptbizcam_object_rules.py",
+    "scripts/create_release_check_deck.py",
     "scripts/install_mdpr.py",
     "docs/mdpr-installation.md",
     "docs/mdpr-pandoc-integration.md",
@@ -118,46 +120,32 @@ REQUIRED_FILES = [
     "artifacts/mdpr-vs-skill/mdpr-source-corpus.md",
     "artifacts/mdpr-vs-skill/source-manifest.json",
     "artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json",
+    "artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json",
+    "artifacts/pptbizcam-analysis/pptbizcam-downloaded-contact-sheet.png",
+    "artifacts/release-check/mdpr-skill-release-check.md",
+    "artifacts/release-check/mdpr-skill-release-check.pptx",
+    "artifacts/release-check/mdpr-skill-release-check-report.json",
 ]
 
 REQUIRED_TEXT = {
     "README.md": [
-        "external-design-source",
         "https://github.com/ch040602/mdpr",
-        "design-components-rule-based",
-        "style-gallery",
-        "theme-gallery",
-        "PowerPoint render comparison",
-        "docs/assets/pipeline-overview.svg",
-        "docs/assets/pipeline-overview-layout.json",
-        "docs/assets/pipeline-overview.png",
-        "docs/assets/pipeline-overview.pptx",
-        "docs/assets/infographic-seed-gallery.png",
-        "design_components/",
-        "docs/component-showcase.html",
-        "design_components_showcase.pptx",
-        "mixed-object-stress",
-        "mixed-object-stress -> notion -> linear -> stripe -> toss",
-        "font size >= 8pt",
-        "visual diversification",
-        "proof-point-callout",
-        "teaser-grade",
-        "arc-ring charts",
-        "monotone-icon-aside",
-        "PowerPoint built-in icons",
-        "licensed free SVG",
+        "thin Codex skill companion",
+        "Difference from MDPR",
+        "Installation",
+        "npm install",
         "npm run install:mdpr",
+        "npm run check:mdpr",
         "npm run check:mdpr-pandoc",
-        "npm run compare:mdpr-skill",
+        "npm run validate",
+        ".cache/mdpr",
+        "artifacts/release-check/mdpr-skill-release-check.md",
+        "artifacts/release-check/mdpr-skill-release-check.pptx",
+        "artifacts/release-check/mdpr-skill-release-check-report.json",
+        "docs/assets/pipeline-overview.pptx",
+        "docs/assets/pipeline-overview.png",
         "artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx",
         "artifacts/mdpr-vs-skill/mdpr-skill-result.pptx",
-        ".cache/mdpr",
-        "--parser pandoc",
-        "docs/mdpr-pandoc-integration.md",
-        "Adobe Color Wheel",
-        "monochromatic",
-        "split-complementary",
-        "WCAG contrast-ratio",
     ],
     "docs/ppt-theme-color-guide.md": [
         "Adobe Color Wheel",
@@ -233,6 +221,8 @@ REQUIRED_TEXT = {
         "split-complementary",
         "triadic",
         "WCAG contrast ratio",
+        "pptbizcamDerivedObjectPatterns",
+        "pptbizcamRecursiveRulePolicy",
     ],
     "SOURCES.md": [
         "34e9fcf2d3da69355defad7afa5e50ff15ed8cb2",
@@ -314,11 +304,42 @@ def check_catalog_coverage() -> None:
             fail(f"variant catalog missing {variant}")
 
 
+def check_pptbizcam_recursive_rules() -> None:
+    seeds = json.loads(read("design_components/design-source-adapter/seeds/visual-diversification-seeds.json"))
+    patterns = seeds.get("pptbizcamDerivedObjectPatterns", [])
+    if len(patterns) < 50:
+        fail(f"expected at least 50 PPT BIZCAM-derived object patterns, found {len(patterns)}")
+    report = json.loads(read("artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json"))
+    if report.get("pptDownloaded", 0) < 30:
+        fail("expected at least 30 downloaded PPT files in PPT BIZCAM recursive report")
+    if report.get("pngSamplesAnalyzed", 0) < 30:
+        fail("expected at least 30 PNG samples analyzed in PPT BIZCAM recursive report")
+    if report.get("derivedObjectPatternCount", 0) < 50:
+        fail("expected at least 50 derived object patterns in PPT BIZCAM recursive report")
+
+
+def check_release_check_deck() -> None:
+    report = json.loads(read("artifacts/release-check/mdpr-skill-release-check-report.json"))
+    if not report.get("ok"):
+        fail("release check deck report is not ok")
+    pptx_validation = report.get("pptxValidation", {})
+    min_font = pptx_validation.get("minFontSizePt")
+    if min_font is None or float(min_font) < 14.0:
+        fail(f"release check deck font floor failed: {min_font}")
+    png_validation = report.get("pngValidation", [])
+    if not png_validation:
+        fail("release check deck has no PowerPoint PNG validation entries")
+    if not all(item.get("hasContent") for item in png_validation):
+        fail("release check deck has blank or unreadable PowerPoint PNG export")
+
+
 def main() -> None:
     check_required_files()
     check_json_files()
     check_required_text()
     check_catalog_coverage()
+    check_pptbizcam_recursive_rules()
+    check_release_check_deck()
     check_no_unchecked_boxes()
     print("mdpr-skill pack validation passed")
 

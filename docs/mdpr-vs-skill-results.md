@@ -6,6 +6,7 @@ This comparison uses Markdown files from the local MDPR checkout as a shared sou
 
 - MDPR baseline PPTX: `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
 - Current skill PPTX: `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
+- Skill PPTX from actual MDPR run: `artifacts/mdpr-vs-skill/mdpr-skill-from-actual-md-run.pptx`
 - Shared Markdown source: `artifacts/mdpr-vs-skill/mdpr-source-corpus.md`
 - Source manifest: `artifacts/mdpr-vs-skill/source-manifest.json`
 - Validation report: `artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json`
@@ -38,7 +39,7 @@ This output is useful for validating coverage, split behavior, renderer correctn
 
 ## What the Current Skill Produces
 
-The current skill does not replace MDPR. It starts after MDPR's semantic content boundary and demonstrates richer visual decisions:
+The current skill does not replace MDPR. It starts after MDPR's semantic content boundary and demonstrates richer visual decisions. The generated `mdpr-skill-from-actual-md-run.pptx` deck records the concrete MDPR CLI run first, then shows the skill-side result from the same Markdown corpus and MDPR run metrics:
 
 - deterministic recipe and variant framing;
 - source coverage cards;
@@ -59,4 +60,3 @@ The current run creates a 9-slide PPTX designed to explain the difference and sh
 | Main output | Baseline editable PPTX | Styled explanatory PPTX with richer visual variety |
 | Design choice | Theme/preset oriented | Rule-based recipes, variants, icon slots, infographic patterns |
 | Validation | Build/render viability | Render preview, object variety, font floor, coherence constraints |
-

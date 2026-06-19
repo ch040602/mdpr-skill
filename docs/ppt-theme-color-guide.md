@@ -38,3 +38,14 @@ Contrast accents are scarce. They are allowed for proof points, warnings, valida
 ## Implementation Contract
 
 `design_components/decoration/src/tokens/colorHarmony.ts` builds the harmony plan from the profile's `colorHarmony` axis and `PptThemeBinding`. The plan returns `ThemeColorRef` objects only, including optional `tint` and `shade`, so PPTX output stays editable and theme-bound.
+
+MDPR core also exposes `DesignTokens.paletteSeed` from the resolved preset. The seed records:
+
+- `sourceModel: adobe-color-wheel`
+- the active harmony rule
+- the base accent color
+- `sequence` colors for tint/base/shade brightness progression
+- `contrast` colors for proof, warning, validation, or editorial emphasis
+- `chart` colors that must match the generated PowerPoint theme accents
+
+Renderers should choose colors from these resolved slots only. Ordered depth, ranking, and progress use the `sequence` colors; deliberate emphasis uses `contrast` colors sparingly.

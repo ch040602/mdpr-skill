@@ -190,3 +190,45 @@ This long explanatory paragraph intentionally triggers the text-icon-aside layou
 | Proof callout | validation emphasis | contrast color used sparingly |
 | Theme colors | deck-level palette | accent1-accent6 registered in PPT |
 | Template asset | brand support | decorative only, body recalculated |
+
+## Card Decoration Styles A
+
+- left-accent-rail: plain lists with a stable vertical rail.
+- top-hairline-rule: quiet cards with a thin top rule.
+- number-tab: ordered cards with a compact number tab.
+- corner-chip: short high-importance labels.
+- bracket-callout: proof or constraint labels with an indented description.
+- dot-marker-row: plain list rows with a small centered dot.
+- split-tone-row: comparison rows with a restrained label zone.
+- proof-chip-inline: validation metric chip.
+- thin-outline-card: dense cards with only a surface outline.
+- bottom-meter: progress or score cards with data-bound meter.
+- side-notch: important cards with a compact side notch.
+
+## Card Decoration Styles B
+
+- floating-label-pin: image cards with a small readable pin.
+- caption-underlay: image cards with a caption band.
+- rank-ribbon: ranked metric cards.
+- micro-icon-marker: one quiet monotone semantic marker.
+- double-rule-header: sectioned lists with paired hairlines.
+- soft-shadow-lift: one lead card with shallow depth.
+- inset-label-bar: category cards with a compact bar.
+- vertical-step-rail: long-text sequence cards.
+- horizontal-step-rail: short-text sequence cards.
+- paired-contrast-edge: true before/after or opposing comparison.
+- quote-rule-card: quotation or takeaway cards.
+
+## Card Decoration Styles C
+
+- metric-lead-card: importance-five numeric lead.
+- checklist-grid-card: many short checklist items.
+- constraint-stack-card: bold label line plus indented description.
+- label-overline-card: category label over title/body.
+- subtle-band-card: medium density support band.
+- arc-corner-emphasis: small arc cue for ratio/progress.
+- target-ring-badge: goal or benchmark badge.
+- image-sidecar-card: small image beside text.
+- table-summary-card: table-adjacent summary.
+- connector-dot-card: flow/dependency anchor.
+- plain-safe-card: high-density text where decoration would hurt readability.

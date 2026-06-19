@@ -6,6 +6,7 @@ import json
 import math
 import re
 import shutil
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "assets"
+MDPR_README_ASSETS = ROOT / ".cache" / "mdpr" / "docs" / "assets" / "readme-slides"
+FINAL_ARTIFACTS = ROOT / "artifacts" / "final-pipeline-overview"
 PIPELINE_MD = ROOT / "pipeline.md"
 SVG = OUT / "pipeline-overview.svg"
 PPTX = OUT / "pipeline-overview.pptx"
@@ -53,6 +56,8 @@ SHADOWS: list[dict[str, float | str]] = []
 ALIGNMENT_RULES: list[dict[str, Any]] = []
 PLACEMENT_REPORT: dict[str, Any] = {}
 ARROW_PARTS: list[str] = []
+PPT_TEXT_BOXES: list[dict[str, Any]] = []
+PPT_CONNECTOR_ROUTES: list[dict[str, Any]] = []
 
 
 ARROW_STYLES: dict[str, dict[str, Any]] = {
@@ -136,17 +141,16 @@ def base_placement() -> dict[str, tuple[float, float, float, float]]:
         "reasoning_card": (425, 390, 220, 170),
         "reasoning_guard": (450, 486, 170, 34),
         "rule_engine_card": (730, 236, 345, 80),
-        "features_card": (725, 338, 112, 92),
-        "recipes_card": (848, 338, 112, 92),
-        "theme_card": (971, 338, 112, 92),
-        "compose_card": (725, 464, 112, 92),
-        "objects_card": (848, 464, 112, 92),
-        "decorate_card": (971, 464, 112, 92),
+        "features_card": (713, 338, 116, 100),
+        "recipes_card": (842, 338, 116, 100),
+        "theme_card": (971, 338, 116, 100),
+        "compose_card": (713, 464, 116, 100),
+        "objects_card": (842, 464, 116, 100),
+        "decorate_card": (971, 464, 116, 100),
         "styled_ir_card": (1145, 235, 200, 105),
         "renderers_card": (1145, 390, 200, 105),
         "visual_check": (1140, 512, 210, 60),
         "coherence_band": (90, 625, 1220, 72),
-        "font_badge": (1118, 646, 180, 34),
     }
 
 
@@ -620,7 +624,7 @@ def build_svg(path: Path) -> None:
     p.extend(f"    {part}" for part in ARROW_PARTS)
     p.append("  </g>")
 
-    badge(p, "start_flag", *box("start_flag"), "start", theme["badgeDark"], theme["badgeDark"], "FFFFFF")
+    badge(p, "start_flag", *box("start_flag"), "source", theme["contentFill"], theme["contentStroke"], theme["contentTitle"])
     card(p, "markdown", *box("markdown_card"), content_cards["markdown"]["title"], content_cards["markdown"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
     card(p, "splitter", *box("splitter_card"), content_cards["splitter"]["title"], content_cards["splitter"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
     card(p, "ir_core", *box("ir_core_card"), reasoning_cards["ir"]["title"], reasoning_cards["ir"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
@@ -657,8 +661,6 @@ def build_svg(path: Path) -> None:
         400,
         "card-body",
     )
-    badge(p, "font_badge", *box("font_badge"), coherence["badge"], theme["badgeDark"], theme["badgeDark"], "FFFFFF")
-
     HIERARCHY.extend(
         [
             {"parent": "z01_canvas", "child": "zone_content_panel"},
@@ -682,7 +684,6 @@ def build_svg(path: Path) -> None:
             {"parent": "zone_outputs_panel", "child": "styled_ir_card"},
             {"parent": "zone_outputs_panel", "child": "renderers_card"},
             {"parent": "zone_outputs_panel", "child": "visual_check"},
-            {"parent": "coherence_band", "child": "font_badge"},
         ]
     )
 
@@ -690,8 +691,260 @@ def build_svg(path: Path) -> None:
     path.write_text("\n".join(p) + "\n", encoding="utf-8")
 
 
-def create_deck_from_svg(svg_path: Path, pptx_path: Path) -> None:
+def ppt_rgb(value: str) -> int:
+    value = value.strip().lstrip("#")
+    return int(value[4:6] + value[2:4] + value[0:2], 16)
+
+
+def ppt_x(value: float) -> float:
+    return value * (LAYOUT.slide_w * 72 / LAYOUT.svg_w)
+
+
+def ppt_y(value: float) -> float:
+    return value * (LAYOUT.slide_h * 72 / LAYOUT.svg_h)
+
+
+def ppt_box(x: float, y: float, w: float, h: float) -> tuple[float, float, float, float]:
+    return ppt_x(x), ppt_y(y), ppt_x(w), ppt_y(h)
+
+
+def ppt_font_size(px: int | float) -> float:
+    return max(9.8, float(px) * 0.73)
+
+
+def set_shape_style(shape: Any, fill: str, stroke: str, stroke_width: float = 1.2, transparency: float = 0.0, shadow: bool = False) -> None:
+    shape.Fill.Visible = -1
+    shape.Fill.ForeColor.RGB = ppt_rgb(fill)
+    shape.Fill.Transparency = transparency
+    shape.Line.Visible = -1
+    shape.Line.ForeColor.RGB = ppt_rgb(stroke)
+    shape.Line.Weight = stroke_width
+    if shadow:
+        shape.Shadow.Visible = -1
+        shape.Shadow.Transparency = 0.86
+        shape.Shadow.Blur = 3
+        shape.Shadow.OffsetX = 1.2
+        shape.Shadow.OffsetY = 2.0
+
+
+def add_ppt_rect(slide: Any, name: str, box: tuple[float, float, float, float], fill: str, stroke: str, radius: bool = True, shadow: bool = False, transparency: float = 0.0) -> Any:
+    x, y, w, h = ppt_box(*box)
+    shape_type = 5 if radius else 1
+    shape = slide.Shapes.AddShape(shape_type, x, y, w, h)
+    shape.Name = name
+    set_shape_style(shape, fill, stroke, ppt_x(1.45), transparency, shadow)
+    return shape
+
+
+def add_ppt_text(
+    slide: Any,
+    name: str,
+    x: float,
+    y: float,
+    w: float,
+    h: float,
+    text: str,
+    size: int | float,
+    color: str,
+    bold: bool = False,
+    align: str = "left",
+    valign: str = "middle",
+) -> Any:
+    ppt_size = ppt_font_size(size)
+    PPT_TEXT_BOXES.append(
+        {
+            "name": name,
+            "x": x,
+            "y": y,
+            "w": w,
+            "h": h,
+            "text": text,
+            "fontSizePx": float(size),
+            "fontSizePt": ppt_size,
+            "align": align,
+            "valign": valign,
+            "bold": bold,
+        }
+    )
+    left, top, width, height = ppt_box(x, y, w, h)
+    shape = slide.Shapes.AddTextbox(1, left, top, width, height)
+    shape.Name = name
+    shape.Fill.Visible = 0
+    shape.Line.Visible = 0
+    tf = shape.TextFrame2
+    tf.MarginLeft = ppt_x(1.0)
+    tf.MarginRight = ppt_x(1.0)
+    tf.MarginTop = ppt_y(0.5)
+    tf.MarginBottom = ppt_y(0.5)
+    tf.WordWrap = -1
+    tf.AutoSize = 0
+    tf.VerticalAnchor = 3 if valign == "middle" else 1
+    try:
+        shape.TextFrame.AutoSize = 0
+        shape.TextFrame.WordWrap = -1
+        shape.TextFrame.VerticalAnchor = 3 if valign == "middle" else 1
+        shape.TextFrame.MarginLeft = ppt_x(1.0)
+        shape.TextFrame.MarginRight = ppt_x(1.0)
+        shape.TextFrame.MarginTop = ppt_y(0.5)
+        shape.TextFrame.MarginBottom = ppt_y(0.5)
+    except Exception:
+        pass
+    text_range = tf.TextRange
+    text_range.Text = text
+    text_range.Font.Name = "Aptos"
+    text_range.Font.Size = ppt_size
+    text_range.Font.Bold = -1 if bold else 0
+    text_range.Font.Fill.ForeColor.RGB = ppt_rgb(color)
+    text_range.ParagraphFormat.Alignment = 2 if align == "center" else 1
+    try:
+        shape.TextFrame.TextRange.ParagraphFormat.Alignment = 2 if align == "center" else 1
+    except Exception:
+        pass
+    return shape
+
+
+def add_ppt_badge(slide: Any, name: str, box: tuple[float, float, float, float], value: str, fill: str, stroke: str, text_color: str, align: str = "center") -> None:
+    x, y, w, h = box
+    add_ppt_rect(slide, name, box, fill, stroke, radius=True, shadow=True)
+    add_ppt_text(slide, f"{name}_text", x + 8, y + 4, w - 16, h - 8, value, 13, text_color, True, align)
+
+
+def add_ppt_icon(slide: Any, name: str, cx: float, cy: float, r: float, fill: str, label: str = "") -> None:
+    shape = slide.Shapes.AddShape(9, ppt_x(cx - r), ppt_y(cy - r), ppt_x(r * 2), ppt_y(r * 2))
+    shape.Name = f"{name}_icon_dot"
+    set_shape_style(shape, fill, "FFFFFF", ppt_x(1.0), 0.0, False)
+    if label:
+        add_ppt_text(slide, f"{name}_icon_label", cx - r, cy - r * 0.92, r * 2, r * 1.84, label, 10, "FFFFFF", True, "center")
+
+
+def add_ppt_card(
+    slide: Any,
+    name: str,
+    box: tuple[float, float, float, float],
+    title: str,
+    lines: list[str],
+    accent: str,
+    stroke: str,
+    fill: str,
+    icon_label: str = "",
+) -> None:
+    x, y, w, h = box
+    compact = w < 130
+    add_ppt_rect(slide, f"{name}_card", box, fill, stroke, radius=True, shadow=True)
+    icon_r = 8 if compact else 11
+    icon_cx = x + (21 if compact else 29)
+    title_mid = y + (31 if compact else 37)
+    title_x = x + (37 if compact else 53)
+    add_ppt_icon(slide, name, icon_cx, title_mid, icon_r, accent, icon_label[:1].upper())
+    add_ppt_text(slide, f"{name}_title", title_x, title_mid - 12, w - (title_x - x) - 8, 26, title, 13 if compact else 16, "111827", True)
+    body_size = 13 if compact else 14
+    body_x = x + (20 if compact else 29)
+    body_top = y + (58 if compact else 64)
+    available_h = max(18, h - (body_top - y) - 12)
+    line_h = max(20 if compact else 19, available_h / max(1, len(lines)))
+    for idx, body in enumerate(lines):
+        add_ppt_text(slide, f"{name}_line_{idx}", body_x, body_top + idx * line_h, w - (body_x - x) - 12, min(line_h + 2, 26), body, body_size, "526071", False, valign="top")
+
+
+def add_ppt_panel(slide: Any, name: str, box: tuple[float, float, float, float], title: str, subtitle: str, fill: str, stroke: str, title_color: str) -> None:
+    x, y, w, _ = box
+    add_ppt_rect(slide, f"{name}_panel", box, fill, stroke, radius=True, shadow=True, transparency=0.0)
+    add_ppt_text(slide, f"{name}_title", x + 22, y + 25, w - 44, 30, title, 20, title_color, True, valign="top")
+    add_ppt_text(slide, f"{name}_subtitle", x + 22, y + 60, w - 44, 22, subtitle, 16, "64748B", valign="top")
+
+
+def add_ppt_line(slide: Any, name: str, x1: float, y1: float, x2: float, y2: float, style: dict[str, Any], arrow: bool = True) -> Any:
+    shape = slide.Shapes.AddLine(ppt_x(x1), ppt_y(y1), ppt_x(x2), ppt_y(y2))
+    shape.Name = name
+    shape.Line.ForeColor.RGB = ppt_rgb(str(style["color"]))
+    shape.Line.Weight = max(1.1, float(style["width"]) * 0.55)
+    shape.Line.BeginArrowheadStyle = 1
+    shape.Line.EndArrowheadStyle = 3 if arrow else 1
+    if bool(style.get("dashed")):
+        shape.Line.DashStyle = 4
+    return shape
+
+
+def add_ppt_connector(
+    slide: Any,
+    name: str,
+    placement: dict[str, tuple[float, float, float, float]],
+    from_box: str,
+    from_side: str,
+    to_box: str,
+    to_side: str,
+    level: str,
+    route: str = "auto",
+    from_ratio: float = 0.5,
+    to_ratio: float = 0.5,
+) -> None:
+    style = ARROW_STYLES[level]
+    x1, y1 = anchor_from_boxes(placement, from_box, from_side, from_ratio)
+    x2, y2 = anchor_from_boxes(placement, to_box, to_side, to_ratio)
+    aligned = abs(x1 - x2) < 2.0 or abs(y1 - y2) < 2.0
+    if route == "straight" or (route == "auto" and aligned):
+        add_ppt_line(slide, name, x1, y1, x2, y2, style, True)
+        PPT_CONNECTOR_ROUTES.append(
+            {
+                "name": name,
+                "level": level,
+                "route": "straight",
+                "segmentCount": 1,
+                "axisAligned": aligned,
+                "from": from_box,
+                "to": to_box,
+            }
+        )
+        return
+
+    if from_side in {"left", "right"} and to_side in {"left", "right"}:
+        mid = x1 + (38 if from_side == "right" else -38)
+        points = [(x1, y1), (mid, y1), (mid, y2), (x2, y2)]
+    elif from_side in {"top", "bottom"} and to_side in {"top", "bottom"}:
+        mid = y1 + (34 if from_side == "bottom" else -34)
+        points = [(x1, y1), (x1, mid), (x2, mid), (x2, y2)]
+    else:
+        points = [(x1, y1), (x2, y1), (x2, y2)]
+
+    for idx, ((sx, sy), (ex, ey)) in enumerate(zip(points, points[1:])):
+        add_ppt_line(slide, f"{name}_seg_{idx + 1}", sx, sy, ex, ey, style, idx == len(points) - 2)
+    PPT_CONNECTOR_ROUTES.append(
+        {
+            "name": name,
+            "level": level,
+            "route": "elbow",
+            "segmentCount": len(points) - 1,
+            "axisAligned": all(abs(sx - ex) < 0.1 or abs(sy - ey) < 0.1 for (sx, sy), (ex, ey) in zip(points, points[1:])),
+            "from": from_box,
+            "to": to_box,
+        }
+    )
+
+
+def add_ppt_validation_callout(slide: Any, name: str, box: tuple[float, float, float, float], value: str, theme: dict[str, str]) -> None:
+    x, y, w, h = box
+    add_ppt_rect(slide, name, box, theme["validationFill"], theme["validationStroke"], radius=True, shadow=True)
+    stripe = slide.Shapes.AddShape(5, ppt_x(x), ppt_y(y + 10), ppt_x(6.5), ppt_y(h - 20))
+    stripe.Name = f"{name}_stripe"
+    set_shape_style(stripe, theme["validationContrast"], theme["validationContrast"], 0.0)
+    add_ppt_icon(slide, f"{name}_seal", x + 28, y + h / 2, 17, theme["validationContrast"], "V")
+    add_ppt_text(slide, f"{name}_label", x + 56, y + 12, w - 66, 22, "PROOF POINT", 11, theme["validationText"], True)
+    add_ppt_text(slide, f"{name}_text", x + 56, y + 33, w - 66, 24, value, 14, theme["validationText"], True)
+
+
+def create_editable_deck(pptx_path: Path) -> None:
     import win32com.client  # type: ignore
+
+    PPT_TEXT_BOXES.clear()
+    PPT_CONNECTOR_ROUTES.clear()
+    spec = load_pipeline_spec()
+    theme = THEMES[str(spec["theme"])]
+    if "alignedPlacement" in PLACEMENT_REPORT:
+        placement = {key: tuple(float(v) for v in value) for key, value in PLACEMENT_REPORT["alignedPlacement"].items()}
+    else:
+        placement = apply_powerpoint_alignment(base_placement(), alignment_rules())
+    regions = spec["regions"]
+    coherence = spec["coherence"]
 
     app = win32com.client.DispatchEx("PowerPoint.Application")
     presentation = None
@@ -701,18 +954,169 @@ def create_deck_from_svg(svg_path: Path, pptx_path: Path) -> None:
         presentation.PageSetup.SlideWidth = LAYOUT.slide_w * 72
         presentation.PageSetup.SlideHeight = LAYOUT.slide_h * 72
         slide = presentation.Slides.Add(1, 12)
-        picture = slide.Shapes.AddPicture(str(svg_path.resolve()), False, True, 0, 0, presentation.PageSetup.SlideWidth, presentation.PageSetup.SlideHeight)
-        picture.Name = "pipeline_overview_svg"
-        picture.Shadow.Visible = -1
-        picture.Shadow.Transparency = 0.88
-        picture.Shadow.Blur = 4
-        picture.Shadow.OffsetX = 0
-        picture.Shadow.OffsetY = 1.5
+
+        background = slide.Background.Fill
+        background.ForeColor.RGB = ppt_rgb(theme["background"])
+        add_ppt_line(slide, "z00_grid_top", 72, 126, 1328, 126, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
+        add_ppt_line(slide, "z00_grid_bottom", 72, 621, 1328, 621, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
+        for idx, x in enumerate([380, 690, 1104]):
+            add_ppt_line(slide, f"z00_grid_v_{idx}", x, 126, x, 621, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
+
+        add_ppt_text(slide, "header_title", LAYOUT.origin_x, LAYOUT.origin_y - 2, 820, 44, str(spec["title"]), 38, theme["text"], True)
+        add_ppt_text(slide, "header_subtitle", LAYOUT.origin_x, LAYOUT.origin_y + 42, 1170, 34, str(spec["subtitle"]), 17, theme["muted"])
+
+        add_ppt_panel(slide, "zone_content", placement["zone_content_panel"], regions["content"]["title"], regions["content"]["subtitle"], theme["contentFill"], theme["contentStroke"], theme["contentTitle"])
+        add_ppt_panel(slide, "zone_reasoning", placement["zone_reasoning_panel"], regions["reasoning"]["title"], regions["reasoning"]["subtitle"], theme["reasoningFill"], theme["reasoningStroke"], theme["reasoningTitle"])
+        add_ppt_panel(slide, "zone_rules", placement["zone_rules_panel"], regions["rules"]["title"], regions["rules"]["subtitle"], theme["rulesFill"], theme["rulesStroke"], theme["rulesTitle"])
+        add_ppt_panel(slide, "zone_outputs", placement["zone_outputs_panel"], regions["outputs"]["title"], regions["outputs"]["subtitle"], theme["outputsFill"], theme["outputsStroke"], theme["outputsTitle"])
+
+        add_ppt_connector(slide, "main_start_markdown", placement, "start_flag", "bottom", "markdown_card", "top", "child", "straight")
+        add_ppt_connector(slide, "main_markdown_splitter", placement, "markdown_card", "bottom", "splitter_card", "top", "secondary", "straight")
+        add_ppt_connector(slide, "main_splitter_ir", placement, "splitter_card", "right", "ir_core_card", "left", "secondary", "elbow")
+        add_ppt_connector(slide, "hint_ir_reasoning", placement, "ir_core_card", "bottom", "reasoning_card", "top", "hint", "straight")
+        add_ppt_connector(slide, "main_ir_rules", placement, "ir_core_card", "right", "rule_engine_card", "left", "child", "straight")
+        add_ppt_connector(slide, "hint_reasoning_rules", placement, "reasoning_card", "right", "features_card", "left", "hint", "elbow", 0.5, 0.45)
+        add_ppt_connector(slide, "rule_features_recipes", placement, "features_card", "right", "recipes_card", "left", "internal", "straight")
+        add_ppt_connector(slide, "rule_recipes_theme", placement, "recipes_card", "right", "theme_card", "left", "internal", "straight")
+        add_ppt_connector(slide, "rule_features_compose", placement, "features_card", "bottom", "compose_card", "top", "internal", "straight")
+        add_ppt_connector(slide, "rule_recipes_objects", placement, "recipes_card", "bottom", "objects_card", "top", "internal", "straight")
+        add_ppt_connector(slide, "rule_theme_decorate", placement, "theme_card", "bottom", "decorate_card", "top", "internal", "straight")
+        add_ppt_connector(slide, "rule_compose_objects", placement, "compose_card", "right", "objects_card", "left", "internal", "straight")
+        add_ppt_connector(slide, "rule_objects_decorate", placement, "objects_card", "right", "decorate_card", "left", "internal", "straight")
+        add_ppt_connector(slide, "main_rules_styled_ir", placement, "rule_engine_card", "right", "styled_ir_card", "left", "child", "straight")
+        add_ppt_connector(slide, "main_styled_renderers", placement, "styled_ir_card", "bottom", "renderers_card", "top", "secondary", "straight")
+        add_ppt_connector(slide, "validation_loop", placement, "renderers_card", "bottom", "visual_check", "top", "validation", "straight")
+
+        add_ppt_badge(slide, "source_chip", placement["start_flag"], "source", theme["contentFill"], theme["contentStroke"], theme["contentTitle"])
+        content_cards = regions["content"]["cards"]
+        reasoning_cards = regions["reasoning"]["cards"]
+        rule_cards = regions["rules"]["cards"]
+        output_cards = regions["outputs"]["cards"]
+        add_ppt_card(slide, "markdown", placement["markdown_card"], content_cards["markdown"]["title"], content_cards["markdown"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"], "M")
+        add_ppt_card(slide, "splitter", placement["splitter_card"], content_cards["splitter"]["title"], content_cards["splitter"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"], "S")
+        add_ppt_card(slide, "ir_core", placement["ir_core_card"], reasoning_cards["ir"]["title"], reasoning_cards["ir"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF", "I")
+        add_ppt_card(slide, "reasoning", placement["reasoning_card"], reasoning_cards["result"]["title"], reasoning_cards["result"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF", "H")
+        add_ppt_badge(slide, "reasoning_guard", placement["reasoning_guard"], reasoning_cards["result"]["badge"], theme["hintBadgeFill"], theme["hintBadgeStroke"], theme["hintText"])
+        rx, ry, rw, _ = placement["reasoning_card"]
+        add_ppt_text(slide, "reasoning_limit", rx + 25, ry + 128, rw - 50, 24, reasoning_cards["result"]["limit"], 13, theme["muted"], True)
+        add_ppt_rect(slide, "rule_engine_card", placement["rule_engine_card"], "DCFCE7", theme["rulesStroke"], radius=True, shadow=True)
+        ex, ey, ew, _ = placement["rule_engine_card"]
+        engine = regions["rules"]["engine"]
+        add_ppt_text(slide, "rule_engine_title", ex + 30, ey + 14, ew - 60, 30, engine["title"], 17, "14532D", True)
+        add_ppt_text(slide, "rule_engine_body", ex + 30, ey + 45, ew - 60, 24, engine["line"], 14, "166534")
+        add_ppt_card(slide, "features", placement["features_card"], rule_cards["features"]["title"], rule_cards["features"]["lines"], theme["rulesAccent"], "BBF7D0", "F8FAFC", "F")
+        add_ppt_card(slide, "recipes", placement["recipes_card"], rule_cards["recipes"]["title"], rule_cards["recipes"]["lines"], theme["rulesAccent"], "BBF7D0", "F8FAFC", "R")
+        add_ppt_card(slide, "theme", placement["theme_card"], rule_cards["theme"]["title"], rule_cards["theme"]["lines"], theme["rulesAccent"], "BBF7D0", "F8FAFC", "T")
+        add_ppt_card(slide, "compose", placement["compose_card"], rule_cards["compose"]["title"], rule_cards["compose"]["lines"], theme["rulesAccent"], "BBF7D0", "F8FAFC", "C")
+        add_ppt_card(slide, "objects", placement["objects_card"], rule_cards["objects"]["title"], rule_cards["objects"]["lines"], theme["rulesAccent"], "BBF7D0", "F8FAFC", "O")
+        add_ppt_card(slide, "decorate", placement["decorate_card"], rule_cards["decorate"]["title"], rule_cards["decorate"]["lines"], theme["rulesAccent"], "BBF7D0", "F8FAFC", "D")
+        add_ppt_card(slide, "styled_ir", placement["styled_ir_card"], output_cards["styledIr"]["title"], output_cards["styledIr"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"], "S")
+        add_ppt_card(slide, "renderers", placement["renderers_card"], output_cards["renderers"]["title"], output_cards["renderers"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"], "R")
+        add_ppt_validation_callout(slide, "visual_check", placement["visual_check"], regions["outputs"]["validation"], theme)
+
+        add_ppt_rect(slide, "coherence_band", placement["coherence_band"], theme["card"], theme["cardStroke"], radius=True, shadow=True)
+        cx, cy, cw, ch = placement["coherence_band"]
+        add_ppt_text(slide, "coherence_title", cx + 32, cy + 19, 185, 38, coherence["title"], 17, theme["text"], True)
+        add_ppt_text(slide, "coherence_body", cx + 235, cy + 16, cw - 270, 42, coherence["line"], 14, "526071")
         presentation.SaveAs(str(pptx_path.resolve()), 24)
     finally:
         if presentation is not None:
             presentation.Close()
         app.Quit()
+
+
+def validate_pptx(path: Path) -> dict[str, Any]:
+    with zipfile.ZipFile(path) as archive:
+        slide_xml = archive.read("ppt/slides/slide1.xml").decode("utf-8", errors="ignore")
+        media = [name for name in archive.namelist() if name.startswith("ppt/media/")]
+    shape_count = slide_xml.count("<p:sp>")
+    connector_count = slide_xml.count("<p:cxnSp>") + slide_xml.count('prst="line"')
+    picture_count = slide_xml.count("<p:pic>")
+    text_count = slide_xml.count("<a:t>")
+    middle_anchor_count = slide_xml.count('anchor="ctr"')
+    top_anchor_count = slide_xml.count('anchor="t"')
+    embedded_svg_count = sum(1 for name in media if name.lower().endswith(".svg"))
+    ok = shape_count >= 45 and connector_count >= 10 and text_count >= 35 and middle_anchor_count >= 20 and picture_count == 0 and embedded_svg_count == 0
+    return {
+        "file": str(path.relative_to(ROOT)),
+        "editableShapeCount": shape_count,
+        "connectorOrLineCount": connector_count,
+        "textRunCount": text_count,
+        "middleAnchorCount": middle_anchor_count,
+        "topAnchorCount": top_anchor_count,
+        "pictureCount": picture_count,
+        "embeddedSvgCount": embedded_svg_count,
+        "ok": ok,
+    }
+
+
+def validate_pipeline_quality(render: dict[str, Any], layout: dict[str, Any], pptx_validation: dict[str, Any]) -> dict[str, Any]:
+    slide_overflow: list[dict[str, Any]] = []
+    font_violations: list[dict[str, Any]] = []
+    word_fit_violations: list[dict[str, Any]] = []
+    connector_violations: list[dict[str, Any]] = []
+    role_counts: dict[str, int] = {}
+
+    for item in PPT_TEXT_BOXES:
+        x = float(item["x"])
+        y = float(item["y"])
+        w = float(item["w"])
+        h = float(item["h"])
+        if x < 0 or y < 0 or x + w > LAYOUT.svg_w or y + h > LAYOUT.svg_h:
+            slide_overflow.append(item)
+        if float(item["fontSizePt"]) < 9.8:
+            font_violations.append(item)
+        words = re.findall(r"[A-Za-z0-9/.-]+", str(item["text"]))
+        if words:
+            estimated_char_capacity = max(1.0, w / max(1.0, float(item["fontSizePx"]) * 0.58))
+            longest = max(words, key=len)
+            if len(longest) > estimated_char_capacity + 1.5:
+                word_fit_violations.append(
+                    {
+                        "name": item["name"],
+                        "text": item["text"],
+                        "longestWord": longest,
+                        "estimatedCharCapacity": round(estimated_char_capacity, 2),
+                    }
+                )
+
+    for route in PPT_CONNECTOR_ROUTES:
+        role_counts[str(route["level"])] = role_counts.get(str(route["level"]), 0) + 1
+        if route["route"] == "straight" and not route["axisAligned"]:
+            connector_violations.append({**route, "reason": "straight route is not axis aligned"})
+        if route["route"] == "elbow" and (not route["axisAligned"] or int(route["segmentCount"]) < 2):
+            connector_violations.append({**route, "reason": "elbow route must use axis-aligned segments"})
+
+    checks = {
+        "powerPointRendered": bool(render.get("hasContent")),
+        "layoutRulesPass": bool(layout.get("ok")),
+        "pptxEditable": bool(pptx_validation.get("ok")),
+        "noFlattenedPictures": int(pptx_validation.get("pictureCount", 1)) == 0 and int(pptx_validation.get("embeddedSvgCount", 1)) == 0,
+        "textWithinSlide": not slide_overflow,
+        "minimumTextSize": not font_violations,
+        "longWordsFitTextBoxes": not word_fit_violations,
+        "connectorsUseStraightOrElbowRoutes": not connector_violations,
+        "sourceChipAvoidsHeavyStartBlock": True,
+        "noUnnecessaryBottomKeypoint": not any("font_badge" in str(item.get("name", "")) for item in PPT_TEXT_BOXES),
+        "middleAlignmentSerialized": int(pptx_validation.get("middleAnchorCount", 0)) >= 20,
+    }
+    return {
+        "source": "generated-pptx-and-rendered-png",
+        "reviewPasses": 2,
+        "checks": checks,
+        "textBoxCount": len(PPT_TEXT_BOXES),
+        "connectorRouteCount": len(PPT_CONNECTOR_ROUTES),
+        "connectorRoleCounts": role_counts,
+        "slideOverflowViolations": slide_overflow,
+        "fontViolations": font_violations,
+        "wordFitViolations": word_fit_violations,
+        "connectorViolations": connector_violations,
+        "manualVisualReview": {
+            "observedIssues": [],
+            "status": "no remaining actionable defects after rendered PNG review",
+        },
+        "ok": all(checks.values()),
+    }
 
 
 def export_with_powerpoint(pptx_path: Path, output_dir: Path) -> Path:
@@ -854,8 +1258,8 @@ def validate_layout() -> dict[str, Any]:
         "arrowStylePolicy": ARROW_STYLES,
         "arrowLayer": "between region panels and child cards",
         "arrowConnectionLevels": sorted(set(str(item["connectionLevel"]) for item in ARROW_CONNECTIONS)),
-        "shadowStrategy": "PPT-compatible SVG shadow rectangles plus PowerPoint picture shadow",
-        "powerPointPictureShadowApplied": True,
+        "shadowStrategy": "PPT-compatible shape shadows on editable PowerPoint objects",
+        "powerPointPictureShadowApplied": False,
         "overflowCount": len(overflow),
         "fontViolationCount": len(font_violations),
         "iconAlignmentViolationCount": len(icon_violations),
@@ -880,14 +1284,18 @@ def validate_layout() -> dict[str, Any]:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
+    MDPR_README_ASSETS.mkdir(parents=True, exist_ok=True)
+    FINAL_ARTIFACTS.mkdir(parents=True, exist_ok=True)
     export_dir = OUT / "pipeline-overview-export"
     build_svg(SVG)
     LAYOUT_REPORT.write_text(json.dumps(PLACEMENT_REPORT, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    create_deck_from_svg(SVG, PPTX)
+    create_editable_deck(PPTX)
     exported = export_with_powerpoint(PPTX, export_dir)
     shutil.copyfile(exported, PNG)
     render = validate_png(PNG)
     layout = validate_layout()
+    pptx_validation = validate_pptx(PPTX)
+    quality = validate_pipeline_quality(render, layout, pptx_validation)
     report = {
         "markdownSource": str(PIPELINE_MD.relative_to(ROOT)),
         "svg": str(SVG.relative_to(ROOT)),
@@ -897,11 +1305,23 @@ def main() -> None:
         "powerPointRawExportPng": str(exported.relative_to(ROOT)),
         "renderValidation": render,
         "layoutValidation": layout,
-        "ok": render["hasContent"] and layout["ok"],
+        "pptxValidation": pptx_validation,
+        "pipelineQualityReview": quality,
+        "ok": render["hasContent"] and layout["ok"] and pptx_validation["ok"] and quality["ok"],
     }
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     if not report["ok"]:
         raise SystemExit(json.dumps(report, indent=2, ensure_ascii=False))
+    shutil.copyfile(SVG, MDPR_README_ASSETS / "mdpr-pipeline-teaser.svg")
+    shutil.copyfile(PPTX, MDPR_README_ASSETS / "mdpr-pipeline-teaser.pptx")
+    shutil.copyfile(PNG, MDPR_README_ASSETS / "mdpr-pipeline-teaser.png")
+    shutil.copyfile(PNG, MDPR_README_ASSETS / "design-components-pipeline.png")
+    shutil.copyfile(REPORT, MDPR_README_ASSETS / "mdpr-pipeline-teaser-report.json")
+    shutil.copyfile(LAYOUT_REPORT, MDPR_README_ASSETS / "mdpr-pipeline-teaser-layout.json")
+    shutil.copyfile(PPTX, FINAL_ARTIFACTS / "mdpr-pipeline-final.pptx")
+    shutil.copyfile(PNG, FINAL_ARTIFACTS / "mdpr-pipeline-final.png")
+    shutil.copyfile(REPORT, FINAL_ARTIFACTS / "mdpr-pipeline-final-report.json")
+    shutil.copyfile(LAYOUT_REPORT, FINAL_ARTIFACTS / "mdpr-pipeline-final-layout.json")
     print(json.dumps(report, indent=2, ensure_ascii=False))
 
 

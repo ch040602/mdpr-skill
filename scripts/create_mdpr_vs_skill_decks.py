@@ -25,6 +25,7 @@ SOURCE_MD = OUT / "mdpr-source-corpus.md"
 MANIFEST = OUT / "source-manifest.json"
 BASELINE_PPTX = OUT / "mdpr-baseline-result.pptx"
 SKILL_PPTX = OUT / "mdpr-skill-result.pptx"
+SKILL_FROM_MDPR_RUN_PPTX = OUT / "mdpr-skill-from-actual-md-run.pptx"
 REPORT = OUT / "mdpr-vs-skill-report.json"
 
 SLIDE_W = 13.333
@@ -280,6 +281,7 @@ def add_text(slide, name: str, x: float, y: float, w: float, h: float, text: str
     tf = box.text_frame
     tf.clear()
     tf.word_wrap = True
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
     tf.margin_left = 0
     tf.margin_right = 0
     tf.margin_top = 0
@@ -398,6 +400,86 @@ def add_difference_slide(prs: Presentation) -> None:
                     run.font.size = Pt(9)
                     run.font.color.rgb = rgb("FFFFFF" if cell in table.rows[0].cells else P.ink)
                     run.font.bold = cell in table.rows[0].cells
+
+
+def add_actual_mdpr_run_slide(prs: Presentation, summaries: list[dict[str, Any]], mdpr_result: dict[str, Any]) -> None:
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_bg(slide, "skill from actual mdpr run")
+    add_title(slide, "Actual Markdown Run -> Skill Result", "The skill deck is generated after MDPR has built a real PPTX from the shared Markdown corpus.")
+    add_card(
+        slide,
+        "actual_source",
+        0.75,
+        1.55,
+        3.65,
+        1.55,
+        "1. Real Markdown input",
+        [
+            f"{len(summaries)} files from .cache/mdpr",
+            f"{sum(item['headingCount'] for item in summaries)} headings",
+            f"{sum(item['charCount'] for item in summaries):,} chars",
+        ],
+        P.accent,
+        "doc",
+    )
+    add_card(
+        slide,
+        "actual_mdpr",
+        4.85,
+        1.55,
+        3.65,
+        1.55,
+        "2. MDPR execution result",
+        [
+            f"{mdpr_result['slides']} slides",
+            f"{mdpr_result['textFrames']} editable text frames",
+            f"{mdpr_result['tables']} tables, {mdpr_result['charts']} charts",
+        ],
+        P.accent2,
+        "pipeline",
+    )
+    add_card(
+        slide,
+        "actual_skill",
+        8.95,
+        1.55,
+        3.65,
+        1.55,
+        "3. Skill generation",
+        [
+            "uses MDPR source metrics",
+            "adds visual rule explanation",
+            "keeps parsing/runtime in MDPR",
+        ],
+        P.contrast,
+        "spark",
+    )
+    for i, x in enumerate([4.42, 8.52]):
+        add_shape(slide, f"actual_arrow_{i}", MSO_AUTO_SHAPE_TYPE.RIGHT_ARROW, x, 2.15, 0.34, 0.28, P.dark, P.dark)
+    add_shape(slide, "actual_boundary", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.85, 3.85, 11.55, 1.6, P.surface, P.line)
+    add_text(slide, "actual_boundary_title", 1.12, 4.12, 3.1, 0.32, "Recorded boundary", 16, P.ink, True)
+    add_text(
+        slide,
+        "actual_boundary_body",
+        1.12,
+        4.55,
+        10.65,
+        0.34,
+        "MDPR creates the actual presentation output from Markdown first. mdpr-skill then produces a compact explanatory/validation PPTX from that concrete run, source manifest, and metrics.",
+        12,
+        P.muted,
+    )
+    add_text(
+        slide,
+        "actual_file_note",
+        1.12,
+        5.95,
+        10.65,
+        0.28,
+        f"Input artifact: {SOURCE_MD.relative_to(ROOT)}  |  MDPR PPTX: {BASELINE_PPTX.relative_to(ROOT)}  |  Skill PPTX: {SKILL_FROM_MDPR_RUN_PPTX.relative_to(ROOT)}",
+        9,
+        P.muted,
+    )
 
 
 def add_source_coverage_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
@@ -553,11 +635,12 @@ def add_appendix_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> No
         add_text(slide, f"appendix_{i}", x, y, 5.4, 0.22, f"{i + 1:02d}. {item['path']}", 8, P.muted)
 
 
-def build_skill_deck(summaries: list[dict[str, Any]]) -> None:
+def build_skill_deck(summaries: list[dict[str, Any]], mdpr_result: dict[str, Any]) -> None:
     prs = Presentation()
     prs.slide_width = Inches(SLIDE_W)
     prs.slide_height = Inches(SLIDE_H)
     slides = [
+        lambda: add_actual_mdpr_run_slide(prs, summaries, mdpr_result),
         lambda: add_difference_slide(prs),
         lambda: add_source_coverage_slide(prs, summaries),
         lambda: add_pipeline_slide(prs),
@@ -571,6 +654,7 @@ def build_skill_deck(summaries: list[dict[str, Any]]) -> None:
     for add in slides:
         add()
     prs.save(SKILL_PPTX)
+    shutil.copyfile(SKILL_PPTX, SKILL_FROM_MDPR_RUN_PPTX)
 
 
 def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600, height: int = 900) -> list[Path]:
@@ -638,7 +722,8 @@ def main() -> None:
     MANIFEST.write_text(json.dumps({"sourceRoot": str(MDPR.relative_to(ROOT)), "files": summaries}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     build_source_corpus(summaries)
     build_mdpr_baseline()
-    build_skill_deck(summaries)
+    mdpr_baseline_validation = validate_pptx(BASELINE_PPTX)
+    build_skill_deck(summaries, mdpr_baseline_validation)
     baseline_exports = export_with_powerpoint(BASELINE_PPTX, OUT / "mdpr-baseline-export")
     skill_exports = export_with_powerpoint(SKILL_PPTX, OUT / "skill-export")
     for index, exported in enumerate(baseline_exports[:4], 1):
@@ -653,10 +738,23 @@ def main() -> None:
         "sourceManifest": str(MANIFEST.relative_to(ROOT)),
         "mdprBaselinePptx": str(BASELINE_PPTX.relative_to(ROOT)),
         "skillPptx": str(SKILL_PPTX.relative_to(ROOT)),
+        "skillFromActualMdprRunPptx": str(SKILL_FROM_MDPR_RUN_PPTX.relative_to(ROOT)),
         "sourceFileCount": len(summaries),
         "sourceHeadingCount": sum(item["headingCount"] for item in summaries),
         "sourceCharCount": sum(item["charCount"] for item in summaries),
-        "mdprBaselineValidation": validate_pptx(BASELINE_PPTX),
+        "actualMarkdownRun": {
+            "inputMarkdown": str(SOURCE_MD.relative_to(ROOT)),
+            "mdprCommand": "node .cache/mdpr/packages/cli/dist/index.js build artifacts/mdpr-vs-skill/mdpr-source-corpus.md --to pptx --design clean",
+            "mdprResultPptx": str(BASELINE_PPTX.relative_to(ROOT)),
+            "mdprResultValidation": mdpr_baseline_validation,
+            "skillResultPptx": str(SKILL_FROM_MDPR_RUN_PPTX.relative_to(ROOT)),
+            "skillConsumes": [
+                "the generated source Markdown corpus",
+                "the source manifest extracted from the MDPR checkout",
+                "the concrete MDPR PPTX run metrics",
+            ],
+        },
+        "mdprBaselineValidation": mdpr_baseline_validation,
         "skillValidation": validate_pptx(SKILL_PPTX),
         "baselineRenderPreview": validate_pngs([OUT / f"mdpr_baseline_preview_{index}.png" for index in range(1, min(4, len(baseline_exports)) + 1)]),
         "skillRenderPreview": validate_pngs([OUT / f"skill_preview_{index}.png" for index in range(1, min(4, len(skill_exports)) + 1)]),
@@ -664,7 +762,8 @@ def main() -> None:
     report["ok"] = (
         report["sourceFileCount"] >= 20
         and report["mdprBaselineValidation"]["slides"] >= 10
-        and report["skillValidation"]["slides"] >= 8
+        and report["skillValidation"]["slides"] >= 9
+        and SKILL_FROM_MDPR_RUN_PPTX.is_file()
         and all(item["hasContent"] for item in report["baselineRenderPreview"])
         and all(item["hasContent"] for item in report["skillRenderPreview"])
     )
