@@ -1,8 +1,8 @@
-# MDPR x Design Components Rule-based Design Skill Pack
+# MDPR Agent Hint Skill Pack
 
 ![MDPR Design Components Pipeline](docs/assets/pipeline-overview.png)
 
-The LLM is an assistant, not the design authority. It may propose semantic hints, but all final design choices are made by deterministic rules inside `design_components/`.
+The LLM is an assistant, not the design authority. It may propose compact semantic hints, but all final design choices are made by deterministic rules inside MDPR.
 
 ## LLM Usage Boundary
 
@@ -12,9 +12,11 @@ MDPR itself is a no-LLM runtime. Markdown parsing, Pandoc normalization, slide s
 
 The pipeline is documented in `pipeline.md`. The pipeline image is generated from that Markdown source as `docs/assets/pipeline-overview.svg`, embedded into a one-slide PowerPoint deck at `docs/assets/pipeline-overview.pptx`, and exported as a high-resolution PNG through Microsoft PowerPoint. The stored placement plan at `docs/assets/pipeline-overview-layout.json` is aligned through PowerPoint `ShapeRange.Align` before rendering. SVG is used for stable rounded corners, fixed arrowheads, centered icon-label pairs, role-scaled typography, and explicit padding around text. The generation report verifies child-shape containment, arrow connection levels, icon-label alignment, and PPT-compatible shadow rendering.
 
-Visual diversification seeds live in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json`. They separate flow colors, section accents, contrast colors, support surfaces, and infographic patterns so emphasis can be expressed through a different pattern, not only through a shifted hue.
+Visual diversification seeds in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json` are reference material for MDPR implementation and optional agent hints. Runtime design logic belongs in MDPR packages, not in this skill repository.
 
-Color selection follows Adobe Color Wheel harmony rules: `monochromatic`, `analogous`, `complementary`, `split-complementary`, and `triadic`. Profiles choose one harmony rule, ordered sequences use theme-slot tint/base/shade brightness steps, and proof or validation points use scarce complementary contrast with WCAG contrast-ratio checks before final PPTX rendering.
+MDPR color selection follows Adobe Color Wheel harmony rules through `theme.colorCombination`: `preset`, `monochromatic`, `analogous`, `complementary`, `split-complementary`, and `triadic`. The derived palette feeds element colors, chart color tokens, and the generated PowerPoint document theme.
+
+Review guidance still checks WCAG contrast-ratio expectations for readable text and emphasis colors before accepting generated PPTX artifacts.
 
 Text-only slides may use one quiet `monotone-icon-aside` slot when they would otherwise feel visually flat. The icon must be black or white, sourced from PowerPoint built-in icons or a licensed free SVG, and placed in a secondary aside/corner region without competing with the text.
 
@@ -22,34 +24,31 @@ The seed gallery at `docs/assets/infographic-seed-gallery.png` is generated from
 
 The graph/diagram selection rules also include PPT BIZCAM-inspired chart families such as arc-ring charts, gauge dials, line-graph backgrounds, connected chart strips, target-ring frames, and pictorial metaphor charts. These are selected from MDPR metadata before rendering, not copied from external templates.
 
-This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based visual diversification pipeline to MDPR.
+This repository is a Codex skill and implementation TODO pack for adding optional agent hints and review workflows around MDPR's deterministic visual-diversification pipeline.
 
 It is explicitly based on these upstream projects:
 
 - Design Components: external-design-source
 - MDPR: https://github.com/ch040602/mdpr, also resolved by GitHub as https://github.com/ch040602/MdPr
 
-The local skill drafts in `skills/mdpr-design-components` and `skills/mdpr-design-review` use MDPR as the Markdown presentation splitter and Design Components as the design-rule source. The actual implementation surface lives under `design_components/`; `third_party/design-source/` is only an attribution, license, and upstream-reference boundary, not the runtime home for the port.
+The local skill drafts in `skills/mdpr-design-components` and `skills/mdpr-design-review` use MDPR as the Markdown presentation splitter, layout engine, and renderer. The MDPR implementation surface lives in `.cache/mdpr/packages/*`; `design_components/` and `third_party/design-source/` are attribution, license, migration, and reference-seed boundaries, not runtime homes for final design decisions.
 
 ## Goal
 
-MDPR remains responsible for content structure: parsing Markdown, splitting slides, splitting elements, and producing semantic metadata. The Design Components layer owns deterministic visual decisions: layout, placement, element sizing, component variants, decoration, effects, and coherence.
+MDPR remains responsible for content structure and visual output: parsing Markdown, splitting slides, splitting elements, selecting layouts, applying design presets, deriving color combinations, rendering editable PPTX/HTML/PDF, and validating overflow/coherence. This skill repository only adds optional semantic hinting, review checklists, and packaging guidance.
 
 ```text
 Markdown
   -> MDPR Element Splitter
-  -> Slide Element IR
-  -> Feature Extractor
-  -> Design Components Rule Engine
-  -> Composition Engine
-  -> Decoration Engine
-  -> Styled Deck IR
+  -> MDPR Presentation IR
+  -> optional agent semantic hints
+  -> MDPR Layout / Design / Renderer Rules
   -> Renderer(PPTX/HTML/PDF)
 ```
 
 ## MDPR Boundary and Pandoc Mode
 
-MDPR and this skill pack have separate responsibilities. MDPR owns Markdown-to-slide structure, including the Pandoc-backed parser mode. This skill pack owns visual diversification after MDPR has produced semantic presentation structure.
+MDPR and this skill pack have separate responsibilities. MDPR owns Markdown-to-slide structure, visual diversification, and rendering, including the Pandoc-backed parser mode. This skill pack may only add semantic hints before deterministic MDPR selection.
 
 ```text
 Markdown
@@ -58,7 +57,8 @@ Markdown
   -> MDPR Outline Tree
   -> MDPR Split Planner
   -> MDPR Presentation IR
-  -> Design Components visual diversification
+  -> optional agent semantic hints
+  -> MDPR deterministic visual diversification
 ```
 
 Use Pandoc mode in MDPR when Markdown needs richer structural normalization before slide splitting:
@@ -71,24 +71,24 @@ The default parser remains MDPR's built-in simple parser. Pandoc mode requires t
 
 ## Difference from MDPR
 
-This project does not replace MDPR. It narrows MDPR's responsibility to Markdown parsing, slide splitting, element splitting, and semantic metadata, then adds a deterministic design layer after that content contract.
+This project does not replace MDPR. It keeps MDPR as the runtime owner and supplies a skill wrapper that can help agents produce small semantic hints, run reviews, and verify that MDPR's deterministic renderer remains coherent.
 
 | Area | Existing MDPR | This project |
 | --- | --- | --- |
-| Primary role | Convert Markdown into presentations | Add a rule-based design system on top of MDPR output |
-| Visual decisions | Theme/preset-oriented pipeline | Deterministic recipe, variant, layout, decoration, and coherence rules |
-| LLM/agent role | May be used for richer generation workflows | Optional short semantic tags only; no coordinates, colors, variants, effects, or z-order |
-| Intermediate contract | Presentation-oriented structure | Explicit `Slide Element IR` and `Styled Deck IR` contracts |
-| PPTX output target | Presentation rendering | Editable PowerPoint objects with theme-color binding and z-order validation |
-| Validation focus | Build success and output generation | Render comparison, text bounds, alignment, z-order, object variety, and coherence checks |
+| Primary role | Deterministic Markdown-to-presentation runtime | Codex skill wrapper for semantic hints and review |
+| Visual decisions | Owns layout, design presets, color combinations, PPT theme colors, typography, tables, diagrams, and rendering | Must not choose final coordinates, colors, variants, effects, z-order, or renderer objects |
+| LLM/agent role | Not required at runtime | Optional short semantic tags only |
+| Intermediate contract | Presentation IR and Layout IR | Hint/checklist files that MDPR may ignore safely |
+| PPTX output target | Editable PowerPoint objects with theme-color binding and overflow validation | Visual QA guidance and generated comparison artifacts |
+| Validation focus | Build success, text bounds, table coherence, theme color output, diagram integrity | Review-driven checks that catch boundary drift |
 
 ## Improvements Over the Base Flow
 
-- **Deterministic design decisions:** recipe selection, component variants, placement, spacing, decoration, and effects are selected by inspectable rules rather than ad hoc generation.
-- **Stronger renderer contracts:** `Slide Element IR` separates content from design, while `Styled Deck IR` carries renderer-neutral visual decisions into PPTX, HTML, and PDF renderers.
+- **Deterministic design decisions in MDPR:** layout, placement, spacing, decoration, table handling, diagram rendering, and theme-color binding are selected by inspectable MDPR rules rather than ad hoc generation.
+- **Stronger renderer contracts:** MDPR `Presentation IR` and `Layout IR` carry renderer-neutral structure into PPTX, HTML, and PDF renderers.
 - **Editable PPTX-first behavior:** generated PowerPoint decks use editable shapes, text boxes, tables, charts, pictures, theme colors, and verified z-order instead of relying only on flattened visual output.
 - **Coherence validation:** visual profiles enforce consistent accent usage, radius family, shadow family, readable font sizes, bounded text, aligned icon-label pairs, and consistent arrow semantics.
-- **Adobe Color Wheel harmony:** color variation is selected through profile-level `monochromatic`, `analogous`, `complementary`, `split-complementary`, or `triadic` rules, with brightness sequences built from PPT theme tint/shade values.
+- **Adobe Color Wheel harmony:** MDPR `theme.colorCombination` selects `monochromatic`, `analogous`, `complementary`, `split-complementary`, or `triadic` rules and writes derived accents into the PowerPoint document theme.
 - **Lower token usage:** optional agent hints are reduced to compact intent/grouping tags; deterministic rules perform the expensive design selection work without repeated model reasoning.
 - **Traceable style output:** style gallery, inspect output, render reports, and placement plans make it possible to compare profiles and debug why a deck looks the way it does.
 
@@ -100,17 +100,17 @@ This project does not replace MDPR. It narrows MDPR's responsibility to Markdown
 2. **Agents may provide reasoning hints only**
    Agents may help infer intent, group, or importance candidates. They must not choose recipes, variants, coordinates, colors, or effects directly.
 
-3. **MDPR is the element splitter**
-   MDPR must not create `x/y/w/h`, color, radius, shadow, or component variant decisions in `design-components-rule-based` mode.
+3. **MDPR owns design execution**
+   MDPR owns `x/y/w/h`, color, typography, table, diagram, chart-token, effect, z-order, and renderer-object decisions.
 
-4. **Design Components owns layout and decoration**
-   The Design Components layer selects placement and styling from purpose, density, element mix, content size, deck profile, and rhythm rules.
+4. **The skill only hints**
+   This repository may suggest intent, grouping, importance, ambiguity, or validation focus. It must not carry final visual instructions.
 
 5. **PPT colors bind to theme slots**
    Final PPTX output should use scheme/theme slots such as `accent1`, `text1`, and `background1` instead of hardcoded hex values by default.
 
 6. **Color harmony follows Adobe Color Wheel rules**
-   Profiles declare `colorHarmony`, and decoration uses `ThemeColorRef` tint/shade plans for brightness sequences plus complementary or split-complementary contrast for true emphasis.
+   MDPR config declares `theme.colorCombination`, and the derived palette feeds elements, chart color tokens, and PPT document theme colors.
 
 ## Pipeline Mode
 
@@ -120,21 +120,21 @@ The new mode name is:
 design-components-rule-based
 ```
 
-It must be opt-in through flag or config. Existing MDPR builds must continue to use the legacy pipeline unless the new mode is explicitly selected.
+New MDPR design behavior must be opt-in through MDPR flags or config when it changes visible output. Existing MDPR builds should continue to work with `theme.colorCombination: preset`.
 
-The project integration directory for Design Components-derived design behavior is:
+The project reference directory for Design Components-derived design seeds is:
 
 ```text
 design_components/
 ```
 
-`design_components/` contains the rule engine, composition engine, decoration policies, Design Components adapter, and PPTX binding layer needed to apply the imported design system to editable PowerPoint output.
+`design_components/` contains migration references, seed catalogs, and prototype policies. Production design execution should be moved into MDPR core/layout/renderer packages.
 
 ## Theme Gallery vs. Style Gallery
 
-`theme-gallery` belongs to the legacy theme/design-preset path. It varies existing MDPR theme presets without changing the core layout pipeline.
+`theme-gallery` belongs to MDPR's theme/design-preset path. It varies MDPR theme presets without changing the core layout pipeline.
 
-`style-gallery` belongs to the new Design Components path. It renders the same Slide Element IR through multiple Design Components visual profiles, producing comparable outputs and inspect traces from the same content structure.
+There is no separate `style-gallery` runtime in this repository. Any future visual gallery should be implemented in MDPR or generated as review artifacts by this skill.
 
 ## Repository Contents
 
@@ -160,7 +160,7 @@ schemas/                         Draft JSON schemas
 examples/                        Sample config, rulebook, profile, and inspect output
 src-scaffolds/                   TypeScript scaffolds
 packages/                        Package-level TODOs
-design_components/               Runtime design component implementation
+design_components/               Reference seeds and migration prototypes
 skills/                          Codex skill drafts
 .github/                         Issue and PR template drafts
 adr/                             Architecture decision records
@@ -182,7 +182,7 @@ Install this skill pack with MDPR prepared alongside it:
 npm install
 ```
 
-The `postinstall` hook runs `python scripts/install_mdpr.py`, which clones or updates MDPR from `https://github.com/ch040602/mdpr` into `.cache/mdpr` by default. This keeps MDPR available as the Markdown parsing and element-splitting runtime while this repository supplies the visual diversification layer under `design_components/`.
+The `postinstall` hook runs `python scripts/install_mdpr.py`, which clones or updates MDPR from `https://github.com/ch040602/mdpr` into `.cache/mdpr` by default. This keeps MDPR available as the Markdown parsing, element-splitting, layout, design, and rendering runtime while this repository supplies optional agent hints and review assets.
 
 Use an existing local MDPR checkout when needed:
 
@@ -249,15 +249,15 @@ PowerPoint render artifacts are written under `artifacts/ppt/`. The comparison u
 
 `docs/component-showcase.html` introduces representative renderer-neutral mappings for editable shapes, layered z-order stacks, chart/KPI surfaces, buttons, tables, timeline/process rails, modal/sheet surfaces, and motion fallbacks.
 
-## Design Components Structure
+## Design Seed Structure
 
-Design Components concepts are adapted into project-owned modules rather than copied into the upstream reference folder:
+Design Components concepts are kept as project-owned reference modules rather than copied into the upstream reference folder:
 
-- `design_components/rule-engine`: deterministic feature extraction, profile selection, recipe selection, variant selection, and trace sorting.
-- `design_components/composition`: layout primitives, region solving, fit constraints, safe areas, and overflow fallback.
-- `design_components/decoration`: token references, surface/border/radius/shadow/effect policies, and coherence lint.
-- `design_components/design-source-adapter`: upstream Design Components token, skin, motion, and component mapping into renderer-neutral MDPR concepts.
-- `design_components/pptx`: editable PPTX object planning and PowerPoint theme color binding for Styled Deck IR.
+- `design_components/rule-engine`: prototype feature extraction and selection ideas to migrate into MDPR when accepted.
+- `design_components/composition`: prototype layout primitives and fit constraints for MDPR layout planning.
+- `design_components/decoration`: token, surface, border, radius, shadow, and coherence lint references for MDPR renderers.
+- `design_components/design-source-adapter`: upstream Design Components token, skin, motion, and component mapping references.
+- `design_components/pptx`: prototype editable PPTX object and theme-color binding references.
 
 The visual diversification seed pack adds reusable infographic patterns such as `proof-point-callout`, `editorial-annotation`, `connected-rail`, `contrast-chip`, `metric-swatch`, and `monotone-icon-aside`. These seeds are intended for PPTX, HTML, and PDF renderers so point elements such as validation markers can use distinct structure, contrast color, quiet icons, and alignment rules while staying coherent with the slide.
 
@@ -292,16 +292,14 @@ The exported design showcase is intentionally rendered in reverse order: `mixed-
 
 `artifacts/design-showcase/design_components_showcase.pptx` is a rendered PowerPoint deck built from the existing Design Components project references. It uses the Toss, Stripe, Linear, and Notion skins and ports representative Design Components patterns such as `stat-card`, `chart-card`, `ranked-list`, and `insight-card` into editable PowerPoint text and shape objects. The generated report checks that each rendered slide has visible content, that every slide keeps a coherent accent, radius family, shadow family, and minimum readable text size, and that the stress slide contains picture, table, chart, text, and auto-shape object types.
 
-## Target Commands
+## Supported MDPR Commands
 
-The intended final implementation should support commands like:
+Use MDPR-owned command/config surfaces:
 
 ```bash
-mdpresent build deck.md --style-engine design-components --style-select rule-based --to pptx
-mdpresent build deck.md --style-engine design-components --profile sharp-technical --to pptx
-mdpresent build deck.md --style-gallery friendly-dashboard,layered-product,minimal-system --to pptx
-mdpresent inspect-style deck.md --show-features --show-selected-recipes --json
-mdpresent lint-style deck.md --style-engine design-components --strict
+mdpresent build deck.md --design executive --to pptx
+mdpresent build deck.md --theme-gallery executive,nord,dracula,solarized --to pptx
+mdpresent build deck.md --config examples/basic/mdpresent.config.yaml --to pptx,html
 ```
 
 ## Attribution and Licensing

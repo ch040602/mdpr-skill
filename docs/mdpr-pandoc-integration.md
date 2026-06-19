@@ -13,15 +13,12 @@ Markdown
   -> MDPR Presentation IR
 ```
 
-The Design Components skill starts after that content contract:
+Design Components skill starts after that content contract, but only as optional semantic hinting and review guidance. It is not a separate design runtime. Optional agent hints may be produced after that content contract:
 
 ```text
 MDPR Presentation IR
-  -> Slide Element IR
-  -> content metrics and importance tags
-  -> deterministic recipe selection
-  -> Styled Deck IR
-  -> editable PPTX/HTML/PDF rendering
+  -> optional intent/grouping/importance hints
+  -> MDPR deterministic layout, design, and rendering
 ```
 
 ## MDPR Responsibilities
@@ -34,23 +31,22 @@ MDPR owns:
 - Sentence, list, table, image, quote, code, and diagram block normalization.
 - Slide splitting, autosplitting, density scoring, and semantic slide intent.
 - Renderer-neutral `Presentation IR`.
+- Layout planning, design presets, color combinations, PPT theme colors, table coherence, diagram rendering, and editable PPTX/HTML/PDF output.
 
-MDPR should not own:
+The skill layer must not add:
 
-- Design recipe selection.
-- Color palette expansion.
-- Shape variant selection.
-- Infographic layout family selection.
-- Visual emphasis, z-order, shadow, radius, or decoration decisions.
+- LLM reasoning or API calls.
+- Agent-authored final visual instructions.
+- Skill-pack-only runtime contracts that duplicate MDPR renderer behavior.
 
 ## Skill Pack Responsibilities
 
 This repository owns:
 
-- Design Components-derived visual diversification under `design_components/`.
-- Coherence rules for typography, spacing, alignment, colors, arrows, shadows, z-order, and text bounds.
-- Infographic seeds for cycle, ordered, ranked, chart-like, and pictorial layouts.
-- PowerPoint render comparison and visual validation.
+- Optional semantic hint guidance for intent, grouping, importance, and ambiguity.
+- Review checklists for typography, spacing, alignment, colors, arrows, shadows, z-order, and text bounds.
+- Reference infographic seeds for cycle, ordered, ranked, chart-like, and pictorial layouts.
+- PowerPoint render comparison and visual validation guidance.
 - Skill packaging, installation guidance, and MDPR availability checks.
 
 ## Pandoc Mode

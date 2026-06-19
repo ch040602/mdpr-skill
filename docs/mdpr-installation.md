@@ -62,13 +62,11 @@ The installer chooses the package manager from MDPR lockfiles in this order: `pn
 
 ## Role Boundary
 
-MDPR owns Markdown parsing, slide splitting, element splitting, and semantic metadata.
+MDPR owns Markdown parsing, slide splitting, element splitting, semantic metadata, layout, design presets, color combinations, rendering, and validation.
 
-This skill pack owns visual diversification after MDPR has produced content structure:
+This skill pack owns optional semantic hinting and review guidance around MDPR output:
 
-- deterministic profile and recipe selection;
-- renderer-neutral component variants;
-- coherent layout and spacing;
-- readable typography constraints;
-- editable PowerPoint shapes, images, charts, and tables;
-- z-order, alignment, arrow, and render validation.
+- intent, grouping, importance, and ambiguity hint guidance;
+- validation checklists for typography, spacing, alignment, arrows, z-order, and text bounds;
+- reference seeds that may be migrated into MDPR;
+- MDPR installation checks and review-driven validation records.
