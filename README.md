@@ -37,6 +37,28 @@ Markdown
   -> Renderer(PPTX/HTML/PDF)
 ```
 
+## MDPR Boundary and Pandoc Mode
+
+MDPR and this skill pack have separate responsibilities. MDPR owns Markdown-to-slide structure, including the Pandoc-backed parser mode. This skill pack owns visual diversification after MDPR has produced semantic presentation structure.
+
+```text
+Markdown
+  -> MDPR parser(simple or Pandoc)
+  -> MDPR BlockIR
+  -> MDPR Outline Tree
+  -> MDPR Split Planner
+  -> MDPR Presentation IR
+  -> Design Components visual diversification
+```
+
+Use Pandoc mode in MDPR when Markdown needs richer structural normalization before slide splitting:
+
+```bash
+mdpresent build deck.md --parser pandoc --to pptx,html --out dist
+```
+
+The default parser remains MDPR's built-in simple parser. Pandoc mode requires the `pandoc` executable on `PATH`, normalizes Pandoc JSON into the same MDPR `BlockIR`, and does not choose design recipes, colors, shapes, infographic families, z-order, or typography. See `docs/mdpr-pandoc-integration.md`.
+
 ## Difference from MDPR
 
 This project does not replace MDPR. It narrows MDPR's responsibility to Markdown parsing, slide splitting, element splitting, and semantic metadata, then adds a deterministic design layer after that content contract.
@@ -160,6 +182,12 @@ Install MDPR's own package dependencies explicitly:
 npm run install:mdpr
 ```
 
+Verify that the installed MDPR checkout includes the structured Pandoc parser boundary:
+
+```bash
+npm run check:mdpr-pandoc
+```
+
 See `docs/mdpr-installation.md` for `MDPR_INSTALL_DIR`, `MDPR_REF`, `MDPR_REPO_URL`, and `MDPR_SKIP_INSTALL` options.
 
 ## Local Validation
@@ -194,6 +222,7 @@ PowerPoint render artifacts are written under `artifacts/ppt/`. The comparison u
 - `docs/migration-guide.md`
 - `docs/release-checklist.md`
 - `docs/mdpr-installation.md`
+- `docs/mdpr-pandoc-integration.md`
 - `docs/infographic-seed-guide.md`
 - `docs/design-source-port-coverage.md`
 - `docs/ppt-visual-validation.md`
