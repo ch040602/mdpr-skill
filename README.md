@@ -1,8 +1,10 @@
 # MDPR x Design Components Rule-based Design Skill Pack
 
-![MDPR Design Components Pipeline](docs/assets/pipeline-overview.svg)
+![MDPR Design Components Pipeline](docs/assets/pipeline-overview.png)
 
 The LLM is an assistant, not the design authority. It may propose semantic hints, but all final design choices are made by deterministic rules inside `design_components/`.
+
+The pipeline image is generated from a one-slide PowerPoint deck at `docs/assets/pipeline-overview.pptx` and exported as a high-resolution PNG through Microsoft PowerPoint.
 
 This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based design component pipeline to MDPR.
 

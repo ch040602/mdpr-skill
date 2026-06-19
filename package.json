@@ -7,8 +7,9 @@
     "inventory:design": "python scripts/design_source_inventory.py --source .cache/design-source --update-manifest --check",
     "verify:ppt": "python scripts/create_and_verify_pptx.py",
     "compare:ppt": "python scripts/render_compare_powerpoint.py",
+    "pipeline:image": "python scripts/create_pipeline_overview_asset.py",
     "showcase:ppt": "python scripts/create_design_showcase_deck.py",
-    "validate": "python scripts/design_source_inventory.py --source .cache/design-source --check && python scripts/render_compare_powerpoint.py && python scripts/create_design_showcase_deck.py && python scripts/validate_pack.py",
+    "validate": "python scripts/design_source_inventory.py --source .cache/design-source --check && python scripts/render_compare_powerpoint.py && python scripts/create_pipeline_overview_asset.py && python scripts/create_design_showcase_deck.py && python scripts/validate_pack.py",
     "test": "npm run validate"
   },
   "keywords": [

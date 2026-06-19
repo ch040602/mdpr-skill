@@ -1,0 +1,16 @@
+{
+  "pptx": "docs\\assets\\pipeline-overview.pptx",
+  "png": "docs\\assets\\pipeline-overview.png",
+  "powerPointRawExportPng": "docs\\assets\\pipeline-overview-export\\슬라이드1.PNG",
+  "renderValidation": {
+    "file": "docs\\assets\\pipeline-overview.png",
+    "size": [
+      2400,
+      1305
+    ],
+    "uniqueColors": 3581,
+    "nonWhitePixels": 1915610,
+    "hasContent": true
+  },
+  "ok": true
+}

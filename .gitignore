@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 .pytest_cache/
 artifacts/**/powerpoint-export/
+docs/assets/pipeline-overview-export/
