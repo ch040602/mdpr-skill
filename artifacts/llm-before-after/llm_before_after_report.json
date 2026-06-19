@@ -1,58 +1,92 @@
 {
-  "rows": [
+  "themes": [
     {
-      "label": "MDPR before / executive",
-      "slug": "before_executive",
-      "slideCount": 6,
-      "slides": [
-        "artifacts\\llm-before-after\\previews\\before_executive\\slide-01.png",
-        "artifacts\\llm-before-after\\previews\\before_executive\\slide-02.png",
-        "artifacts\\llm-before-after\\previews\\before_executive\\slide-03.png",
-        "artifacts\\llm-before-after\\previews\\before_executive\\slide-04.png",
-        "artifacts\\llm-before-after\\previews\\before_executive\\slide-05.png",
-        "artifacts\\llm-before-after\\previews\\before_executive\\slide-06.png"
-      ]
+      "theme": "executive",
+      "label": "Executive / complementary",
+      "mode": "before",
+      "pptx": "artifacts/llm-before-after/mdpr-before-executive.pptx",
+      "previewSheet": "artifacts/llm-before-after/llm_before_after_executive.png",
+      "previews": [
+        "previews\\before_executive\\slide-01.png",
+        "previews\\before_executive\\slide-02.png",
+        "previews\\before_executive\\slide-03.png",
+        "previews\\before_executive\\slide-04.png",
+        "previews\\before_executive\\slide-05.png",
+        "previews\\before_executive\\slide-06.png"
+      ],
+      "slides": 6,
+      "shapes": 81,
+      "textFrames": 81,
+      "tables": 0,
+      "charts": 0
     },
     {
-      "label": "MDPR before / editorial",
-      "slug": "before_editorial",
-      "slideCount": 6,
-      "slides": [
-        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-01.png",
-        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-02.png",
-        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-03.png",
-        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-04.png",
-        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-05.png",
-        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-06.png"
-      ]
+      "theme": "executive",
+      "label": "Executive / complementary",
+      "mode": "after",
+      "pptx": "artifacts/llm-before-after/llm-hint-after-executive.pptx",
+      "previewSheet": "artifacts/llm-before-after/llm_before_after_executive.png",
+      "previews": [
+        "previews\\after_executive\\slide-01.png",
+        "previews\\after_executive\\slide-02.png",
+        "previews\\after_executive\\slide-03.png",
+        "previews\\after_executive\\slide-04.png",
+        "previews\\after_executive\\slide-05.png",
+        "previews\\after_executive\\slide-06.png",
+        "previews\\after_executive\\slide-07.png"
+      ],
+      "slides": 7,
+      "shapes": 92,
+      "textFrames": 90,
+      "tables": 1,
+      "charts": 1
     },
     {
-      "label": "LLM-hint after / executive",
-      "slug": "after_executive",
-      "slideCount": 7,
-      "slides": [
-        "artifacts\\llm-before-after\\previews\\after_executive\\slide-01.png",
-        "artifacts\\llm-before-after\\previews\\after_executive\\slide-02.png",
-        "artifacts\\llm-before-after\\previews\\after_executive\\slide-03.png",
-        "artifacts\\llm-before-after\\previews\\after_executive\\slide-04.png",
-        "artifacts\\llm-before-after\\previews\\after_executive\\slide-05.png",
-        "artifacts\\llm-before-after\\previews\\after_executive\\slide-06.png",
-        "artifacts\\llm-before-after\\previews\\after_executive\\slide-07.png"
-      ]
+      "theme": "editorial",
+      "label": "Editorial / triadic",
+      "mode": "before",
+      "pptx": "artifacts/llm-before-after/mdpr-before-editorial.pptx",
+      "previewSheet": "artifacts/llm-before-after/llm_before_after_editorial.png",
+      "previews": [
+        "previews\\before_editorial\\slide-01.png",
+        "previews\\before_editorial\\slide-02.png",
+        "previews\\before_editorial\\slide-03.png",
+        "previews\\before_editorial\\slide-04.png",
+        "previews\\before_editorial\\slide-05.png",
+        "previews\\before_editorial\\slide-06.png"
+      ],
+      "slides": 6,
+      "shapes": 81,
+      "textFrames": 81,
+      "tables": 0,
+      "charts": 0
     },
     {
-      "label": "LLM-hint after / editorial",
-      "slug": "after_editorial",
-      "slideCount": 7,
-      "slides": [
-        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-01.png",
-        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-02.png",
-        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-03.png",
-        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-04.png",
-        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-05.png",
-        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-06.png",
-        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-07.png"
-      ]
+      "theme": "editorial",
+      "label": "Editorial / triadic",
+      "mode": "after",
+      "pptx": "artifacts/llm-before-after/llm-hint-after-editorial.pptx",
+      "previewSheet": "artifacts/llm-before-after/llm_before_after_editorial.png",
+      "previews": [
+        "previews\\after_editorial\\slide-01.png",
+        "previews\\after_editorial\\slide-02.png",
+        "previews\\after_editorial\\slide-03.png",
+        "previews\\after_editorial\\slide-04.png",
+        "previews\\after_editorial\\slide-05.png",
+        "previews\\after_editorial\\slide-06.png",
+        "previews\\after_editorial\\slide-07.png"
+      ],
+      "slides": 7,
+      "shapes": 92,
+      "textFrames": 90,
+      "tables": 1,
+      "charts": 1
     }
-  ]
+  ],
+  "separatedSheets": {
+    "executive": "artifacts/llm-before-after/llm_before_after_executive.png",
+    "editorial": "artifacts/llm-before-after/llm_before_after_editorial.png",
+    "combined": "artifacts/llm-before-after/llm_before_after_contact_sheet.png"
+  },
+  "ok": true
 }

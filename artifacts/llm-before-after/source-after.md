@@ -10,11 +10,17 @@
 
 ## Color System Propagates Through PPTX
 
+```chart
+labels: Elements, Tables, Charts, Theme XML
+Coverage: 4, 3, 4, 6
+Validation: 3, 4, 3, 5
+```
+
 | Target | MDPR-owned behavior | Validation signal |
 | --- | --- | --- |
 | Elements | Apply active design preset and color combination | Accents stay coherent |
 | Tables | Use preset header fill, border, and readable minimum font | Cells remain aligned |
-| Charts | Expose chart color tokens from the same palette | Future chart renderer inherits theme |
+| Charts | Render native PowerPoint charts from theme chart tokens | Chart series inherit the active harmony |
 | PowerPoint | Write `accent1` through `accent6` into document theme XML | User edits keep palette |
 
 ## Table And Text Coherence Is Measured Before Rendering

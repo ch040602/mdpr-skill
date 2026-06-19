@@ -10,6 +10,8 @@ This artifact set compares MDPR output before and after optional LLM-style seman
 - `llm-hint-after-editorial.pptx`: MDPR output from `source-after.md` with the editorial theme.
 - `previews/`: PowerPoint-rendered PNG exports for each deck.
 - `llm_before_after_contact_sheet.png`: combined rendered preview.
+- `llm_before_after_executive.png`: executive/complementary before-and-after preview.
+- `llm_before_after_editorial.png`: editorial/triadic before-and-after preview.
 - `llm_before_after_report.json`: slide counts and preview paths.
 
 The LLM does not choose colors, coordinates, typography, z-order, or renderer objects. MDPR owns rendering and applies the selected theme and color-combination rules.
