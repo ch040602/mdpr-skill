@@ -3,6 +3,7 @@
   "svg": "docs\\assets\\pipeline-overview.svg",
   "pptx": "docs\\assets\\pipeline-overview.pptx",
   "png": "docs\\assets\\pipeline-overview.png",
+  "layoutPlan": "docs\\assets\\pipeline-overview-layout.json",
   "powerPointRawExportPng": "docs\\assets\\pipeline-overview-export\\슬라이드1.PNG",
   "renderValidation": {
     "file": "docs\\assets\\pipeline-overview.png",
@@ -10,7 +11,7 @@
       2600,
       1414
     ],
-    "uniqueColors": 12579,
+    "uniqueColors": 12422,
     "nonWhitePixels": 3507787,
     "hasContent": true
   },
@@ -43,6 +44,96 @@
     "trackedTextBoxes": 47,
     "trackedShadows": 21,
     "trackedArrows": 13,
+    "alignmentEngine": "PowerPoint ShapeRange.Align",
+    "alignmentRuleCount": 9,
+    "alignmentRules": [
+      {
+        "id": "top-level-regions",
+        "axis": "middle",
+        "members": [
+          "zone_content_panel",
+          "zone_reasoning_panel",
+          "zone_rules_panel",
+          "zone_outputs_panel"
+        ],
+        "direction": "horizontal"
+      },
+      {
+        "id": "content-column",
+        "axis": "center",
+        "members": [
+          "start_flag",
+          "markdown_card",
+          "splitter_card"
+        ],
+        "direction": "vertical"
+      },
+      {
+        "id": "reasoning-column",
+        "axis": "center",
+        "members": [
+          "ir_core_card",
+          "reasoning_card"
+        ],
+        "direction": "vertical"
+      },
+      {
+        "id": "main-horizontal-flow",
+        "axis": "middle",
+        "members": [
+          "ir_core_card",
+          "rule_engine_card",
+          "styled_ir_card"
+        ],
+        "direction": "horizontal"
+      },
+      {
+        "id": "rule-top-row",
+        "axis": "middle",
+        "members": [
+          "features_card",
+          "recipes_card"
+        ],
+        "direction": "horizontal"
+      },
+      {
+        "id": "rule-bottom-row",
+        "axis": "middle",
+        "members": [
+          "compose_card",
+          "decorate_card"
+        ],
+        "direction": "horizontal"
+      },
+      {
+        "id": "rule-left-column",
+        "axis": "center",
+        "members": [
+          "features_card",
+          "compose_card"
+        ],
+        "direction": "vertical"
+      },
+      {
+        "id": "rule-right-column",
+        "axis": "center",
+        "members": [
+          "recipes_card",
+          "decorate_card"
+        ],
+        "direction": "vertical"
+      },
+      {
+        "id": "outputs-column",
+        "axis": "center",
+        "members": [
+          "styled_ir_card",
+          "renderers_card",
+          "visual_check"
+        ],
+        "direction": "vertical"
+      }
+    ],
     "arrowConnectionLevels": [
       "child",
       "hint",
@@ -57,12 +148,14 @@
     "hierarchyViolationCount": 0,
     "containmentViolationCount": 0,
     "arrowConnectionViolationCount": 0,
+    "alignmentViolationCount": 0,
     "overflow": [],
     "fontViolations": [],
     "iconAlignmentViolations": [],
     "hierarchyViolations": [],
     "containmentViolations": [],
     "arrowConnectionViolations": [],
+    "alignmentViolations": [],
     "ok": true
   },
   "ok": true

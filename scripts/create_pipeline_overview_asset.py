@@ -19,6 +19,7 @@ SVG = OUT / "pipeline-overview.svg"
 PPTX = OUT / "pipeline-overview.pptx"
 PNG = OUT / "pipeline-overview.png"
 REPORT = OUT / "pipeline-overview-report.json"
+LAYOUT_REPORT = OUT / "pipeline-overview-layout.json"
 
 
 @dataclass(frozen=True)
@@ -49,6 +50,8 @@ ICON_ALIGNMENTS: list[dict[str, float | str]] = []
 HIERARCHY: list[dict[str, str]] = []
 ARROW_CONNECTIONS: list[dict[str, float | str]] = []
 SHADOWS: list[dict[str, float | str]] = []
+ALIGNMENT_RULES: list[dict[str, Any]] = []
+PLACEMENT_REPORT: dict[str, Any] = {}
 
 
 THEMES: dict[str, dict[str, str]] = {
@@ -101,6 +104,77 @@ def load_pipeline_spec() -> dict[str, Any]:
     if theme_name not in THEMES:
         raise ValueError(f"Unsupported pipeline theme: {theme_name}")
     return spec
+
+
+def base_placement() -> dict[str, tuple[float, float, float, float]]:
+    return {
+        "z01_canvas": (LAYOUT.canvas_x, LAYOUT.canvas_y, LAYOUT.canvas_w, LAYOUT.canvas_h),
+        "zone_content_panel": (90, 150, 280, 430),
+        "zone_reasoning_panel": (395, 150, 280, 430),
+        "zone_rules_panel": (700, 150, 395, 430),
+        "zone_outputs_panel": (1120, 150, 250, 430),
+        "start_flag": (190, 246, 80, 34),
+        "markdown_card": (115, 306, 230, 105),
+        "splitter_card": (115, 448, 230, 112),
+        "ir_core_card": (425, 230, 220, 112),
+        "reasoning_card": (425, 390, 220, 170),
+        "reasoning_guard": (450, 486, 170, 34),
+        "rule_engine_card": (740, 245, 315, 88),
+        "features_card": (735, 346, 145, 108),
+        "recipes_card": (920, 346, 145, 108),
+        "compose_card": (735, 458, 145, 108),
+        "decorate_card": (920, 458, 145, 108),
+        "styled_ir_card": (1145, 235, 200, 105),
+        "renderers_card": (1145, 390, 200, 105),
+        "visual_check": (1145, 525, 200, 44),
+        "coherence_band": (90, 625, 1220, 72),
+        "font_badge": (1118, 646, 180, 34),
+    }
+
+
+def alignment_rules() -> list[dict[str, Any]]:
+    return [
+        {"id": "top-level-regions", "axis": "middle", "members": ["zone_content_panel", "zone_reasoning_panel", "zone_rules_panel", "zone_outputs_panel"], "direction": "horizontal"},
+        {"id": "content-column", "axis": "center", "members": ["start_flag", "markdown_card", "splitter_card"], "direction": "vertical"},
+        {"id": "reasoning-column", "axis": "center", "members": ["ir_core_card", "reasoning_card"], "direction": "vertical"},
+        {"id": "main-horizontal-flow", "axis": "middle", "members": ["ir_core_card", "rule_engine_card", "styled_ir_card"], "direction": "horizontal"},
+        {"id": "rule-top-row", "axis": "middle", "members": ["features_card", "recipes_card"], "direction": "horizontal"},
+        {"id": "rule-bottom-row", "axis": "middle", "members": ["compose_card", "decorate_card"], "direction": "horizontal"},
+        {"id": "rule-left-column", "axis": "center", "members": ["features_card", "compose_card"], "direction": "vertical"},
+        {"id": "rule-right-column", "axis": "center", "members": ["recipes_card", "decorate_card"], "direction": "vertical"},
+        {"id": "outputs-column", "axis": "center", "members": ["styled_ir_card", "renderers_card", "visual_check"], "direction": "vertical"},
+    ]
+
+
+def apply_powerpoint_alignment(plan: dict[str, tuple[float, float, float, float]], rules: list[dict[str, Any]]) -> dict[str, tuple[float, float, float, float]]:
+    import win32com.client  # type: ignore
+
+    aligned = dict(plan)
+    app = win32com.client.DispatchEx("PowerPoint.Application")
+    presentation = None
+    try:
+        app.Visible = 1
+        presentation = app.Presentations.Add(WithWindow=False)
+        presentation.PageSetup.SlideWidth = LAYOUT.svg_w
+        presentation.PageSetup.SlideHeight = LAYOUT.svg_h
+        slide = presentation.Slides.Add(1, 12)
+        for name, (x, y, w, h) in aligned.items():
+            item = slide.Shapes.AddShape(1, x, y, w, h)
+            item.Name = name
+        for rule in rules:
+            names = rule["members"]
+            shape_range = slide.Shapes.Range(names)
+            align_cmd = 4 if rule["axis"] == "middle" else 1
+            shape_range.Align(align_cmd, False)
+            for name in names:
+                item = slide.Shapes(name)
+                _, _, w, h = aligned[name]
+                aligned[name] = (float(item.Left), float(item.Top), w, h)
+    finally:
+        if presentation is not None:
+            presentation.Close()
+        app.Quit()
+    return aligned
 
 
 def esc(value: str) -> str:
@@ -332,6 +406,25 @@ def build_svg(path: Path) -> None:
     theme = THEMES[str(spec["theme"])]
     regions = spec["regions"]
     coherence = spec["coherence"]
+    base = base_placement()
+    ALIGNMENT_RULES.clear()
+    ALIGNMENT_RULES.extend(alignment_rules())
+    placement = apply_powerpoint_alignment(base, ALIGNMENT_RULES)
+    PLACEMENT_REPORT.clear()
+    PLACEMENT_REPORT.update(
+        {
+            "source": str(PIPELINE_MD.relative_to(ROOT)),
+            "theme": spec["theme"],
+            "alignmentEngine": "PowerPoint ShapeRange.Align",
+            "basePlacement": {key: list(value) for key, value in base.items()},
+            "alignedPlacement": {key: list(value) for key, value in placement.items()},
+            "alignmentRules": ALIGNMENT_RULES,
+        }
+    )
+
+    def box(name: str) -> tuple[float, float, float, float]:
+        return placement[name]
+
     TEXT_BOUNDS.clear()
     BOX_BOUNDS.clear()
     ICON_ALIGNMENTS.clear()
@@ -346,7 +439,7 @@ def build_svg(path: Path) -> None:
         f'  <rect id="z00_background" width="{LAYOUT.svg_w}" height="{LAYOUT.svg_h}" fill="#{theme["background"]}"/>',
     ]
 
-    rect(p, "z01_canvas", LAYOUT.canvas_x, LAYOUT.canvas_y, LAYOUT.canvas_w, LAYOUT.canvas_h, theme["canvas"], theme["canvasStroke"], 84, 1.5, True)
+    rect(p, "z01_canvas", *box("z01_canvas"), theme["canvas"], theme["canvasStroke"], 84, 1.5, True)
     svg_text(p, "header_title", "", LAYOUT.origin_x, LAYOUT.origin_y + 18, str(spec["title"]), 38, theme["text"], 700, "page-title")
     svg_text(
         p,
@@ -361,37 +454,39 @@ def build_svg(path: Path) -> None:
         "page-subtitle",
     )
 
-    panel(p, "zone_content", 90, 150, 280, 430, regions["content"]["title"], regions["content"]["subtitle"], theme["contentFill"], theme["contentStroke"], theme["contentTitle"])
-    panel(p, "zone_reasoning", 395, 150, 280, 430, regions["reasoning"]["title"], regions["reasoning"]["subtitle"], theme["reasoningFill"], theme["reasoningStroke"], theme["reasoningTitle"])
-    panel(p, "zone_rules", 700, 150, 395, 430, regions["rules"]["title"], regions["rules"]["subtitle"], theme["rulesFill"], theme["rulesStroke"], theme["rulesTitle"])
-    panel(p, "zone_outputs", 1120, 150, 250, 430, regions["outputs"]["title"], regions["outputs"]["subtitle"], theme["outputsFill"], theme["outputsStroke"], theme["outputsTitle"])
+    panel(p, "zone_content", *box("zone_content_panel"), regions["content"]["title"], regions["content"]["subtitle"], theme["contentFill"], theme["contentStroke"], theme["contentTitle"])
+    panel(p, "zone_reasoning", *box("zone_reasoning_panel"), regions["reasoning"]["title"], regions["reasoning"]["subtitle"], theme["reasoningFill"], theme["reasoningStroke"], theme["reasoningTitle"])
+    panel(p, "zone_rules", *box("zone_rules_panel"), regions["rules"]["title"], regions["rules"]["subtitle"], theme["rulesFill"], theme["rulesStroke"], theme["rulesTitle"])
+    panel(p, "zone_outputs", *box("zone_outputs_panel"), regions["outputs"]["title"], regions["outputs"]["subtitle"], theme["outputsFill"], theme["outputsStroke"], theme["outputsTitle"])
 
     content_cards = regions["content"]["cards"]
     reasoning_cards = regions["reasoning"]["cards"]
     rule_cards = regions["rules"]["cards"]
     output_cards = regions["outputs"]["cards"]
 
-    badge(p, "start_flag", 190, 246, 80, 34, "start", theme["badgeDark"], theme["badgeDark"], "FFFFFF")
-    card(p, "markdown", 115, 306, 230, 105, content_cards["markdown"]["title"], content_cards["markdown"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
-    card(p, "splitter", 115, 448, 230, 112, content_cards["splitter"]["title"], content_cards["splitter"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
+    badge(p, "start_flag", *box("start_flag"), "start", theme["badgeDark"], theme["badgeDark"], "FFFFFF")
+    card(p, "markdown", *box("markdown_card"), content_cards["markdown"]["title"], content_cards["markdown"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
+    card(p, "splitter", *box("splitter_card"), content_cards["splitter"]["title"], content_cards["splitter"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
     connect(p, "main_start_markdown", "start_flag", "bottom", "markdown_card", "top", theme["mainArrow"], 4.2, "arrowDark", connection_level="child")
     connect(p, "main_markdown_splitter", "markdown_card", "bottom", "splitter_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="child", from_ratio=0.5, to_ratio=0.5)
 
-    card(p, "ir_core", 425, 230, 220, 112, reasoning_cards["ir"]["title"], reasoning_cards["ir"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
-    card(p, "reasoning", 425, 390, 220, 170, reasoning_cards["result"]["title"], reasoning_cards["result"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
-    badge(p, "reasoning_guard", 450, 486, 170, 34, reasoning_cards["result"]["badge"], theme["hintBadgeFill"], theme["hintBadgeStroke"], theme["hintText"])
-    svg_text(p, "reasoning_limit", "reasoning_card", 450, 530, reasoning_cards["result"]["limit"], 13, theme["muted"], 700, "card-body")
+    card(p, "ir_core", *box("ir_core_card"), reasoning_cards["ir"]["title"], reasoning_cards["ir"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
+    card(p, "reasoning", *box("reasoning_card"), reasoning_cards["result"]["title"], reasoning_cards["result"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
+    badge(p, "reasoning_guard", *box("reasoning_guard"), reasoning_cards["result"]["badge"], theme["hintBadgeFill"], theme["hintBadgeStroke"], theme["hintText"])
+    reasoning_x, reasoning_y, _, _ = box("reasoning_card")
+    svg_text(p, "reasoning_limit", "reasoning_card", reasoning_x + 25, reasoning_y + 140, reasoning_cards["result"]["limit"], 13, theme["muted"], 700, "card-body")
     connect(p, "main_splitter_ir", "splitter_card", "right", "ir_core_card", "left", theme["secondaryArrow"], 5.0, "arrowSlate", connection_level="child")
     connect(p, "hint_ir_reasoning", "ir_core_card", "bottom", "reasoning_card", "top", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint")
 
     engine = regions["rules"]["engine"]
-    rect(p, "rule_engine_card", 740, 245, 315, 88, "DCFCE7", theme["rulesStroke"], 22, 1.5, True)
-    svg_text(p, "rule_engine_title", "rule_engine_card", 770, 275, engine["title"], 17, "14532D", 700, "card-title")
-    svg_text(p, "rule_engine_body", "rule_engine_card", 770, 311, engine["line"], 14, "166534", 400, "card-body")
-    card(p, "features", 735, 346, 145, 108, rule_cards["features"]["title"], rule_cards["features"]["lines"], theme["rulesAccent"], "BBF7D0")
-    card(p, "recipes", 920, 346, 145, 108, rule_cards["recipes"]["title"], rule_cards["recipes"]["lines"], theme["rulesAccent"], "BBF7D0")
-    card(p, "compose", 735, 458, 145, 108, rule_cards["compose"]["title"], rule_cards["compose"]["lines"], theme["rulesAccent"], "BBF7D0")
-    card(p, "decorate", 920, 458, 145, 108, rule_cards["decorate"]["title"], rule_cards["decorate"]["lines"], theme["rulesAccent"], "BBF7D0")
+    rect(p, "rule_engine_card", *box("rule_engine_card"), "DCFCE7", theme["rulesStroke"], 22, 1.5, True)
+    rule_x, rule_y, _, _ = box("rule_engine_card")
+    svg_text(p, "rule_engine_title", "rule_engine_card", rule_x + 30, rule_y + 30, engine["title"], 17, "14532D", 700, "card-title")
+    svg_text(p, "rule_engine_body", "rule_engine_card", rule_x + 30, rule_y + 66, engine["line"], 14, "166534", 400, "card-body")
+    card(p, "features", *box("features_card"), rule_cards["features"]["title"], rule_cards["features"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "recipes", *box("recipes_card"), rule_cards["recipes"]["title"], rule_cards["recipes"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "compose", *box("compose_card"), rule_cards["compose"]["title"], rule_cards["compose"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "decorate", *box("decorate_card"), rule_cards["decorate"]["title"], rule_cards["decorate"]["lines"], theme["rulesAccent"], "BBF7D0")
     connect(p, "main_ir_rules", "ir_core_card", "right", "rule_engine_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child")
     connect(p, "hint_reasoning_rules", "reasoning_card", "right", "features_card", "left", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint", from_ratio=0.5, to_ratio=0.45)
     connect(p, "rule_features_recipes", "features_card", "right", "recipes_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal")
@@ -399,28 +494,29 @@ def build_svg(path: Path) -> None:
     connect(p, "rule_recipes_decorate", "recipes_card", "bottom", "decorate_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal")
     connect(p, "rule_compose_decorate", "compose_card", "right", "decorate_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal")
 
-    card(p, "styled_ir", 1145, 235, 200, 105, output_cards["styledIr"]["title"], output_cards["styledIr"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
-    card(p, "renderers", 1145, 390, 200, 105, output_cards["renderers"]["title"], output_cards["renderers"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
-    badge(p, "visual_check", 1145, 525, 200, 44, regions["outputs"]["validation"], theme["validationFill"], theme["validationStroke"], "92400E")
+    card(p, "styled_ir", *box("styled_ir_card"), output_cards["styledIr"]["title"], output_cards["styledIr"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
+    card(p, "renderers", *box("renderers_card"), output_cards["renderers"]["title"], output_cards["renderers"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
+    badge(p, "visual_check", *box("visual_check"), regions["outputs"]["validation"], theme["validationFill"], theme["validationStroke"], "92400E")
     connect(p, "main_rules_styled_ir", "rule_engine_card", "right", "styled_ir_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child")
     connect(p, "main_styled_renderers", "styled_ir_card", "bottom", "renderers_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="child")
     connect(p, "validation_loop", "renderers_card", "bottom", "visual_check", "top", theme["validationArrow"], 3.2, "arrowAmber", connection_level="validation")
 
-    rect(p, "coherence_band", 90, 625, 1220, 72, theme["card"], theme["cardStroke"], 18, 1.4, True)
-    svg_text(p, "coherence_title", "coherence_band", 122, 662, coherence["title"], 17, theme["text"], 700, "card-title")
+    rect(p, "coherence_band", *box("coherence_band"), theme["card"], theme["cardStroke"], 18, 1.4, True)
+    coherence_x, coherence_y, _, _ = box("coherence_band")
+    svg_text(p, "coherence_title", "coherence_band", coherence_x + 32, coherence_y + 37, coherence["title"], 17, theme["text"], 700, "card-title")
     svg_text(
         p,
         "coherence_body",
         "coherence_band",
-        325,
-        662,
+        coherence_x + 235,
+        coherence_y + 37,
         coherence["line"],
         14,
         "526071",
         400,
         "card-body",
     )
-    badge(p, "font_badge", 1118, 646, 180, 34, coherence["badge"], theme["badgeDark"], theme["badgeDark"], "FFFFFF")
+    badge(p, "font_badge", *box("font_badge"), coherence["badge"], theme["badgeDark"], theme["badgeDark"], "FFFFFF")
 
     HIERARCHY.extend(
         [
@@ -515,6 +611,11 @@ def texts_for_parent(parent: str) -> list[dict[str, float | str]]:
     return [item for item in TEXT_BOUNDS if item["parent"] == parent]
 
 
+def center_of(box_name: str) -> tuple[float, float]:
+    x, y, w, h = BOX_BOUNDS[box_name]
+    return x + w / 2, y + h / 2
+
+
 def validate_layout() -> dict[str, Any]:
     overflow: list[dict[str, Any]] = []
     font_violations: list[dict[str, Any]] = []
@@ -522,6 +623,7 @@ def validate_layout() -> dict[str, Any]:
     hierarchy_violations: list[dict[str, Any]] = []
     containment_violations: list[dict[str, Any]] = []
     arrow_violations: list[dict[str, Any]] = []
+    alignment_violations: list[dict[str, Any]] = []
     for item in TEXT_BOUNDS:
         parent = str(item["parent"])
         if parent and parent in BOX_BOUNDS:
@@ -556,6 +658,14 @@ def validate_layout() -> dict[str, Any]:
     for item in ARROW_CONNECTIONS:
         if not item["from"] or not item["to"] or str(item["from"]) not in BOX_BOUNDS or str(item["to"]) not in BOX_BOUNDS:
             arrow_violations.append(item)
+    for rule in ALIGNMENT_RULES:
+        members = [name for name in rule["members"] if name in BOX_BOUNDS]
+        if len(members) != len(rule["members"]):
+            alignment_violations.append({"id": rule["id"], "reason": "missing-member", "members": rule["members"]})
+            continue
+        values = [center_of(name)[1 if rule["axis"] == "middle" else 0] for name in members]
+        if max(values) - min(values) > 0.75:
+            alignment_violations.append({"id": rule["id"], "axis": rule["axis"], "members": members, "centers": values})
     return {
         "source": "svg",
         "markdownSource": str(PIPELINE_MD.relative_to(ROOT)),
@@ -573,6 +683,9 @@ def validate_layout() -> dict[str, Any]:
         "trackedTextBoxes": len(TEXT_BOUNDS),
         "trackedShadows": len(SHADOWS),
         "trackedArrows": len(ARROW_CONNECTIONS),
+        "alignmentEngine": "PowerPoint ShapeRange.Align",
+        "alignmentRuleCount": len(ALIGNMENT_RULES),
+        "alignmentRules": ALIGNMENT_RULES,
         "arrowConnectionLevels": sorted(set(str(item["connectionLevel"]) for item in ARROW_CONNECTIONS)),
         "shadowStrategy": "PPT-compatible SVG shadow rectangles plus PowerPoint picture shadow",
         "powerPointPictureShadowApplied": True,
@@ -582,13 +695,15 @@ def validate_layout() -> dict[str, Any]:
         "hierarchyViolationCount": len(hierarchy_violations),
         "containmentViolationCount": len(containment_violations),
         "arrowConnectionViolationCount": len(arrow_violations),
+        "alignmentViolationCount": len(alignment_violations),
         "overflow": overflow,
         "fontViolations": font_violations,
         "iconAlignmentViolations": icon_violations,
         "hierarchyViolations": hierarchy_violations,
         "containmentViolations": containment_violations,
         "arrowConnectionViolations": arrow_violations,
-        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations,
+        "alignmentViolations": alignment_violations,
+        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations and not alignment_violations,
     }
 
 
@@ -596,6 +711,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     export_dir = OUT / "pipeline-overview-export"
     build_svg(SVG)
+    LAYOUT_REPORT.write_text(json.dumps(PLACEMENT_REPORT, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     create_deck_from_svg(SVG, PPTX)
     exported = export_with_powerpoint(PPTX, export_dir)
     shutil.copyfile(exported, PNG)
@@ -606,6 +722,7 @@ def main() -> None:
         "svg": str(SVG.relative_to(ROOT)),
         "pptx": str(PPTX.relative_to(ROOT)),
         "png": str(PNG.relative_to(ROOT)),
+        "layoutPlan": str(LAYOUT_REPORT.relative_to(ROOT)),
         "powerPointRawExportPng": str(exported.relative_to(ROOT)),
         "renderValidation": render,
         "layoutValidation": layout,
