@@ -2,6 +2,8 @@
 
 MDPR owns the content contract. The LLM is optional and only provides short semantic tags when needed; it does not reason through layout, choose coordinates, colors, variants, effects, or z-order. The Design Components rule layer makes those decisions deterministically and emits renderer-neutral output that can be rendered to editable PPTX, HTML, and PDF.
 
+Optional agent tags are hints only. Deterministic rules own layout, style, z-order, theme colors, proof objects, icon slots, and renderer-specific output.
+
 The generated pipeline overview uses this file as its content source. The image generator reads the `pipeline-image` block below, applies the project layout rules, embeds the SVG into a one-slide PowerPoint deck, and exports the final PNG through Microsoft PowerPoint.
 
 The selected theme is `sage-editorial`: a warm editorial palette that combines flow colors, section accents, validation contrast, and quiet support surfaces. Point elements such as `visual validation` use a different proof-callout pattern, not only a stronger hue.
@@ -10,7 +12,7 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
 {
   "theme": "sage-editorial",
   "title": "MDPR Design Components Pipeline",
-  "subtitle": "MDPR splits content. Optional agent tags stay minimal. Deterministic rules own layout, style, z-order, and editable rendering.",
+  "subtitle": "MDPR parses Markdown, keeps graph objects intact, derives theme colors, and renders editable PPTX/HTML/PDF without LLM runtime decisions.",
   "seed": "visual-diversification-seeds/proof-point-callout",
   "regions": {
     "content": {
@@ -19,11 +21,11 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
       "cards": {
         "markdown": {
           "title": "Markdown",
-          "lines": ["text, tables, code", "images and notes"]
+          "lines": ["headings, tables", "charts and images"]
         },
         "splitter": {
           "title": "MDPR Splitter",
-          "lines": ["slide and object split", "no visual choices"]
+          "lines": ["Pandoc or simple AST", "slide/object split"]
         }
       }
     },
@@ -33,11 +35,11 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
       "cards": {
         "ir": {
           "title": "Slide Element IR",
-          "lines": ["content-only contract"]
+          "lines": ["semantic blocks", "graph kept whole"]
         },
         "result": {
           "title": "Hint Packet",
-          "lines": ["intent tags only"],
+          "lines": ["intent + importance"],
           "badge": "hints only",
           "limit": "no coordinates or styles"
         }
@@ -48,24 +50,32 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
       "subtitle": "final visual choices",
       "engine": {
         "title": "Rule Engine Boundary",
-        "line": "recipes, variants, z-order"
+        "line": "recipes, colors, z-order"
       },
       "cards": {
         "features": {
           "title": "Features",
-          "lines": ["density, mix", "size risk"]
+          "lines": ["density", "size risk"]
         },
         "recipes": {
           "title": "Recipes",
-          "lines": ["profile match", "variant"]
+          "lines": ["profile", "variant"]
+        },
+        "theme": {
+          "title": "Theme",
+          "lines": ["harmony", "PPT accents"]
         },
         "compose": {
           "title": "Compose",
-          "lines": ["regions, fit", "overflow"]
+          "lines": ["regions", "overflow"]
+        },
+        "objects": {
+          "title": "Objects",
+          "lines": ["charts", "icons"]
         },
         "decorate": {
           "title": "Decorate",
-          "lines": ["type, radius", "effects"]
+          "lines": ["type", "effects"]
         }
       }
     },
@@ -75,11 +85,11 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
       "cards": {
         "styledIr": {
           "title": "Styled Deck IR",
-          "lines": ["renderer-neutral", "visual contract"]
+          "lines": ["renderer-neutral", "coherent contract"]
         },
         "renderers": {
           "title": "Renderers",
-          "lines": ["editable PPTX", "HTML and PDF"]
+          "lines": ["editable PPTX", "HTML / PDF"]
         }
       },
       "validation": "visual validation"
@@ -87,8 +97,8 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
   },
   "coherence": {
     "title": "Coherence checks",
-    "line": "Hierarchy-scaled type, centered icon labels, bounded text, consistent spacing, aligned starts, and readable minimum sizes.",
-    "badge": "font scale by role"
+    "line": "One graph stays on one slide; text is bounded; icons are centered; arrows use role-level style; theme accents remain readable.",
+    "badge": "coherence gate"
   }
 }
 -->

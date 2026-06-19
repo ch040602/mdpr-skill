@@ -70,34 +70,46 @@
       34
     ],
     "rule_engine_card": [
-      740,
-      245,
-      315,
-      88
+      730,
+      236,
+      345,
+      80
     ],
     "features_card": [
-      735,
-      346,
-      145,
-      108
+      725,
+      338,
+      112,
+      92
     ],
     "recipes_card": [
-      920,
-      346,
-      145,
-      108
+      848,
+      338,
+      112,
+      92
+    ],
+    "theme_card": [
+      971,
+      338,
+      112,
+      92
     ],
     "compose_card": [
-      735,
-      458,
-      145,
-      108
+      725,
+      464,
+      112,
+      92
+    ],
+    "objects_card": [
+      848,
+      464,
+      112,
+      92
     ],
     "decorate_card": [
-      920,
-      458,
-      145,
-      108
+      971,
+      464,
+      112,
+      92
     ],
     "styled_ir_card": [
       1145,
@@ -198,34 +210,46 @@
       34
     ],
     "rule_engine_card": [
-      740.0,
-      242.0,
-      315,
-      88
+      730.0,
+      246.0,
+      345,
+      80
     ],
     "features_card": [
-      735.0,
-      346.0,
-      145,
-      108
+      725.0,
+      338.0,
+      112,
+      92
     ],
     "recipes_card": [
-      920.0,
-      346.0,
-      145,
-      108
+      848.0,
+      338.0,
+      112,
+      92
+    ],
+    "theme_card": [
+      971.0,
+      338.0,
+      112,
+      92
     ],
     "compose_card": [
-      735.0,
-      458.0,
-      145,
-      108
+      725.0,
+      464.0,
+      112,
+      92
+    ],
+    "objects_card": [
+      848.0,
+      464.0,
+      112,
+      92
     ],
     "decorate_card": [
-      920.0,
-      458.0,
-      145,
-      108
+      971.0,
+      464.0,
+      112,
+      92
     ],
     "styled_ir_card": [
       1145.0,
@@ -304,7 +328,8 @@
       "axis": "middle",
       "members": [
         "features_card",
-        "recipes_card"
+        "recipes_card",
+        "theme_card"
       ],
       "direction": "horizontal"
     },
@@ -313,6 +338,7 @@
       "axis": "middle",
       "members": [
         "compose_card",
+        "objects_card",
         "decorate_card"
       ],
       "direction": "horizontal"
@@ -327,10 +353,19 @@
       "direction": "vertical"
     },
     {
-      "id": "rule-right-column",
+      "id": "rule-middle-column",
       "axis": "center",
       "members": [
         "recipes_card",
+        "objects_card"
+      ],
+      "direction": "vertical"
+    },
+    {
+      "id": "rule-right-column",
+      "axis": "center",
+      "members": [
+        "theme_card",
         "decorate_card"
       ],
       "direction": "vertical"

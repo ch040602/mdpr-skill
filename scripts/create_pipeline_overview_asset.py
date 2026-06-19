@@ -135,11 +135,13 @@ def base_placement() -> dict[str, tuple[float, float, float, float]]:
         "ir_core_card": (425, 230, 220, 112),
         "reasoning_card": (425, 390, 220, 170),
         "reasoning_guard": (450, 486, 170, 34),
-        "rule_engine_card": (740, 245, 315, 88),
-        "features_card": (735, 346, 145, 108),
-        "recipes_card": (920, 346, 145, 108),
-        "compose_card": (735, 458, 145, 108),
-        "decorate_card": (920, 458, 145, 108),
+        "rule_engine_card": (730, 236, 345, 80),
+        "features_card": (725, 338, 112, 92),
+        "recipes_card": (848, 338, 112, 92),
+        "theme_card": (971, 338, 112, 92),
+        "compose_card": (725, 464, 112, 92),
+        "objects_card": (848, 464, 112, 92),
+        "decorate_card": (971, 464, 112, 92),
         "styled_ir_card": (1145, 235, 200, 105),
         "renderers_card": (1145, 390, 200, 105),
         "visual_check": (1140, 512, 210, 60),
@@ -154,10 +156,11 @@ def alignment_rules() -> list[dict[str, Any]]:
         {"id": "content-column", "axis": "center", "members": ["start_flag", "markdown_card", "splitter_card"], "direction": "vertical"},
         {"id": "reasoning-column", "axis": "center", "members": ["ir_core_card", "reasoning_card"], "direction": "vertical"},
         {"id": "main-horizontal-flow", "axis": "middle", "members": ["ir_core_card", "rule_engine_card", "styled_ir_card"], "direction": "horizontal"},
-        {"id": "rule-top-row", "axis": "middle", "members": ["features_card", "recipes_card"], "direction": "horizontal"},
-        {"id": "rule-bottom-row", "axis": "middle", "members": ["compose_card", "decorate_card"], "direction": "horizontal"},
+        {"id": "rule-top-row", "axis": "middle", "members": ["features_card", "recipes_card", "theme_card"], "direction": "horizontal"},
+        {"id": "rule-bottom-row", "axis": "middle", "members": ["compose_card", "objects_card", "decorate_card"], "direction": "horizontal"},
         {"id": "rule-left-column", "axis": "center", "members": ["features_card", "compose_card"], "direction": "vertical"},
-        {"id": "rule-right-column", "axis": "center", "members": ["recipes_card", "decorate_card"], "direction": "vertical"},
+        {"id": "rule-middle-column", "axis": "center", "members": ["recipes_card", "objects_card"], "direction": "vertical"},
+        {"id": "rule-right-column", "axis": "center", "members": ["theme_card", "decorate_card"], "direction": "vertical"},
         {"id": "outputs-column", "axis": "center", "members": ["styled_ir_card", "renderers_card", "visual_check"], "direction": "vertical"},
     ]
 
@@ -410,10 +413,14 @@ def card(
 ) -> None:
     parent = f"{name}_card"
     rect(parts, parent, x, y, w, h, fill, stroke, 22, 1.5, True)
-    icon_cx = x + 29
-    title_mid = y + 37
-    icon_r = 11
-    title_x = x + 53
+    compact = w < 130
+    icon_r = 9 if compact else 11
+    icon_cx = x + (23 if compact else 29)
+    title_mid = y + (31 if compact else 37)
+    title_x = x + (42 if compact else 53)
+    title_size = 13 if compact else 16
+    body_size = 13 if compact else 14
+    body_x = x + (17 if compact else 29)
     ICON_ALIGNMENTS.append(
         {
             "name": f"{name}_icon_title_alignment",
@@ -423,14 +430,61 @@ def card(
         }
     )
     parts.append(f'<circle id="{name}_dot" cx="{icon_cx:.1f}" cy="{title_mid:.1f}" r="{icon_r}" fill="#{accent}" stroke="#B7C6D8" stroke-width="1.2"/>')
-    svg_text(parts, f"{name}_title", parent, title_x, title_mid, title, 16, "111827", 700, "card-title")
+    card_icon(parts, name, icon_cx, title_mid, icon_r, "FFFFFF")
+    svg_text(parts, f"{name}_title", parent, title_x, title_mid, title, title_size, "111827", 700, "card-title")
     line_count = max(1, len(lines))
-    body_top = y + 70
-    line_h = font_size(14) * 1.25
+    body_top = y + (59 if compact else 70)
+    line_h = font_size(body_size) * 1.25
     body_bottom = y + h - LAYOUT.min_padding_px - line_h / 2
-    gap = 0 if line_count == 1 else max(18, (body_bottom - body_top) / (line_count - 1))
+    gap = 0 if line_count == 1 else max(16 if compact else 18, (body_bottom - body_top) / (line_count - 1))
     for idx, body in enumerate(lines):
-        svg_text(parts, f"{name}_line_{idx}", parent, x + 29, body_top + idx * gap, body, 14, "526071", 400, "card-body")
+        svg_text(parts, f"{name}_line_{idx}", parent, body_x, body_top + idx * gap, body, body_size, "526071", 400, "card-body")
+
+
+def card_icon(parts: list[str], name: str, cx: float, cy: float, r: float, color: str) -> None:
+    stroke = f'fill="none" stroke="#{color}" stroke-width="{max(1.4, r * 0.18):.1f}" stroke-linecap="round" stroke-linejoin="round"'
+    fill = f'fill="#{color}"'
+    if name == "markdown":
+        parts.append(f'<path id="{name}_icon" d="M{cx - r * 0.48:.1f},{cy - r * 0.34:.1f} H{cx + r * 0.48:.1f} M{cx - r * 0.48:.1f},{cy:.1f} H{cx + r * 0.28:.1f} M{cx - r * 0.48:.1f},{cy + r * 0.34:.1f} H{cx + r * 0.42:.1f}" {stroke}/>')
+        return
+    if name == "splitter":
+        parts.append(f'<path id="{name}_icon" d="M{cx - r * 0.42:.1f},{cy:.1f} H{cx + r * 0.08:.1f} M{cx + r * 0.08:.1f},{cy:.1f} L{cx + r * 0.42:.1f},{cy - r * 0.36:.1f} M{cx + r * 0.08:.1f},{cy:.1f} L{cx + r * 0.42:.1f},{cy + r * 0.36:.1f}" {stroke}/>')
+        return
+    if name in {"ir_core", "styled_ir"}:
+        parts.append(f'<path id="{name}_icon" d="M{cx - r * 0.44:.1f},{cy - r * 0.46:.1f} H{cx + r * 0.44:.1f} V{cy + r * 0.46:.1f} H{cx - r * 0.44:.1f} Z M{cx - r * 0.22:.1f},{cy - r * 0.12:.1f} H{cx + r * 0.22:.1f} M{cx - r * 0.22:.1f},{cy + r * 0.18:.1f} H{cx + r * 0.12:.1f}" {stroke}/>')
+        return
+    if name == "reasoning":
+        parts.append(f'<path id="{name}_icon" d="M{cx:.1f},{cy - r * 0.52:.1f} L{cx + r * 0.16:.1f},{cy - r * 0.1:.1f} L{cx + r * 0.58:.1f},{cy:.1f} L{cx + r * 0.16:.1f},{cy + r * 0.12:.1f} L{cx:.1f},{cy + r * 0.52:.1f} L{cx - r * 0.16:.1f},{cy + r * 0.12:.1f} L{cx - r * 0.58:.1f},{cy:.1f} L{cx - r * 0.16:.1f},{cy - r * 0.1:.1f} Z" {fill}/>')
+        return
+    if name == "features":
+        parts.append(f'<path id="{name}_icon" d="M{cx - r * 0.5:.1f},{cy + r * 0.32:.1f} H{cx + r * 0.5:.1f}" {stroke}/>')
+        for index, height in enumerate([0.35, 0.62, 0.48]):
+            bx = cx - r * 0.38 + index * r * 0.36
+            parts.append(f'<rect id="{name}_bar_{index}" x="{bx:.1f}" y="{cy + r * 0.26 - r * height:.1f}" width="{r * 0.18:.1f}" height="{r * height:.1f}" rx="1.0" {fill}/>')
+        return
+    if name == "recipes":
+        for index in range(3):
+            y = cy - r * 0.36 + index * r * 0.34
+            parts.append(f'<rect id="{name}_layer_{index}" x="{cx - r * 0.42:.1f}" y="{y:.1f}" width="{r * 0.84:.1f}" height="{r * 0.16:.1f}" rx="1.2" {fill}/>')
+        return
+    if name == "theme":
+        parts.append(f'<ellipse id="{name}_palette" cx="{cx:.1f}" cy="{cy:.1f}" rx="{r * 0.52:.1f}" ry="{r * 0.42:.1f}" {stroke}/>')
+        for index, (px, py) in enumerate([(-0.2, -0.12), (0.1, -0.22), (0.0, 0.16)]):
+            parts.append(f'<circle id="{name}_dot_{index}" cx="{cx + r * px:.1f}" cy="{cy + r * py:.1f}" r="{r * 0.09:.1f}" {fill}/>')
+        return
+    if name == "compose":
+        parts.append(f'<path id="{name}_icon" d="M{cx - r * 0.48:.1f},{cy - r * 0.48:.1f} H{cx + r * 0.48:.1f} V{cy + r * 0.48:.1f} H{cx - r * 0.48:.1f} Z M{cx:.1f},{cy - r * 0.48:.1f} V{cy + r * 0.48:.1f} M{cx - r * 0.48:.1f},{cy:.1f} H{cx + r * 0.48:.1f}" {stroke}/>')
+        return
+    if name == "objects":
+        parts.append(f'<circle id="{name}_ring" cx="{cx:.1f}" cy="{cy:.1f}" r="{r * 0.42:.1f}" {stroke}/>')
+        parts.append(f'<path id="{name}_slice" d="M{cx:.1f},{cy:.1f} L{cx + r * 0.42:.1f},{cy:.1f} A{r * 0.42:.1f},{r * 0.42:.1f} 0 0 0 {cx:.1f},{cy - r * 0.42:.1f} Z" {fill}/>')
+        return
+    if name == "decorate":
+        parts.append(f'<path id="{name}_icon" d="M{cx - r * 0.46:.1f},{cy + r * 0.38:.1f} C{cx - r * 0.18:.1f},{cy + r * 0.1:.1f} {cx + r * 0.18:.1f},{cy + r * 0.1:.1f} {cx + r * 0.46:.1f},{cy - r * 0.36:.1f} M{cx + r * 0.22:.1f},{cy - r * 0.2:.1f} L{cx + r * 0.5:.1f},{cy - r * 0.48:.1f}" {stroke}/>')
+        return
+    if name == "renderers":
+        parts.append(f'<path id="{name}_icon" d="M{cx - r * 0.5:.1f},{cy - r * 0.34:.1f} H{cx + r * 0.5:.1f} V{cy + r * 0.26:.1f} H{cx - r * 0.5:.1f} Z M{cx - r * 0.18:.1f},{cy + r * 0.48:.1f} H{cx + r * 0.18:.1f}" {stroke}/>')
+        return
 
 
 def badge(parts: list[str], name: str, x: float, y: float, w: float, h: float, value: str, fill: str, stroke: str, text_color: str) -> None:
@@ -552,9 +606,12 @@ def build_svg(path: Path) -> None:
     connect(p, "main_ir_rules", "ir_core_card", "right", "rule_engine_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child", boxes=placement)
     connect(p, "hint_reasoning_rules", "reasoning_card", "right", "features_card", "left", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint", from_ratio=0.5, to_ratio=0.45, boxes=placement)
     connect(p, "rule_features_recipes", "features_card", "right", "recipes_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_recipes_theme", "recipes_card", "right", "theme_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal", boxes=placement)
     connect(p, "rule_features_compose", "features_card", "bottom", "compose_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal", boxes=placement)
-    connect(p, "rule_recipes_decorate", "recipes_card", "bottom", "decorate_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal", boxes=placement)
-    connect(p, "rule_compose_decorate", "compose_card", "right", "decorate_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_recipes_objects", "recipes_card", "bottom", "objects_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_theme_decorate", "theme_card", "bottom", "decorate_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_compose_objects", "compose_card", "right", "objects_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_objects_decorate", "objects_card", "right", "decorate_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal", boxes=placement)
     connect(p, "main_rules_styled_ir", "rule_engine_card", "right", "styled_ir_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child", boxes=placement)
     connect(p, "main_styled_renderers", "styled_ir_card", "bottom", "renderers_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="secondary", boxes=placement)
     connect(p, "validation_loop", "renderers_card", "bottom", "visual_check", "top", theme["validationArrow"], 3.2, "arrowAmber", connection_level="validation", boxes=placement)
@@ -573,11 +630,13 @@ def build_svg(path: Path) -> None:
     svg_text(p, "reasoning_limit", "reasoning_card", reasoning_x + 25, reasoning_y + 140, reasoning_cards["result"]["limit"], 13, theme["muted"], 700, "card-body")
     rect(p, "rule_engine_card", *box("rule_engine_card"), "DCFCE7", theme["rulesStroke"], 22, 1.5, True)
     rule_x, rule_y, _, _ = box("rule_engine_card")
-    svg_text(p, "rule_engine_title", "rule_engine_card", rule_x + 30, rule_y + 30, engine["title"], 17, "14532D", 700, "card-title")
-    svg_text(p, "rule_engine_body", "rule_engine_card", rule_x + 30, rule_y + 66, engine["line"], 14, "166534", 400, "card-body")
+    svg_text(p, "rule_engine_title", "rule_engine_card", rule_x + 30, rule_y + 27, engine["title"], 17, "14532D", 700, "card-title")
+    svg_text(p, "rule_engine_body", "rule_engine_card", rule_x + 30, rule_y + 56, engine["line"], 14, "166534", 400, "card-body")
     card(p, "features", *box("features_card"), rule_cards["features"]["title"], rule_cards["features"]["lines"], theme["rulesAccent"], "BBF7D0")
     card(p, "recipes", *box("recipes_card"), rule_cards["recipes"]["title"], rule_cards["recipes"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "theme", *box("theme_card"), rule_cards["theme"]["title"], rule_cards["theme"]["lines"], theme["rulesAccent"], "BBF7D0")
     card(p, "compose", *box("compose_card"), rule_cards["compose"]["title"], rule_cards["compose"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "objects", *box("objects_card"), rule_cards["objects"]["title"], rule_cards["objects"]["lines"], theme["rulesAccent"], "BBF7D0")
     card(p, "decorate", *box("decorate_card"), rule_cards["decorate"]["title"], rule_cards["decorate"]["lines"], theme["rulesAccent"], "BBF7D0")
     card(p, "styled_ir", *box("styled_ir_card"), output_cards["styledIr"]["title"], output_cards["styledIr"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
     card(p, "renderers", *box("renderers_card"), output_cards["renderers"]["title"], output_cards["renderers"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
@@ -616,7 +675,9 @@ def build_svg(path: Path) -> None:
             {"parent": "zone_rules_panel", "child": "rule_engine_card"},
             {"parent": "zone_rules_panel", "child": "features_card"},
             {"parent": "zone_rules_panel", "child": "recipes_card"},
+            {"parent": "zone_rules_panel", "child": "theme_card"},
             {"parent": "zone_rules_panel", "child": "compose_card"},
+            {"parent": "zone_rules_panel", "child": "objects_card"},
             {"parent": "zone_rules_panel", "child": "decorate_card"},
             {"parent": "zone_outputs_panel", "child": "styled_ir_card"},
             {"parent": "zone_outputs_panel", "child": "renderers_card"},
