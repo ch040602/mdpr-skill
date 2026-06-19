@@ -1,4 +1,5 @@
 {
+  "svg": "docs\\assets\\pipeline-overview.svg",
   "pptx": "docs\\assets\\pipeline-overview.pptx",
   "png": "docs\\assets\\pipeline-overview.png",
   "powerPointRawExportPng": "docs\\assets\\pipeline-overview-export\\슬라이드1.PNG",
@@ -8,18 +9,24 @@
       2600,
       1414
     ],
-    "uniqueColors": 5486,
-    "nonWhitePixels": 2899257,
+    "uniqueColors": 10904,
+    "nonWhitePixels": 2979358,
     "hasContent": true
   },
   "layoutValidation": {
+    "source": "svg",
+    "svg": "docs\\assets\\pipeline-overview.svg",
     "origin": {
-      "x": 0.64,
-      "y": 0.34
+      "x": 68,
+      "y": 48
     },
     "slideSize": {
       "widthIn": 13.333,
       "heightIn": 7.25
+    },
+    "svgSize": {
+      "width": 1400,
+      "height": 760
     },
     "exportSize": {
       "widthPx": 2600,
@@ -27,12 +34,18 @@
     },
     "alignment": "left",
     "fontScale": 1.0,
-    "minFontSizePt": 8,
+    "minFontSizePx": 13,
+    "minPaddingPx": 8,
+    "iconTextGapPx": 10,
     "trackedTextBoxes": 47,
     "overflowCount": 0,
     "fontViolationCount": 0,
+    "iconAlignmentViolationCount": 0,
+    "hierarchyViolationCount": 0,
     "overflow": [],
     "fontViolations": [],
+    "iconAlignmentViolations": [],
+    "hierarchyViolations": [],
     "ok": true
   },
   "ok": true

@@ -1,6 +1,6 @@
 {
   "source": "external-design-source",
-  "ref": "34e9fcf2d3da69355defad7afa5e50ff15ed8cb2",
+  "ref": "32c1d336f63ecfb181946b9f5f2713eb4fc97369",
   "coveragePolicy": "Every Design Components source element is mapped to a renderer-neutral MDPR adaptation category; React runtime behavior is converted to static PPTX/PDF plans or semantic HTML.",
   "docs": {
     "AGENTS.md": "reference-rule-doc",
@@ -11,6 +11,7 @@
     "PAGE-TYPES.md": "reference-rule-doc",
     "README.md": "reference-rule-doc",
     "UPDATE.md": "reference-rule-doc",
+    "UX-WRITING.md": "reference-rule-doc",
     "VISUAL-CRAFT.md": "reference-rule-doc"
   },
   "css": {

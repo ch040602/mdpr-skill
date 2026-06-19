@@ -1,12 +1,12 @@
 # Design Components Port Coverage
 
 - Source: external-design-source
-- Ref: `618ac7f9b79369311a4ae52753ff059bcfada68f`
+- Ref: `32c1d336f63ecfb181946b9f5f2713eb4fc97369`
 - Status: complete
 
 ## Counts
 
-- Docs: 9
+- Docs: 10
 - CSS files: 3
 - Token files: 6
 - Skins: 7

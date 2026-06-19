@@ -1,7 +1,7 @@
 {
   "source": "external-design-source",
-  "ref": "618ac7f9b79369311a4ae52753ff059bcfada68f",
-  "createdAt": "2026-06-19T08:05:31+00:00",
+  "ref": "32c1d336f63ecfb181946b9f5f2713eb4fc97369",
+  "createdAt": "2026-06-19T08:38:14+00:00",
   "docs": [
     "AGENTS.md",
     "APP-PLAYBOOKS.md",
@@ -11,6 +11,7 @@
     "PAGE-TYPES.md",
     "README.md",
     "UPDATE.md",
+    "UX-WRITING.md",
     "VISUAL-CRAFT.md"
   ],
   "css": [
