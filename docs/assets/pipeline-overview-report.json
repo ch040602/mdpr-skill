@@ -11,8 +11,8 @@
       2600,
       1414
     ],
-    "uniqueColors": 12422,
-    "nonWhitePixels": 3507787,
+    "uniqueColors": 12250,
+    "nonWhitePixels": 3506584,
     "hasContent": true
   },
   "layoutValidation": {
@@ -134,10 +134,39 @@
         "direction": "vertical"
       }
     ],
+    "arrowStylePolicy": {
+      "child": {
+        "color": "111827",
+        "width": 5.2,
+        "dashed": false
+      },
+      "secondary": {
+        "color": "475569",
+        "width": 4.0,
+        "dashed": false
+      },
+      "hint": {
+        "color": "B45309",
+        "width": 3.0,
+        "dashed": true
+      },
+      "internal": {
+        "color": "16A34A",
+        "width": 2.8,
+        "dashed": false
+      },
+      "validation": {
+        "color": "D97706",
+        "width": 3.0,
+        "dashed": false
+      }
+    },
+    "arrowLayer": "between region panels and child cards",
     "arrowConnectionLevels": [
       "child",
       "hint",
       "internal",
+      "secondary",
       "validation"
     ],
     "shadowStrategy": "PPT-compatible SVG shadow rectangles plus PowerPoint picture shadow",
@@ -149,6 +178,8 @@
     "containmentViolationCount": 0,
     "arrowConnectionViolationCount": 0,
     "alignmentViolationCount": 0,
+    "arrowStyleViolationCount": 0,
+    "arrowAnchorViolationCount": 0,
     "overflow": [],
     "fontViolations": [],
     "iconAlignmentViolations": [],
@@ -156,6 +187,8 @@
     "containmentViolations": [],
     "arrowConnectionViolations": [],
     "alignmentViolations": [],
+    "arrowStyleViolations": [],
+    "arrowAnchorViolations": [],
     "ok": true
   },
   "ok": true

@@ -52,6 +52,16 @@ ARROW_CONNECTIONS: list[dict[str, float | str]] = []
 SHADOWS: list[dict[str, float | str]] = []
 ALIGNMENT_RULES: list[dict[str, Any]] = []
 PLACEMENT_REPORT: dict[str, Any] = {}
+ARROW_PARTS: list[str] = []
+
+
+ARROW_STYLES: dict[str, dict[str, Any]] = {
+    "child": {"color": "111827", "width": 5.2, "dashed": False},
+    "secondary": {"color": "475569", "width": 4.0, "dashed": False},
+    "hint": {"color": "B45309", "width": 3.0, "dashed": True},
+    "internal": {"color": "16A34A", "width": 2.8, "dashed": False},
+    "validation": {"color": "D97706", "width": 3.0, "dashed": False},
+}
 
 
 THEMES: dict[str, dict[str, str]] = {
@@ -274,13 +284,21 @@ def line(
     to_box: str = "",
     connection_level: str = "coordinate",
 ) -> None:
+    del parts
     del marker
+    style = ARROW_STYLES.get(connection_level, ARROW_STYLES["child"])
+    color = str(style["color"])
+    width = float(style["width"])
+    dashed = bool(style["dashed"])
     ARROW_CONNECTIONS.append(
         {
             "name": name,
             "from": from_box,
             "to": to_box,
             "connectionLevel": connection_level,
+            "color": color,
+            "width": width,
+            "dashed": dashed,
             "x1": x1,
             "y1": y1,
             "x2": x2,
@@ -299,7 +317,7 @@ def line(
     line_x2 = x2 - ux * arrow_len * 0.82
     line_y2 = y2 - uy * arrow_len * 0.82
     dash = ' stroke-dasharray="14 12"' if dashed else ""
-    parts.append(
+    ARROW_PARTS.append(
         f'<path id="{name}" d="M{x1:.1f},{y1:.1f} L{line_x2:.1f},{line_y2:.1f}" fill="none" '
         f'stroke="#{color}" stroke-width="{width}" stroke-linecap="round" '
         f'stroke-linejoin="round"{dash}/>'
@@ -312,14 +330,14 @@ def line(
         p1 = (x2, y2)
         p2 = (bx + nx * arrow_w / 2, by + ny * arrow_w / 2)
         p3 = (bx - nx * arrow_w / 2, by - ny * arrow_w / 2)
-        parts.append(
+        ARROW_PARTS.append(
             f'<polygon id="{name}_head" points="{p1[0]:.1f},{p1[1]:.1f} {p2[0]:.1f},{p2[1]:.1f} {p3[0]:.1f},{p3[1]:.1f}" '
             f'fill="#{color}"/>'
         )
 
 
-def anchor(box_name: str, side: str, ratio: float = 0.5) -> tuple[float, float]:
-    x, y, w, h = BOX_BOUNDS[box_name]
+def anchor_from_boxes(boxes: dict[str, tuple[float, float, float, float]], box_name: str, side: str, ratio: float = 0.5) -> tuple[float, float]:
+    x, y, w, h = boxes[box_name]
     if side == "left":
         return x, y + h * ratio
     if side == "right":
@@ -345,9 +363,11 @@ def connect(
     connection_level: str = "child",
     from_ratio: float = 0.5,
     to_ratio: float = 0.5,
+    boxes: dict[str, tuple[float, float, float, float]] | None = None,
 ) -> None:
-    x1, y1 = anchor(from_box, from_side, from_ratio)
-    x2, y2 = anchor(to_box, to_side, to_ratio)
+    source_boxes = boxes or BOX_BOUNDS
+    x1, y1 = anchor_from_boxes(source_boxes, from_box, from_side, from_ratio)
+    x2, y2 = anchor_from_boxes(source_boxes, to_box, to_side, to_ratio)
     line(parts, name, x1, y1, x2, y2, color, width, marker, dashed, from_box, to_box, connection_level)
 
 
@@ -430,6 +450,7 @@ def build_svg(path: Path) -> None:
     ICON_ALIGNMENTS.clear()
     HIERARCHY.clear()
     ARROW_CONNECTIONS.clear()
+    ARROW_PARTS.clear()
     SHADOWS.clear()
 
     p: list[str] = [
@@ -464,21 +485,34 @@ def build_svg(path: Path) -> None:
     rule_cards = regions["rules"]["cards"]
     output_cards = regions["outputs"]["cards"]
 
+    connect(p, "main_start_markdown", "start_flag", "bottom", "markdown_card", "top", theme["mainArrow"], 4.2, "arrowDark", connection_level="child", boxes=placement)
+    connect(p, "main_markdown_splitter", "markdown_card", "bottom", "splitter_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="secondary", from_ratio=0.5, to_ratio=0.5, boxes=placement)
+    connect(p, "main_splitter_ir", "splitter_card", "right", "ir_core_card", "left", theme["secondaryArrow"], 5.0, "arrowSlate", connection_level="secondary", boxes=placement)
+    connect(p, "hint_ir_reasoning", "ir_core_card", "bottom", "reasoning_card", "top", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint", boxes=placement)
+
+    engine = regions["rules"]["engine"]
+    connect(p, "main_ir_rules", "ir_core_card", "right", "rule_engine_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child", boxes=placement)
+    connect(p, "hint_reasoning_rules", "reasoning_card", "right", "features_card", "left", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint", from_ratio=0.5, to_ratio=0.45, boxes=placement)
+    connect(p, "rule_features_recipes", "features_card", "right", "recipes_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_features_compose", "features_card", "bottom", "compose_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_recipes_decorate", "recipes_card", "bottom", "decorate_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "rule_compose_decorate", "compose_card", "right", "decorate_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal", boxes=placement)
+    connect(p, "main_rules_styled_ir", "rule_engine_card", "right", "styled_ir_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child", boxes=placement)
+    connect(p, "main_styled_renderers", "styled_ir_card", "bottom", "renderers_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="secondary", boxes=placement)
+    connect(p, "validation_loop", "renderers_card", "bottom", "visual_check", "top", theme["validationArrow"], 3.2, "arrowAmber", connection_level="validation", boxes=placement)
+
+    p.append('  <g id="arrow_layer">')
+    p.extend(f"    {part}" for part in ARROW_PARTS)
+    p.append("  </g>")
+
     badge(p, "start_flag", *box("start_flag"), "start", theme["badgeDark"], theme["badgeDark"], "FFFFFF")
     card(p, "markdown", *box("markdown_card"), content_cards["markdown"]["title"], content_cards["markdown"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
     card(p, "splitter", *box("splitter_card"), content_cards["splitter"]["title"], content_cards["splitter"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
-    connect(p, "main_start_markdown", "start_flag", "bottom", "markdown_card", "top", theme["mainArrow"], 4.2, "arrowDark", connection_level="child")
-    connect(p, "main_markdown_splitter", "markdown_card", "bottom", "splitter_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="child", from_ratio=0.5, to_ratio=0.5)
-
     card(p, "ir_core", *box("ir_core_card"), reasoning_cards["ir"]["title"], reasoning_cards["ir"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
     card(p, "reasoning", *box("reasoning_card"), reasoning_cards["result"]["title"], reasoning_cards["result"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
     badge(p, "reasoning_guard", *box("reasoning_guard"), reasoning_cards["result"]["badge"], theme["hintBadgeFill"], theme["hintBadgeStroke"], theme["hintText"])
     reasoning_x, reasoning_y, _, _ = box("reasoning_card")
     svg_text(p, "reasoning_limit", "reasoning_card", reasoning_x + 25, reasoning_y + 140, reasoning_cards["result"]["limit"], 13, theme["muted"], 700, "card-body")
-    connect(p, "main_splitter_ir", "splitter_card", "right", "ir_core_card", "left", theme["secondaryArrow"], 5.0, "arrowSlate", connection_level="child")
-    connect(p, "hint_ir_reasoning", "ir_core_card", "bottom", "reasoning_card", "top", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint")
-
-    engine = regions["rules"]["engine"]
     rect(p, "rule_engine_card", *box("rule_engine_card"), "DCFCE7", theme["rulesStroke"], 22, 1.5, True)
     rule_x, rule_y, _, _ = box("rule_engine_card")
     svg_text(p, "rule_engine_title", "rule_engine_card", rule_x + 30, rule_y + 30, engine["title"], 17, "14532D", 700, "card-title")
@@ -487,19 +521,9 @@ def build_svg(path: Path) -> None:
     card(p, "recipes", *box("recipes_card"), rule_cards["recipes"]["title"], rule_cards["recipes"]["lines"], theme["rulesAccent"], "BBF7D0")
     card(p, "compose", *box("compose_card"), rule_cards["compose"]["title"], rule_cards["compose"]["lines"], theme["rulesAccent"], "BBF7D0")
     card(p, "decorate", *box("decorate_card"), rule_cards["decorate"]["title"], rule_cards["decorate"]["lines"], theme["rulesAccent"], "BBF7D0")
-    connect(p, "main_ir_rules", "ir_core_card", "right", "rule_engine_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child")
-    connect(p, "hint_reasoning_rules", "reasoning_card", "right", "features_card", "left", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint", from_ratio=0.5, to_ratio=0.45)
-    connect(p, "rule_features_recipes", "features_card", "right", "recipes_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal")
-    connect(p, "rule_features_compose", "features_card", "bottom", "compose_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal")
-    connect(p, "rule_recipes_decorate", "recipes_card", "bottom", "decorate_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal")
-    connect(p, "rule_compose_decorate", "compose_card", "right", "decorate_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal")
-
     card(p, "styled_ir", *box("styled_ir_card"), output_cards["styledIr"]["title"], output_cards["styledIr"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
     card(p, "renderers", *box("renderers_card"), output_cards["renderers"]["title"], output_cards["renderers"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
     badge(p, "visual_check", *box("visual_check"), regions["outputs"]["validation"], theme["validationFill"], theme["validationStroke"], "92400E")
-    connect(p, "main_rules_styled_ir", "rule_engine_card", "right", "styled_ir_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child")
-    connect(p, "main_styled_renderers", "styled_ir_card", "bottom", "renderers_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="child")
-    connect(p, "validation_loop", "renderers_card", "bottom", "visual_check", "top", theme["validationArrow"], 3.2, "arrowAmber", connection_level="validation")
 
     rect(p, "coherence_band", *box("coherence_band"), theme["card"], theme["cardStroke"], 18, 1.4, True)
     coherence_x, coherence_y, _, _ = box("coherence_band")
@@ -616,6 +640,17 @@ def center_of(box_name: str) -> tuple[float, float]:
     return x + w / 2, y + h / 2
 
 
+def point_on_box_boundary(point: tuple[float, float], box: tuple[float, float, float, float]) -> bool:
+    px, py = point
+    x, y, w, h = box
+    eps = 0.8
+    on_vertical = abs(px - x) <= eps or abs(px - (x + w)) <= eps
+    on_horizontal = abs(py - y) <= eps or abs(py - (y + h)) <= eps
+    in_y = y - eps <= py <= y + h + eps
+    in_x = x - eps <= px <= x + w + eps
+    return (on_vertical and in_y) or (on_horizontal and in_x)
+
+
 def validate_layout() -> dict[str, Any]:
     overflow: list[dict[str, Any]] = []
     font_violations: list[dict[str, Any]] = []
@@ -624,6 +659,8 @@ def validate_layout() -> dict[str, Any]:
     containment_violations: list[dict[str, Any]] = []
     arrow_violations: list[dict[str, Any]] = []
     alignment_violations: list[dict[str, Any]] = []
+    arrow_style_violations: list[dict[str, Any]] = []
+    arrow_anchor_violations: list[dict[str, Any]] = []
     for item in TEXT_BOUNDS:
         parent = str(item["parent"])
         if parent and parent in BOX_BOUNDS:
@@ -658,6 +695,15 @@ def validate_layout() -> dict[str, Any]:
     for item in ARROW_CONNECTIONS:
         if not item["from"] or not item["to"] or str(item["from"]) not in BOX_BOUNDS or str(item["to"]) not in BOX_BOUNDS:
             arrow_violations.append(item)
+            continue
+        level = str(item["connectionLevel"])
+        expected = ARROW_STYLES[level]
+        if item["color"] != expected["color"] or abs(float(item["width"]) - float(expected["width"])) > 0.01 or bool(item["dashed"]) != bool(expected["dashed"]):
+            arrow_style_violations.append({"arrow": item, "expected": expected})
+        from_point = (float(item["x1"]), float(item["y1"]))
+        to_point = (float(item["x2"]), float(item["y2"]))
+        if not point_on_box_boundary(from_point, BOX_BOUNDS[str(item["from"])]) or not point_on_box_boundary(to_point, BOX_BOUNDS[str(item["to"])]):
+            arrow_anchor_violations.append(item)
     for rule in ALIGNMENT_RULES:
         members = [name for name in rule["members"] if name in BOX_BOUNDS]
         if len(members) != len(rule["members"]):
@@ -686,6 +732,8 @@ def validate_layout() -> dict[str, Any]:
         "alignmentEngine": "PowerPoint ShapeRange.Align",
         "alignmentRuleCount": len(ALIGNMENT_RULES),
         "alignmentRules": ALIGNMENT_RULES,
+        "arrowStylePolicy": ARROW_STYLES,
+        "arrowLayer": "between region panels and child cards",
         "arrowConnectionLevels": sorted(set(str(item["connectionLevel"]) for item in ARROW_CONNECTIONS)),
         "shadowStrategy": "PPT-compatible SVG shadow rectangles plus PowerPoint picture shadow",
         "powerPointPictureShadowApplied": True,
@@ -696,6 +744,8 @@ def validate_layout() -> dict[str, Any]:
         "containmentViolationCount": len(containment_violations),
         "arrowConnectionViolationCount": len(arrow_violations),
         "alignmentViolationCount": len(alignment_violations),
+        "arrowStyleViolationCount": len(arrow_style_violations),
+        "arrowAnchorViolationCount": len(arrow_anchor_violations),
         "overflow": overflow,
         "fontViolations": font_violations,
         "iconAlignmentViolations": icon_violations,
@@ -703,7 +753,9 @@ def validate_layout() -> dict[str, Any]:
         "containmentViolations": containment_violations,
         "arrowConnectionViolations": arrow_violations,
         "alignmentViolations": alignment_violations,
-        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations and not alignment_violations,
+        "arrowStyleViolations": arrow_style_violations,
+        "arrowAnchorViolations": arrow_anchor_violations,
+        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations and not alignment_violations and not arrow_style_violations and not arrow_anchor_violations,
     }
 
 

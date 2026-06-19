@@ -1,6 +1,6 @@
 # MDPR Design Components Pipeline
 
-MDPR owns the content contract. The LLM may add semantic reasoning hints, but it does not choose coordinates, colors, variants, effects, or z-order. The Design Components rule layer makes those decisions deterministically and emits renderer-neutral output that can be rendered to editable PPTX, HTML, and PDF.
+MDPR owns the content contract. The LLM is optional and only provides short semantic tags when needed; it does not reason through layout, choose coordinates, colors, variants, effects, or z-order. The Design Components rule layer makes those decisions deterministically and emits renderer-neutral output that can be rendered to editable PPTX, HTML, and PDF.
 
 The generated pipeline overview uses this file as its content source. The image generator reads the `pipeline-image` block below, applies the project layout rules, embeds the SVG into a one-slide PowerPoint deck, and exports the final PNG through Microsoft PowerPoint.
 
@@ -10,7 +10,7 @@ The selected theme is `sage-editorial`: a clean slate, sage, and amber palette c
 {
   "theme": "sage-editorial",
   "title": "MDPR Design Components Pipeline",
-  "subtitle": "MDPR splits content. LLM reasoning supplies hints. Deterministic rules own layout, style, z-order, and editable rendering.",
+  "subtitle": "MDPR splits content. Optional agent tags stay minimal. Deterministic rules own layout, style, z-order, and editable rendering.",
   "regions": {
     "content": {
       "title": "1. Content Contract",
@@ -27,16 +27,16 @@ The selected theme is `sage-editorial`: a clean slate, sage, and amber palette c
       }
     },
     "reasoning": {
-      "title": "2. LLM Reasoning",
-      "subtitle": "optional intent hints",
+      "title": "2. Agent Hints",
+      "subtitle": "small optional tags",
       "cards": {
         "ir": {
           "title": "Slide Element IR",
           "lines": ["content-only contract"]
         },
         "result": {
-          "title": "Reasoning Result",
-          "lines": ["intent, grouping"],
+          "title": "Hint Packet",
+          "lines": ["intent tags only"],
           "badge": "hints only",
           "limit": "no coordinates or styles"
         }

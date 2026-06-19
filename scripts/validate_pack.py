@@ -121,7 +121,7 @@ REQUIRED_TEXT = {
     "pipeline.md": [
         "pipeline-image",
         "sage-editorial",
-        "LLM reasoning supplies hints",
+        "Optional agent tags",
         "Deterministic rules own layout",
     ],
     "SOURCES.md": [
