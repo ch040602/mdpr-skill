@@ -4,7 +4,7 @@
 
 The LLM is an assistant, not the design authority. It may propose semantic hints, but all final design choices are made by deterministic rules inside `design_components/`.
 
-The pipeline image is authored as `docs/assets/pipeline-overview.svg`, embedded into a one-slide PowerPoint deck at `docs/assets/pipeline-overview.pptx`, and exported as a high-resolution PNG through Microsoft PowerPoint. SVG is used for stable rounded corners, fixed arrowheads, centered icon-label pairs, role-scaled typography, and explicit padding around text. The diagram separates the flow into large responsibility regions, uses the LLM reasoning result only as dashed hint input, and uses arrow weight and type to distinguish primary flow, optional reasoning support, deterministic rule links, and validation flow.
+The pipeline image is authored as `docs/assets/pipeline-overview.svg`, embedded into a one-slide PowerPoint deck at `docs/assets/pipeline-overview.pptx`, and exported as a high-resolution PNG through Microsoft PowerPoint. SVG is used for stable rounded corners, fixed arrowheads, centered icon-label pairs, role-scaled typography, and explicit padding around text. The generation report verifies child-shape containment, arrow connection levels, icon-label alignment, and PPT-compatible shadow rendering.
 
 This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based design component pipeline to MDPR.
 

@@ -9,8 +9,8 @@
       2600,
       1414
     ],
-    "uniqueColors": 10904,
-    "nonWhitePixels": 2979358,
+    "uniqueColors": 10785,
+    "nonWhitePixels": 2944912,
     "hasContent": true
   },
   "layoutValidation": {
@@ -37,15 +37,30 @@
     "minFontSizePx": 13,
     "minPaddingPx": 8,
     "iconTextGapPx": 10,
+    "containmentPaddingPx": 8,
     "trackedTextBoxes": 47,
+    "trackedShadows": 21,
+    "trackedArrows": 13,
+    "arrowConnectionLevels": [
+      "child",
+      "hint",
+      "internal",
+      "validation"
+    ],
+    "shadowStrategy": "PPT-compatible SVG shadow rectangles plus PowerPoint picture shadow",
+    "powerPointPictureShadowApplied": true,
     "overflowCount": 0,
     "fontViolationCount": 0,
     "iconAlignmentViolationCount": 0,
     "hierarchyViolationCount": 0,
+    "containmentViolationCount": 0,
+    "arrowConnectionViolationCount": 0,
     "overflow": [],
     "fontViolations": [],
     "iconAlignmentViolations": [],
     "hierarchyViolations": [],
+    "containmentViolations": [],
+    "arrowConnectionViolations": [],
     "ok": true
   },
   "ok": true

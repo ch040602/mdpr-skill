@@ -1,29 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1414" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
   <title id="title">MDPR Design Components Pipeline</title>
   <desc id="desc">A polished overview image showing MDPR content splitting, optional LLM reasoning hints, deterministic design rules, and editable outputs.</desc>
-  <defs>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
-      <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.16"/>
-    </filter>
-    <marker id="arrowDark" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto">
-      <path d="M2,2 L14,8 L2,14 Z" fill="#111827"/>
-    </marker>
-    <marker id="arrowSlate" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto">
-      <path d="M2,2 L12,7 L2,12 Z" fill="#475569"/>
-    </marker>
-    <marker id="arrowBlue" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto">
-      <path d="M2,2 L12,7 L2,12 Z" fill="#2563EB"/>
-    </marker>
-    <marker id="arrowGreen" markerWidth="13" markerHeight="13" refX="10" refY="6.5" orient="auto">
-      <path d="M2,2 L11,6.5 L2,11 Z" fill="#16A34A"/>
-    </marker>
-    <marker id="arrowAmber" markerWidth="13" markerHeight="13" refX="10" refY="6.5" orient="auto">
-      <path d="M2,2 L11,6.5 L2,11 Z" fill="#F59E0B"/>
-    </marker>
-  </defs>
   <rect id="z00_background" width="1400" height="760" fill="#F8FAFC"/>
-<rect id="z01_canvas_shadow" x="58.0" y="118.0" width="1290.0" height="600.0" rx="84.0" fill="#0F172A" opacity="0.12"/>
-<rect id="z01_canvas" x="55.0" y="112.0" width="1290.0" height="600.0" rx="84.0" fill="#FFFFFF" stroke="#DDE6F3" stroke-width="1.5"/>
+<rect id="z01_canvas_shadow" x="58.0" y="118.0" width="1330.0" height="600.0" rx="84.0" fill="#0F172A" opacity="0.12"/>
+<rect id="z01_canvas" x="55.0" y="112.0" width="1330.0" height="600.0" rx="84.0" fill="#FFFFFF" stroke="#DDE6F3" stroke-width="1.5"/>
 <text id="header_title" x="68.0" y="66.0" fill="#0F172A" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="38" font-weight="700" dominant-baseline="middle">MDPR Design Components Pipeline</text>
 <text id="header_subtitle" x="68.0" y="106.0" fill="#475569" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">MDPR splits content. LLM reasoning supplies hints. Deterministic rules own layout, style, z-order, and editable rendering.</text>
 <rect id="zone_content_panel_shadow" x="93.0" y="156.0" width="280.0" height="430.0" rx="42.0" fill="#0F172A" opacity="0.12"/>
@@ -42,9 +22,9 @@
 <rect id="zone_outputs_panel" x="1120.0" y="150.0" width="250.0" height="430.0" rx="42.0" fill="#F8FAFC" stroke="#D7E1EE" stroke-width="1.5"/>
 <text id="zone_outputs_title" x="1142.0" y="192.0" fill="#334155" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">4. Outputs</text>
 <text id="zone_outputs_subtitle" x="1142.0" y="228.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">PPTX, HTML, PDF</text>
-<rect id="start_flag_shadow" x="118.0" y="252.0" width="80.0" height="34.0" rx="7.0" fill="#0F172A" opacity="0.12"/>
-<rect id="start_flag" x="115.0" y="246.0" width="80.0" height="34.0" rx="7.0" fill="#111827" stroke="#111827" stroke-width="1.2"/>
-<text id="start_flag_text" x="137.0" y="264.0" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">start</text>
+<rect id="start_flag_shadow" x="193.0" y="252.0" width="80.0" height="34.0" rx="7.0" fill="#0F172A" opacity="0.12"/>
+<rect id="start_flag" x="190.0" y="246.0" width="80.0" height="34.0" rx="7.0" fill="#111827" stroke="#111827" stroke-width="1.2"/>
+<text id="start_flag_text" x="212.0" y="264.0" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">start</text>
 <rect id="markdown_card_shadow" x="118.0" y="312.0" width="230.0" height="105.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
 <rect id="markdown_card" x="115.0" y="306.0" width="230.0" height="105.0" rx="22.0" fill="#F8FAFC" stroke="#D7E1EE" stroke-width="1.5"/>
 <circle id="markdown_dot" cx="144.0" cy="343.0" r="11" fill="#CBD5E1" stroke="#B7C6D8" stroke-width="1.2"/>
@@ -57,8 +37,8 @@
 <text id="splitter_title" x="168.0" y="485.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" font-weight="700" dominant-baseline="middle">MDPR Splitter</text>
 <text id="splitter_line_0" x="144.0" y="518.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">slide and object split</text>
 <text id="splitter_line_1" x="144.0" y="543.2" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">no visual choices</text>
-<path id="main_start_markdown" d="M155.0,280.0 L155.0,297.0" fill="none" stroke="#111827" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
-<polygon id="main_start_markdown_head" points="155.0,306.0 150.9,295.1 159.1,295.1" fill="#111827"/>
+<path id="main_start_markdown" d="M230.0,280.0 L230.0,297.0" fill="none" stroke="#111827" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon id="main_start_markdown_head" points="230.0,306.0 225.9,295.1 234.1,295.1" fill="#111827"/>
 <path id="main_markdown_splitter" d="M230.0,411.0 L230.0,435.3" fill="none" stroke="#475569" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
 <polygon id="main_markdown_splitter_head" points="230.0,448.0 224.2,432.5 235.8,432.5" fill="#475569"/>
 <rect id="ir_core_card_shadow" x="428.0" y="236.0" width="220.0" height="112.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
@@ -109,12 +89,12 @@
 <text id="decorate_line_1" x="949.0" y="549.2" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">effects</text>
 <path id="main_ir_rules" d="M645.0,286.0 L713.4,288.2" fill="none" stroke="#111827" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
 <polygon id="main_ir_rules_head" points="740.0,289.0 707.2,300.1 708.0,275.8" fill="#111827"/>
-<path id="hint_reasoning_rules" d="M645.0,460.0 L722.2,404.2" fill="none" stroke="#2563EB" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 12"/>
-<polygon id="hint_reasoning_rules_head" points="735.0,395.0 723.7,412.1 715.2,400.4" fill="#2563EB"/>
-<path id="rule_features_recipes" d="M880.0,398.0 L906.2,398.0" fill="none" stroke="#16A34A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-<polygon id="rule_features_recipes_head" points="920.0,398.0 903.2,404.3 903.2,391.7" fill="#16A34A"/>
-<path id="rule_features_compose" d="M808.0,454.0 L808.0,456.6" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="rule_recipes_decorate" d="M993.0,454.0 L993.0,456.6" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="hint_reasoning_rules" d="M645.0,475.0 L723.3,405.1" fill="none" stroke="#2563EB" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 12"/>
+<polygon id="hint_reasoning_rules_head" points="735.0,394.6 725.5,412.8 715.9,402.0" fill="#2563EB"/>
+<path id="rule_features_recipes" d="M880.0,400.0 L906.2,400.0" fill="none" stroke="#16A34A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon id="rule_features_recipes_head" points="920.0,400.0 903.2,406.3 903.2,393.7" fill="#16A34A"/>
+<path id="rule_features_compose" d="M807.5,454.0 L807.5,456.6" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="rule_recipes_decorate" d="M992.5,454.0 L992.5,456.6" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 <path id="rule_compose_decorate" d="M880.0,512.0 L906.2,512.0" fill="none" stroke="#16A34A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
 <polygon id="rule_compose_decorate_head" points="920.0,512.0 903.2,518.3 903.2,505.7" fill="#16A34A"/>
 <rect id="styled_ir_card_shadow" x="1148.0" y="241.0" width="200.0" height="105.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
@@ -132,8 +112,8 @@
 <rect id="visual_check_shadow" x="1148.0" y="531.0" width="200.0" height="44.0" rx="7.0" fill="#0F172A" opacity="0.12"/>
 <rect id="visual_check" x="1145.0" y="525.0" width="200.0" height="44.0" rx="7.0" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.2"/>
 <text id="visual_check_text" x="1167.0" y="548.0" fill="#92400E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">visual validation</text>
-<path id="main_rules_styled_ir" d="M1055.0,289.0 L1118.4,288.3" fill="none" stroke="#111827" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
-<polygon id="main_rules_styled_ir_head" points="1145.0,288.0 1112.7,300.5 1112.5,276.2" fill="#111827"/>
+<path id="main_rules_styled_ir" d="M1055.0,289.0 L1118.4,287.9" fill="none" stroke="#111827" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon id="main_rules_styled_ir_head" points="1145.0,287.5 1112.8,300.2 1112.4,275.9" fill="#111827"/>
 <path id="main_styled_renderers" d="M1245.0,340.0 L1245.0,372.8" fill="none" stroke="#475569" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
 <polygon id="main_styled_renderers_head" points="1245.0,390.0 1237.1,369.0 1252.9,369.0" fill="#475569"/>
 <path id="validation_loop" d="M1245.0,495.0 L1245.0,514.7" fill="none" stroke="#F59E0B" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
