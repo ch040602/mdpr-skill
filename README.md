@@ -6,7 +6,7 @@ The LLM is an assistant, not the design authority. It may propose semantic hints
 
 The pipeline is documented in `pipeline.md`. The pipeline image is generated from that Markdown source as `docs/assets/pipeline-overview.svg`, embedded into a one-slide PowerPoint deck at `docs/assets/pipeline-overview.pptx`, and exported as a high-resolution PNG through Microsoft PowerPoint. The stored placement plan at `docs/assets/pipeline-overview-layout.json` is aligned through PowerPoint `ShapeRange.Align` before rendering. SVG is used for stable rounded corners, fixed arrowheads, centered icon-label pairs, role-scaled typography, and explicit padding around text. The generation report verifies child-shape containment, arrow connection levels, icon-label alignment, and PPT-compatible shadow rendering.
 
-This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based design component pipeline to MDPR.
+This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based visual diversification pipeline to MDPR.
 
 It is explicitly based on these upstream projects:
 
@@ -132,6 +132,30 @@ adr/                             Architecture decision records
 4. Use `examples/rulebook.sample.yaml` as the minimal rulebook seed for selector work.
 5. Do not begin renderer integration until Styled Deck IR is stable enough for snapshot testing.
 
+## Installing With MDPR
+
+Install this skill pack with MDPR prepared alongside it:
+
+```bash
+npm install
+```
+
+The `postinstall` hook runs `python scripts/install_mdpr.py`, which clones or updates MDPR from `https://github.com/ch040602/mdpr` into `.cache/mdpr` by default. This keeps MDPR available as the Markdown parsing and element-splitting runtime while this repository supplies the visual diversification layer under `design_components/`.
+
+Use an existing local MDPR checkout when needed:
+
+```bash
+MDPR_SOURCE_DIR=/path/to/mdpr npm install
+```
+
+Install MDPR's own package dependencies explicitly:
+
+```bash
+npm run install:mdpr
+```
+
+See `docs/mdpr-installation.md` for `MDPR_INSTALL_DIR`, `MDPR_REF`, `MDPR_REPO_URL`, and `MDPR_SKIP_INSTALL` options.
+
 ## Local Validation
 
 Run the pack validator before release:
@@ -162,6 +186,7 @@ PowerPoint render artifacts are written under `artifacts/ppt/`. The comparison u
 - `docs/agent-hint-guide.md`
 - `docs/migration-guide.md`
 - `docs/release-checklist.md`
+- `docs/mdpr-installation.md`
 - `docs/design-source-port-coverage.md`
 - `docs/ppt-visual-validation.md`
 - `docs/component-showcase.html`

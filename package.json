@@ -2,8 +2,11 @@
   "name": "mdpr-design-components-skill-pack",
   "version": "0.1.0",
   "private": true,
-  "description": "Reference scaffold and Codex skill pack for MDPR design_components powered by Design Components rules.",
+  "description": "Reference scaffold and Codex skill pack for MDPR visual diversification through design_components rules.",
   "scripts": {
+    "postinstall": "python scripts/install_mdpr.py",
+    "check:mdpr": "python scripts/install_mdpr.py --check",
+    "install:mdpr": "python scripts/install_mdpr.py --with-deps",
     "inventory:design": "python scripts/design_source_inventory.py --source .cache/design-source --update-manifest --check",
     "verify:ppt": "python scripts/create_and_verify_pptx.py",
     "compare:ppt": "python scripts/render_compare_powerpoint.py",
