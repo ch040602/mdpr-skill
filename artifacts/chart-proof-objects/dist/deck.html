@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MDPR Chart Proof Objects</title>
+<style>
+:root {
+  --bg: #F7F3EF;
+  --text: #1F2937;
+  --primary: #B45309;
+  --secondary: #09B4A9;
+  --surface: #FBF7F2;
+  --surface-line: #E3CDBA;
+  --muted: #57534E;
+  --font: "Pretendard";
+}
+body { margin: 0; background: #111; font-family: var(--font); }
+.deck { display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.slide { position: relative; width: 13.333in; height: 7.5in; background: var(--bg); color: var(--text); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.region { position: absolute; box-sizing: border-box; }
+.title { font-weight: 700; }
+.body.key-message { background: var(--surface); border-left: .08in solid var(--primary); padding: .18in .28in; }
+.body.key-message blockquote { margin: 0; font-weight: 700; color: var(--text); }
+.item { background: var(--surface); border-left: .06in solid var(--primary); padding: .12in .18in; }
+.region ul, .region ol { margin: 0; padding-left: 1.2em; }
+.structured-list { list-style: none; padding-left: 0; }
+.region li.level-1 { margin-left: 1.1em; }
+.region li.level-2 { margin-left: 2.2em; }
+.region p { margin: 0 0 .45em; }
+.region img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item-number { display: inline-flex; width: .28in; height: .28in; align-items: center; justify-content: center; margin-right: .1in; border-radius: 999px; background: var(--primary); color: var(--bg); font-weight: 700; }
+.item-label { font-weight: 700; display: block; margin-bottom: .12in; color: var(--primary); }
+.item-description { display: block; margin-left: .18in; color: var(--muted); }
+strong { color: var(--primary); }
+.pipeline { position: relative; height: 100%; min-height: 3.6in; }
+.pipeline-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+.pipeline-connector { fill: none; stroke: var(--primary); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pipeline-node { position: absolute; z-index: 2; min-width: 0; border: 1px solid var(--surface-line); background: var(--surface); padding: .12in; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: .12in; font-weight: 700; line-height: 1.18; }
+.chart { width: 100%; height: 100%; display: flex; flex-direction: column; gap: .12in; justify-content: center; }
+.chart-row { display: grid; grid-template-columns: 1.1in 1fr .45in; gap: .1in; align-items: center; font-size: .13in; }
+.chart-label { color: var(--text); font-weight: 700; }
+.chart-track { height: .18in; background: color-mix(in srgb, var(--surface-line) 60%, transparent); border-radius: 999px; overflow: hidden; }
+.chart-bar { height: 100%; background: var(--primary); border-radius: 999px; }
+.chart-value { color: var(--muted); text-align: right; }
+</style>
+</head>
+<body>
+<main class="deck">
+<section class="slide" data-slide-id="mdpr-chart-proof-objects-d793fa" data-layout="cover"><div class="region title title" style="left:1in;top:2.25in;width:11.3in;height:1.25in;z-index:10;font-size:48pt;line-height:1.2">MDPR Chart Proof Objects</div></section>
+<section class="slide" data-slide-id="toc-53a981" data-layout="toc"><div class="region title title" style="left:0.8in;top:0.42in;width:11.7in;height:0.9in;z-index:10;font-size:38pt;line-height:1.2">목차</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Validation Ring</p>
+<p>Readiness Gauge</p>
+<p>Connected Strip</p>
+<p>Native Bar Baseline</p></div></section>
+<section class="slide" data-slide-id="validation-ring-623145" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Validation Ring</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><p>Coverage: 72, 28</p></div></section>
+<section class="slide" data-slide-id="readiness-gauge-4e86e0" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Readiness Gauge</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><p>Score: 83</p></div></section>
+<section class="slide" data-slide-id="connected-strip-aefadc" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Connected Strip</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><p>Value: 20, 68, 92</p></div></section>
+<section class="slide" data-slide-id="native-bar-baseline-c39a86" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Native Bar Baseline</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><div class="chart" aria-label="Checks"><div class="chart-row"><span class="chart-label">Parser</span><span class="chart-track"><span class="chart-bar" style="width:96.8%"></span></span><span class="chart-value">91</span></div><div class="chart-row"><span class="chart-label">Layout</span><span class="chart-track"><span class="chart-bar" style="width:92.6%"></span></span><span class="chart-value">87</span></div><div class="chart-row"><span class="chart-label">Renderer</span><span class="chart-track"><span class="chart-bar" style="width:100.0%"></span></span><span class="chart-value">94</span></div></div></div></section>
+</main>
+</body>
+</html>

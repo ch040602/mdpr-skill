@@ -37,13 +37,13 @@ The LLM may suggest semantic intent or importance candidates, but it must not ch
 
 ## Chart Diagram Families
 
-`arc-ring-chart` is used for short ratio or progress labels. The important segment receives a thicker arc or contrast cap.
+`arc-ring-chart` is used for short ratio or progress labels. MDPR now renders this as editable PPTX shapes through the `arc-ring` chart kind. The important segment receives a thicker arc or contrast cap.
 
-`gauge-dial-chart` is used for score, risk, and readiness slides where a needle or dial communicates status faster than a generic bar.
+`gauge-dial-chart` is used for score, risk, and readiness slides where a needle or dial communicates status faster than a generic bar. MDPR now renders this as editable PPTX shapes through the `gauge` chart kind.
 
 `line-graph-background` is used when trend data exists but the slide needs a strong foreground claim. The chart is pushed behind text with restrained contrast.
 
-`connected-chart-strip` is used when multiple small charts need to read as one flow.
+`connected-chart-strip` is used when multiple small charts need to read as one flow. MDPR now renders this as editable PPTX shapes through the `connected-strip` chart kind and keeps same-role connector styling consistent.
 
 `target-ring-frame` is used for goals, accuracy, focus, or benchmarks.
 
@@ -65,3 +65,5 @@ The command writes:
 - `docs/assets/infographic-seed-gallery-report.json`
 
 The report verifies that the rendered PNG has content and that tracked text boxes stay inside their parent infographic objects.
+
+MDPR-specific chart proof validation is stored in `artifacts/chart-proof-objects/`. The generated deck contains editable `arc-ring`, `gauge`, and `connected-strip` proof objects plus a native bar chart baseline. `validation-report.json` verifies PowerPoint PNG export, a single native chart part for the baseline, separated TOC text boxes, and minimum rendered text size of at least `14pt`.

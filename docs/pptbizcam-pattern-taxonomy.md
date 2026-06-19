@@ -25,7 +25,7 @@ Local structural report:
 | Table grid system | comparisons, checklists, validation summaries, risk matrices | Header owns strongest fill; first column may be row-label bold; numeric columns align right; subtle row banding only. |
 | Small icon marker | text-only support, status cue, row marker | Icon stays small, monotone, and secondary. It must not fill empty space or become a large card. |
 | Pictorial metaphor anchor | only when content or provided image justifies a metaphor | Labels anchor to the object; no invented brand-like icons or untracked assets. |
-| Chart proof object | native charts, arc/ring charts, gauges, connected strips, trend backdrops | One dominant chart family per slide; labels attach to marks; background charts remain lower contrast than foreground claims. |
+| Chart proof object | native charts, editable arc/ring proof objects, gauge proof objects, connected strips, trend backdrops | One dominant chart family per slide; labels attach to marks; same-role connectors share one style; background charts remain lower contrast than foreground claims. |
 
 ## Table Coherence Rules
 
@@ -43,6 +43,7 @@ MDPR table rendering should treat a table as row/column grammar, not as a card g
 
 - Preserve semantic bold/italic in paragraph/list rich text.
 - Do not emit hard tab characters into PPT text boxes; use deterministic spacing or paragraph-level indentation instead.
+- Render plain `listItem` or plain list entries as separate editable text boxes when PowerPoint rich-text line breaks would collapse adjacent entries.
 - Normalize long spaces before measurement and rendering.
 - Parent labels should use a font size greater than or equal to child labels. Child emphasis may use bold, but not a larger size.
 - Text boxes inside shapes should use middle vertical alignment when the shape is a card, callout, or row label.
@@ -58,11 +59,11 @@ Icons are not a whitespace-filling device.
 
 ## Rule-Based Diversity Roadmap
 
-Accepted future implementation families:
+Accepted implementation families:
 
 - `table-grid-system`: stronger column width heuristics and appendix mode.
 - `small-icon-marker`: row/status marker variants with fixed max size.
-- `chart-proof-object`: native chart plus arc/ring/gauge/connected-strip variants.
+- `chart-proof-object`: native bar charts plus editable `arc-ring`, `gauge`, and `connected-strip` variants in MDPR PPTX output.
 - `pictorial-metaphor-anchor`: only for provided or detected imagery.
 - `simple-shape-system`: deterministic section labels, rules, and proof callouts.
 

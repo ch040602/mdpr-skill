@@ -182,7 +182,9 @@
         "maxPrimaryLabels": 4
       },
       "importanceUse": "importance 5 receives the thickest arc, contrast cap, and nearest label; lower-importance values use thinner muted arcs.",
-      "layoutRule": "Place the primary metric inside or near the ring; keep labels outside the arc tangent with aligned starts."
+      "layoutRule": "Place the primary metric inside or near the ring; keep labels outside the arc tangent with aligned starts.",
+      "mdprChartKind": "arc-ring",
+      "implementationStatus": "implemented-in-mdpr-pptx-as-editable-shapes"
     },
     {
       "id": "gauge-dial-chart",
@@ -195,7 +197,9 @@
         "maxPrimaryLabels": 3
       },
       "importanceUse": "importance controls needle thickness and whether a callout tab is attached to the dial.",
-      "layoutRule": "Use a semicircle when labels are short; fall back to ordered-rail when labels exceed the hard limit."
+      "layoutRule": "Use a semicircle when labels are short; fall back to ordered-rail when labels exceed the hard limit.",
+      "mdprChartKind": "gauge",
+      "implementationStatus": "implemented-in-mdpr-pptx-as-editable-shapes"
     },
     {
       "id": "line-graph-background",
@@ -221,7 +225,9 @@
         "maxPrimaryLabels": 5
       },
       "importanceUse": "importance determines which mini-chart becomes enlarged or receives a connector callout.",
-      "layoutRule": "Use identical mini-chart proportions and a single connector style unless the data flow changes meaning."
+      "layoutRule": "Use identical mini-chart proportions and a single connector style unless the data flow changes meaning.",
+      "mdprChartKind": "connected-strip",
+      "implementationStatus": "implemented-in-mdpr-pptx-as-editable-shapes"
     },
     {
       "id": "target-ring-frame",

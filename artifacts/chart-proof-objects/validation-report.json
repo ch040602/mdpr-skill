@@ -1,0 +1,112 @@
+{
+  "pptx": "artifacts\\chart-proof-objects\\dist\\deck.pptx",
+  "html": "artifacts/chart-proof-objects/dist/deck.html",
+  "powerPointPngDir": "artifacts\\chart-proof-objects\\powerpoint-png",
+  "contactSheet": "artifacts\\chart-proof-objects\\contact-sheet.png",
+  "exportSize": [
+    1920,
+    1080
+  ],
+  "pngCount": 6,
+  "slideXmlCount": 6,
+  "nativeChartParts": 1,
+  "nativeChartPartPaths": [
+    "ppt/charts/chart1.xml"
+  ],
+  "proofSlides": [
+    {
+      "slideXml": "ppt/slides/slide3.xml",
+      "textBoxes": 5,
+      "paragraphs": 5,
+      "roundRects": 4,
+      "ellipses": 5,
+      "lines": 0,
+      "minFontPt": 16.0,
+      "containsNativeChartReference": false
+    },
+    {
+      "slideXml": "ppt/slides/slide4.xml",
+      "textBoxes": 5,
+      "paragraphs": 5,
+      "roundRects": 3,
+      "ellipses": 1,
+      "lines": 3,
+      "minFontPt": 14.0,
+      "containsNativeChartReference": false
+    },
+    {
+      "slideXml": "ppt/slides/slide5.xml",
+      "textBoxes": 7,
+      "paragraphs": 7,
+      "roundRects": 4,
+      "ellipses": 0,
+      "lines": 2,
+      "minFontPt": 18.0,
+      "containsNativeChartReference": false
+    }
+  ],
+  "tocSeparatedTextBoxes": true,
+  "slideReports": [
+    {
+      "slideXml": "ppt/slides/slide1.xml",
+      "textBoxes": 1,
+      "paragraphs": 1,
+      "roundRects": 0,
+      "ellipses": 0,
+      "lines": 0,
+      "minFontPt": 48.0,
+      "containsNativeChartReference": false
+    },
+    {
+      "slideXml": "ppt/slides/slide2.xml",
+      "textBoxes": 5,
+      "paragraphs": 5,
+      "roundRects": 0,
+      "ellipses": 0,
+      "lines": 0,
+      "minFontPt": 22.0,
+      "containsNativeChartReference": false
+    },
+    {
+      "slideXml": "ppt/slides/slide3.xml",
+      "textBoxes": 5,
+      "paragraphs": 5,
+      "roundRects": 4,
+      "ellipses": 5,
+      "lines": 0,
+      "minFontPt": 16.0,
+      "containsNativeChartReference": false
+    },
+    {
+      "slideXml": "ppt/slides/slide4.xml",
+      "textBoxes": 5,
+      "paragraphs": 5,
+      "roundRects": 3,
+      "ellipses": 1,
+      "lines": 3,
+      "minFontPt": 14.0,
+      "containsNativeChartReference": false
+    },
+    {
+      "slideXml": "ppt/slides/slide5.xml",
+      "textBoxes": 7,
+      "paragraphs": 7,
+      "roundRects": 4,
+      "ellipses": 0,
+      "lines": 2,
+      "minFontPt": 18.0,
+      "containsNativeChartReference": false
+    },
+    {
+      "slideXml": "ppt/slides/slide6.xml",
+      "textBoxes": 1,
+      "paragraphs": 1,
+      "roundRects": 1,
+      "ellipses": 0,
+      "lines": 0,
+      "minFontPt": 34.0,
+      "containsNativeChartReference": true
+    }
+  ],
+  "ok": true
+}

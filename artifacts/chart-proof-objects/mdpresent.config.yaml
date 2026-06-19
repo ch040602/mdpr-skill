@@ -1,0 +1,7 @@
+version: "1.0"
+theme:
+  designPreset: editorial
+  colorCombination: split-complementary
+  backgroundColor: "#F7F3EF"
+  textColor: "#1F2937"
+  primaryColor: "#B45309"
