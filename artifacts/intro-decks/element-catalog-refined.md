@@ -28,7 +28,9 @@ Coverage: 91, 87, 94
 
 ## Chart Beside Prose
 
-The explanation remains beside the graph. This is the MDPR-owned numeric storytelling layout for short interpretation text plus quantitative evidence.
+- Pattern: short interpretation text beside quantitative evidence.
+- Owner: MDPR selects body/chart geometry and typography.
+- Constraint: text stays compact so the chart keeps visual priority.
 
 ```chart
 labels: Baseline, Refined, Validated
@@ -56,6 +58,22 @@ Coverage: 72, 28
 Draft, 20
 Render, 68
 Validate, 92
+```
+
+## Ranked Bars Proof Object
+
+```ranked-bars
+Parser, 91
+Layout, 87
+Renderer, 94
+```
+
+## Metric Dots Proof Object
+
+```metric-dots
+Draft, 20
+Review, 68
+Ship, 92
 ```
 
 ## Image Slot

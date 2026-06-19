@@ -22,7 +22,7 @@
   "themeGallery": {
     "pptx": "artifacts\\intro-decks\\theme-gallery\\deck.pptx",
     "slideXmlCount": 98,
-    "nativeChartParts": 28,
+    "nativeChartParts": 14,
     "exportedPngCount": 98,
     "contactSheet": {
       "path": "artifacts\\intro-decks\\theme-gallery-contact-sheet.png",
@@ -59,8 +59,8 @@
           1600,
           900
         ],
-        "uniqueColors": 121,
-        "nonWhitePixels": 71318,
+        "uniqueColors": 126,
+        "nonWhitePixels": 70570,
         "hasContent": true
       },
       {
@@ -69,8 +69,8 @@
           1600,
           900
         ],
-        "uniqueColors": 149,
-        "nonWhitePixels": 169460,
+        "uniqueColors": 94,
+        "nonWhitePixels": 60473,
         "hasContent": true
       },
       {
@@ -89,8 +89,8 @@
           1600,
           900
         ],
-        "uniqueColors": 121,
-        "nonWhitePixels": 66609,
+        "uniqueColors": 126,
+        "nonWhitePixels": 65433,
         "hasContent": true
       },
       {
@@ -99,8 +99,8 @@
           1600,
           900
         ],
-        "uniqueColors": 91,
-        "nonWhitePixels": 40637,
+        "uniqueColors": 95,
+        "nonWhitePixels": 40241,
         "hasContent": true
       },
       {
@@ -129,7 +129,7 @@
           1600,
           900
         ],
-        "uniqueColors": 236,
+        "uniqueColors": 254,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -139,7 +139,7 @@
           1600,
           900
         ],
-        "uniqueColors": 149,
+        "uniqueColors": 92,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -159,7 +159,7 @@
           1600,
           900
         ],
-        "uniqueColors": 236,
+        "uniqueColors": 254,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -169,7 +169,7 @@
           1600,
           900
         ],
-        "uniqueColors": 206,
+        "uniqueColors": 219,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -199,7 +199,7 @@
           1600,
           900
         ],
-        "uniqueColors": 254,
+        "uniqueColors": 270,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -209,7 +209,7 @@
           1600,
           900
         ],
-        "uniqueColors": 153,
+        "uniqueColors": 102,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -229,7 +229,7 @@
           1600,
           900
         ],
-        "uniqueColors": 254,
+        "uniqueColors": 270,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -239,7 +239,7 @@
           1600,
           900
         ],
-        "uniqueColors": 224,
+        "uniqueColors": 236,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -269,7 +269,7 @@
           1600,
           900
         ],
-        "uniqueColors": 251,
+        "uniqueColors": 257,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -279,7 +279,7 @@
           1600,
           900
         ],
-        "uniqueColors": 154,
+        "uniqueColors": 97,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -299,7 +299,7 @@
           1600,
           900
         ],
-        "uniqueColors": 251,
+        "uniqueColors": 257,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -309,7 +309,7 @@
           1600,
           900
         ],
-        "uniqueColors": 217,
+        "uniqueColors": 222,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -339,7 +339,7 @@
           1600,
           900
         ],
-        "uniqueColors": 248,
+        "uniqueColors": 264,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -349,7 +349,7 @@
           1600,
           900
         ],
-        "uniqueColors": 148,
+        "uniqueColors": 92,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -369,7 +369,7 @@
           1600,
           900
         ],
-        "uniqueColors": 248,
+        "uniqueColors": 264,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -379,7 +379,7 @@
           1600,
           900
         ],
-        "uniqueColors": 215,
+        "uniqueColors": 226,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -409,7 +409,7 @@
           1600,
           900
         ],
-        "uniqueColors": 257,
+        "uniqueColors": 275,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -419,7 +419,7 @@
           1600,
           900
         ],
-        "uniqueColors": 151,
+        "uniqueColors": 97,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -439,7 +439,7 @@
           1600,
           900
         ],
-        "uniqueColors": 257,
+        "uniqueColors": 275,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -449,7 +449,7 @@
           1600,
           900
         ],
-        "uniqueColors": 224,
+        "uniqueColors": 238,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -479,7 +479,7 @@
           1600,
           900
         ],
-        "uniqueColors": 254,
+        "uniqueColors": 267,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -489,7 +489,7 @@
           1600,
           900
         ],
-        "uniqueColors": 151,
+        "uniqueColors": 95,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -509,7 +509,7 @@
           1600,
           900
         ],
-        "uniqueColors": 254,
+        "uniqueColors": 267,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -519,7 +519,7 @@
           1600,
           900
         ],
-        "uniqueColors": 219,
+        "uniqueColors": 227,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -529,7 +529,7 @@
           1600,
           900
         ],
-        "uniqueColors": 67,
+        "uniqueColors": 66,
         "nonWhitePixels": 1417985,
         "hasContent": true
       },
@@ -549,7 +549,7 @@
           1600,
           900
         ],
-        "uniqueColors": 262,
+        "uniqueColors": 280,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -559,7 +559,7 @@
           1600,
           900
         ],
-        "uniqueColors": 155,
+        "uniqueColors": 98,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -579,7 +579,7 @@
           1600,
           900
         ],
-        "uniqueColors": 262,
+        "uniqueColors": 280,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -589,7 +589,7 @@
           1600,
           900
         ],
-        "uniqueColors": 226,
+        "uniqueColors": 239,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -619,7 +619,7 @@
           1600,
           900
         ],
-        "uniqueColors": 264,
+        "uniqueColors": 274,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -629,7 +629,7 @@
           1600,
           900
         ],
-        "uniqueColors": 147,
+        "uniqueColors": 96,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -649,7 +649,7 @@
           1600,
           900
         ],
-        "uniqueColors": 264,
+        "uniqueColors": 274,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -659,7 +659,7 @@
           1600,
           900
         ],
-        "uniqueColors": 229,
+        "uniqueColors": 235,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -690,7 +690,7 @@
           900
         ],
         "uniqueColors": 250,
-        "nonWhitePixels": 672717,
+        "nonWhitePixels": 671969,
         "hasContent": true
       },
       {
@@ -699,8 +699,8 @@
           1600,
           900
         ],
-        "uniqueColors": 148,
-        "nonWhitePixels": 181464,
+        "uniqueColors": 95,
+        "nonWhitePixels": 72477,
         "hasContent": true
       },
       {
@@ -720,7 +720,7 @@
           900
         ],
         "uniqueColors": 250,
-        "nonWhitePixels": 670999,
+        "nonWhitePixels": 670249,
         "hasContent": true
       },
       {
@@ -730,7 +730,7 @@
           900
         ],
         "uniqueColors": 218,
-        "nonWhitePixels": 477667,
+        "nonWhitePixels": 477271,
         "hasContent": true
       },
       {
@@ -759,7 +759,7 @@
           1600,
           900
         ],
-        "uniqueColors": 259,
+        "uniqueColors": 268,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -769,7 +769,7 @@
           1600,
           900
         ],
-        "uniqueColors": 148,
+        "uniqueColors": 104,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -789,7 +789,7 @@
           1600,
           900
         ],
-        "uniqueColors": 259,
+        "uniqueColors": 268,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -799,7 +799,7 @@
           1600,
           900
         ],
-        "uniqueColors": 226,
+        "uniqueColors": 231,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -829,7 +829,7 @@
           1600,
           900
         ],
-        "uniqueColors": 257,
+        "uniqueColors": 269,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -839,7 +839,7 @@
           1600,
           900
         ],
-        "uniqueColors": 149,
+        "uniqueColors": 96,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -859,7 +859,7 @@
           1600,
           900
         ],
-        "uniqueColors": 257,
+        "uniqueColors": 269,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -869,7 +869,7 @@
           1600,
           900
         ],
-        "uniqueColors": 222,
+        "uniqueColors": 231,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -899,7 +899,7 @@
           1600,
           900
         ],
-        "uniqueColors": 232,
+        "uniqueColors": 241,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -909,7 +909,7 @@
           1600,
           900
         ],
-        "uniqueColors": 147,
+        "uniqueColors": 94,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -929,7 +929,7 @@
           1600,
           900
         ],
-        "uniqueColors": 232,
+        "uniqueColors": 241,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -939,7 +939,7 @@
           1600,
           900
         ],
-        "uniqueColors": 200,
+        "uniqueColors": 207,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -969,7 +969,7 @@
           1600,
           900
         ],
-        "uniqueColors": 250,
+        "uniqueColors": 255,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -979,7 +979,7 @@
           1600,
           900
         ],
-        "uniqueColors": 150,
+        "uniqueColors": 98,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -999,7 +999,7 @@
           1600,
           900
         ],
-        "uniqueColors": 250,
+        "uniqueColors": 255,
         "nonWhitePixels": 1440000,
         "hasContent": true
       },
@@ -1009,7 +1009,7 @@
           1600,
           900
         ],
-        "uniqueColors": 214,
+        "uniqueColors": 218,
         "nonWhitePixels": 1440000,
         "hasContent": true
       }
@@ -1018,15 +1018,15 @@
   },
   "elementCatalog": {
     "pptx": "artifacts\\intro-decks\\element-catalog\\deck.pptx",
-    "slideXmlCount": 11,
+    "slideXmlCount": 13,
     "nativeChartParts": 2,
-    "exportedPngCount": 11,
+    "exportedPngCount": 13,
     "contactSheet": {
       "path": "artifacts\\intro-decks\\element-catalog-contact-sheet.png",
-      "slides": 11,
+      "slides": 13,
       "size": [
         1280,
-        618
+        824
       ]
     },
     "pngChecks": [
@@ -1047,7 +1047,7 @@
           900
         ],
         "uniqueColors": 36,
-        "nonWhitePixels": 47775,
+        "nonWhitePixels": 54717,
         "hasContent": true
       },
       {
@@ -1057,7 +1057,7 @@
           900
         ],
         "uniqueColors": 192,
-        "nonWhitePixels": 669131,
+        "nonWhitePixels": 668383,
         "hasContent": true
       },
       {
@@ -1067,7 +1067,7 @@
           900
         ],
         "uniqueColors": 191,
-        "nonWhitePixels": 480057,
+        "nonWhitePixels": 479661,
         "hasContent": true
       },
       {
@@ -1096,8 +1096,8 @@
           1600,
           900
         ],
-        "uniqueColors": 169,
-        "nonWhitePixels": 521690,
+        "uniqueColors": 200,
+        "nonWhitePixels": 527018,
         "hasContent": true
       },
       {
@@ -1116,8 +1116,8 @@
           1600,
           900
         ],
-        "uniqueColors": 454,
-        "nonWhitePixels": 733860,
+        "uniqueColors": 514,
+        "nonWhitePixels": 733761,
         "hasContent": true
       },
       {
@@ -1126,7 +1126,7 @@
           1600,
           900
         ],
-        "uniqueColors": 235,
+        "uniqueColors": 236,
         "nonWhitePixels": 793600,
         "hasContent": true
       },
@@ -1136,8 +1136,28 @@
           1600,
           900
         ],
+        "uniqueColors": 507,
+        "nonWhitePixels": 792310,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드12.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 420,
+        "nonWhitePixels": 791794,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\intro-decks\\element-catalog-powerpoint-export\\슬라이드13.PNG",
+        "size": [
+          1600,
+          900
+        ],
         "uniqueColors": 191,
-        "nonWhitePixels": 475652,
+        "nonWhitePixels": 475256,
         "hasContent": true
       }
     ]

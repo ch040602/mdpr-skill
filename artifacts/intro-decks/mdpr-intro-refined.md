@@ -9,7 +9,9 @@
 
 ## Numeric Evidence Beside Reading
 
-The chart is placed beside the explanation so readers can compare the quantitative signal and the interpretation in one pass. The refined source keeps the text short enough for a stable side-by-side layout.
+- Purpose: compare quantitative signal and interpretation in one pass.
+- Layout hint: keep the explanation short enough for chart-beside-prose placement.
+- Rule boundary: MDPR chooses coordinates, theme colors, and chart objects.
 
 ```chart
 labels: Parse, Split, Layout, Render

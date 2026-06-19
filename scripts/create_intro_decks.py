@@ -44,7 +44,9 @@ INTRO_MD = """# MDPR Visual Diversification
 
 ## Numeric Evidence Beside Reading
 
-The chart is placed beside the explanation so readers can compare the quantitative signal and the interpretation in one pass. The refined source keeps the text short enough for a stable side-by-side layout.
+- Purpose: compare quantitative signal and interpretation in one pass.
+- Layout hint: keep the explanation short enough for chart-beside-prose placement.
+- Rule boundary: MDPR chooses coordinates, theme colors, and chart objects.
 
 ```chart
 labels: Parse, Split, Layout, Render
@@ -109,7 +111,9 @@ Coverage: 91, 87, 94
 
 ## Chart Beside Prose
 
-The explanation remains beside the graph. This is the MDPR-owned numeric storytelling layout for short interpretation text plus quantitative evidence.
+- Pattern: short interpretation text beside quantitative evidence.
+- Owner: MDPR selects body/chart geometry and typography.
+- Constraint: text stays compact so the chart keeps visual priority.
 
 ```chart
 labels: Baseline, Refined, Validated
@@ -139,6 +143,22 @@ Render, 68
 Validate, 92
 ```
 
+## Ranked Bars Proof Object
+
+```ranked-bars
+Parser, 91
+Layout, 87
+Renderer, 94
+```
+
+## Metric Dots Proof Object
+
+```metric-dots
+Draft, 20
+Review, 68
+Ship, 92
+```
+
 ## Image Slot
 
 - Image-aware layouts keep body text and image objects in separate regions.
@@ -151,13 +171,13 @@ README = """# Intro Deck Artifacts
 This folder contains reusable MDPR-generated introduction decks.
 
 - `mdpr-intro-refined.md`: reusable LLM-hint source. It is already compacted into semantic presentation text, but MDPR still owns final layout, colors, charts, and PPTX objects.
-- `element-catalog-refined.md`: a simple catalog of slide elements and object families supported by the current MDPR path.
+- `element-catalog-refined.md`: a bullet-style catalog of slide elements and object families supported by the current MDPR path.
 - `theme-gallery/deck.pptx`: one PowerPoint deck that repeats the intro source across every built-in MDPR theme.
 - `element-catalog/deck.pptx`: one PowerPoint deck that lists supported slide elements and proof-object families.
 - `theme-gallery-contact-sheet.png` and `element-catalog-contact-sheet.png`: PowerPoint-rendered visual QA sheets.
 - `validation-report.json`: slide counts, exported PNG counts, native chart-part counts, and basic rendered-content checks.
 
-The LLM only prepared reusable source wording. Runtime decisions remain deterministic MDPR behavior.
+The LLM only prepares reusable bullet-style source wording. Runtime decisions remain deterministic MDPR behavior.
 """
 
 
