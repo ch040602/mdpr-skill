@@ -8,6 +8,8 @@ The pipeline is documented in `pipeline.md`. The pipeline image is generated fro
 
 Visual diversification seeds live in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json`. They separate flow colors, section accents, contrast colors, support surfaces, and infographic patterns so emphasis can be expressed through a different pattern, not only through a shifted hue.
 
+Text-only slides may use one quiet `monotone-icon-aside` slot when they would otherwise feel visually flat. The icon must be black or white, sourced from PowerPoint built-in icons or a licensed free SVG, and placed in a secondary aside/corner region without competing with the text.
+
 The seed gallery at `docs/assets/infographic-seed-gallery.png` is generated from those rules as SVG, embedded in PowerPoint, and exported as PNG. It demonstrates cycle, ordered, and ranked infographic families for teaser-grade pages that need to place emphasis by text length and importance.
 
 The graph/diagram selection rules also include PPT BIZCAM-inspired chart families such as arc-ring charts, gauge dials, line-graph backgrounds, connected chart strips, target-ring frames, and pictorial metaphor charts. These are selected from MDPR metadata before rendering, not copied from external templates.
@@ -223,6 +225,7 @@ PowerPoint render artifacts are written under `artifacts/ppt/`. The comparison u
 - `docs/release-checklist.md`
 - `docs/mdpr-installation.md`
 - `docs/mdpr-pandoc-integration.md`
+- `docs/monotone-icon-slot-guide.md`
 - `docs/infographic-seed-guide.md`
 - `docs/design-source-port-coverage.md`
 - `docs/ppt-visual-validation.md`
@@ -242,7 +245,7 @@ Design Components concepts are adapted into project-owned modules rather than co
 - `design_components/design-source-adapter`: upstream Design Components token, skin, motion, and component mapping into renderer-neutral MDPR concepts.
 - `design_components/pptx`: editable PPTX object planning and PowerPoint theme color binding for Styled Deck IR.
 
-The visual diversification seed pack adds reusable infographic patterns such as `proof-point-callout`, `editorial-annotation`, `connected-rail`, `contrast-chip`, and `metric-swatch`. These seeds are intended for PPTX, HTML, and PDF renderers so point elements such as validation markers can use distinct structure, contrast color, and alignment rules while staying coherent with the slide.
+The visual diversification seed pack adds reusable infographic patterns such as `proof-point-callout`, `editorial-annotation`, `connected-rail`, `contrast-chip`, `metric-swatch`, and `monotone-icon-aside`. These seeds are intended for PPTX, HTML, and PDF renderers so point elements such as validation markers can use distinct structure, contrast color, quiet icons, and alignment rules while staying coherent with the slide.
 
 The design showcase also includes a `mixed-object-stress` slide that combines a raster image, editable text, auto shapes, KPI cards, a native PowerPoint chart, a native PowerPoint table, timeline objects, badges, and callouts in one coherent visual profile. Coherence validation includes a readability rule that every explicit text run must be at least `font size >= 8pt`.
 

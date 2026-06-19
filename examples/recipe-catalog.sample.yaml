@@ -99,6 +99,59 @@ recipes:
     effects:
       maxDecorativeEffects: 0
 
+  content.textWithMonotoneIcon:
+    priority: 69
+    accept:
+      all:
+        - slide.intent:
+            in: [content, summary, appendix]
+        - contentMetrics.textOnly: true
+        - totalTextChars:
+            gte: 90
+            lte: 620
+    reject:
+      any:
+        - density: high
+        - hasChart: true
+        - hasImage: true
+        - hasTable: true
+        - hasCode: true
+        - kpiCount:
+            gt: 0
+    score:
+      intentFit: 18
+      textOnlyRelief: 16
+      objectVariety:
+        low: 14
+      densityFit:
+        low: 12
+        medium: 8
+        high: -30
+    composition:
+      layoutKind: text-icon-aside
+      regions:
+        - id: title
+          role: title
+          size: header
+        - id: body
+          role: primary
+          size: dominant
+        - id: iconAside
+          role: quiet-visual
+          size: side-note
+          source: ppt-builtin-icon
+          fallbackSource: free-svg-icon
+          tone: black-or-white
+          maxIconCount: 1
+          alignTo: text-block-midline
+    elementVariants:
+      title: title.sectionRule
+      paragraph: paragraph.body
+      bulletList: list.plain
+      icon: icon.monotoneAside
+    effects:
+      maxDecorativeEffects: 0
+
   code.splitExplanation:
     priority: 85
     accept:

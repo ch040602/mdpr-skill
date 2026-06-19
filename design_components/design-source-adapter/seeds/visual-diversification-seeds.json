@@ -21,7 +21,18 @@
       "description": "Warm or cool surface colors used to avoid one-hue diagrams while preserving coherence.",
       "themeSlots": ["background1", "background2"],
       "exampleHex": ["#F7F2EA", "#FFF3DE", "#F1F0FA", "#EAF7F3"]
+    },
+    "monotoneIcon": {
+      "description": "A quiet black-or-white icon used only when a text-only slide needs a small visual anchor.",
+      "themeSlots": ["text1", "background1"],
+      "exampleHex": ["#111827", "#FFFFFF"]
     }
+  },
+  "iconSourcePolicy": {
+    "preferred": "ppt-builtin-icon",
+    "allowed": ["ppt-builtin-icon", "free-svg-icon"],
+    "licenseRule": "Free SVG icons must carry a permissive license record and attribution before being used in a generated deck.",
+    "coherenceRule": "Use one icon per text-only support slot, rendered in either black or white, with no multicolor fills."
   },
   "infographicPatterns": [
     {
@@ -73,6 +84,18 @@
         "number role is larger than its label",
         "mini bar uses accent color, not validation contrast",
         "surface depth matches sibling KPI cards"
+      ]
+    },
+    {
+      "id": "monotone-icon-aside",
+      "useWhen": ["text-only", "low-object-variety", "plain-explanation", "quiet-support"],
+      "structure": ["reserved aside slot", "one black-or-white icon", "aligned text block", "minimum padding gutter"],
+      "coherenceRules": [
+        "icon is secondary and never replaces the title or body text",
+        "use a PowerPoint built-in icon first, otherwise use a licensed free SVG icon",
+        "icon tone is black on light backgrounds or white on dark backgrounds",
+        "icon center aligns to the adjacent text block midpoint",
+        "icon box stays within a side or corner support region and never overlaps text"
       ]
     }
   ],
@@ -217,7 +240,7 @@
     }
   ],
   "selectionPolicy": {
-    "primaryInputs": ["slide.intent", "element.relation", "element.importance", "contentMetrics.textChars", "contentMetrics.itemCount", "contentMetrics.hasChart", "contentMetrics.hasImage", "contentMetrics.needsImage"],
+    "primaryInputs": ["slide.intent", "element.relation", "element.importance", "contentMetrics.textChars", "contentMetrics.itemCount", "contentMetrics.hasChart", "contentMetrics.hasImage", "contentMetrics.needsImage", "contentMetrics.textOnly", "contentMetrics.objectVariety"],
     "fallbackOrder": ["ordered-rail", "ranked-stack", "cycle-loop"],
     "densityRules": [
       "If average textChars is above the ideal maximum, prefer ranked-stack over cycle-loop.",
@@ -226,7 +249,8 @@
       "If one item has importance 5 and the rest are 3 or lower, allocate a lead slot instead of equal slots.",
       "If the slide has chart data and needs an image or metaphor, allow pictorial-metaphor-chart; otherwise keep charts abstract and editable.",
       "If trend data has long labels, use line-graph-background with foreground proof text instead of crowded chart labels.",
-      "If data is ratio/progress and labels are short, prefer arc-ring-chart or target-ring-frame over a generic bar chart."
+      "If data is ratio/progress and labels are short, prefer arc-ring-chart or target-ring-frame over a generic bar chart.",
+      "If a slide is text-only, medium-or-lower density, and visually too plain, open one monotone-icon-aside support slot instead of adding background decoration."
     ]
   },
   "backgroundPolicy": {

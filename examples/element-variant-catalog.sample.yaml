@@ -104,6 +104,7 @@ variants:
   paragraph.supportingText: { elementType: paragraph, accept: { all: [] }, size: { minRegion: small }, typography: { role: supporting }, surface: { kind: none } }
   paragraph.sideNote: { elementType: paragraph, accept: { all: [] }, size: { minRegion: small }, typography: { role: sidenote }, surface: { kind: none } }
   paragraph.captioned: { elementType: paragraph, accept: { all: [] }, size: { minRegion: small }, typography: { role: caption }, surface: { kind: none } }
+  icon.monotoneAside: { elementType: icon, accept: { all: [ { contentMetrics.textOnly: true } ] }, reject: { any: [ { density: high }, { hasChart: true }, { hasImage: true }, { hasTable: true }, { hasCode: true } ] }, size: { minRegion: small, maxRegion: side-note }, source: { preferred: ppt-builtin-icon, fallback: free-svg-icon, licenseRequired: true }, tone: { mode: black-or-white }, alignment: { centerTo: text-block-midline, minGutter: body-line-height }, surface: { kind: none }, accent: { usage: none } }
   list.plain: { elementType: bulletList, accept: { all: [] }, size: { minRegion: medium }, typography: { role: body }, surface: { kind: none } }
   list.checklist: { elementType: bulletList, accept: { all: [] }, size: { minRegion: medium }, typography: { role: checklist }, surface: { kind: none } }
   list.iconRows: { elementType: bulletList, accept: { all: [] }, size: { minRegion: medium }, typography: { role: iconRows }, surface: { kind: card } }

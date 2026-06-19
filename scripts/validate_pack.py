@@ -99,6 +99,7 @@ REQUIRED_FILES = [
     "scripts/install_mdpr.py",
     "docs/mdpr-installation.md",
     "docs/mdpr-pandoc-integration.md",
+    "docs/monotone-icon-slot-guide.md",
     "scripts/check_mdpr_pandoc_update.py",
     "scripts/create_design_showcase_deck.py",
     "artifacts/design-showcase/design_components_showcase.pptx",
@@ -134,6 +135,9 @@ REQUIRED_TEXT = {
         "proof-point-callout",
         "teaser-grade",
         "arc-ring charts",
+        "monotone-icon-aside",
+        "PowerPoint built-in icons",
+        "licensed free SVG",
         "npm run install:mdpr",
         "npm run check:mdpr-pandoc",
         ".cache/mdpr",
@@ -146,6 +150,13 @@ REQUIRED_TEXT = {
         "Design Components skill starts after that content contract",
         "mdpresent build deck.md --parser pandoc",
         "npm run check:mdpr-pandoc",
+    ],
+    "docs/monotone-icon-slot-guide.md": [
+        "monotone-icon-aside",
+        "PowerPoint built-in icon",
+        "Free SVG icon",
+        "Use one icon only",
+        "icon.monotoneAside",
     ],
     "docs/mdpr-installation.md": [
         "visual diversification",
@@ -178,6 +189,9 @@ REQUIRED_TEXT = {
         "arc-ring-chart",
         "line-graph-background",
         "pictorial-metaphor-chart",
+        "monotone-icon-aside",
+        "ppt-builtin-icon",
+        "free-svg-icon",
         "contrast-chip",
         "metric-swatch",
         "flow",
@@ -247,6 +261,7 @@ def check_catalog_coverage() -> None:
         "cover.heroMinimal",
         "section.bigNumber",
         "content.cardStack",
+        "content.textWithMonotoneIcon",
         "data.kpiRailChart",
         "comparison.twoColumnCards",
         "process.horizontalSteps",
@@ -257,7 +272,7 @@ def check_catalog_coverage() -> None:
         if recipe not in recipe_catalog:
             fail(f"recipe catalog missing {recipe}")
     variant_catalog = read("examples/element-variant-catalog.sample.yaml")
-    for variant in ["title.hero", "paragraph.body", "list.checklist", "kpi.heroNumber", "chart.cardWithContext", "table.compactGrid", "code.window", "callout.insight", "image.cardFrame"]:
+    for variant in ["title.hero", "paragraph.body", "list.checklist", "icon.monotoneAside", "kpi.heroNumber", "chart.cardWithContext", "table.compactGrid", "code.window", "callout.insight", "image.cardFrame"]:
         if variant not in variant_catalog:
             fail(f"variant catalog missing {variant}")
 

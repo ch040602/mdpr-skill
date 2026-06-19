@@ -22,11 +22,13 @@ The seed pack separates:
 - accent colors for section identity;
 - contrast colors for proof points, warnings, and validation markers;
 - support surfaces for warm/cool balance;
-- human-made infographic patterns such as proof callouts, editorial annotations, rails, chips, and metric swatches.
+- human-made infographic patterns such as proof callouts, editorial annotations, rails, chips, metric swatches, and quiet monotone icon asides.
 
 These seeds should be selected by deterministic rules and then checked by coherence validation so a slide can become more expressive without mixing arbitrary styles.
 
 `composition/src/infographicPlanner.ts` is the deterministic bridge from content metadata to these seeds. It selects `cycle-loop`, `ordered-rail`, or `ranked-stack` from relation intent, item count, text length, and importance, then returns renderer-neutral slots with emphasis, text scale, and color role.
+
+For slides that contain only text and feel visually flat, `planMonotoneIconSlot()` can reserve one secondary `monotone-icon-aside` region. That region accepts either a PowerPoint built-in icon or a licensed free SVG icon, rendered in black or white only, aligned to the adjacent text block midpoint, and limited to a quiet support role.
 
 ## PPTX Policy
 

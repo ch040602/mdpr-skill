@@ -2,6 +2,7 @@ import type { Box } from './primitives/types';
 
 export type InfographicIntent = 'auto' | 'cycle' | 'sequence' | 'list';
 export type GraphDataShape = 'none' | 'ratio' | 'trend' | 'score' | 'comparison' | 'multiStage' | 'goal';
+export type TextOnlyLayoutKind = 'editorial' | 'two-column' | 'callout-lead' | 'takeaways' | 'card-stack' | 'text-icon-aside' | 'plain';
 
 export interface InfographicItem {
   id: string;
@@ -48,6 +49,35 @@ export interface GraphDiagramPlan {
   alignment: 'center-focus-radial' | 'left-story-right-proof' | 'horizontal-small-multiples' | 'quadrant-fold';
   reason: string;
   emphasis: 'lead-chart' | 'foreground-proof' | 'image-anchor' | 'balanced';
+}
+
+export interface TextOnlyVisualAidInput {
+  layoutKind: TextOnlyLayoutKind;
+  totalTextChars: number;
+  paragraphCount: number;
+  bulletCount: number;
+  density: 'low' | 'medium' | 'high';
+  hasImage?: boolean;
+  hasChart?: boolean;
+  hasTable?: boolean;
+  hasCode?: boolean;
+  hasKpi?: boolean;
+  backgroundIsDark?: boolean;
+}
+
+export interface MonotoneIconSlotPlan {
+  enabled: boolean;
+  reason: string;
+  slot?: {
+    id: 'monotone-icon-aside';
+    box: Box;
+    source: 'ppt-builtin-icon' | 'free-svg-icon';
+    sourcePolicy: 'ppt-library-preferred' | 'free-svg-with-license-required';
+    tone: 'black' | 'white';
+    maxIconCount: 1;
+    visualWeight: 'quiet';
+    alignTo: 'text-block-midline';
+  };
 }
 
 const byImportance = (a: InfographicItem, b: InfographicItem): number => {
@@ -230,5 +260,39 @@ export function planGraphDiagram(input: GraphDiagramInput): GraphDiagramPlan {
     alignment: input.dataShape === 'comparison' ? 'quadrant-fold' : 'left-story-right-proof',
     emphasis: input.maxImportance >= 4 ? 'lead-chart' : 'balanced',
     reason: 'native-chart-frame selected as the editable fallback when no specialized chart family wins',
+  };
+}
+
+export function planMonotoneIconSlot(input: TextOnlyVisualAidInput): MonotoneIconSlotPlan {
+  const hasNonTextObject = Boolean(input.hasImage || input.hasChart || input.hasTable || input.hasCode || input.hasKpi);
+  if (hasNonTextObject) {
+    return { enabled: false, reason: 'monotone icon slot skipped because the slide already has a non-text object' };
+  }
+  if (input.density === 'high' || input.totalTextChars > 620) {
+    return { enabled: false, reason: 'monotone icon slot skipped because text density needs the available space' };
+  }
+  if (input.totalTextChars < 90 && input.bulletCount + input.paragraphCount <= 1) {
+    return { enabled: false, reason: 'monotone icon slot skipped because the slide is too sparse for a supporting icon' };
+  }
+  if (!['editorial', 'two-column', 'callout-lead', 'takeaways', 'text-icon-aside', 'plain'].includes(input.layoutKind)) {
+    return { enabled: false, reason: `monotone icon slot skipped because layoutKind=${input.layoutKind} has no quiet icon aside region` };
+  }
+
+  const compact = input.layoutKind === 'callout-lead' || input.layoutKind === 'takeaways';
+  return {
+    enabled: true,
+    reason: `monotone-icon-aside selected for text-only ${input.layoutKind} layout with ${input.totalTextChars} characters`,
+    slot: {
+      id: 'monotone-icon-aside',
+      box: compact
+        ? { x: 0.76, y: 0.26, w: 0.14, h: 0.22 }
+        : { x: 0.72, y: 0.24, w: 0.18, h: 0.28 },
+      source: 'ppt-builtin-icon',
+      sourcePolicy: 'ppt-library-preferred',
+      tone: input.backgroundIsDark ? 'white' : 'black',
+      maxIconCount: 1,
+      visualWeight: 'quiet',
+      alignTo: 'text-block-midline',
+    },
   };
 }
