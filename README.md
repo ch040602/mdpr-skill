@@ -31,6 +31,28 @@ Markdown
   -> Renderer(PPTX/HTML/PDF)
 ```
 
+## Difference from MDPR
+
+This project does not replace MDPR. It narrows MDPR's responsibility to Markdown parsing, slide splitting, element splitting, and semantic metadata, then adds a deterministic design layer after that content contract.
+
+| Area | Existing MDPR | This project |
+| --- | --- | --- |
+| Primary role | Convert Markdown into presentations | Add a rule-based design system on top of MDPR output |
+| Visual decisions | Theme/preset-oriented pipeline | Deterministic recipe, variant, layout, decoration, and coherence rules |
+| LLM/agent role | May be used for richer generation workflows | Optional short semantic tags only; no coordinates, colors, variants, effects, or z-order |
+| Intermediate contract | Presentation-oriented structure | Explicit `Slide Element IR` and `Styled Deck IR` contracts |
+| PPTX output target | Presentation rendering | Editable PowerPoint objects with theme-color binding and z-order validation |
+| Validation focus | Build success and output generation | Render comparison, text bounds, alignment, z-order, object variety, and coherence checks |
+
+## Improvements Over the Base Flow
+
+- **Deterministic design decisions:** recipe selection, component variants, placement, spacing, decoration, and effects are selected by inspectable rules rather than ad hoc generation.
+- **Stronger renderer contracts:** `Slide Element IR` separates content from design, while `Styled Deck IR` carries renderer-neutral visual decisions into PPTX, HTML, and PDF renderers.
+- **Editable PPTX-first behavior:** generated PowerPoint decks use editable shapes, text boxes, tables, charts, pictures, theme colors, and verified z-order instead of relying only on flattened visual output.
+- **Coherence validation:** visual profiles enforce consistent accent usage, radius family, shadow family, readable font sizes, bounded text, aligned icon-label pairs, and consistent arrow semantics.
+- **Lower token usage:** optional agent hints are reduced to compact intent/grouping tags; deterministic rules perform the expensive design selection work without repeated model reasoning.
+- **Traceable style output:** style gallery, inspect output, render reports, and placement plans make it possible to compare profiles and debug why a deck looks the way it does.
+
 ## Core Rules
 
 1. **Rule-based selection only**
