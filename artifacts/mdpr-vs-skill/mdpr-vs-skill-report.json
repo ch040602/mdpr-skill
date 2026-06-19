@@ -1,0 +1,112 @@
+{
+  "sourceMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
+  "sourceManifest": "artifacts\\mdpr-vs-skill\\source-manifest.json",
+  "mdprBaselinePptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
+  "skillPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-result.pptx",
+  "sourceFileCount": 24,
+  "sourceHeadingCount": 192,
+  "sourceCharCount": 48879,
+  "mdprBaselineValidation": {
+    "slides": 46,
+    "shapes": 536,
+    "textFrames": 535,
+    "pictures": 0,
+    "tables": 1,
+    "charts": 0,
+    "minFontSizePt": 11.0
+  },
+  "skillValidation": {
+    "slides": 9,
+    "shapes": 285,
+    "textFrames": 282,
+    "pictures": 0,
+    "tables": 2,
+    "charts": 1,
+    "minFontSizePt": 8.0
+  },
+  "baselineRenderPreview": [
+    {
+      "file": "artifacts\\mdpr-vs-skill\\mdpr_baseline_preview_1.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 34,
+      "nonWhitePixels": 1415133,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\mdpr-vs-skill\\mdpr_baseline_preview_2.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 352,
+      "nonWhitePixels": 938408,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\mdpr-vs-skill\\mdpr_baseline_preview_3.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 344,
+      "nonWhitePixels": 1068743,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\mdpr-vs-skill\\mdpr_baseline_preview_4.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 34,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    }
+  ],
+  "skillRenderPreview": [
+    {
+      "file": "artifacts\\mdpr-vs-skill\\skill_preview_1.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 284,
+      "nonWhitePixels": 1422225,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\mdpr-vs-skill\\skill_preview_2.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 693,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\mdpr-vs-skill\\skill_preview_3.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 1223,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    },
+    {
+      "file": "artifacts\\mdpr-vs-skill\\skill_preview_4.png",
+      "size": [
+        1600,
+        900
+      ],
+      "uniqueColors": 790,
+      "nonWhitePixels": 1440000,
+      "hasContent": true
+    }
+  ],
+  "ok": true
+}

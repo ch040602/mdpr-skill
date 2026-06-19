@@ -100,8 +100,10 @@ REQUIRED_FILES = [
     "docs/mdpr-installation.md",
     "docs/mdpr-pandoc-integration.md",
     "docs/monotone-icon-slot-guide.md",
+    "docs/mdpr-vs-skill-results.md",
     "scripts/check_mdpr_pandoc_update.py",
     "scripts/create_design_showcase_deck.py",
+    "scripts/create_mdpr_vs_skill_decks.py",
     "artifacts/design-showcase/design_components_showcase.pptx",
     "artifacts/design-showcase/showcase_slide_1.png",
     "artifacts/design-showcase/showcase_slide_2.png",
@@ -110,6 +112,11 @@ REQUIRED_FILES = [
     "artifacts/design-showcase/showcase_slide_5.png",
     "artifacts/design-showcase/assets/mixed_object_reference.png",
     "artifacts/design-showcase/design_showcase_report.json",
+    "artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx",
+    "artifacts/mdpr-vs-skill/mdpr-skill-result.pptx",
+    "artifacts/mdpr-vs-skill/mdpr-source-corpus.md",
+    "artifacts/mdpr-vs-skill/source-manifest.json",
+    "artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json",
 ]
 
 REQUIRED_TEXT = {
@@ -140,6 +147,9 @@ REQUIRED_TEXT = {
         "licensed free SVG",
         "npm run install:mdpr",
         "npm run check:mdpr-pandoc",
+        "npm run compare:mdpr-skill",
+        "artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx",
+        "artifacts/mdpr-vs-skill/mdpr-skill-result.pptx",
         ".cache/mdpr",
         "--parser pandoc",
         "docs/mdpr-pandoc-integration.md",
@@ -157,6 +167,13 @@ REQUIRED_TEXT = {
         "Free SVG icon",
         "Use one icon only",
         "icon.monotoneAside",
+    ],
+    "docs/mdpr-vs-skill-results.md": [
+        "MDPR baseline PPTX",
+        "Current skill PPTX",
+        "artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx",
+        "artifacts/mdpr-vs-skill/mdpr-skill-result.pptx",
+        "npm run compare:mdpr-skill",
     ],
     "docs/mdpr-installation.md": [
         "visual diversification",

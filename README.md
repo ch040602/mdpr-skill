@@ -210,6 +210,7 @@ npm run verify:ppt
 npm run compare:ppt
 npm run infographic:gallery
 npm run showcase:ppt
+npm run compare:mdpr-skill
 ```
 
 PowerPoint render artifacts are written under `artifacts/ppt/`. The comparison uses Microsoft PowerPoint COM export to render the generated PPTX to PNG, then compares it with the XML-derived visual proof and overlap pixel samples.
@@ -226,6 +227,7 @@ PowerPoint render artifacts are written under `artifacts/ppt/`. The comparison u
 - `docs/mdpr-installation.md`
 - `docs/mdpr-pandoc-integration.md`
 - `docs/monotone-icon-slot-guide.md`
+- `docs/mdpr-vs-skill-results.md`
 - `docs/infographic-seed-guide.md`
 - `docs/design-source-port-coverage.md`
 - `docs/ppt-visual-validation.md`
@@ -270,6 +272,9 @@ The exported design showcase is intentionally rendered in reverse order: `mixed-
 - `docs/assets/infographic-seed-gallery.pptx`
 - `docs/assets/infographic-seed-gallery.png`
 - `docs/assets/infographic-seed-gallery-report.json`
+- `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
+- `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
+- `artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json`
 
 ## Design Showcase Deck
 
