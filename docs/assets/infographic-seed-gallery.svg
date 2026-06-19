@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1414" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
+<title id="title">Infographic Seed Gallery</title>
+<desc id="desc">SVG gallery for cycle, sequence, and ranked list infographic seeds driven by text length and importance.</desc>
+<rect width="1400" height="760" fill="#F7F2EA"/>
+<path d="M82 130 H1318 M82 610 H1318" stroke="#D8CCBC" stroke-width="1.2" opacity="0.8"/>
+<text id="title" x="82.0" y="62.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="35" font-weight="800" dominant-baseline="middle">Infographic Seeds for Teaser-Grade Slides</text>
+<text id="subtitle" x="82.0" y="103.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="500" dominant-baseline="middle">Cycle, ordered, and ranked layouts are selected from item count, text length, relation, and importance.</text>
+<rect id="cycle_panel_shadow" x="85.0" y="161.0" width="390.0" height="395.0" rx="30.0" fill="#0F172A" opacity="0.10"/>
+<rect id="cycle_panel" x="82.0" y="155.0" width="390.0" height="395.0" rx="30.0" fill="#FFFDF8" stroke="#D8CCBC" stroke-width="1.4"/>
+<circle cx="130.0" cy="205.0" r="16" fill="#14B8A6"/>
+<text id="panel_1_num" x="124.0" y="205.0" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800" dominant-baseline="middle">1</text>
+<text id="panel_1_title" x="158.0" y="201.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" font-weight="800" dominant-baseline="middle">Cycle Loop</text>
+<text id="panel_1_subtitle" x="158.0" y="229.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="500" dominant-baseline="middle">short labels, closed feedback</text>
+<path id="cycle_arrow_0" d="M311.2,288.3 L363.9,325.8" fill="none" stroke="#14B8A6" stroke-width="2.8" stroke-linecap="round"/>
+<polygon id="cycle_arrow_0_head" points="373.7,332.8 360.7,330.3 367.1,321.3" fill="#14B8A6"/>
+<path id="cycle_arrow_1" d="M373.7,387.2 L321.0,424.7" fill="none" stroke="#14B8A6" stroke-width="2.8" stroke-linecap="round"/>
+<polygon id="cycle_arrow_1_head" points="311.2,431.7 317.8,420.2 324.2,429.2" fill="#14B8A6"/>
+<path id="cycle_arrow_2" d="M242.8,431.7 L186.0,391.3" fill="none" stroke="#14B8A6" stroke-width="2.8" stroke-linecap="round"/>
+<polygon id="cycle_arrow_2_head" points="176.2,384.3 189.2,386.8 182.8,395.8" fill="#14B8A6"/>
+<path id="cycle_arrow_3" d="M176.2,335.7 L233.0,295.3" fill="none" stroke="#14B8A6" stroke-width="2.8" stroke-linecap="round"/>
+<polygon id="cycle_arrow_3_head" points="242.8,288.3 236.2,299.8 229.8,290.8" fill="#14B8A6"/>
+<rect id="cycle_observe_shadow" x="238.0" y="228.0" width="84.0" height="84.0" rx="42.0" fill="#0F172A" opacity="0.10"/>
+<rect id="cycle_observe" x="235.0" y="222.0" width="84.0" height="84.0" rx="42.0" fill="#EAF7F3" stroke="#14B8A6" stroke-width="1.8"/>
+<text id="cycle_text_0" x="250.2" y="264.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">Observe</text>
+<rect id="cycle_adapt_shadow" x="368.0" y="319.0" width="94.0" height="94.0" rx="47.0" fill="#0F172A" opacity="0.10"/>
+<rect id="cycle_adapt" x="365.0" y="313.0" width="94.0" height="94.0" rx="47.0" fill="#FFF1F2" stroke="#BE123C" stroke-width="1.8"/>
+<text id="cycle_text_1" x="392.8" y="360.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">Adapt</text>
+<rect id="cycle_render_shadow" x="238.0" y="420.0" width="84.0" height="84.0" rx="42.0" fill="#0F172A" opacity="0.10"/>
+<rect id="cycle_render" x="235.0" y="414.0" width="84.0" height="84.0" rx="42.0" fill="#EAF7F3" stroke="#14B8A6" stroke-width="1.8"/>
+<text id="cycle_text_2" x="254.0" y="456.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">Render</text>
+<rect id="cycle_verify_shadow" x="103.0" y="324.0" width="84.0" height="84.0" rx="42.0" fill="#0F172A" opacity="0.10"/>
+<rect id="cycle_verify" x="100.0" y="318.0" width="84.0" height="84.0" rx="42.0" fill="#EAF7F3" stroke="#14B8A6" stroke-width="1.8"/>
+<text id="cycle_text_3" x="119.0" y="360.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">Verify</text>
+<text id="cycle_center_title" x="211.0" y="352.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" dominant-baseline="middle">importance</text>
+<text id="cycle_center_body" x="221.0" y="375.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" dominant-baseline="middle">sets entry</text>
+<rect id="sequence_panel_shadow" x="508.0" y="161.0" width="390.0" height="395.0" rx="30.0" fill="#0F172A" opacity="0.10"/>
+<rect id="sequence_panel" x="505.0" y="155.0" width="390.0" height="395.0" rx="30.0" fill="#FFFDF8" stroke="#D8CCBC" stroke-width="1.4"/>
+<circle cx="553.0" cy="205.0" r="16" fill="#F59E0B"/>
+<text id="panel_2_num" x="547.0" y="205.0" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800" dominant-baseline="middle">2</text>
+<text id="panel_2_title" x="581.0" y="201.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" font-weight="800" dominant-baseline="middle">Ordered Rail</text>
+<text id="panel_2_subtitle" x="581.0" y="229.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="500" dominant-baseline="middle">steps scale by importance</text>
+<path id="sequence_rail" d="M580.0,345.0 H820.0" stroke="#111827" stroke-width="5" stroke-linecap="round"/>
+<circle id="sequence_node_0" cx="580.0" cy="345.0" r="31.2" fill="#FFF3DE" stroke="#F59E0B" stroke-width="2"/>
+<text id="sequence_num_0" x="575.0" y="345.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800" dominant-baseline="middle">1</text>
+<rect id="sequence_label_0_shadow" x="529.0" y="271.0" width="108.0" height="36.0" rx="10.0" fill="#0F172A" opacity="0.10"/>
+<rect id="sequence_label_0" x="526.0" y="265.0" width="108.0" height="36.0" rx="10.0" fill="#FFFDF8" stroke="#E5D9CA" stroke-width="1.0"/>
+<text id="sequence_text_0" x="549.0" y="283.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">Split</text>
+<circle id="sequence_node_1" cx="640.0" cy="345.0" r="25.6" fill="#FFF3DE" stroke="#F59E0B" stroke-width="2"/>
+<text id="sequence_num_1" x="635.0" y="345.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800" dominant-baseline="middle">2</text>
+<rect id="sequence_label_1_shadow" x="589.0" y="396.0" width="108.0" height="36.0" rx="10.0" fill="#0F172A" opacity="0.10"/>
+<rect id="sequence_label_1" x="586.0" y="390.0" width="108.0" height="36.0" rx="10.0" fill="#FFFDF8" stroke="#E5D9CA" stroke-width="1.0"/>
+<text id="sequence_text_1" x="609.0" y="408.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600" dominant-baseline="middle">Hint</text>
+<circle id="sequence_node_2" cx="700.0" cy="345.0" r="34.0" fill="#FFF1F2" stroke="#BE123C" stroke-width="2"/>
+<text id="sequence_num_2" x="695.0" y="345.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800" dominant-baseline="middle">3</text>
+<rect id="sequence_label_2_shadow" x="649.0" y="271.0" width="108.0" height="36.0" rx="10.0" fill="#0F172A" opacity="0.10"/>
+<rect id="sequence_label_2" x="646.0" y="265.0" width="108.0" height="36.0" rx="10.0" fill="#FFFDF8" stroke="#E5D9CA" stroke-width="1.0"/>
+<text id="sequence_text_2" x="669.0" y="283.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">Select</text>
+<circle id="sequence_node_3" cx="760.0" cy="345.0" r="31.2" fill="#FFF3DE" stroke="#F59E0B" stroke-width="2"/>
+<text id="sequence_num_3" x="755.0" y="345.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800" dominant-baseline="middle">4</text>
+<rect id="sequence_label_3_shadow" x="709.0" y="396.0" width="108.0" height="36.0" rx="10.0" fill="#0F172A" opacity="0.10"/>
+<rect id="sequence_label_3" x="706.0" y="390.0" width="108.0" height="36.0" rx="10.0" fill="#FFFDF8" stroke="#E5D9CA" stroke-width="1.0"/>
+<text id="sequence_text_3" x="729.0" y="408.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">Compose</text>
+<circle id="sequence_node_4" cx="820.0" cy="345.0" r="28.4" fill="#FFF3DE" stroke="#F59E0B" stroke-width="2"/>
+<text id="sequence_num_4" x="815.0" y="345.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800" dominant-baseline="middle">5</text>
+<rect id="sequence_label_4_shadow" x="769.0" y="271.0" width="108.0" height="36.0" rx="10.0" fill="#0F172A" opacity="0.10"/>
+<rect id="sequence_label_4" x="766.0" y="265.0" width="108.0" height="36.0" rx="10.0" fill="#FFFDF8" stroke="#E5D9CA" stroke-width="1.0"/>
+<text id="sequence_text_4" x="789.0" y="283.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600" dominant-baseline="middle">Export</text>
+<rect id="ranked_panel_shadow" x="931.0" y="161.0" width="390.0" height="395.0" rx="30.0" fill="#0F172A" opacity="0.10"/>
+<rect id="ranked_panel" x="928.0" y="155.0" width="390.0" height="395.0" rx="30.0" fill="#FFFDF8" stroke="#D8CCBC" stroke-width="1.4"/>
+<circle cx="976.0" cy="205.0" r="16" fill="#818CF8"/>
+<text id="panel_3_num" x="970.0" y="205.0" fill="#FFFFFF" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800" dominant-baseline="middle">3</text>
+<text id="panel_3_title" x="1004.0" y="201.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" font-weight="800" dominant-baseline="middle">Ranked Stack</text>
+<text id="panel_3_subtitle" x="1004.0" y="229.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="500" dominant-baseline="middle">long text gets a lead tile</text>
+<rect id="ranked_lead_shadow" x="967.0" y="279.0" width="160.0" height="190.0" rx="24.0" fill="#0F172A" opacity="0.10"/>
+<rect id="ranked_lead" x="964.0" y="273.0" width="160.0" height="190.0" rx="24.0" fill="#FFF1F2" stroke="#BE123C" stroke-width="1.8"/>
+<text id="ranked_lead_kicker" x="986.0" y="309.0" fill="#BE123C" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="800" dominant-baseline="middle">TOP INSIGHT</text>
+<text id="ranked_lead_text_0" x="986.0" y="345.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="800" dominant-baseline="middle">Longer text</text>
+<text id="ranked_lead_text_1" x="986.0" y="373.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="800" dominant-baseline="middle">receives</text>
+<text id="ranked_lead_text_2" x="986.0" y="401.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="800" dominant-baseline="middle">larger slot</text>
+<rect id="ranked_row_0_shadow" x="1143.0" y="285.0" width="178.0" height="38.0" rx="12.0" fill="#0F172A" opacity="0.10"/>
+<rect id="ranked_row_0" x="1140.0" y="279.0" width="178.0" height="38.0" rx="12.0" fill="#F1F0FA" stroke="#D8CCBC" stroke-width="1.0"/>
+<rect x="1140.0" y="287.0" width="5" height="22" rx="2.5" fill="#818CF8"/>
+<text id="ranked_row_num_0" x="1158.0" y="298.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="800" dominant-baseline="middle">02</text>
+<text id="ranked_row_label_0" x="1188.0" y="298.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="800" dominant-baseline="middle">Coherent arrows</text>
+<rect id="ranked_row_1_shadow" x="1143.0" y="333.0" width="178.0" height="38.0" rx="12.0" fill="#0F172A" opacity="0.10"/>
+<rect id="ranked_row_1" x="1140.0" y="327.0" width="178.0" height="38.0" rx="12.0" fill="#F1F0FA" stroke="#D8CCBC" stroke-width="1.0"/>
+<rect x="1140.0" y="335.0" width="5" height="22" rx="2.5" fill="#818CF8"/>
+<text id="ranked_row_num_1" x="1158.0" y="346.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="800" dominant-baseline="middle">03</text>
+<text id="ranked_row_label_1" x="1188.0" y="346.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10" font-weight="800" dominant-baseline="middle">Readable type floor</text>
+<rect id="ranked_row_2_shadow" x="1143.0" y="381.0" width="178.0" height="38.0" rx="12.0" fill="#0F172A" opacity="0.10"/>
+<rect id="ranked_row_2" x="1140.0" y="375.0" width="178.0" height="38.0" rx="12.0" fill="#FFFDF8" stroke="#D8CCBC" stroke-width="1.0"/>
+<rect x="1140.0" y="383.0" width="5" height="22" rx="2.5" fill="#818CF8"/>
+<text id="ranked_row_num_2" x="1158.0" y="394.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="800" dominant-baseline="middle">04</text>
+<text id="ranked_row_label_2" x="1188.0" y="394.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="600" dominant-baseline="middle">Bounded labels</text>
+<rect id="ranked_row_3_shadow" x="1143.0" y="429.0" width="178.0" height="38.0" rx="12.0" fill="#0F172A" opacity="0.10"/>
+<rect id="ranked_row_3" x="1140.0" y="423.0" width="178.0" height="38.0" rx="12.0" fill="#FFFDF8" stroke="#D8CCBC" stroke-width="1.0"/>
+<rect x="1140.0" y="431.0" width="5" height="22" rx="2.5" fill="#818CF8"/>
+<text id="ranked_row_num_3" x="1158.0" y="442.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="11" font-weight="800" dominant-baseline="middle">05</text>
+<text id="ranked_row_label_3" x="1188.0" y="442.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="10" font-weight="600" dominant-baseline="middle">Low-noise background</text>
+<rect id="policy_band_shadow" x="85.0" y="594.0" width="1236.0" height="92.0" rx="24.0" fill="#0F172A" opacity="0.10"/>
+<rect id="policy_band" x="82.0" y="588.0" width="1236.0" height="92.0" rx="24.0" fill="#FFFDF8" stroke="#D8CCBC" stroke-width="1.4"/>
+<text id="policy_title" x="112.0" y="625.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800" dominant-baseline="middle">Selection policy</text>
+<text id="policy_body" x="300.0" y="625.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="500" dominant-baseline="middle">Short cyclical content gets an orbit; ordered steps get one rail; long or uneven importance gets a ranked stack.</text>
+<text id="policy_badge" x="1132.0" y="625.0" fill="#BE123C" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="800" dominant-baseline="middle">importance -&gt; scale</text>
+</svg>

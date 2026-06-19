@@ -26,6 +26,8 @@ The seed pack separates:
 
 These seeds should be selected by deterministic rules and then checked by coherence validation so a slide can become more expressive without mixing arbitrary styles.
 
+`composition/src/infographicPlanner.ts` is the deterministic bridge from content metadata to these seeds. It selects `cycle-loop`, `ordered-rail`, or `ranked-stack` from relation intent, item count, text length, and importance, then returns renderer-neutral slots with emphasis, text scale, and color role.
+
 ## PPTX Policy
 
 The target is full Design Components-to-MDPR portability through editable PPTX output:

@@ -76,6 +76,54 @@
       ]
     }
   ],
+  "layoutFamilies": [
+    {
+      "id": "cycle-loop",
+      "intent": ["cycle", "feedback", "iteration", "closed-loop"],
+      "itemCount": { "min": 3, "max": 6 },
+      "textCharsPerItem": { "idealMax": 42, "hardMax": 72 },
+      "importanceUse": "highest importance item becomes the entry node and receives the contrast rim; secondary items share accent rims.",
+      "svgRecipe": {
+        "structure": ["center label", "orbit nodes", "curved arrows", "entry node contrast rim"],
+        "emphasisSlots": ["entry-node", "center-insight"],
+        "avoid": ["equal-size circles when importance differs", "labels outside orbit safe area"]
+      }
+    },
+    {
+      "id": "ordered-rail",
+      "intent": ["sequence", "process", "steps", "ordered"],
+      "itemCount": { "min": 2, "max": 7 },
+      "textCharsPerItem": { "idealMax": 56, "hardMax": 88 },
+      "importanceUse": "importance controls node diameter, label weight, and whether the node receives a local callout tab.",
+      "svgRecipe": {
+        "structure": ["primary rail", "numbered nodes", "alternating labels", "one highlighted inflection point"],
+        "emphasisSlots": ["inflection-node", "result-node"],
+        "avoid": ["different arrow styles for same-role steps", "unbalanced label baselines"]
+      }
+    },
+    {
+      "id": "ranked-stack",
+      "intent": ["list", "enumeration", "ranking", "takeaways"],
+      "itemCount": { "min": 3, "max": 8 },
+      "textCharsPerItem": { "idealMax": 68, "hardMax": 110 },
+      "importanceUse": "highest importance item becomes a lead tile; remaining items become compact rows sorted by importance then source order.",
+      "svgRecipe": {
+        "structure": ["lead tile", "ranked rows", "left accent meter", "compact evidence captions"],
+        "emphasisSlots": ["lead-tile", "top-ranked-row"],
+        "avoid": ["all rows with equal visual weight", "long text without a secondary line break"]
+      }
+    }
+  ],
+  "selectionPolicy": {
+    "primaryInputs": ["slide.intent", "element.relation", "element.importance", "contentMetrics.textChars", "contentMetrics.itemCount"],
+    "fallbackOrder": ["ordered-rail", "ranked-stack", "cycle-loop"],
+    "densityRules": [
+      "If average textChars is above the ideal maximum, prefer ranked-stack over cycle-loop.",
+      "If relation is sequence or process and item count is seven or fewer, prefer ordered-rail.",
+      "If relation is cycle or feedback and every item fits the cycle hardMax, prefer cycle-loop.",
+      "If one item has importance 5 and the rest are 3 or lower, allocate a lead slot instead of equal slots."
+    ]
+  },
   "backgroundPolicy": {
     "removeWhen": ["large decorative container does not encode hierarchy", "surface duplicates a visible group panel"],
     "allowedWhen": ["safe area reference", "subtle editorial texture", "export contrast support"],

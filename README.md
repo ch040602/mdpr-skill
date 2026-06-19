@@ -8,6 +8,8 @@ The pipeline is documented in `pipeline.md`. The pipeline image is generated fro
 
 Visual diversification seeds live in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json`. They separate flow colors, section accents, contrast colors, support surfaces, and infographic patterns so emphasis can be expressed through a different pattern, not only through a shifted hue.
 
+The seed gallery at `docs/assets/infographic-seed-gallery.png` is generated from those rules as SVG, embedded in PowerPoint, and exported as PNG. It demonstrates cycle, ordered, and ranked infographic families for teaser-grade pages that need to place emphasis by text length and importance.
+
 This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based visual diversification pipeline to MDPR.
 
 It is explicitly based on these upstream projects:
@@ -174,6 +176,7 @@ It also runs the Design Components source coverage check and PowerPoint render c
 npm run inventory:design
 npm run verify:ppt
 npm run compare:ppt
+npm run infographic:gallery
 npm run showcase:ppt
 ```
 
@@ -189,6 +192,7 @@ PowerPoint render artifacts are written under `artifacts/ppt/`. The comparison u
 - `docs/migration-guide.md`
 - `docs/release-checklist.md`
 - `docs/mdpr-installation.md`
+- `docs/infographic-seed-guide.md`
 - `docs/design-source-port-coverage.md`
 - `docs/ppt-visual-validation.md`
 - `docs/component-showcase.html`
@@ -228,6 +232,10 @@ The exported design showcase is intentionally rendered in reverse order: `mixed-
 - `artifacts/design-showcase/showcase_slide_5.png`
 - `artifacts/design-showcase/assets/mixed_object_reference.png`
 - `artifacts/design-showcase/design_showcase_report.json`
+- `docs/assets/infographic-seed-gallery.svg`
+- `docs/assets/infographic-seed-gallery.pptx`
+- `docs/assets/infographic-seed-gallery.png`
+- `docs/assets/infographic-seed-gallery-report.json`
 
 ## Design Showcase Deck
 

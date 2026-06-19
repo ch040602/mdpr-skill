@@ -1,0 +1,40 @@
+{
+  "svg": "docs\\assets\\infographic-seed-gallery.svg",
+  "pptx": "docs\\assets\\infographic-seed-gallery.pptx",
+  "png": "docs\\assets\\infographic-seed-gallery.png",
+  "renderValidation": {
+    "file": "docs\\assets\\infographic-seed-gallery.png",
+    "size": [
+      2600,
+      1414
+    ],
+    "uniqueColors": 9321,
+    "nonWhitePixels": 3670944,
+    "hasContent": true
+  },
+  "families": [
+    {
+      "family": "cycle-loop",
+      "items": 4,
+      "maxImportance": 5
+    },
+    {
+      "family": "ordered-rail",
+      "items": 5,
+      "maxImportance": 5
+    },
+    {
+      "family": "ranked-stack",
+      "items": 5,
+      "maxImportance": 5
+    }
+  ],
+  "layoutValidation": {
+    "trackedTextBoxes": 42,
+    "trackedBoxes": 18,
+    "overflowCount": 0,
+    "overflow": [],
+    "ok": true
+  },
+  "ok": true
+}

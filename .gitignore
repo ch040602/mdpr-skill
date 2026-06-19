@@ -6,4 +6,5 @@ __pycache__/
 .pytest_cache/
 artifacts/**/powerpoint-export/
 docs/assets/pipeline-overview-export/
+docs/assets/infographic-seed-gallery-export/
 reports/mdpr-install.json
