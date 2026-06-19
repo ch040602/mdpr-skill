@@ -4,6 +4,12 @@
 
 The LLM is an assistant, not the design authority. It may propose semantic hints, but all final design choices are made by deterministic rules inside `design_components/`.
 
+## LLM Usage Boundary
+
+This repository may use an LLM only before deterministic selection, and only to suggest compact semantic hints such as slide intent, grouping candidates, importance candidates, or ambiguity notes. The LLM must not choose slide splits, recipes, variants, coordinates, dimensions, colors, typography, z-order, arrows, effects, or renderer-specific objects.
+
+MDPR itself is a no-LLM runtime. Markdown parsing, Pandoc normalization, slide splitting, graph/diagram preservation, layout, rendering, and validation must work deterministically with the LLM disabled.
+
 The pipeline is documented in `pipeline.md`. The pipeline image is generated from that Markdown source as `docs/assets/pipeline-overview.svg`, embedded into a one-slide PowerPoint deck at `docs/assets/pipeline-overview.pptx`, and exported as a high-resolution PNG through Microsoft PowerPoint. The stored placement plan at `docs/assets/pipeline-overview-layout.json` is aligned through PowerPoint `ShapeRange.Align` before rendering. SVG is used for stable rounded corners, fixed arrowheads, centered icon-label pairs, role-scaled typography, and explicit padding around text. The generation report verifies child-shape containment, arrow connection levels, icon-label alignment, and PPT-compatible shadow rendering.
 
 Visual diversification seeds live in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json`. They separate flow colors, section accents, contrast colors, support surfaces, and infographic patterns so emphasis can be expressed through a different pattern, not only through a shifted hue.
