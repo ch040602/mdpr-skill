@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MDPR Slide Element Catalog</title>
+<style>
+:root {
+  --bg: #FFFFFF;
+  --text: #1F2937;
+  --primary: #2563EB;
+  --secondary: #EB4A25;
+  --surface: #FBFBFB;
+  --surface-line: #C6CBDA;
+  --muted: #4B5563;
+  --font: "Pretendard";
+}
+body { margin: 0; background: #111; font-family: var(--font); }
+.deck { display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.slide { position: relative; width: 13.333in; height: 7.5in; background: var(--bg); color: var(--text); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.region { position: absolute; box-sizing: border-box; }
+.title { font-weight: 700; }
+.body.key-message { background: var(--surface); border-left: .08in solid var(--primary); padding: .18in .28in; }
+.body.key-message blockquote { margin: 0; font-weight: 700; color: var(--text); }
+.item { background: var(--surface); border-left: .06in solid var(--primary); padding: .12in .18in; }
+.region ul, .region ol { margin: 0; padding-left: 1.2em; }
+.structured-list { list-style: none; padding-left: 0; }
+.region li.level-1 { margin-left: 1.1em; }
+.region li.level-2 { margin-left: 2.2em; }
+.region p { margin: 0 0 .45em; }
+.region img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item-number { display: inline-flex; width: .28in; height: .28in; align-items: center; justify-content: center; margin-right: .1in; border-radius: 999px; background: var(--primary); color: var(--bg); font-weight: 700; }
+.item-label { font-weight: 700; display: block; margin-bottom: .12in; color: var(--primary); }
+.item-description { display: block; margin-left: .18in; color: var(--muted); }
+strong { color: var(--primary); }
+.pipeline { position: relative; height: 100%; min-height: 3.6in; }
+.pipeline-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+.pipeline-connector { fill: none; stroke: var(--primary); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pipeline-node { position: absolute; z-index: 2; min-width: 0; border: 1px solid var(--surface-line); background: var(--surface); padding: .12in; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: .12in; font-weight: 700; line-height: 1.18; }
+.chart { width: 100%; height: 100%; display: flex; flex-direction: column; gap: .12in; justify-content: center; }
+.chart-row { display: grid; grid-template-columns: 1.1in 1fr .45in; gap: .1in; align-items: center; font-size: .13in; }
+.chart-label { color: var(--text); font-weight: 700; }
+.chart-track { height: .18in; background: color-mix(in srgb, var(--surface-line) 60%, transparent); border-radius: 999px; overflow: hidden; }
+.chart-bar { height: 100%; background: var(--primary); border-radius: 999px; }
+.chart-value { color: var(--muted); text-align: right; }
+</style>
+</head>
+<body>
+<main class="deck">
+<section class="slide" data-slide-id="mdpr-slide-element-catalog-aa468c" data-layout="cover"><div class="region title title" style="left:1in;top:2.25in;width:11.3in;height:1.25in;z-index:10;font-size:48pt;line-height:1.2">MDPR Slide Element Catalog</div></section>
+<section class="slide" data-slide-id="toc-53a981" data-layout="toc"><div class="region title title" style="left:0.8in;top:0.42in;width:11.7in;height:0.9in;z-index:10;font-size:38pt;line-height:1.2">Agenda</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Text Blocks</p>
+<p>Tables</p>
+<p>Native Chart</p>
+<p>Chart Beside Prose</p>
+<p>Gauge Proof Object</p>
+<p>Arc Ring Proof Object</p>
+<p>Connected Strip Proof Object</p>
+<p>Image Slot</p></div></section>
+<section class="slide" data-slide-id="1-2-57e059" data-layout="grid"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Text Blocks</div>
+<div class="region item item-1" style="left:0.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Cover title</li></ul></div>
+<div class="region item item-2" style="left:6.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Section title</li></ul></div>
+<div class="region item item-3" style="left:0.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Paragraph body</li></ul></div>
+<div class="region item item-4" style="left:6.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Ordered list</li></ul></div></section>
+<section class="slide" data-slide-id="2-2-411318" data-layout="vertical-list"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Text Blocks (Cont. 2/2)</div>
+<div class="region item item-1" style="left:1in;top:1.55in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Unordered list</li></ul></div>
+<div class="region item item-2" style="left:1in;top:2.8in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Quote emphasis</li></ul></div>
+<div class="region item item-3" style="left:1in;top:4.05in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Code block</li></ul></div></section>
+<section class="slide" data-slide-id="tables-b7052f" data-layout="table-focus"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Tables</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Element | PPTX object | Coherence rule
+Header row | Native table text | bold and readable
+Numeric cell | Native table text | right aligned
+Long label | Native table text | trimmed spacing
+Body cell | Native table text | stable minimum font</p></div></section>
+<section class="slide" data-slide-id="native-chart-8484ed" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Native Chart</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><div class="chart" aria-label="Coverage"><div class="chart-row"><span class="chart-label">Parser</span><span class="chart-track"><span class="chart-bar" style="width:96.8%"></span></span><span class="chart-value">91</span></div><div class="chart-row"><span class="chart-label">Layout</span><span class="chart-track"><span class="chart-bar" style="width:92.6%"></span></span><span class="chart-value">87</span></div><div class="chart-row"><span class="chart-label">Renderer</span><span class="chart-track"><span class="chart-bar" style="width:100.0%"></span></span><span class="chart-value">94</span></div></div></div></section>
+<section class="slide" data-slide-id="chart-beside-prose-14f252" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Chart Beside Prose</div>
+<div class="region body body" style="left:0.92in;top:1.66in;width:4.18in;height:4.62in;z-index:10;font-size:22pt;line-height:1.2"><p>The explanation remains beside the graph. This is the MDPR-owned numeric storytelling layout for short interpretation text plus quantitative evidence.</p></div>
+<div class="region chart chart" style="left:5.42in;top:1.56in;width:6.78in;height:4.82in;z-index:10;font-size:17pt;line-height:1.2"><div class="chart" aria-label="Score"><div class="chart-row"><span class="chart-label">Baseline</span><span class="chart-track"><span class="chart-bar" style="width:65.6%"></span></span><span class="chart-value">61</span></div><div class="chart-row"><span class="chart-label">Refined</span><span class="chart-track"><span class="chart-bar" style="width:90.3%"></span></span><span class="chart-value">84</span></div><div class="chart-row"><span class="chart-label">Validated</span><span class="chart-track"><span class="chart-bar" style="width:100.0%"></span></span><span class="chart-value">93</span></div></div></div></section>
+<section class="slide" data-slide-id="gauge-proof-object-cc65ab" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Gauge Proof Object</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><p>Score: 83</p></div></section>
+<section class="slide" data-slide-id="arc-ring-proof-object-69a095" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Arc Ring Proof Object</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><p>Coverage: 72, 28</p></div></section>
+<section class="slide" data-slide-id="connected-strip-proof-object-27fad9" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Connected Strip Proof Object</div>
+<div class="region chart chart" style="left:1in;top:1.55in;width:11.2in;height:4.75in;z-index:10;font-size:22pt;line-height:1.2"><p>Value: 20, 68, 92</p></div></section>
+<section class="slide" data-slide-id="image-slot-6004bf" data-layout="vertical-list"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Image Slot</div>
+<div class="region item item-1" style="left:1in;top:1.55in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Image-aware layouts keep body text and image objects in separate regions.</li></ul></div>
+<div class="region item item-2" style="left:1in;top:2.8in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">The renderer must preserve aspect ratio and avoid covering text.</li></ul></div>
+<div class="region item item-3" style="left:1in;top:4.05in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">The catalog keeps the icon/image role restrained rather than filling blank space.</li></ul></div></section>
+</main>
+</body>
+</html>

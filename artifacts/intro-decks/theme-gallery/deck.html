@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MDPR Visual Diversification</title>
+<style>
+:root {
+  --bg: #FFFFFF;
+  --text: #1F2937;
+  --primary: #2563EB;
+  --secondary: #EB4A25;
+  --surface: #FBFBFB;
+  --surface-line: #C6CBDA;
+  --muted: #4B5563;
+  --font: "Pretendard";
+}
+body { margin: 0; background: #111; font-family: var(--font); }
+.deck { display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.slide { position: relative; width: 13.333in; height: 7.5in; background: var(--bg); color: var(--text); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.region { position: absolute; box-sizing: border-box; }
+.title { font-weight: 700; }
+.body.key-message { background: var(--surface); border-left: .08in solid var(--primary); padding: .18in .28in; }
+.body.key-message blockquote { margin: 0; font-weight: 700; color: var(--text); }
+.item { background: var(--surface); border-left: .06in solid var(--primary); padding: .12in .18in; }
+.region ul, .region ol { margin: 0; padding-left: 1.2em; }
+.structured-list { list-style: none; padding-left: 0; }
+.region li.level-1 { margin-left: 1.1em; }
+.region li.level-2 { margin-left: 2.2em; }
+.region p { margin: 0 0 .45em; }
+.region img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item-number { display: inline-flex; width: .28in; height: .28in; align-items: center; justify-content: center; margin-right: .1in; border-radius: 999px; background: var(--primary); color: var(--bg); font-weight: 700; }
+.item-label { font-weight: 700; display: block; margin-bottom: .12in; color: var(--primary); }
+.item-description { display: block; margin-left: .18in; color: var(--muted); }
+strong { color: var(--primary); }
+.pipeline { position: relative; height: 100%; min-height: 3.6in; }
+.pipeline-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+.pipeline-connector { fill: none; stroke: var(--primary); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pipeline-node { position: absolute; z-index: 2; min-width: 0; border: 1px solid var(--surface-line); background: var(--surface); padding: .12in; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: .12in; font-weight: 700; line-height: 1.18; }
+.chart { width: 100%; height: 100%; display: flex; flex-direction: column; gap: .12in; justify-content: center; }
+.chart-row { display: grid; grid-template-columns: 1.1in 1fr .45in; gap: .1in; align-items: center; font-size: .13in; }
+.chart-label { color: var(--text); font-weight: 700; }
+.chart-track { height: .18in; background: color-mix(in srgb, var(--surface-line) 60%, transparent); border-radius: 999px; overflow: hidden; }
+.chart-bar { height: 100%; background: var(--primary); border-radius: 999px; }
+.chart-value { color: var(--muted); text-align: right; }
+</style>
+</head>
+<body>
+<main class="deck">
+<section class="slide" data-slide-id="mdpr-visual-diversification-a0d335" data-layout="cover"><div class="region title title" style="left:1in;top:2.25in;width:11.3in;height:1.25in;z-index:10;font-size:48pt;line-height:1.2">MDPR Visual Diversification</div></section>
+<section class="slide" data-slide-id="toc-53a981" data-layout="toc"><div class="region title title" style="left:0.8in;top:0.42in;width:11.7in;height:0.9in;z-index:10;font-size:38pt;line-height:1.2">Agenda</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Runtime Boundary</p>
+<p>Numeric Evidence Beside Reading</p>
+<p>Parallel Table And Graph</p>
+<p>Visual Families</p>
+<p>Reuse Contract</p></div></section>
+<section class="slide" data-slide-id="runtime-boundary-32584a" data-layout="grid"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Runtime Boundary</div>
+<div class="region item item-1" style="left:0.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">MDPR</span><span class="item-description">deterministic parsing, splitting, layout, color harmony, rendering, and validation.</span></li></ul></div>
+<div class="region item item-2" style="left:6.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">mdpr-skill</span><span class="item-description">optional compact semantic hints before deterministic selection.</span></li></ul></div>
+<div class="region item item-3" style="left:0.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">LLM scope</span><span class="item-description">intent, grouping, importance candidates, and ambiguity notes only.</span></li></ul></div>
+<div class="region item item-4" style="left:6.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Rule scope</span><span class="item-description">slide splits, coordinates, typography, colors, z-order, effects, arrows, tables, charts, and PPTX objects.</span></li></ul></div></section>
+<section class="slide" data-slide-id="numeric-evidence-beside-reading-8d0b66" data-layout="comparison"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Numeric Evidence Beside Reading</div>
+<div class="region body left" style="left:0.9in;top:1.7in;width:5.4in;height:4.8in;z-index:10;font-size:22pt;line-height:1.2"><p>The chart is placed beside the explanation so readers can compare the quantitative signal and the interpretation in one pass. The refined source keeps the text short enough for a stable side-by-side layout.</p></div>
+<div class="region body right" style="left:7in;top:1.7in;width:5.4in;height:4.8in;z-index:10;font-size:22pt;line-height:1.2"><div class="chart" aria-label="Before"><div class="chart-row"><span class="chart-label">Parse</span><span class="chart-track"><span class="chart-bar" style="width:61.5%"></span></span><span class="chart-value">56</span></div><div class="chart-row"><span class="chart-label">Split</span><span class="chart-track"><span class="chart-bar" style="width:70.3%"></span></span><span class="chart-value">64</span></div><div class="chart-row"><span class="chart-label">Layout</span><span class="chart-track"><span class="chart-bar" style="width:76.9%"></span></span><span class="chart-value">70</span></div><div class="chart-row"><span class="chart-label">Render</span><span class="chart-track"><span class="chart-bar" style="width:68.1%"></span></span><span class="chart-value">62</span></div></div></div></section>
+<section class="slide" data-slide-id="parallel-table-and-graph-3ab688" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Parallel Table And Graph</div>
+<div class="region chart chart" style="left:0.82in;top:1.65in;width:5.05in;height:3.75in;z-index:10;font-size:17pt;line-height:1.2"><div class="chart" aria-label="Coherence"><div class="chart-row"><span class="chart-label">Table</span><span class="chart-track"><span class="chart-bar" style="width:96.7%"></span></span><span class="chart-value">89</span></div><div class="chart-row"><span class="chart-label">Chart</span><span class="chart-track"><span class="chart-bar" style="width:100.0%"></span></span><span class="chart-value">92</span></div><div class="chart-row"><span class="chart-label">Text</span><span class="chart-track"><span class="chart-bar" style="width:93.5%"></span></span><span class="chart-value">86</span></div><div class="chart-row"><span class="chart-label">Theme</span><span class="chart-track"><span class="chart-bar" style="width:98.9%"></span></span><span class="chart-value">91</span></div></div></div>
+<div class="region table table" style="left:6.1in;top:1.72in;width:6.05in;height:3.28in;z-index:10;font-size:17pt;line-height:1.2"><p>Area | Rule-based behavior | Validation signal
+Table | Header weight and numeric alignment | readable cells
+Chart | Theme-bound palette tokens | editable chart
+Text | Minimum readable font floor | bounded frame</p></div></section>
+<section class="slide" data-slide-id="visual-families-a864f6" data-layout="grid"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Visual Families</div>
+<div class="region item item-1" style="left:0.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Sequence rail</span><span class="item-description">ordered steps, consistent arrow semantics, restrained accent.</span></li></ul></div>
+<div class="region item item-2" style="left:6.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Proof point</span><span class="item-description">metric, callout line, contrast chip, and evidence table.</span></li></ul></div>
+<div class="region item item-3" style="left:0.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Comparison</span><span class="item-description">two balanced regions with shared baseline and matching text floors.</span></li></ul></div>
+<div class="region item item-4" style="left:6.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Text relief</span><span class="item-description">one quiet monochrome icon slot when a prose slide would otherwise be plain.</span></li></ul></div></section>
+<section class="slide" data-slide-id="reuse-contract-7a3a86" data-layout="vertical-list"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Reuse Contract</div>
+<div class="region item item-1" style="left:1in;top:1.55in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">This Markdown is the reusable LLM-hint version.</li></ul></div>
+<div class="region item item-2" style="left:1in;top:2.8in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">The LLM does not select the final theme, coordinates, variants, or object geometry.</li></ul></div>
+<div class="region item item-3" style="left:1in;top:4.05in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">MDPR can rebuild the same source under every design preset through --theme-gallery.</li></ul></div></section>
+</main>
+</body>
+</html>

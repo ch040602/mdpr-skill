@@ -1,0 +1,9 @@
+version: "1.0"
+deck:
+  language: en
+theme:
+  designPreset: tableau
+  colorCombination: split-complementary
+pptx:
+  designPreset: tableau
+  lockBackgroundToMaster: false

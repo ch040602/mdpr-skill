@@ -18,6 +18,8 @@ The integrated MDPR-only proof deck is stored at `artifacts/mdpr-integrated/mdpr
 
 The chart proof-object deck is stored at `artifacts/chart-proof-objects/dist/deck.pptx`, with PowerPoint-exported previews in `artifacts/chart-proof-objects/powerpoint-png/`, a contact sheet at `artifacts/chart-proof-objects/contact-sheet.png`, and a report at `artifacts/chart-proof-objects/validation-report.json`. It is generated through MDPR from `artifacts/chart-proof-objects/chart-proof-objects.md` and demonstrates editable `arc-ring`, `gauge`, and `connected-strip` chart proof objects beside a native PowerPoint bar chart baseline. The report verifies separated TOC text boxes, one native chart part for the baseline, no native chart parts on proof-object slides, and minimum rendered text size of at least `14pt`.
 
+The introduction decks are stored under `artifacts/intro-decks/`. `theme-gallery/deck.pptx` repeats the reusable LLM-hint source across all 14 MDPR built-in themes, while `element-catalog/deck.pptx` lists supported slide element families such as text blocks, tables, native charts, chart-beside-prose, gauges, arc rings, connected strips, and image slots. Both decks are generated from reusable English Markdown sources (`mdpr-intro-refined.md` and `element-catalog-refined.md`) through MDPR, exported by Microsoft PowerPoint to PNG, and summarized in `validation-report.json`.
+
 MDPR color selection follows Adobe Color Wheel harmony rules through `theme.colorCombination`: `preset`, `monochromatic`, `analogous`, `complementary`, `split-complementary`, and `triadic`. The derived palette feeds element colors, chart color tokens, and the generated PowerPoint document theme.
 
 Review guidance still checks WCAG contrast-ratio expectations for readable text and emphasis colors before accepting generated PPTX artifacts.
@@ -92,6 +94,7 @@ This project does not replace MDPR. It keeps MDPR as the runtime owner and suppl
 - **Stronger renderer contracts:** MDPR `Presentation IR` and `Layout IR` carry renderer-neutral structure into PPTX, HTML, and PDF renderers.
 - **Editable PPTX-first behavior:** generated PowerPoint decks use editable shapes, text boxes, tables, charts, pictures, theme colors, and verified z-order instead of relying only on flattened visual output.
 - **Editable chart proof objects:** MDPR supports native `bar` charts and editable `arc-ring`, `gauge`, and `connected-strip` proof-object charts for score/progress/flow slides that should not rely on flattened images.
+- **Numeric parallel layouts:** MDPR can place short prose beside a chart and can keep charts and tables in parallel regions when the slide needs both quantitative and tabular evidence.
 - **Coherence validation:** visual profiles enforce consistent accent usage, radius family, shadow family, readable font sizes, bounded text, aligned icon-label pairs, and consistent arrow semantics.
 - **Adobe Color Wheel harmony:** MDPR `theme.colorCombination` selects `monochromatic`, `analogous`, `complementary`, `split-complementary`, or `triadic` rules and writes derived accents into the PowerPoint document theme.
 - **Lower token usage:** optional agent hints are reduced to compact intent/grouping tags; deterministic rules perform the expensive design selection work without repeated model reasoning.
@@ -292,6 +295,11 @@ The exported design showcase is intentionally rendered in reverse order: `mixed-
 - `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
 - `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
 - `artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json`
+- `artifacts/intro-decks/theme-gallery/deck.pptx`
+- `artifacts/intro-decks/element-catalog/deck.pptx`
+- `artifacts/intro-decks/theme-gallery-contact-sheet.png`
+- `artifacts/intro-decks/element-catalog-contact-sheet.png`
+- `artifacts/intro-decks/validation-report.json`
 
 ## Design Showcase Deck
 
