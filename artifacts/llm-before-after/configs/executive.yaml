@@ -1,0 +1,9 @@
+theme:
+  designPreset: executive
+  colorCombination: complementary
+  backgroundColor: "#F8FAFC"
+  textColor: "#0F172A"
+  primaryColor: "#1D4ED8"
+
+pptx:
+  designPreset: executive

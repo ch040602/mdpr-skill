@@ -1,0 +1,9 @@
+theme:
+  designPreset: editorial
+  colorCombination: triadic
+  backgroundColor: "#F7F3EF"
+  textColor: "#1F2937"
+  primaryColor: "#B45309"
+
+pptx:
+  designPreset: editorial

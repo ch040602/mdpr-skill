@@ -1,0 +1,58 @@
+{
+  "rows": [
+    {
+      "label": "MDPR before / executive",
+      "slug": "before_executive",
+      "slideCount": 6,
+      "slides": [
+        "artifacts\\llm-before-after\\previews\\before_executive\\slide-01.png",
+        "artifacts\\llm-before-after\\previews\\before_executive\\slide-02.png",
+        "artifacts\\llm-before-after\\previews\\before_executive\\slide-03.png",
+        "artifacts\\llm-before-after\\previews\\before_executive\\slide-04.png",
+        "artifacts\\llm-before-after\\previews\\before_executive\\slide-05.png",
+        "artifacts\\llm-before-after\\previews\\before_executive\\slide-06.png"
+      ]
+    },
+    {
+      "label": "MDPR before / editorial",
+      "slug": "before_editorial",
+      "slideCount": 6,
+      "slides": [
+        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-01.png",
+        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-02.png",
+        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-03.png",
+        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-04.png",
+        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-05.png",
+        "artifacts\\llm-before-after\\previews\\before_editorial\\slide-06.png"
+      ]
+    },
+    {
+      "label": "LLM-hint after / executive",
+      "slug": "after_executive",
+      "slideCount": 7,
+      "slides": [
+        "artifacts\\llm-before-after\\previews\\after_executive\\slide-01.png",
+        "artifacts\\llm-before-after\\previews\\after_executive\\slide-02.png",
+        "artifacts\\llm-before-after\\previews\\after_executive\\slide-03.png",
+        "artifacts\\llm-before-after\\previews\\after_executive\\slide-04.png",
+        "artifacts\\llm-before-after\\previews\\after_executive\\slide-05.png",
+        "artifacts\\llm-before-after\\previews\\after_executive\\slide-06.png",
+        "artifacts\\llm-before-after\\previews\\after_executive\\slide-07.png"
+      ]
+    },
+    {
+      "label": "LLM-hint after / editorial",
+      "slug": "after_editorial",
+      "slideCount": 7,
+      "slides": [
+        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-01.png",
+        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-02.png",
+        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-03.png",
+        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-04.png",
+        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-05.png",
+        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-06.png",
+        "artifacts\\llm-before-after\\previews\\after_editorial\\slide-07.png"
+      ]
+    }
+  ]
+}
