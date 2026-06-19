@@ -103,15 +103,27 @@ def card(slide, name: str, x: float, y: float, w: float, h: float, title: str, l
         text(slide, f"{name}_line_{idx}", x + 0.22, line_y, w - 0.42, line_h, line, 8, "526071", parent=parent)
 
 
-def arrow(slide, name: str, x: float, y: float, w: float, color: str = "475569", dashed: bool = False):
-    line = slide.shapes.add_connector(1, Inches(x), Inches(y), Inches(x + w), Inches(y))
+def panel(slide, name: str, x: float, y: float, w: float, h: float, title: str, subtitle: str, fill: str, border: str, title_color: str):
+    parent = f"{name}_panel"
+    shape(slide, parent, MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, x, y, w, h, fill, border)
+    text(slide, f"{name}_title", x + 0.18, y + 0.18, w - 0.36, 0.22, title, 10, title_color, True, parent=parent)
+    text(slide, f"{name}_subtitle", x + 0.18, y + 0.43, w - 0.36, 0.18, subtitle, 8, "64748B", parent=parent)
+    return parent
+
+
+def arrow_between(slide, name: str, x1: float, y1: float, x2: float, y2: float, color: str = "475569", width: float = 1.8, dashed: bool = False):
+    line = slide.shapes.add_connector(1, Inches(x1), Inches(y1), Inches(x2), Inches(y2))
     line.name = name
     line.line.color.rgb = rgb(color)
-    line.line.width = Pt(1.8)
+    line.line.width = Pt(width)
     line.line.end_arrowhead = True
     if dashed:
         line.line.dash_style = 4
     return line
+
+
+def arrow(slide, name: str, x: float, y: float, w: float, color: str = "475569", dashed: bool = False):
+    return arrow_between(slide, name, x, y, x + w, y, color, 1.8, dashed)
 
 
 def build_deck(path: Path) -> None:
@@ -125,50 +137,61 @@ def build_deck(path: Path) -> None:
     shape(slide, "z00_background", MSO_AUTO_SHAPE_TYPE.RECTANGLE, 0, 0, LAYOUT.slide_w, LAYOUT.slide_h, "F8FAFC", "F8FAFC")
     shape(slide, "z01_canvas", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, LAYOUT.canvas_x, LAYOUT.canvas_y, LAYOUT.canvas_w, LAYOUT.canvas_h, "FFFFFF", "DDE6F3")
 
-    text(slide, "title", LAYOUT.origin_x, LAYOUT.origin_y, 6.3, 0.4, "MDPR Design Components Pipeline", 22, "0F172A", True)
-    text(slide, "subtitle", LAYOUT.origin_x, 0.68, 8.7, 0.24, "LLM hints semantic intent only. Deterministic rules own design decisions and editable rendering.", 10, "475569")
+    text(slide, "title", LAYOUT.origin_x, LAYOUT.origin_y, 6.7, 0.42, "MDPR Design Components Pipeline", 23, "0F172A", True)
+    text(slide, "subtitle", LAYOUT.origin_x, 0.7, 8.85, 0.24, "Content is split by MDPR. LLM reasoning supplies hints. Deterministic rules own layout, styling, z-order, and editable rendering.", 9, "475569")
 
-    text(slide, "section_input", 0.86, 1.3, 2.2, 0.22, "INPUT AND STRUCTURE", 8, "64748B", True)
-    text(slide, "section_rule", 5.0, 1.3, 3.08, 0.22, "RULE-BASED DETERMINISTIC BOUNDARY", 8, "15803D", True)
-    text(slide, "section_output", 10.64, 1.3, 1.6, 0.22, "OUTPUTS", 8, "64748B", True)
+    panel(slide, "zone_content", 0.82, 1.22, 2.55, 3.82, "1. Content Contract", "MDPR creates semantic structure only", "F8FAFC", "D7E1EE", "334155")
+    panel(slide, "zone_reasoning", 3.58, 1.22, 2.56, 3.82, "2. LLM Reasoning", "optional intent and grouping hints", "EFF6FF", "93C5FD", "1D4ED8")
+    panel(slide, "zone_rules", 6.36, 1.22, 3.62, 3.82, "3. Deterministic Design", "final visual choices happen here", "EEF7F1", "86EFAC", "15803D")
+    panel(slide, "zone_outputs", 10.2, 1.22, 2.24, 3.82, "4. Editable Outputs", "PPTX, HTML, PDF, and checks", "F8FAFC", "D7E1EE", "334155")
 
-    card(slide, "markdown", 0.86, 1.7, 1.82, 1.1, "Markdown", ["headings and lists", "tables, code, images"], "CBD5E1")
-    card(slide, "splitter", 3.08, 1.7, 2.05, 1.1, "MDPR Splitter", ["slides and elements", "semantic structure", "no visual choices"], "CBD5E1")
-    card(slide, "ir", 5.52, 1.7, 2.02, 1.1, "Slide Element IR", ["content-only contract", "for downstream rules"], "CBD5E1")
-    arrow(slide, "arrow_markdown_splitter", 2.68, 2.25, 0.38)
-    arrow(slide, "arrow_splitter_ir", 5.14, 2.25, 0.34)
+    shape(slide, "start_flag", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 1.05, 1.78, 0.74, 0.26, "111827", "111827")
+    text(slide, "start_flag_text", 1.2, 1.86, 0.44, 0.1, "start", 8, "FFFFFF", True, parent="start_flag")
+    card(slide, "markdown", 1.02, 2.16, 1.98, 0.92, "Markdown", ["text, tables, code", "images and notes"], "CBD5E1")
+    card(slide, "splitter", 1.02, 3.42, 1.98, 1.02, "MDPR Splitter", ["slide and object split", "no visual choices"], "CBD5E1")
+    arrow_between(slide, "main_start_markdown", 1.4, 2.04, 1.4, 2.16, "111827", 2.4)
+    arrow_between(slide, "main_markdown_splitter", 2.02, 3.08, 2.02, 3.42, "475569", 3.0)
 
-    shape(slide, "llm_card", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 2.86, 3.42, 3.12, 1.15, "EFF6FF", "93C5FD")
-    text(slide, "llm_title", 3.12, 3.65, 1.72, 0.24, "LLM Assistant", 12, "111827", True, parent="llm_card")
-    text(slide, "llm_body", 3.12, 3.96, 2.34, 0.22, "Intent, grouping, and importance candidates.", 8, "526071", False, parent="llm_card")
-    shape(slide, "llm_badge", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 4.88, 3.58, 0.78, 0.24, "2563EB", "2563EB")
-    text(slide, "llm_badge_text", 5.04, 3.64, 0.48, 0.12, "hints", 8, "FFFFFF", True, parent="llm_badge")
-    text(slide, "llm_boundary", 3.12, 4.26, 2.5, 0.18, "No coordinates, colors, variants, or z-order.", 8, "64748B", True, parent="llm_card")
-    arrow(slide, "hint_ir_llm", 6.36, 2.86, -0.86, "2563EB", True)
-    arrow(slide, "hint_llm_rules", 5.98, 4.0, 0.64, "2563EB", True)
+    shape(slide, "ir_core", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 3.86, 1.78, 1.96, 0.94, "FFFFFF", "93C5FD")
+    text(slide, "ir_core_title", 4.08, 1.98, 1.34, 0.2, "Slide Element IR", 12, "111827", True, parent="ir_core")
+    text(slide, "ir_core_body", 4.08, 2.28, 1.44, 0.16, "content-only object contract", 8, "526071", parent="ir_core")
+    shape(slide, "reasoning_card", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 3.84, 3.0, 2.0, 1.42, "FFFFFF", "93C5FD")
+    text(slide, "reasoning_title", 4.06, 3.18, 1.42, 0.24, "Reasoning Result", 12, "111827", True, parent="reasoning_card")
+    text(slide, "reasoning_body", 4.06, 3.52, 1.46, 0.2, "intent, grouping, importance", 8, "526071", parent="reasoning_card")
+    shape(slide, "reasoning_badge", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 4.06, 3.88, 1.48, 0.24, "DBEAFE", "93C5FD")
+    text(slide, "reasoning_badge_text", 4.24, 3.96, 1.08, 0.1, "hints only", 8, "1D4ED8", True, parent="reasoning_badge")
+    text(slide, "reasoning_guardrail", 4.06, 4.2, 1.48, 0.16, "no coordinates or styles", 8, "64748B", True, parent="reasoning_card")
 
-    shape(slide, "rule_boundary", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 6.9, 1.62, 3.64, 3.34, "EEF7F1", "86EFAC")
-    text(slide, "rule_boundary_title", 7.2, 1.95, 2.96, 0.22, "Final design decisions happen here", 8, "15803D", True, parent="rule_boundary")
-    card(slide, "features", 7.18, 2.34, 1.52, 0.78, "Features", ["density and mix", "size risk"], "86EFAC", "BBF7D0")
-    card(slide, "rules", 8.9, 2.34, 1.38, 0.78, "Rules", ["profile, recipe", "variant"], "86EFAC", "BBF7D0")
-    card(slide, "compose", 7.18, 3.6, 1.52, 0.78, "Compose", ["regions, boxes", "fit, overflow"], "86EFAC", "BBF7D0")
-    card(slide, "decorate", 8.9, 3.6, 1.38, 0.78, "Decorate", ["type, radius", "shadow, effects"], "86EFAC", "BBF7D0")
-    arrow(slide, "arrow_ir_rule", 7.54, 2.25, 0.34)
-    arrow(slide, "rule_arrow_1", 8.7, 2.72, 0.18, "16A34A")
-    arrow(slide, "rule_arrow_2", 9.58, 3.12, 0.0, "16A34A")
-    shape(slide, "lint_pill", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 7.38, 4.58, 2.54, 0.26, "DCFCE7", "86EFAC")
-    text(slide, "lint_text", 7.74, 4.66, 1.82, 0.1, "Coherence lint: one visual language", 8, "166534", True, parent="lint_pill")
+    arrow_between(slide, "main_splitter_ir", 3.0, 3.92, 3.86, 2.26, "475569", 3.4)
+    arrow_between(slide, "hint_ir_reasoning", 4.86, 2.72, 4.86, 3.0, "2563EB", 2.0, True)
 
-    card(slide, "styled_ir", 10.92, 1.96, 1.62, 0.92, "Styled Deck IR", ["renderer-neutral", "visual contract"], "CBD5E1")
-    card(slide, "renderers", 10.92, 3.48, 1.62, 1.1, "Renderers", ["editable PPTX", "HTML and PDF", "visual validation"], "CBD5E1")
-    arrow(slide, "arrow_rule_output", 10.54, 2.58, 0.36)
-    arrow(slide, "arrow_ir_renderers", 11.74, 2.88, 0.0)
+    shape(slide, "rule_engine", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 6.66, 1.76, 2.92, 0.74, "DCFCE7", "86EFAC")
+    text(slide, "rule_engine_title", 6.9, 1.94, 2.0, 0.22, "Rule Engine Boundary", 13, "14532D", True, parent="rule_engine")
+    text(slide, "rule_engine_body", 6.9, 2.25, 2.22, 0.12, "recipes, variants, coordinates, z-order", 8, "166534", parent="rule_engine")
+    card(slide, "features", 6.66, 2.84, 1.36, 0.78, "Features", ["density, mix", "size risk"], "86EFAC", "BBF7D0")
+    card(slide, "recipes", 8.28, 2.84, 1.36, 0.78, "Recipes", ["profile match", "component variant"], "86EFAC", "BBF7D0")
+    card(slide, "compose", 6.66, 3.9, 1.36, 0.78, "Compose", ["regions, fit", "overflow policy"], "86EFAC", "BBF7D0")
+    card(slide, "decorate", 8.28, 3.9, 1.36, 0.78, "Decorate", ["type, radius", "shadow, effects"], "86EFAC", "BBF7D0")
+    arrow_between(slide, "main_ir_rules", 5.82, 2.18, 6.66, 2.18, "111827", 4.2)
+    arrow_between(slide, "hint_reasoning_rules", 5.84, 3.66, 6.66, 3.24, "2563EB", 2.2, True)
+    arrow_between(slide, "rule_features_recipes", 8.02, 3.23, 8.28, 3.23, "16A34A", 1.7)
+    arrow_between(slide, "rule_features_compose", 7.34, 3.62, 7.34, 3.9, "16A34A", 1.4)
+    arrow_between(slide, "rule_recipes_decorate", 8.96, 3.62, 8.96, 3.9, "16A34A", 1.4)
+    arrow_between(slide, "rule_compose_decorate", 8.02, 4.29, 8.28, 4.29, "16A34A", 1.7)
 
-    shape(slide, "responsibility", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.88, 5.58, 11.48, 0.72, "F8FAFC", "D7E1EE")
-    text(slide, "responsibility_title", 1.12, 5.8, 1.56, 0.18, "Responsibility split", 11, "111827", True, parent="responsibility")
-    text(slide, "responsibility_body", 2.74, 5.8, 6.9, 0.22, "LLM: semantic hints only. Rules: selection, composition, decoration, coherence, readability. Renderers: editable objects and output verification.", 8, "526071", False, parent="responsibility")
-    shape(slide, "font_badge", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 10.72, 5.78, 1.28, 0.26, "111827", "111827")
-    text(slide, "font_badge_text", 10.9, 5.86, 0.94, 0.1, "font size >= 8pt", 8, "FFFFFF", True, parent="font_badge")
+    card(slide, "styled_ir", 10.42, 1.82, 1.66, 0.92, "Styled Deck IR", ["renderer-neutral", "visual contract"], "CBD5E1")
+    card(slide, "renderers", 10.42, 3.08, 1.66, 0.94, "Renderers", ["editable PPTX", "HTML and PDF"], "CBD5E1")
+    shape(slide, "visual_check", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 10.42, 4.34, 1.66, 0.42, "FEF3C7", "F59E0B")
+    text(slide, "visual_check_title", 10.62, 4.49, 1.18, 0.12, "visual validation", 8, "92400E", True, parent="visual_check")
+    arrow_between(slide, "main_rules_styled_ir", 9.58, 2.18, 10.42, 2.18, "111827", 4.2)
+    arrow_between(slide, "main_styled_renderers", 11.25, 2.74, 11.25, 3.08, "475569", 2.4)
+    arrow_between(slide, "validation_loop", 11.25, 4.02, 11.25, 4.34, "F59E0B", 2.0)
+
+    shape(slide, "coherence_band", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.88, 5.56, 11.54, 0.76, "F8FAFC", "D7E1EE")
+    text(slide, "coherence_title", 1.14, 5.78, 1.68, 0.18, "Coherence checks", 12, "111827", True, parent="coherence_band")
+    text(slide, "coherence_body", 2.88, 5.78, 6.9, 0.22, "One visual language across mixed objects: hierarchy-scaled type, bounded text, consistent spacing, aligned starts, and readable minimum sizes.", 8, "526071", parent="coherence_band")
+    shape(slide, "font_badge", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 10.48, 5.76, 1.42, 0.28, "111827", "111827")
+    text(slide, "font_badge_text", 10.66, 5.85, 1.08, 0.1, "font scale by role", 8, "FFFFFF", True, parent="font_badge")
 
     prs.save(path)
 

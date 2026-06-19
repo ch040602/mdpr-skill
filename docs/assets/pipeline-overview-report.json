@@ -8,8 +8,8 @@
       2600,
       1414
     ],
-    "uniqueColors": 3441,
-    "nonWhitePixels": 2390560,
+    "uniqueColors": 5486,
+    "nonWhitePixels": 2899257,
     "hasContent": true
   },
   "layoutValidation": {
@@ -28,7 +28,7 @@
     "alignment": "left",
     "fontScale": 1.0,
     "minFontSizePt": 8,
-    "trackedTextBoxes": 43,
+    "trackedTextBoxes": 47,
     "overflowCount": 0,
     "fontViolationCount": 0,
     "overflow": [],
