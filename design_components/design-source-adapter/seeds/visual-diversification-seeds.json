@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "purpose": "Seed patterns for human-made infographic variation in MDPR visual diversification mode.",
+  "colorRoles": {
+    "flow": {
+      "description": "Used for primary reading order, connecting arrows, and stable pipeline motion.",
+      "themeSlots": ["text1", "text2"],
+      "exampleHex": ["#111827", "#475569"]
+    },
+    "accent": {
+      "description": "Used for local section identity and normal emphasis.",
+      "themeSlots": ["accent1", "accent2", "accent3"],
+      "exampleHex": ["#86A789", "#14B8A6", "#818CF8"]
+    },
+    "contrast": {
+      "description": "Used only when an object must read as a point, warning, proof, or editorial interruption.",
+      "themeSlots": ["accent4", "accent5"],
+      "exampleHex": ["#BE123C", "#F59E0B"]
+    },
+    "support": {
+      "description": "Warm or cool surface colors used to avoid one-hue diagrams while preserving coherence.",
+      "themeSlots": ["background1", "background2"],
+      "exampleHex": ["#F7F2EA", "#FFF3DE", "#F1F0FA", "#EAF7F3"]
+    }
+  },
+  "infographicPatterns": [
+    {
+      "id": "proof-point-callout",
+      "useWhen": ["validation", "quality-gate", "render-proof", "z-order-proof"],
+      "structure": ["contrast stripe", "seal icon", "small label", "large proof text", "short spark mark"],
+      "coherenceRules": [
+        "uses contrast color only once per local group",
+        "label and proof text align to the same left start",
+        "seal center aligns to the text group midpoint",
+        "minimum text size remains readable in PPT export"
+      ]
+    },
+    {
+      "id": "editorial-annotation",
+      "useWhen": ["reasoning-limit", "human-review-note", "scope-boundary"],
+      "structure": ["thin bracket", "small uppercase label", "one-line note"],
+      "coherenceRules": [
+        "inherits parent typography family",
+        "uses warm support color instead of a new hue",
+        "does not compete with primary flow arrows"
+      ]
+    },
+    {
+      "id": "connected-rail",
+      "useWhen": ["steps", "process", "timeline", "split-flow"],
+      "structure": ["rail line", "numbered nodes", "short captions"],
+      "coherenceRules": [
+        "same-role nodes share fill and stroke",
+        "rail color follows flow role unless a branch has a different meaning",
+        "captions align on the reading axis"
+      ]
+    },
+    {
+      "id": "contrast-chip",
+      "useWhen": ["exception", "important-output", "constraint"],
+      "structure": ["compact chip", "left color notch", "bold short text"],
+      "coherenceRules": [
+        "chip copy stays under four words",
+        "contrast color does not repeat as a section color",
+        "padding is at least one body line-height horizontally"
+      ]
+    },
+    {
+      "id": "metric-swatch",
+      "useWhen": ["kpi", "coverage", "test-count", "quality-score"],
+      "structure": ["large number", "tiny unit", "supporting label", "mini bar"],
+      "coherenceRules": [
+        "number role is larger than its label",
+        "mini bar uses accent color, not validation contrast",
+        "surface depth matches sibling KPI cards"
+      ]
+    }
+  ],
+  "backgroundPolicy": {
+    "removeWhen": ["large decorative container does not encode hierarchy", "surface duplicates a visible group panel"],
+    "allowedWhen": ["safe area reference", "subtle editorial texture", "export contrast support"],
+    "textureSeeds": ["thin alignment guide", "soft flow trace", "low-opacity ruled line"]
+  }
+}

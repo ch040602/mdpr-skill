@@ -4,13 +4,14 @@ MDPR owns the content contract. The LLM is optional and only provides short sema
 
 The generated pipeline overview uses this file as its content source. The image generator reads the `pipeline-image` block below, applies the project layout rules, embeds the SVG into a one-slide PowerPoint deck, and exports the final PNG through Microsoft PowerPoint.
 
-The selected theme is `sage-editorial`: a clean slate, sage, and amber palette chosen to avoid a simple blue-dominant technical diagram while keeping the responsibility areas easy to scan.
+The selected theme is `sage-editorial`: a warm editorial palette that combines flow colors, section accents, validation contrast, and quiet support surfaces. Point elements such as `visual validation` use a different proof-callout pattern, not only a stronger hue.
 
 <!-- pipeline-image
 {
   "theme": "sage-editorial",
   "title": "MDPR Design Components Pipeline",
   "subtitle": "MDPR splits content. Optional agent tags stay minimal. Deterministic rules own layout, style, z-order, and editable rendering.",
+  "seed": "visual-diversification-seeds/proof-point-callout",
   "regions": {
     "content": {
       "title": "1. Content Contract",

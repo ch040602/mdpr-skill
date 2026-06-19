@@ -12,6 +12,20 @@ This directory is not a mirror of `external-design-source`. Upstream attribution
 - `design-source-adapter/`: Design Components token, skin, motion, component, and pattern mappings translated into MDPR renderer-neutral data.
 - `pptx/`: editable PowerPoint object planning and theme color binding for Styled Deck IR.
 
+## Visual Diversification Seeds
+
+`design-source-adapter/seeds/visual-diversification-seeds.json` defines reusable color roles and infographic structures for slides that need more than simple theme hue shifts.
+
+The seed pack separates:
+
+- flow colors for reading order and normal arrows;
+- accent colors for section identity;
+- contrast colors for proof points, warnings, and validation markers;
+- support surfaces for warm/cool balance;
+- human-made infographic patterns such as proof callouts, editorial annotations, rails, chips, and metric swatches.
+
+These seeds should be selected by deterministic rules and then checked by coherence validation so a slide can become more expressive without mixing arbitrary styles.
+
 ## PPTX Policy
 
 The target is full Design Components-to-MDPR portability through editable PPTX output:

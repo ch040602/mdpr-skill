@@ -63,6 +63,7 @@ REQUIRED_FILES = [
     "design_components/design-source-adapter/skins/stripe.json",
     "design_components/design-source-adapter/skins/toss.json",
     "design_components/design-source-adapter/skins/vercel.json",
+    "design_components/design-source-adapter/seeds/visual-diversification-seeds.json",
     "design_components/pptx/src/renderStyledElement.ts",
     "docs/rulebook-authoring-guide.md",
     "docs/profile-authoring-guide.md",
@@ -120,6 +121,7 @@ REQUIRED_TEXT = {
         "mixed-object-stress -> notion -> linear -> stripe -> toss",
         "font size >= 8pt",
         "visual diversification",
+        "proof-point-callout",
         "npm run install:mdpr",
         ".cache/mdpr",
     ],
@@ -133,8 +135,16 @@ REQUIRED_TEXT = {
     "pipeline.md": [
         "pipeline-image",
         "sage-editorial",
+        "proof-callout pattern",
         "Optional agent tags",
         "Deterministic rules own layout",
+    ],
+    "design_components/design-source-adapter/seeds/visual-diversification-seeds.json": [
+        "proof-point-callout",
+        "contrast-chip",
+        "metric-swatch",
+        "flow",
+        "contrast",
     ],
     "SOURCES.md": [
         "34e9fcf2d3da69355defad7afa5e50ff15ed8cb2",

@@ -58,48 +58,54 @@ ARROW_PARTS: list[str] = []
 ARROW_STYLES: dict[str, dict[str, Any]] = {
     "child": {"color": "111827", "width": 5.2, "dashed": False},
     "secondary": {"color": "475569", "width": 4.0, "dashed": False},
-    "hint": {"color": "B45309", "width": 3.0, "dashed": True},
-    "internal": {"color": "16A34A", "width": 2.8, "dashed": False},
-    "validation": {"color": "D97706", "width": 3.0, "dashed": False},
+    "hint": {"color": "A85520", "width": 3.0, "dashed": True},
+    "internal": {"color": "0F766E", "width": 2.8, "dashed": False},
+    "validation": {"color": "BE123C", "width": 3.4, "dashed": False},
 }
 
 
 THEMES: dict[str, dict[str, str]] = {
     "sage-editorial": {
-        "background": "F6F7F4",
+        "background": "F7F2EA",
+        "backgroundLine": "E7D8C7",
         "canvas": "FEFFFC",
-        "canvasStroke": "D8DDD2",
+        "canvasStroke": "E0D7C8",
         "text": "111827",
         "muted": "64748B",
-        "card": "FAFAF7",
-        "cardStroke": "D8DDD2",
-        "contentFill": "F4F7F5",
-        "contentStroke": "CCD7CC",
-        "reasoningFill": "F7F3EA",
-        "reasoningStroke": "D9C9A8",
-        "rulesFill": "ECF7EF",
-        "rulesStroke": "98D8A8",
-        "outputsFill": "F7F6F2",
-        "outputsStroke": "D6D1C4",
+        "card": "FFFDF8",
+        "cardStroke": "DACFC0",
+        "contentFill": "EEF4EF",
+        "contentStroke": "C8D8C8",
+        "reasoningFill": "FFF3DE",
+        "reasoningStroke": "E4BF75",
+        "rulesFill": "EAF7F3",
+        "rulesStroke": "7CC7BA",
+        "outputsFill": "F1F0FA",
+        "outputsStroke": "B8B5E6",
         "contentTitle": "334155",
-        "reasoningTitle": "8A5A16",
-        "rulesTitle": "166534",
-        "outputsTitle": "334155",
-        "contentAccent": "C6D2C6",
-        "reasoningAccent": "E7C87B",
-        "rulesAccent": "74D99A",
-        "outputsAccent": "D6D1C4",
+        "reasoningTitle": "8B4E16",
+        "rulesTitle": "115E59",
+        "outputsTitle": "4338CA",
+        "contentAccent": "86A789",
+        "reasoningAccent": "E9B44C",
+        "rulesAccent": "14B8A6",
+        "outputsAccent": "818CF8",
         "mainArrow": "111827",
         "secondaryArrow": "475569",
-        "hintArrow": "B45309",
-        "ruleArrow": "16A34A",
-        "validationArrow": "D97706",
+        "hintArrow": "A85520",
+        "ruleArrow": "0F766E",
+        "validationArrow": "BE123C",
         "badgeDark": "111827",
-        "hintBadgeFill": "FEF3C7",
-        "hintBadgeStroke": "F59E0B",
-        "hintText": "92400E",
-        "validationFill": "FEF3C7",
-        "validationStroke": "D97706",
+        "hintBadgeFill": "FFF7E6",
+        "hintBadgeStroke": "E9B44C",
+        "hintText": "7C3D12",
+        "validationFill": "FFF1F2",
+        "validationStroke": "BE123C",
+        "validationText": "881337",
+        "validationContrast": "BE123C",
+        "validationAccent": "F59E0B",
+        "infographicInk": "334155",
+        "infographicSoft": "EDE9FE",
     }
 }
 
@@ -136,7 +142,7 @@ def base_placement() -> dict[str, tuple[float, float, float, float]]:
         "decorate_card": (920, 458, 145, 108),
         "styled_ir_card": (1145, 235, 200, 105),
         "renderers_card": (1145, 390, 200, 105),
-        "visual_check": (1145, 525, 200, 44),
+        "visual_check": (1140, 512, 210, 60),
         "coherence_band": (90, 625, 1220, 72),
         "font_badge": (1118, 646, 180, 34),
     }
@@ -267,6 +273,17 @@ def rect(parts: list[str], name: str, x: float, y: float, w: float, h: float, fi
         f'<rect id="{name}" x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" '
         f'rx="{rx:.1f}" fill="#{fill}" stroke="#{stroke}" stroke-width="{stroke_width}"/>'
         )
+
+
+def background_texture(parts: list[str], theme: dict[str, str]) -> None:
+    parts.append(
+        f'<path id="z00_editorial_grid" d="M72 126 H1328 M72 621 H1328 M380 126 V621 M690 126 V621 M1104 126 V621" '
+        f'fill="none" stroke="#{theme["backgroundLine"]}" stroke-width="1" opacity="0.55"/>'
+    )
+    parts.append(
+        f'<path id="z00_flow_trace" d="M102 628 C280 602 400 622 553 604 S835 604 966 632 1190 655 1300 618" '
+        f'fill="none" stroke="#{theme["backgroundLine"]}" stroke-width="2.4" opacity="0.48"/>'
+    )
 
 
 def line(
@@ -421,6 +438,46 @@ def badge(parts: list[str], name: str, x: float, y: float, w: float, h: float, v
     svg_text(parts, f"{name}_text", name, x + 22, y + h / 2 + 1, value, 13, text_color, 700, "badge")
 
 
+def validation_callout(parts: list[str], name: str, x: float, y: float, w: float, h: float, value: str, theme: dict[str, str]) -> None:
+    track_box(name, x, y, w, h)
+    SHADOWS.append({"name": name, "strategy": "ppt-compatible-svg-rect", "dx": 3, "dy": 6, "opacity": 0.16})
+    parts.append(
+        f'<rect id="{name}_shadow" x="{x + 3:.1f}" y="{y + 6:.1f}" width="{w:.1f}" height="{h:.1f}" '
+        f'rx="14" fill="#0F172A" opacity="0.16"/>'
+    )
+    parts.append(
+        f'<path id="{name}" d="M{x + 16:.1f},{y:.1f} H{x + w - 16:.1f} Q{x + w:.1f},{y:.1f} {x + w:.1f},{y + 16:.1f} '
+        f'V{y + h - 16:.1f} Q{x + w:.1f},{y + h:.1f} {x + w - 16:.1f},{y + h:.1f} H{x + 16:.1f} '
+        f'Q{x:.1f},{y + h:.1f} {x:.1f},{y + h - 16:.1f} V{y + 16:.1f} Q{x:.1f},{y:.1f} {x + 16:.1f},{y:.1f} Z" '
+        f'fill="#{theme["validationFill"]}" stroke="#{theme["validationStroke"]}" stroke-width="1.5"/>'
+    )
+    parts.append(
+        f'<rect id="{name}_stripe" x="{x:.1f}" y="{y + 10:.1f}" width="6.5" height="{h - 20:.1f}" '
+        f'rx="3.2" fill="#{theme["validationContrast"]}"/>'
+    )
+    cx = x + 28
+    cy = y + h / 2
+    parts.append(f'<circle id="{name}_seal" cx="{cx:.1f}" cy="{cy:.1f}" r="17" fill="#{theme["validationContrast"]}"/>')
+    parts.append(
+        f'<path id="{name}_check" d="M{cx - 7:.1f},{cy:.1f} L{cx - 2:.1f},{cy + 5:.1f} L{cx + 8:.1f},{cy - 7:.1f}" '
+        f'fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'
+    )
+    parts.append(
+        f'<path id="{name}_spark" d="M{x + w - 43:.1f},{y + 19:.1f} l7,-7 l7,7 M{x + w - 58:.1f},{y + h - 16:.1f} h34" '
+        f'fill="none" stroke="#{theme["validationAccent"]}" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>'
+    )
+    ICON_ALIGNMENTS.append(
+        {
+            "name": f"{name}_seal_title_alignment",
+            "iconCy": cy,
+            "titleMidY": cy,
+            "gap": (x + 56) - (cx + 17),
+        }
+    )
+    svg_text(parts, f"{name}_label", name, x + 56, y + 23, "PROOF POINT", 11, theme["validationText"], 800, "callout-label")
+    svg_text(parts, f"{name}_text", name, x + 56, y + 43, value, 14, theme["validationText"], 800, "callout-title")
+
+
 def build_svg(path: Path) -> None:
     spec = load_pipeline_spec()
     theme = THEMES[str(spec["theme"])]
@@ -460,7 +517,8 @@ def build_svg(path: Path) -> None:
         f'  <rect id="z00_background" width="{LAYOUT.svg_w}" height="{LAYOUT.svg_h}" fill="#{theme["background"]}"/>',
     ]
 
-    rect(p, "z01_canvas", *box("z01_canvas"), theme["canvas"], theme["canvasStroke"], 84, 1.5, True)
+    background_texture(p, theme)
+    track_box("z01_canvas", *box("z01_canvas"))
     svg_text(p, "header_title", "", LAYOUT.origin_x, LAYOUT.origin_y + 18, str(spec["title"]), 38, theme["text"], 700, "page-title")
     svg_text(
         p,
@@ -523,7 +581,7 @@ def build_svg(path: Path) -> None:
     card(p, "decorate", *box("decorate_card"), rule_cards["decorate"]["title"], rule_cards["decorate"]["lines"], theme["rulesAccent"], "BBF7D0")
     card(p, "styled_ir", *box("styled_ir_card"), output_cards["styledIr"]["title"], output_cards["styledIr"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
     card(p, "renderers", *box("renderers_card"), output_cards["renderers"]["title"], output_cards["renderers"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
-    badge(p, "visual_check", *box("visual_check"), regions["outputs"]["validation"], theme["validationFill"], theme["validationStroke"], "92400E")
+    validation_callout(p, "visual_check", *box("visual_check"), regions["outputs"]["validation"], theme)
 
     rect(p, "coherence_band", *box("coherence_band"), theme["card"], theme["cardStroke"], 18, 1.4, True)
     coherence_x, coherence_y, _, _ = box("coherence_band")

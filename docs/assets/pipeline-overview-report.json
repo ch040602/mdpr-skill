@@ -11,8 +11,8 @@
       2600,
       1414
     ],
-    "uniqueColors": 12250,
-    "nonWhitePixels": 3506584,
+    "uniqueColors": 15390,
+    "nonWhitePixels": 3506404,
     "hasContent": true
   },
   "layoutValidation": {
@@ -41,8 +41,8 @@
     "minPaddingPx": 8,
     "iconTextGapPx": 10,
     "containmentPaddingPx": 8,
-    "trackedTextBoxes": 47,
-    "trackedShadows": 21,
+    "trackedTextBoxes": 48,
+    "trackedShadows": 20,
     "trackedArrows": 13,
     "alignmentEngine": "PowerPoint ShapeRange.Align",
     "alignmentRuleCount": 9,
@@ -146,18 +146,18 @@
         "dashed": false
       },
       "hint": {
-        "color": "B45309",
+        "color": "A85520",
         "width": 3.0,
         "dashed": true
       },
       "internal": {
-        "color": "16A34A",
+        "color": "0F766E",
         "width": 2.8,
         "dashed": false
       },
       "validation": {
-        "color": "D97706",
-        "width": 3.0,
+        "color": "BE123C",
+        "width": 3.4,
         "dashed": false
       }
     },

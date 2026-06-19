@@ -6,6 +6,8 @@ The LLM is an assistant, not the design authority. It may propose semantic hints
 
 The pipeline is documented in `pipeline.md`. The pipeline image is generated from that Markdown source as `docs/assets/pipeline-overview.svg`, embedded into a one-slide PowerPoint deck at `docs/assets/pipeline-overview.pptx`, and exported as a high-resolution PNG through Microsoft PowerPoint. The stored placement plan at `docs/assets/pipeline-overview-layout.json` is aligned through PowerPoint `ShapeRange.Align` before rendering. SVG is used for stable rounded corners, fixed arrowheads, centered icon-label pairs, role-scaled typography, and explicit padding around text. The generation report verifies child-shape containment, arrow connection levels, icon-label alignment, and PPT-compatible shadow rendering.
 
+Visual diversification seeds live in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json`. They separate flow colors, section accents, contrast colors, support surfaces, and infographic patterns so emphasis can be expressed through a different pattern, not only through a shifted hue.
+
 This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based visual diversification pipeline to MDPR.
 
 It is explicitly based on these upstream projects:
@@ -204,6 +206,8 @@ Design Components concepts are adapted into project-owned modules rather than co
 - `design_components/decoration`: token references, surface/border/radius/shadow/effect policies, and coherence lint.
 - `design_components/design-source-adapter`: upstream Design Components token, skin, motion, and component mapping into renderer-neutral MDPR concepts.
 - `design_components/pptx`: editable PPTX object planning and PowerPoint theme color binding for Styled Deck IR.
+
+The visual diversification seed pack adds reusable infographic patterns such as `proof-point-callout`, `editorial-annotation`, `connected-rail`, `contrast-chip`, and `metric-swatch`. These seeds are intended for PPTX, HTML, and PDF renderers so point elements such as validation markers can use distinct structure, contrast color, and alignment rules while staying coherent with the slide.
 
 The design showcase also includes a `mixed-object-stress` slide that combines a raster image, editable text, auto shapes, KPI cards, a native PowerPoint chart, a native PowerPoint table, timeline objects, badges, and callouts in one coherent visual profile. Coherence validation includes a readability rule that every explicit text run must be at least `font size >= 8pt`.
 
