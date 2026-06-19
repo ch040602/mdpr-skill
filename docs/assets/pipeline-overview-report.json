@@ -1,4 +1,5 @@
 {
+  "markdownSource": "pipeline.md",
   "svg": "docs\\assets\\pipeline-overview.svg",
   "pptx": "docs\\assets\\pipeline-overview.pptx",
   "png": "docs\\assets\\pipeline-overview.png",
@@ -9,12 +10,13 @@
       2600,
       1414
     ],
-    "uniqueColors": 10785,
-    "nonWhitePixels": 2944912,
+    "uniqueColors": 12579,
+    "nonWhitePixels": 3507787,
     "hasContent": true
   },
   "layoutValidation": {
     "source": "svg",
+    "markdownSource": "pipeline.md",
     "svg": "docs\\assets\\pipeline-overview.svg",
     "origin": {
       "x": 68,

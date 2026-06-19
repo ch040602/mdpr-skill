@@ -4,6 +4,7 @@ from __future__ import annotations
 import html
 import json
 import math
+import re
 import shutil
 from dataclasses import dataclass
 from pathlib import Path
@@ -13,6 +14,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "assets"
+PIPELINE_MD = ROOT / "pipeline.md"
 SVG = OUT / "pipeline-overview.svg"
 PPTX = OUT / "pipeline-overview.pptx"
 PNG = OUT / "pipeline-overview.png"
@@ -47,6 +49,58 @@ ICON_ALIGNMENTS: list[dict[str, float | str]] = []
 HIERARCHY: list[dict[str, str]] = []
 ARROW_CONNECTIONS: list[dict[str, float | str]] = []
 SHADOWS: list[dict[str, float | str]] = []
+
+
+THEMES: dict[str, dict[str, str]] = {
+    "sage-editorial": {
+        "background": "F6F7F4",
+        "canvas": "FEFFFC",
+        "canvasStroke": "D8DDD2",
+        "text": "111827",
+        "muted": "64748B",
+        "card": "FAFAF7",
+        "cardStroke": "D8DDD2",
+        "contentFill": "F4F7F5",
+        "contentStroke": "CCD7CC",
+        "reasoningFill": "F7F3EA",
+        "reasoningStroke": "D9C9A8",
+        "rulesFill": "ECF7EF",
+        "rulesStroke": "98D8A8",
+        "outputsFill": "F7F6F2",
+        "outputsStroke": "D6D1C4",
+        "contentTitle": "334155",
+        "reasoningTitle": "8A5A16",
+        "rulesTitle": "166534",
+        "outputsTitle": "334155",
+        "contentAccent": "C6D2C6",
+        "reasoningAccent": "E7C87B",
+        "rulesAccent": "74D99A",
+        "outputsAccent": "D6D1C4",
+        "mainArrow": "111827",
+        "secondaryArrow": "475569",
+        "hintArrow": "B45309",
+        "ruleArrow": "16A34A",
+        "validationArrow": "D97706",
+        "badgeDark": "111827",
+        "hintBadgeFill": "FEF3C7",
+        "hintBadgeStroke": "F59E0B",
+        "hintText": "92400E",
+        "validationFill": "FEF3C7",
+        "validationStroke": "D97706",
+    }
+}
+
+
+def load_pipeline_spec() -> dict[str, Any]:
+    text = PIPELINE_MD.read_text(encoding="utf-8")
+    match = re.search(r"<!--\s*pipeline-image\s*(\{.*?\})\s*-->", text, re.S)
+    if not match:
+        raise ValueError(f"{PIPELINE_MD} is missing a pipeline-image JSON block")
+    spec = json.loads(match.group(1))
+    theme_name = str(spec.get("theme", "sage-editorial"))
+    if theme_name not in THEMES:
+        raise ValueError(f"Unsupported pipeline theme: {theme_name}")
+    return spec
 
 
 def esc(value: str) -> str:
@@ -274,6 +328,10 @@ def badge(parts: list[str], name: str, x: float, y: float, w: float, h: float, v
 
 
 def build_svg(path: Path) -> None:
+    spec = load_pipeline_spec()
+    theme = THEMES[str(spec["theme"])]
+    regions = spec["regions"]
+    coherence = spec["coherence"]
     TEXT_BOUNDS.clear()
     BOX_BOUNDS.clear()
     ICON_ALIGNMENTS.clear()
@@ -283,80 +341,86 @@ def build_svg(path: Path) -> None:
 
     p: list[str] = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{LAYOUT.export_w}" height="{LAYOUT.export_h}" viewBox="0 0 {LAYOUT.svg_w} {LAYOUT.svg_h}" role="img" aria-labelledby="title desc">',
-        '  <title id="title">MDPR Design Components Pipeline</title>',
-        '  <desc id="desc">A polished overview image showing MDPR content splitting, optional LLM reasoning hints, deterministic design rules, and editable outputs.</desc>',
-        f'  <rect id="z00_background" width="{LAYOUT.svg_w}" height="{LAYOUT.svg_h}" fill="#F8FAFC"/>',
+        f'  <title id="title">{esc(str(spec["title"]))}</title>',
+        '  <desc id="desc">A polished overview image generated from pipeline.md, showing MDPR content splitting, optional LLM reasoning hints, deterministic design rules, and editable outputs.</desc>',
+        f'  <rect id="z00_background" width="{LAYOUT.svg_w}" height="{LAYOUT.svg_h}" fill="#{theme["background"]}"/>',
     ]
 
-    rect(p, "z01_canvas", LAYOUT.canvas_x, LAYOUT.canvas_y, LAYOUT.canvas_w, LAYOUT.canvas_h, "FFFFFF", "DDE6F3", 84, 1.5, True)
-    svg_text(p, "header_title", "", LAYOUT.origin_x, LAYOUT.origin_y + 18, "MDPR Design Components Pipeline", 38, "0F172A", 700, "page-title")
+    rect(p, "z01_canvas", LAYOUT.canvas_x, LAYOUT.canvas_y, LAYOUT.canvas_w, LAYOUT.canvas_h, theme["canvas"], theme["canvasStroke"], 84, 1.5, True)
+    svg_text(p, "header_title", "", LAYOUT.origin_x, LAYOUT.origin_y + 18, str(spec["title"]), 38, theme["text"], 700, "page-title")
     svg_text(
         p,
         "header_subtitle",
         "",
         LAYOUT.origin_x,
         LAYOUT.origin_y + 58,
-        "MDPR splits content. LLM reasoning supplies hints. Deterministic rules own layout, style, z-order, and editable rendering.",
+        str(spec["subtitle"]),
         17,
-        "475569",
+        theme["muted"],
         400,
         "page-subtitle",
     )
 
-    panel(p, "zone_content", 90, 150, 280, 430, "1. Content Contract", "semantic structure only", "F8FAFC", "D7E1EE", "334155")
-    panel(p, "zone_reasoning", 395, 150, 280, 430, "2. LLM Reasoning", "optional intent hints", "EFF6FF", "93C5FD", "1D4ED8")
-    panel(p, "zone_rules", 700, 150, 395, 430, "3. Deterministic Design", "final visual choices", "EEF7F1", "86EFAC", "15803D")
-    panel(p, "zone_outputs", 1120, 150, 250, 430, "4. Outputs", "PPTX, HTML, PDF", "F8FAFC", "D7E1EE", "334155")
+    panel(p, "zone_content", 90, 150, 280, 430, regions["content"]["title"], regions["content"]["subtitle"], theme["contentFill"], theme["contentStroke"], theme["contentTitle"])
+    panel(p, "zone_reasoning", 395, 150, 280, 430, regions["reasoning"]["title"], regions["reasoning"]["subtitle"], theme["reasoningFill"], theme["reasoningStroke"], theme["reasoningTitle"])
+    panel(p, "zone_rules", 700, 150, 395, 430, regions["rules"]["title"], regions["rules"]["subtitle"], theme["rulesFill"], theme["rulesStroke"], theme["rulesTitle"])
+    panel(p, "zone_outputs", 1120, 150, 250, 430, regions["outputs"]["title"], regions["outputs"]["subtitle"], theme["outputsFill"], theme["outputsStroke"], theme["outputsTitle"])
 
-    badge(p, "start_flag", 190, 246, 80, 34, "start", "111827", "111827", "FFFFFF")
-    card(p, "markdown", 115, 306, 230, 105, "Markdown", ["text, tables, code", "images and notes"], "CBD5E1")
-    card(p, "splitter", 115, 448, 230, 112, "MDPR Splitter", ["slide and object split", "no visual choices"], "CBD5E1")
-    connect(p, "main_start_markdown", "start_flag", "bottom", "markdown_card", "top", "111827", 4.2, "arrowDark", connection_level="child")
-    connect(p, "main_markdown_splitter", "markdown_card", "bottom", "splitter_card", "top", "475569", 4.0, "arrowSlate", connection_level="child", from_ratio=0.5, to_ratio=0.5)
+    content_cards = regions["content"]["cards"]
+    reasoning_cards = regions["reasoning"]["cards"]
+    rule_cards = regions["rules"]["cards"]
+    output_cards = regions["outputs"]["cards"]
 
-    card(p, "ir_core", 425, 230, 220, 112, "Slide Element IR", ["content-only contract"], "CBD5E1", "93C5FD", "FFFFFF")
-    card(p, "reasoning", 425, 390, 220, 170, "Reasoning Result", ["intent, grouping"], "BFDBFE", "93C5FD", "FFFFFF")
-    badge(p, "reasoning_guard", 450, 486, 170, 34, "hints only", "DBEAFE", "93C5FD", "1D4ED8")
-    svg_text(p, "reasoning_limit", "reasoning_card", 450, 530, "no coordinates or styles", 13, "64748B", 700, "card-body")
-    connect(p, "main_splitter_ir", "splitter_card", "right", "ir_core_card", "left", "475569", 5.0, "arrowSlate", connection_level="child")
-    connect(p, "hint_ir_reasoning", "ir_core_card", "bottom", "reasoning_card", "top", "2563EB", 3.2, "arrowBlue", True, connection_level="hint")
+    badge(p, "start_flag", 190, 246, 80, 34, "start", theme["badgeDark"], theme["badgeDark"], "FFFFFF")
+    card(p, "markdown", 115, 306, 230, 105, content_cards["markdown"]["title"], content_cards["markdown"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
+    card(p, "splitter", 115, 448, 230, 112, content_cards["splitter"]["title"], content_cards["splitter"]["lines"], theme["contentAccent"], theme["cardStroke"], theme["card"])
+    connect(p, "main_start_markdown", "start_flag", "bottom", "markdown_card", "top", theme["mainArrow"], 4.2, "arrowDark", connection_level="child")
+    connect(p, "main_markdown_splitter", "markdown_card", "bottom", "splitter_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="child", from_ratio=0.5, to_ratio=0.5)
 
-    rect(p, "rule_engine_card", 740, 245, 315, 88, "DCFCE7", "86EFAC", 22, 1.5, True)
-    svg_text(p, "rule_engine_title", "rule_engine_card", 770, 275, "Rule Engine Boundary", 17, "14532D", 700, "card-title")
-    svg_text(p, "rule_engine_body", "rule_engine_card", 770, 311, "recipes, variants, z-order", 14, "166534", 400, "card-body")
-    card(p, "features", 735, 346, 145, 108, "Features", ["density, mix", "size risk"], "86EFAC", "BBF7D0")
-    card(p, "recipes", 920, 346, 145, 108, "Recipes", ["profile match", "variant"], "86EFAC", "BBF7D0")
-    card(p, "compose", 735, 458, 145, 108, "Compose", ["regions, fit", "overflow"], "86EFAC", "BBF7D0")
-    card(p, "decorate", 920, 458, 145, 108, "Decorate", ["type, radius", "effects"], "86EFAC", "BBF7D0")
-    connect(p, "main_ir_rules", "ir_core_card", "right", "rule_engine_card", "left", "111827", 5.4, "arrowDark", connection_level="child")
-    connect(p, "hint_reasoning_rules", "reasoning_card", "right", "features_card", "left", "2563EB", 3.2, "arrowBlue", True, connection_level="hint", from_ratio=0.5, to_ratio=0.45)
-    connect(p, "rule_features_recipes", "features_card", "right", "recipes_card", "left", "16A34A", 2.8, "arrowGreen", connection_level="internal")
-    connect(p, "rule_features_compose", "features_card", "bottom", "compose_card", "top", "16A34A", 2.4, "arrowGreen", connection_level="internal")
-    connect(p, "rule_recipes_decorate", "recipes_card", "bottom", "decorate_card", "top", "16A34A", 2.4, "arrowGreen", connection_level="internal")
-    connect(p, "rule_compose_decorate", "compose_card", "right", "decorate_card", "left", "16A34A", 2.8, "arrowGreen", connection_level="internal")
+    card(p, "ir_core", 425, 230, 220, 112, reasoning_cards["ir"]["title"], reasoning_cards["ir"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
+    card(p, "reasoning", 425, 390, 220, 170, reasoning_cards["result"]["title"], reasoning_cards["result"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
+    badge(p, "reasoning_guard", 450, 486, 170, 34, reasoning_cards["result"]["badge"], theme["hintBadgeFill"], theme["hintBadgeStroke"], theme["hintText"])
+    svg_text(p, "reasoning_limit", "reasoning_card", 450, 530, reasoning_cards["result"]["limit"], 13, theme["muted"], 700, "card-body")
+    connect(p, "main_splitter_ir", "splitter_card", "right", "ir_core_card", "left", theme["secondaryArrow"], 5.0, "arrowSlate", connection_level="child")
+    connect(p, "hint_ir_reasoning", "ir_core_card", "bottom", "reasoning_card", "top", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint")
 
-    card(p, "styled_ir", 1145, 235, 200, 105, "Styled Deck IR", ["renderer-neutral", "visual contract"], "CBD5E1")
-    card(p, "renderers", 1145, 390, 200, 105, "Renderers", ["editable PPTX", "HTML and PDF"], "CBD5E1")
-    badge(p, "visual_check", 1145, 525, 200, 44, "visual validation", "FEF3C7", "F59E0B", "92400E")
-    connect(p, "main_rules_styled_ir", "rule_engine_card", "right", "styled_ir_card", "left", "111827", 5.4, "arrowDark", connection_level="child")
-    connect(p, "main_styled_renderers", "styled_ir_card", "bottom", "renderers_card", "top", "475569", 4.0, "arrowSlate", connection_level="child")
-    connect(p, "validation_loop", "renderers_card", "bottom", "visual_check", "top", "F59E0B", 3.2, "arrowAmber", connection_level="validation")
+    engine = regions["rules"]["engine"]
+    rect(p, "rule_engine_card", 740, 245, 315, 88, "DCFCE7", theme["rulesStroke"], 22, 1.5, True)
+    svg_text(p, "rule_engine_title", "rule_engine_card", 770, 275, engine["title"], 17, "14532D", 700, "card-title")
+    svg_text(p, "rule_engine_body", "rule_engine_card", 770, 311, engine["line"], 14, "166534", 400, "card-body")
+    card(p, "features", 735, 346, 145, 108, rule_cards["features"]["title"], rule_cards["features"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "recipes", 920, 346, 145, 108, rule_cards["recipes"]["title"], rule_cards["recipes"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "compose", 735, 458, 145, 108, rule_cards["compose"]["title"], rule_cards["compose"]["lines"], theme["rulesAccent"], "BBF7D0")
+    card(p, "decorate", 920, 458, 145, 108, rule_cards["decorate"]["title"], rule_cards["decorate"]["lines"], theme["rulesAccent"], "BBF7D0")
+    connect(p, "main_ir_rules", "ir_core_card", "right", "rule_engine_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child")
+    connect(p, "hint_reasoning_rules", "reasoning_card", "right", "features_card", "left", theme["hintArrow"], 3.2, "arrowBlue", True, connection_level="hint", from_ratio=0.5, to_ratio=0.45)
+    connect(p, "rule_features_recipes", "features_card", "right", "recipes_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal")
+    connect(p, "rule_features_compose", "features_card", "bottom", "compose_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal")
+    connect(p, "rule_recipes_decorate", "recipes_card", "bottom", "decorate_card", "top", theme["ruleArrow"], 2.4, "arrowGreen", connection_level="internal")
+    connect(p, "rule_compose_decorate", "compose_card", "right", "decorate_card", "left", theme["ruleArrow"], 2.8, "arrowGreen", connection_level="internal")
 
-    rect(p, "coherence_band", 90, 625, 1220, 72, "F8FAFC", "D7E1EE", 18, 1.4, True)
-    svg_text(p, "coherence_title", "coherence_band", 122, 662, "Coherence checks", 17, "111827", 700, "card-title")
+    card(p, "styled_ir", 1145, 235, 200, 105, output_cards["styledIr"]["title"], output_cards["styledIr"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
+    card(p, "renderers", 1145, 390, 200, 105, output_cards["renderers"]["title"], output_cards["renderers"]["lines"], theme["outputsAccent"], theme["cardStroke"], theme["card"])
+    badge(p, "visual_check", 1145, 525, 200, 44, regions["outputs"]["validation"], theme["validationFill"], theme["validationStroke"], "92400E")
+    connect(p, "main_rules_styled_ir", "rule_engine_card", "right", "styled_ir_card", "left", theme["mainArrow"], 5.4, "arrowDark", connection_level="child")
+    connect(p, "main_styled_renderers", "styled_ir_card", "bottom", "renderers_card", "top", theme["secondaryArrow"], 4.0, "arrowSlate", connection_level="child")
+    connect(p, "validation_loop", "renderers_card", "bottom", "visual_check", "top", theme["validationArrow"], 3.2, "arrowAmber", connection_level="validation")
+
+    rect(p, "coherence_band", 90, 625, 1220, 72, theme["card"], theme["cardStroke"], 18, 1.4, True)
+    svg_text(p, "coherence_title", "coherence_band", 122, 662, coherence["title"], 17, theme["text"], 700, "card-title")
     svg_text(
         p,
         "coherence_body",
         "coherence_band",
         325,
         662,
-        "Hierarchy-scaled type, centered icon labels, bounded text, consistent spacing, aligned starts, and readable minimum sizes.",
+        coherence["line"],
         14,
         "526071",
         400,
         "card-body",
     )
-    badge(p, "font_badge", 1118, 646, 180, 34, "font scale by role", "111827", "111827", "FFFFFF")
+    badge(p, "font_badge", 1118, 646, 180, 34, coherence["badge"], theme["badgeDark"], theme["badgeDark"], "FFFFFF")
 
     HIERARCHY.extend(
         [
@@ -494,6 +558,7 @@ def validate_layout() -> dict[str, Any]:
             arrow_violations.append(item)
     return {
         "source": "svg",
+        "markdownSource": str(PIPELINE_MD.relative_to(ROOT)),
         "svg": str(SVG.relative_to(ROOT)),
         "origin": {"x": LAYOUT.origin_x, "y": LAYOUT.origin_y},
         "slideSize": {"widthIn": LAYOUT.slide_w, "heightIn": LAYOUT.slide_h},
@@ -537,6 +602,7 @@ def main() -> None:
     render = validate_png(PNG)
     layout = validate_layout()
     report = {
+        "markdownSource": str(PIPELINE_MD.relative_to(ROOT)),
         "svg": str(SVG.relative_to(ROOT)),
         "pptx": str(PPTX.relative_to(ROOT)),
         "png": str(PNG.relative_to(ROOT)),

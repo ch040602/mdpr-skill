@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 REQUIRED_FILES = [
     "README.md",
+    "pipeline.md",
     "SOURCES.md",
     "todo.json",
     "schemas/slide-element-ir.schema.json",
@@ -114,6 +115,12 @@ REQUIRED_TEXT = {
         "mixed-object-stress",
         "mixed-object-stress -> notion -> linear -> stripe -> toss",
         "font size >= 8pt",
+    ],
+    "pipeline.md": [
+        "pipeline-image",
+        "sage-editorial",
+        "LLM reasoning supplies hints",
+        "Deterministic rules own layout",
     ],
     "SOURCES.md": [
         "34e9fcf2d3da69355defad7afa5e50ff15ed8cb2",
