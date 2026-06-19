@@ -31,6 +31,7 @@
         "spacingScale",
         "typeScale",
         "accentPolicy",
+        "colorHarmony",
         "effectPolicy",
         "colorBinding"
       ],
@@ -226,6 +227,10 @@
           "additionalProperties": true
         },
         "accent": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "colorHarmony": {
           "type": "object",
           "additionalProperties": true
         },

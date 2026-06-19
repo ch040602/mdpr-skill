@@ -11,6 +11,7 @@ profiles:
       typeScale: standard
       surfaceDepth: card
       accentPolicy: moderate
+      colorHarmony: analogous
       effectPolicy: subtle
     allowedRecipes:
       - cover.heroMinimal
@@ -28,6 +29,7 @@ profiles:
       typeScale: standard
       surfaceDepth: layered
       accentPolicy: scarce
+      colorHarmony: split-complementary
       effectPolicy: subtle
 
   sharp-technical:
@@ -40,6 +42,7 @@ profiles:
       typeScale: compact-ui
       surfaceDepth: flat
       accentPolicy: scarce
+      colorHarmony: monochromatic
       effectPolicy: none
 
   editorial-brief:
@@ -52,6 +55,7 @@ profiles:
       typeScale: editorial
       surfaceDepth: card
       accentPolicy: scarce
+      colorHarmony: analogous
       effectPolicy: none
 
   command-dense:
@@ -64,6 +68,7 @@ profiles:
       typeScale: compact-ui
       surfaceDepth: flat
       accentPolicy: moderate
+      colorHarmony: complementary
       effectPolicy: subtle
 
   expressive-hero:
@@ -76,6 +81,7 @@ profiles:
       typeScale: display
       surfaceDepth: hero
       accentPolicy: expressive
+      colorHarmony: triadic
       effectPolicy: expressive
 
   minimal-system:
@@ -88,4 +94,5 @@ profiles:
       typeScale: standard
       surfaceDepth: flat
       accentPolicy: scarce
+      colorHarmony: monochromatic
       effectPolicy: none

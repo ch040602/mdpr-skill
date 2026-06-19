@@ -8,6 +8,8 @@ The pipeline is documented in `pipeline.md`. The pipeline image is generated fro
 
 Visual diversification seeds live in `design_components/design-source-adapter/seeds/visual-diversification-seeds.json`. They separate flow colors, section accents, contrast colors, support surfaces, and infographic patterns so emphasis can be expressed through a different pattern, not only through a shifted hue.
 
+Color selection follows Adobe Color Wheel harmony rules: `monochromatic`, `analogous`, `complementary`, `split-complementary`, and `triadic`. Profiles choose one harmony rule, ordered sequences use theme-slot tint/base/shade brightness steps, and proof or validation points use scarce complementary contrast with WCAG contrast-ratio checks before final PPTX rendering.
+
 Text-only slides may use one quiet `monotone-icon-aside` slot when they would otherwise feel visually flat. The icon must be black or white, sourced from PowerPoint built-in icons or a licensed free SVG, and placed in a secondary aside/corner region without competing with the text.
 
 The seed gallery at `docs/assets/infographic-seed-gallery.png` is generated from those rules as SVG, embedded in PowerPoint, and exported as PNG. It demonstrates cycle, ordered, and ranked infographic families for teaser-grade pages that need to place emphasis by text length and importance.
@@ -80,6 +82,7 @@ This project does not replace MDPR. It narrows MDPR's responsibility to Markdown
 - **Stronger renderer contracts:** `Slide Element IR` separates content from design, while `Styled Deck IR` carries renderer-neutral visual decisions into PPTX, HTML, and PDF renderers.
 - **Editable PPTX-first behavior:** generated PowerPoint decks use editable shapes, text boxes, tables, charts, pictures, theme colors, and verified z-order instead of relying only on flattened visual output.
 - **Coherence validation:** visual profiles enforce consistent accent usage, radius family, shadow family, readable font sizes, bounded text, aligned icon-label pairs, and consistent arrow semantics.
+- **Adobe Color Wheel harmony:** color variation is selected through profile-level `monochromatic`, `analogous`, `complementary`, `split-complementary`, or `triadic` rules, with brightness sequences built from PPT theme tint/shade values.
 - **Lower token usage:** optional agent hints are reduced to compact intent/grouping tags; deterministic rules perform the expensive design selection work without repeated model reasoning.
 - **Traceable style output:** style gallery, inspect output, render reports, and placement plans make it possible to compare profiles and debug why a deck looks the way it does.
 
@@ -99,6 +102,9 @@ This project does not replace MDPR. It narrows MDPR's responsibility to Markdown
 
 5. **PPT colors bind to theme slots**
    Final PPTX output should use scheme/theme slots such as `accent1`, `text1`, and `background1` instead of hardcoded hex values by default.
+
+6. **Color harmony follows Adobe Color Wheel rules**
+   Profiles declare `colorHarmony`, and decoration uses `ThemeColorRef` tint/shade plans for brightness sequences plus complementary or split-complementary contrast for true emphasis.
 
 ## Pipeline Mode
 

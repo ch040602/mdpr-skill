@@ -1,3 +1,5 @@
 # Profile Authoring Guide
 
-Profiles map Design Components skins to renderer-neutral axes: radius family, shadow family, spacing scale, type scale, surface depth, accent policy, and effect policy. Profile selection is deterministic and may be forced by user config.
+Profiles map Design Components skins to renderer-neutral axes: radius family, shadow family, spacing scale, type scale, surface depth, accent policy, color harmony, and effect policy. Profile selection is deterministic and may be forced by user config.
+
+`colorHarmony` must use one Adobe Color Wheel-style rule: `monochromatic`, `analogous`, `complementary`, `split-complementary`, or `triadic`. Use `monochromatic` for ordered brightness sequences, `analogous` for calm section variation, `complementary` for strong proof or warning contrast, `split-complementary` for one point plus supporting accents, and `triadic` for three peer categories.

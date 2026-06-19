@@ -6,6 +6,7 @@
     "spacingScale": "compact",
     "typeScale": "compact-ui",
     "accentPolicy": "scarce",
+    "colorHarmony": "monochromatic",
     "effectPolicy": "none"
   },
   "slideFeatures": [{ "slideId": "s1", "hasKpi": true, "hasChart": true, "density": "medium" }],

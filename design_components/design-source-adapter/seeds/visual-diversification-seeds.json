@@ -28,6 +28,39 @@
       "exampleHex": ["#111827", "#FFFFFF"]
     }
   },
+  "colorHarmonyPolicy": {
+    "sourceReference": "Adobe Color Wheel harmony rules",
+    "supportedRules": ["monochromatic", "analogous", "complementary", "split-complementary", "triadic"],
+    "slotMapping": {
+      "base": "accent1",
+      "nearby": ["accent2", "accent3"],
+      "contrast": ["accent4", "accent5"],
+      "support": ["background1", "background2"],
+      "text": ["text1", "text2"]
+    },
+    "brightnessSequence": {
+      "rule": "Use tint for lower or earlier sequence states, base color for normal emphasis, and shade for current or strongest sequence states.",
+      "themeRefExamples": [
+        { "slot": "accent1", "tint": 45 },
+        { "slot": "accent1", "tint": 20 },
+        { "slot": "accent1" },
+        { "slot": "accent1", "shade": 18 }
+      ]
+    },
+    "usageRules": [
+      "Use monochromatic for ordered depth, progress, ranking, and low-noise technical slides.",
+      "Use analogous for neighboring sections that need variation without breaking coherence.",
+      "Use complementary for proof points, warnings, validation markers, or other deliberate contrast.",
+      "Use split-complementary when a slide needs one strong point plus two supporting accent families.",
+      "Use triadic only when three peer categories must be equally visible.",
+      "Validate foreground/background pairs with WCAG contrast ratio before final PPTX render."
+    ],
+    "coherenceRules": [
+      "Do not express flow only by random hue shifts; use the harmony rule selected by the deck profile.",
+      "Same-role arrows and same-depth objects reuse the same harmony purpose unless the flow meaning changes.",
+      "Contrast slots are scarce and should appear as point elements, not as section backgrounds."
+    ]
+  },
   "iconSourcePolicy": {
     "preferred": "ppt-builtin-icon",
     "allowed": ["ppt-builtin-icon", "free-svg-icon"],

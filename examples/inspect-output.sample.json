@@ -52,6 +52,7 @@
     "spacingScale": "standard",
     "typeScale": "standard",
     "accentPolicy": "scarce",
+    "colorHarmony": "split-complementary",
     "effectPolicy": "subtle"
   }
 }

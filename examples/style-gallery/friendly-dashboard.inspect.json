@@ -6,6 +6,7 @@
     "spacingScale": "standard",
     "typeScale": "standard",
     "accentPolicy": "moderate",
+    "colorHarmony": "analogous",
     "effectPolicy": "subtle"
   },
   "slideFeatures": [{ "slideId": "s1", "hasKpi": true, "hasChart": true, "density": "medium" }],

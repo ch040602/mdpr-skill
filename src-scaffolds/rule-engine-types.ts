@@ -45,8 +45,11 @@ export interface ProfileAxes {
   typeScale: 'compact-ui' | 'standard' | 'editorial' | 'display';
   surfaceDepth: 'flat' | 'card' | 'layered' | 'hero';
   accentPolicy: 'scarce' | 'moderate' | 'expressive';
+  colorHarmony: ColorHarmonyRule;
   effectPolicy: 'none' | 'subtle' | 'standard' | 'expressive';
 }
+
+export type ColorHarmonyRule = 'monochromatic' | 'analogous' | 'complementary' | 'split-complementary' | 'triadic';
 
 export interface CoherenceLock extends ProfileAxes {
   profileId: string;

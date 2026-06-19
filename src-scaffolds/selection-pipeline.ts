@@ -143,6 +143,7 @@ function selectDeckProfile(features: SlideFeatures[], _rulebook: any, forced?: s
       typeScale: forced === 'sharp-technical' ? 'compact-ui' : 'standard',
       surfaceDepth: forced === 'sharp-technical' ? 'flat' : 'card',
       accentPolicy: 'moderate',
+      colorHarmony: forced === 'sharp-technical' ? 'monochromatic' : 'analogous',
       effectPolicy: forced === 'sharp-technical' ? 'none' : 'subtle',
     },
   };

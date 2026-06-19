@@ -22,6 +22,7 @@ The seed pack separates:
 - accent colors for section identity;
 - contrast colors for proof points, warnings, and validation markers;
 - support surfaces for warm/cool balance;
+- Adobe Color Wheel-style harmony rules for `monochromatic`, `analogous`, `complementary`, `split-complementary`, and `triadic` palettes;
 - human-made infographic patterns such as proof callouts, editorial annotations, rails, chips, metric swatches, and quiet monotone icon asides.
 
 These seeds should be selected by deterministic rules and then checked by coherence validation so a slide can become more expressive without mixing arbitrary styles.
@@ -40,6 +41,7 @@ The target is full Design Components-to-MDPR portability through editable PPTX o
 - motion maps to static PPTX/PDF fallbacks and optional HTML behavior;
 - z-order is deterministic and validated by rendered PNG comparison;
 - colors prefer PowerPoint theme slots over raw hex values.
+- sequence colors use theme-slot tint/base/shade brightness steps before introducing extra hues.
 
 ## Boundary
 
