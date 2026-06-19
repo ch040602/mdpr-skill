@@ -5,12 +5,35 @@
   "renderValidation": {
     "file": "docs\\assets\\pipeline-overview.png",
     "size": [
-      2400,
-      1305
+      2600,
+      1414
     ],
-    "uniqueColors": 3581,
-    "nonWhitePixels": 1915610,
+    "uniqueColors": 3441,
+    "nonWhitePixels": 2390560,
     "hasContent": true
+  },
+  "layoutValidation": {
+    "origin": {
+      "x": 0.64,
+      "y": 0.34
+    },
+    "slideSize": {
+      "widthIn": 13.333,
+      "heightIn": 7.25
+    },
+    "exportSize": {
+      "widthPx": 2600,
+      "heightPx": 1414
+    },
+    "alignment": "left",
+    "fontScale": 1.0,
+    "minFontSizePt": 8,
+    "trackedTextBoxes": 43,
+    "overflowCount": 0,
+    "fontViolationCount": 0,
+    "overflow": [],
+    "fontViolations": [],
+    "ok": true
   },
   "ok": true
 }
