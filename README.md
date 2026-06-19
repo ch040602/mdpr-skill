@@ -10,6 +10,8 @@ Visual diversification seeds live in `design_components/design-source-adapter/se
 
 The seed gallery at `docs/assets/infographic-seed-gallery.png` is generated from those rules as SVG, embedded in PowerPoint, and exported as PNG. It demonstrates cycle, ordered, and ranked infographic families for teaser-grade pages that need to place emphasis by text length and importance.
 
+The graph/diagram selection rules also include PPT BIZCAM-inspired chart families such as arc-ring charts, gauge dials, line-graph backgrounds, connected chart strips, target-ring frames, and pictorial metaphor charts. These are selected from MDPR metadata before rendering, not copied from external templates.
+
 This repository is a Codex skill and implementation TODO pack for adding a deterministic Design Components-based visual diversification pipeline to MDPR.
 
 It is explicitly based on these upstream projects:

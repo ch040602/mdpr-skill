@@ -1,12 +1,15 @@
 import type { Box } from './primitives/types';
 
 export type InfographicIntent = 'auto' | 'cycle' | 'sequence' | 'list';
+export type GraphDataShape = 'none' | 'ratio' | 'trend' | 'score' | 'comparison' | 'multiStage' | 'goal';
 
 export interface InfographicItem {
   id: string;
   textChars: number;
   importance: 1 | 2 | 3 | 4 | 5;
   sourceOrder?: number;
+  needsImage?: boolean;
+  hasImage?: boolean;
 }
 
 export interface InfographicPlanSlot {
@@ -21,6 +24,30 @@ export interface InfographicPlan {
   family: 'cycle-loop' | 'ordered-rail' | 'ranked-stack';
   reason: string;
   slots: InfographicPlanSlot[];
+}
+
+export interface GraphDiagramInput {
+  dataShape: GraphDataShape;
+  textChars: number;
+  itemCount: number;
+  maxImportance: 1 | 2 | 3 | 4 | 5;
+  hasChart?: boolean;
+  hasImage?: boolean;
+  needsImage?: boolean;
+}
+
+export interface GraphDiagramPlan {
+  family:
+    | 'arc-ring-chart'
+    | 'gauge-dial-chart'
+    | 'line-graph-background'
+    | 'connected-chart-strip'
+    | 'target-ring-frame'
+    | 'pictorial-metaphor-chart'
+    | 'native-chart-frame';
+  alignment: 'center-focus-radial' | 'left-story-right-proof' | 'horizontal-small-multiples' | 'quadrant-fold';
+  reason: string;
+  emphasis: 'lead-chart' | 'foreground-proof' | 'image-anchor' | 'balanced';
 }
 
 const byImportance = (a: InfographicItem, b: InfographicItem): number => {
@@ -143,5 +170,65 @@ export function planInfographicLayout(intent: InfographicIntent, items: Infograp
     family,
     reason: `${family} selected from intent=${intent}, count=${normalized.length}, avgTextChars=${Math.round(averageTextChars(normalized))}`,
     slots,
+  };
+}
+
+export function planGraphDiagram(input: GraphDiagramInput): GraphDiagramPlan {
+  const longText = input.textChars > 72;
+  const needsPictorial = Boolean(input.needsImage || (input.hasImage && input.maxImportance >= 4));
+
+  if (needsPictorial && input.hasChart) {
+    return {
+      family: 'pictorial-metaphor-chart',
+      alignment: 'left-story-right-proof',
+      emphasis: 'image-anchor',
+      reason: 'pictorial-metaphor-chart selected because chart content needs an image or metaphor anchor',
+    };
+  }
+  if (input.dataShape === 'trend' && longText) {
+    return {
+      family: 'line-graph-background',
+      alignment: 'left-story-right-proof',
+      emphasis: 'foreground-proof',
+      reason: 'line-graph-background selected because trend labels are too long for dense foreground charting',
+    };
+  }
+  if (input.dataShape === 'score') {
+    return {
+      family: 'gauge-dial-chart',
+      alignment: 'center-focus-radial',
+      emphasis: input.maxImportance >= 4 ? 'lead-chart' : 'balanced',
+      reason: 'gauge-dial-chart selected for score/range status data',
+    };
+  }
+  if (input.dataShape === 'ratio' && input.itemCount <= 4 && !longText) {
+    return {
+      family: 'arc-ring-chart',
+      alignment: 'center-focus-radial',
+      emphasis: 'lead-chart',
+      reason: 'arc-ring-chart selected for short ratio/progress labels',
+    };
+  }
+  if (input.dataShape === 'goal' && input.itemCount <= 5) {
+    return {
+      family: 'target-ring-frame',
+      alignment: 'center-focus-radial',
+      emphasis: 'lead-chart',
+      reason: 'target-ring-frame selected for goal or benchmark framing',
+    };
+  }
+  if (input.dataShape === 'multiStage' || input.itemCount > 4) {
+    return {
+      family: 'connected-chart-strip',
+      alignment: 'horizontal-small-multiples',
+      emphasis: input.maxImportance >= 5 ? 'lead-chart' : 'balanced',
+      reason: 'connected-chart-strip selected for multi-stage or many-item chart comparison',
+    };
+  }
+  return {
+    family: 'native-chart-frame',
+    alignment: input.dataShape === 'comparison' ? 'quadrant-fold' : 'left-story-right-proof',
+    emphasis: input.maxImportance >= 4 ? 'lead-chart' : 'balanced',
+    reason: 'native-chart-frame selected as the editable fallback when no specialized chart family wins',
   };
 }

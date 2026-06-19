@@ -114,14 +114,119 @@
       }
     }
   ],
+  "chartDiagramFamilies": [
+    {
+      "id": "arc-ring-chart",
+      "inspiredBy": ["arc diagrams", "circular chart emphasis", "embossed arc treatments"],
+      "bestFor": ["ratio", "progress", "part-to-whole", "single highlighted segment"],
+      "requiresImage": false,
+      "textPolicy": {
+        "idealLabelChars": 28,
+        "hardLabelChars": 52,
+        "maxPrimaryLabels": 4
+      },
+      "importanceUse": "importance 5 receives the thickest arc, contrast cap, and nearest label; lower-importance values use thinner muted arcs.",
+      "layoutRule": "Place the primary metric inside or near the ring; keep labels outside the arc tangent with aligned starts."
+    },
+    {
+      "id": "gauge-dial-chart",
+      "inspiredBy": ["dashboard gauge", "speedometer-like concept chart"],
+      "bestFor": ["score", "risk", "readiness", "range status"],
+      "requiresImage": false,
+      "textPolicy": {
+        "idealLabelChars": 22,
+        "hardLabelChars": 44,
+        "maxPrimaryLabels": 3
+      },
+      "importanceUse": "importance controls needle thickness and whether a callout tab is attached to the dial.",
+      "layoutRule": "Use a semicircle when labels are short; fall back to ordered-rail when labels exceed the hard limit."
+    },
+    {
+      "id": "line-graph-background",
+      "inspiredBy": ["line chart used as background", "cover-style chart backdrop"],
+      "bestFor": ["trend", "forecast", "before-after", "time-series context"],
+      "requiresImage": false,
+      "textPolicy": {
+        "idealLabelChars": 64,
+        "hardLabelChars": 110,
+        "maxPrimaryLabels": 2
+      },
+      "importanceUse": "the chart becomes low-contrast background; the most important statement becomes the foreground proof point.",
+      "layoutRule": "Keep the line graph behind text with opacity below foreground content and no label collision."
+    },
+    {
+      "id": "connected-chart-strip",
+      "inspiredBy": ["connected charts", "small multiples joined into one story"],
+      "bestFor": ["multi-stage metrics", "pipeline scores", "comparative trend"],
+      "requiresImage": false,
+      "textPolicy": {
+        "idealLabelChars": 40,
+        "hardLabelChars": 72,
+        "maxPrimaryLabels": 5
+      },
+      "importanceUse": "importance determines which mini-chart becomes enlarged or receives a connector callout.",
+      "layoutRule": "Use identical mini-chart proportions and a single connector style unless the data flow changes meaning."
+    },
+    {
+      "id": "target-ring-frame",
+      "inspiredBy": ["target frame", "circular focus frame", "highlighted ring"],
+      "bestFor": ["goal", "accuracy", "focus", "benchmark"],
+      "requiresImage": false,
+      "textPolicy": {
+        "idealLabelChars": 32,
+        "hardLabelChars": 58,
+        "maxPrimaryLabels": 4
+      },
+      "importanceUse": "highest importance value occupies the center; supporting values orbit as small labels.",
+      "layoutRule": "Use the ring as a frame, not decoration; every ring layer must map to value, status, or grouping."
+    },
+    {
+      "id": "pictorial-metaphor-chart",
+      "inspiredBy": ["paint roller chart", "paint brush circular graph", "object metaphor chart", "speech bubble chart"],
+      "bestFor": ["friendly explanation", "theme-specific chart", "image-supported slide"],
+      "requiresImage": true,
+      "textPolicy": {
+        "idealLabelChars": 36,
+        "hardLabelChars": 64,
+        "maxPrimaryLabels": 3
+      },
+      "importanceUse": "image object carries the metaphor; the most important value receives a chart overlay or label anchored to the object.",
+      "layoutRule": "Use only when MDPR detects or the user provides a needed image/metaphor; otherwise prefer an abstract chart family."
+    }
+  ],
+  "alignmentLayouts": [
+    {
+      "id": "center-focus-radial",
+      "bestFor": ["cycle-loop", "target-ring-frame", "arc-ring-chart"],
+      "rule": "primary value or concept sits at center; labels align to radial tangent starts with equal safe padding."
+    },
+    {
+      "id": "left-story-right-proof",
+      "bestFor": ["line-graph-background", "ranked-stack", "pictorial-metaphor-chart"],
+      "rule": "long text or explanation stays left; proof, chart, or image anchor stays right with one contrast callout."
+    },
+    {
+      "id": "horizontal-small-multiples",
+      "bestFor": ["connected-chart-strip", "ordered-rail"],
+      "rule": "same-role objects share width, height, baseline, connector color, and arrow style."
+    },
+    {
+      "id": "quadrant-fold",
+      "bestFor": ["SWOT", "four-category comparison", "matrix"],
+      "rule": "four groups use equal geometry; emphasis is shown by stroke, tab, or lead text, not by resizing one quadrant."
+    }
+  ],
   "selectionPolicy": {
-    "primaryInputs": ["slide.intent", "element.relation", "element.importance", "contentMetrics.textChars", "contentMetrics.itemCount"],
+    "primaryInputs": ["slide.intent", "element.relation", "element.importance", "contentMetrics.textChars", "contentMetrics.itemCount", "contentMetrics.hasChart", "contentMetrics.hasImage", "contentMetrics.needsImage"],
     "fallbackOrder": ["ordered-rail", "ranked-stack", "cycle-loop"],
     "densityRules": [
       "If average textChars is above the ideal maximum, prefer ranked-stack over cycle-loop.",
       "If relation is sequence or process and item count is seven or fewer, prefer ordered-rail.",
       "If relation is cycle or feedback and every item fits the cycle hardMax, prefer cycle-loop.",
-      "If one item has importance 5 and the rest are 3 or lower, allocate a lead slot instead of equal slots."
+      "If one item has importance 5 and the rest are 3 or lower, allocate a lead slot instead of equal slots.",
+      "If the slide has chart data and needs an image or metaphor, allow pictorial-metaphor-chart; otherwise keep charts abstract and editable.",
+      "If trend data has long labels, use line-graph-background with foreground proof text instead of crowded chart labels.",
+      "If data is ratio/progress and labels are short, prefer arc-ring-chart or target-ring-frame over a generic bar chart."
     ]
   },
   "backgroundPolicy": {

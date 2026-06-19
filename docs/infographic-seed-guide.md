@@ -11,6 +11,8 @@ This project already had several local sources related to infographic constructi
 
 The new infographic seed layer applies those pieces to teaser-grade page composition.
 
+PPT BIZCAM references were reviewed for design method vocabulary rather than copied assets. Relevant recurring methods include arc/ring charts, line graphs used as background, gauge-like charts, connected chart strips, target-ring frames, pictorial metaphor charts, and equal-geometry quadrant layouts.
+
 ## Deterministic Inputs
 
 The planner uses renderer-neutral content metadata:
@@ -20,6 +22,8 @@ The planner uses renderer-neutral content metadata:
 - `contentMetrics.textChars`;
 - item `importance`;
 - source order.
+- chart/data shape, such as ratio, trend, score, multi-stage, goal, or comparison;
+- whether an image or metaphor is required.
 
 The LLM may suggest semantic intent or importance candidates, but it must not choose coordinates, colors, effects, or infographic family IDs directly.
 
@@ -30,6 +34,20 @@ The LLM may suggest semantic intent or importance candidates, but it must not ch
 `ordered-rail` is used for sequential steps. Same-role steps share a rail and arrow style. Importance changes node scale and label weight without creating unrelated colors.
 
 `ranked-stack` is used for long text or uneven importance. The highest-importance item becomes a lead tile, while lower-priority items become compact rows.
+
+## Chart Diagram Families
+
+`arc-ring-chart` is used for short ratio or progress labels. The important segment receives a thicker arc or contrast cap.
+
+`gauge-dial-chart` is used for score, risk, and readiness slides where a needle or dial communicates status faster than a generic bar.
+
+`line-graph-background` is used when trend data exists but the slide needs a strong foreground claim. The chart is pushed behind text with restrained contrast.
+
+`connected-chart-strip` is used when multiple small charts need to read as one flow.
+
+`target-ring-frame` is used for goals, accuracy, focus, or benchmarks.
+
+`pictorial-metaphor-chart` is used only when MDPR detects an image/metaphor need or the slide already has a relevant image. Otherwise, the renderer should prefer abstract editable chart shapes.
 
 ## Generated Proof
 
