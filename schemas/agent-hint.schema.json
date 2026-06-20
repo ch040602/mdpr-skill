@@ -5,6 +5,7 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "slideId": { "type": "string" },
     "intentCandidate": { "type": "string" },
     "groupCandidates": {
       "type": "array",
@@ -22,6 +23,16 @@
     "importanceCandidates": {
       "type": "object",
       "additionalProperties": { "type": "integer", "minimum": 1, "maximum": 5 }
+    },
+    "iconKeywordCandidates": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9 -]*$"
+      }
     }
   },
   "not": {
@@ -34,7 +45,19 @@
       { "required": ["w"] },
       { "required": ["h"] },
       { "required": ["color"] },
-      { "required": ["effect"] }
+      { "required": ["fontSize"] },
+      { "required": ["fontFamily"] },
+      { "required": ["typography"] },
+      { "required": ["zOrder"] },
+      { "required": ["radius"] },
+      { "required": ["shadow"] },
+      { "required": ["effect"] },
+      { "required": ["arrow"] },
+      { "required": ["component"] },
+      { "required": ["style"] },
+      { "required": ["iconAsset"] },
+      { "required": ["iconPath"] },
+      { "required": ["iconName"] }
     ]
   }
 }

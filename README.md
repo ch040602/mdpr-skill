@@ -63,6 +63,12 @@ Run the theme-decoration review deck loop:
 npm run review:theme-decoration
 ```
 
+Run the external Markdown visual evaluation loop:
+
+```bash
+npm run eval:external-md
+```
+
 Key generated QA artifacts include:
 
 - `artifacts/release-check/mdpr-skill-release-check.md`
@@ -75,6 +81,9 @@ Key generated QA artifacts include:
 - `docs/assets/theme-decoration-review-matrix.png`
 - `docs/assets/pipeline-overview.pptx`
 - `docs/assets/pipeline-overview.png`
+- `artifacts/external-markdown-visual-eval/external-markdown-visual-eval-report.json`
+- `artifacts/external-markdown-visual-eval/iteration-04/build/deck.pptx`
+- `artifacts/external-markdown-visual-eval/iteration-04/contact-sheet.png`
 - `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
 - `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
 
@@ -83,6 +92,8 @@ The release check deck is generated from bullet-style Markdown through MDPR and 
 The theme-decoration review deck verifies source-neutral visual diversity from an expanded local reference pass: 80 PPT files, 797 slides, 1,594 PowerPoint-rendered PNG slides, 160 sampled PNGs, and 60 derived structural object patterns. The public repository stores only aggregate counts and derived grammar, not source URLs or slide thumbnails.
 
 Actions-page visual material is kept under `docs/assets/theme-*.png` so workflow summaries, pull requests, and release notes can point to the same rendered previews without depending on generated artifact paths.
+
+The external Markdown evaluation is documented in [`docs/external-markdown-visual-eval.md`](docs/external-markdown-visual-eval.md). It downloads 20+ Markdown files, builds one combined corpus deck through MDPR, exports PPTX slides to PNG, and repeats the visual QA loop four times.
 
 ## MDPR Documentation
 

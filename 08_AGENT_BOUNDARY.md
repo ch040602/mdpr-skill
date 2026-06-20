@@ -2,7 +2,9 @@
 
 ## Principle
 
-Agent는 reasoning에만 쓰일 수 있다. 실제 recipe/variant/box/style/effect 선택은 rule engine이 한다.
+Agents may be used only for optional reasoning hints. MDPR owns the final
+recipe, variant, box, style, effect, icon, arrow, typography, color, z-order,
+and renderer decisions through deterministic rules.
 
 ## Allowed agent outputs
 
@@ -13,6 +15,7 @@ type AgentHint = {
   possiblePrimaryElementId?: string;
   possibleGroups?: ElementGroup[];
   possibleImportance?: Record<string, 1 | 2 | 3 | 4 | 5>;
+  iconKeywordCandidates?: string[];
   rationale?: string;
 };
 ```
@@ -24,12 +27,16 @@ type AgentHint = {
 - `profileId` as forced value
 - `x`, `y`, `w`, `h`
 - `fontSize`
+- `fontFamily`
 - `color`
+- `zOrder`
 - `radius`
 - `shadow`
 - `effect`
+- `arrow`
 - `animation`
 - `component`
+- exact icon asset path or package-specific icon name
 
 ## Validation rules
 

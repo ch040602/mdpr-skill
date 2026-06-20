@@ -33,11 +33,15 @@ MDPR owns:
 - Renderer-neutral `Presentation IR`.
 - Layout planning, design presets, color combinations, PPT theme colors, table coherence, diagram rendering, and editable PPTX/HTML/PDF output.
 
-The skill layer must not add:
+The skill layer must not add to the MDPR runtime:
 
-- LLM reasoning or API calls.
+- Required in-process LLM reasoning or API calls for MDPR builds.
 - Agent-authored final visual instructions.
 - Skill-pack-only runtime contracts that duplicate MDPR renderer behavior.
+
+The skill pack may run outside MDPR as an optional pre-build hint producer. Those
+hints stay semantic, can be ignored, and must pass the agent hint schema before
+MDPR deterministic rules use them as weak feature inputs.
 
 ## Skill Pack Responsibilities
 

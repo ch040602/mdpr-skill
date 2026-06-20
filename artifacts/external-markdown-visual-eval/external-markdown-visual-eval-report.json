@@ -1,0 +1,198 @@
+{
+  "ok": true,
+  "sourceCount": 23,
+  "minimumSourceCount": 20,
+  "iterations": 4,
+  "minimumIterations": 4,
+  "sources": [
+    {
+      "slug": "react",
+      "title": "React",
+      "url": "https://raw.githubusercontent.com/facebook/react/main/README.md",
+      "chars": 4535
+    },
+    {
+      "slug": "vite",
+      "title": "Vite",
+      "url": "https://raw.githubusercontent.com/vitejs/vite/main/README.md",
+      "chars": 2446
+    },
+    {
+      "slug": "vue",
+      "title": "vuejs/core",
+      "url": "https://raw.githubusercontent.com/vuejs/core/main/README.md",
+      "chars": 1922
+    },
+    {
+      "slug": "svelte",
+      "title": "Svelte",
+      "url": "https://raw.githubusercontent.com/sveltejs/svelte/main/README.md",
+      "chars": 1371
+    },
+    {
+      "slug": "typescript",
+      "title": "TypeScript",
+      "url": "https://raw.githubusercontent.com/microsoft/TypeScript/main/README.md",
+      "chars": 2874
+    },
+    {
+      "slug": "node",
+      "title": "Node.js",
+      "url": "https://raw.githubusercontent.com/nodejs/node/main/README.md",
+      "chars": 40778
+    },
+    {
+      "slug": "express",
+      "title": "Express",
+      "url": "https://raw.githubusercontent.com/expressjs/express/master/Readme.md",
+      "chars": 10067
+    },
+    {
+      "slug": "fastapi",
+      "title": "FastAPI",
+      "url": "https://raw.githubusercontent.com/fastapi/fastapi/master/README.md",
+      "chars": 20599
+    },
+    {
+      "slug": "openai-python",
+      "title": "OpenAI Python API library",
+      "url": "https://raw.githubusercontent.com/openai/openai-python/main/README.md",
+      "chars": 30700
+    },
+    {
+      "slug": "langchain",
+      "title": "LangChain",
+      "url": "https://raw.githubusercontent.com/langchain-ai/langchain/master/README.md",
+      "chars": 5239
+    },
+    {
+      "slug": "playwright",
+      "title": "Playwright",
+      "url": "https://raw.githubusercontent.com/microsoft/playwright/main/README.md",
+      "chars": 10075
+    },
+    {
+      "slug": "tailwindcss",
+      "title": "Tailwind CSS",
+      "url": "https://raw.githubusercontent.com/tailwindlabs/tailwindcss/main/README.md",
+      "chars": 991
+    },
+    {
+      "slug": "kubernetes",
+      "title": "Kubernetes (K8s)",
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/master/README.md",
+      "chars": 3891
+    },
+    {
+      "slug": "rust",
+      "title": "Rust",
+      "url": "https://raw.githubusercontent.com/rust-lang/rust/master/README.md",
+      "chars": 2679
+    },
+    {
+      "slug": "pytorch",
+      "title": "if you are updating an existing checkout",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/main/README.md",
+      "chars": 27535
+    },
+    {
+      "slug": "tensorflow",
+      "title": "TensorFlow",
+      "url": "https://raw.githubusercontent.com/tensorflow/tensorflow/master/README.md",
+      "chars": 6867
+    },
+    {
+      "slug": "pandas",
+      "title": "pandas: A Powerful Python Data Analysis Toolkit",
+      "url": "https://raw.githubusercontent.com/pandas-dev/pandas/main/README.md",
+      "chars": 9618
+    },
+    {
+      "slug": "numpy",
+      "title": "NumPy",
+      "url": "https://raw.githubusercontent.com/numpy/numpy/main/README.md",
+      "chars": 3032
+    },
+    {
+      "slug": "huggingface-transformers",
+      "title": "venv",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers/main/README.md",
+      "chars": 15612
+    },
+    {
+      "slug": "d3",
+      "title": "D3: Data-Driven Documents",
+      "url": "https://raw.githubusercontent.com/d3/d3/main/README.md",
+      "chars": 884
+    },
+    {
+      "slug": "echarts",
+      "title": "Apache ECharts",
+      "url": "https://raw.githubusercontent.com/apache/echarts/master/README.md",
+      "chars": 3401
+    },
+    {
+      "slug": "plotly",
+      "title": "plotly.py",
+      "url": "https://raw.githubusercontent.com/plotly/plotly.py/master/README.md",
+      "chars": 3885
+    },
+    {
+      "slug": "system-design-primer",
+      "title": "The System Design Primer",
+      "url": "https://raw.githubusercontent.com/donnemartin/system-design-primer/master/README.md",
+      "chars": 108403
+    }
+  ],
+  "iterationReports": [
+    {
+      "iteration": 1,
+      "pptx": "artifacts\\external-markdown-visual-eval\\iteration-01\\build\\deck.pptx",
+      "contactSheet": "artifacts\\external-markdown-visual-eval\\iteration-01\\contact-sheet.png",
+      "score": 100,
+      "ok": true,
+      "issues": []
+    },
+    {
+      "iteration": 2,
+      "pptx": "artifacts\\external-markdown-visual-eval\\iteration-02\\build\\deck.pptx",
+      "contactSheet": "artifacts\\external-markdown-visual-eval\\iteration-02\\contact-sheet.png",
+      "score": 100,
+      "ok": true,
+      "issues": []
+    },
+    {
+      "iteration": 3,
+      "pptx": "artifacts\\external-markdown-visual-eval\\iteration-03\\build\\deck.pptx",
+      "contactSheet": "artifacts\\external-markdown-visual-eval\\iteration-03\\contact-sheet.png",
+      "score": 100,
+      "ok": true,
+      "issues": []
+    },
+    {
+      "iteration": 4,
+      "pptx": "artifacts\\external-markdown-visual-eval\\iteration-04\\build\\deck.pptx",
+      "contactSheet": "artifacts\\external-markdown-visual-eval\\iteration-04\\contact-sheet.png",
+      "score": 100,
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "vlmReviewTargets": [
+    "artifacts\\external-markdown-visual-eval\\iteration-01\\contact-sheet.png",
+    "artifacts\\external-markdown-visual-eval\\iteration-02\\contact-sheet.png",
+    "artifacts\\external-markdown-visual-eval\\iteration-03\\contact-sheet.png",
+    "artifacts\\external-markdown-visual-eval\\iteration-04\\contact-sheet.png"
+  ],
+  "finalPptx": "artifacts\\external-markdown-visual-eval\\iteration-04\\build\\deck.pptx",
+  "finalContactSheet": "artifacts\\external-markdown-visual-eval\\iteration-04\\contact-sheet.png",
+  "teaserReferenceSummary": {
+    "researchTeaser": "Use position, size, and color to control attention and interpretation.",
+    "productTeaser": "Lead with a focal headline, proof object, and restrained visual anchors."
+  },
+  "remainingImprovementIdeas": [
+    "If slides are text-heavy, add rule support for stronger summary/table/chart composition.",
+    "If teaser focal hierarchy is weak, improve cover/key-message scale and contrast rules.",
+    "If pipeline slides fail, route them through MDPR diagram blocks only."
+  ]
+}

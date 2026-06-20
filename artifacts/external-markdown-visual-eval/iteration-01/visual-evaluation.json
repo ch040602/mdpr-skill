@@ -1,0 +1,240 @@
+{
+  "iteration": 1,
+  "source": "artifacts\\external-markdown-visual-eval\\iteration-01\\corpus.md",
+  "pptx": "artifacts\\external-markdown-visual-eval\\iteration-01\\build\\deck.pptx",
+  "html": "artifacts\\external-markdown-visual-eval\\iteration-01\\build\\deck.html",
+  "manifest": "artifacts\\external-markdown-visual-eval\\iteration-01\\build\\mdpresent-manifest.json",
+  "designLock": {
+    "path": "artifacts\\external-markdown-visual-eval\\iteration-01\\build\\mdpresent-design-lock.json",
+    "decorationStyle": "magazine",
+    "colorSeed": "#0F766E",
+    "colorCombination": "split-complementary"
+  },
+  "slideCount": 48,
+  "diagnostics": [],
+  "manifestValidation": {
+    "layoutOverflow": [],
+    "visual": {
+      "checked": true,
+      "slideCount": 48,
+      "checks": {
+        "nonBlankSlides": true,
+        "regionBounds": true,
+        "minimumTextSize": true,
+        "backgroundContentOverlap": true
+      },
+      "diagnostics": []
+    }
+  },
+  "pptxInspection": {
+    "slideCount": 48,
+    "textRuns": 349,
+    "minFontSizePt": 8.0,
+    "fontSizeCount": 349,
+    "boundsViolationCount": 0,
+    "boundsViolations": [],
+    "chartPartCount": 0,
+    "tableShapeMentions": 1,
+    "diagramMentions": 0
+  },
+  "pngInspection": {
+    "pngCount": 48,
+    "blankSlides": [],
+    "lowContrastSlides": [],
+    "minUniqueColors": 57,
+    "meanUniqueColors": 223.875,
+    "contentBoxes": [
+      {
+        "slide": "slide-01.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-02.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-03.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-04.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-05.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-06.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-07.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-08.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-09.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-10.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-11.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      },
+      {
+        "slide": "slide-12.png",
+        "bbox": [
+          0,
+          0,
+          1600,
+          900
+        ],
+        "leftMargin": 0,
+        "rightMargin": 0,
+        "topMargin": 0,
+        "bottomMargin": 0
+      }
+    ],
+    "firstSlideDeltaFromPrevious": null
+  },
+  "contactSheet": {
+    "ok": true,
+    "file": "artifacts\\external-markdown-visual-eval\\iteration-01\\contact-sheet.png",
+    "slidesShown": 48,
+    "size": [
+      1500,
+      2100
+    ]
+  },
+  "teaserComparisonRubric": {
+    "referenceBasis": [
+      "research teaser: position, size, and color should guide attention",
+      "product teaser: headline, evidence object, and restrained icon/visual anchors should be readable at a glance"
+    ],
+    "criteria": [
+      "focal message",
+      "scale hierarchy",
+      "bounded text",
+      "object diversity",
+      "coherent contrast",
+      "nonblank rendered PPTX"
+    ]
+  },
+  "quality": {
+    "score": 100,
+    "ok": true,
+    "issues": [],
+    "acceptedImprovementTargets": [
+      "If slides are text-heavy, add rule support for stronger summary/table/chart composition.",
+      "If teaser focal hierarchy is weak, improve cover/key-message scale and contrast rules.",
+      "If pipeline slides fail, route them through MDPR diagram blocks only."
+    ]
+  },
+  "ok": true
+}
