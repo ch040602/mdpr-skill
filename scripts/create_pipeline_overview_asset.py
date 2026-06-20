@@ -749,6 +749,7 @@ def add_ppt_text(
     bold: bool = False,
     align: str = "left",
     valign: str = "middle",
+    margin_px: float = 1.0,
 ) -> Any:
     ppt_size = ppt_font_size(size)
     PPT_TEXT_BOXES.append(
@@ -772,10 +773,10 @@ def add_ppt_text(
     shape.Fill.Visible = 0
     shape.Line.Visible = 0
     tf = shape.TextFrame2
-    tf.MarginLeft = ppt_x(1.0)
-    tf.MarginRight = ppt_x(1.0)
-    tf.MarginTop = ppt_y(0.5)
-    tf.MarginBottom = ppt_y(0.5)
+    tf.MarginLeft = ppt_x(margin_px)
+    tf.MarginRight = ppt_x(margin_px)
+    tf.MarginTop = ppt_y(margin_px * 0.5)
+    tf.MarginBottom = ppt_y(margin_px * 0.5)
     tf.WordWrap = -1
     tf.AutoSize = 0
     tf.VerticalAnchor = 3 if valign == "middle" else 1
@@ -783,10 +784,10 @@ def add_ppt_text(
         shape.TextFrame.AutoSize = 0
         shape.TextFrame.WordWrap = -1
         shape.TextFrame.VerticalAnchor = 3 if valign == "middle" else 1
-        shape.TextFrame.MarginLeft = ppt_x(1.0)
-        shape.TextFrame.MarginRight = ppt_x(1.0)
-        shape.TextFrame.MarginTop = ppt_y(0.5)
-        shape.TextFrame.MarginBottom = ppt_y(0.5)
+        shape.TextFrame.MarginLeft = ppt_x(margin_px)
+        shape.TextFrame.MarginRight = ppt_x(margin_px)
+        shape.TextFrame.MarginTop = ppt_y(margin_px * 0.5)
+        shape.TextFrame.MarginBottom = ppt_y(margin_px * 0.5)
     except Exception:
         pass
     text_range = tf.TextRange
@@ -814,7 +815,7 @@ def add_ppt_icon(slide: Any, name: str, cx: float, cy: float, r: float, fill: st
     shape.Name = f"{name}_icon_dot"
     set_shape_style(shape, fill, "FFFFFF", ppt_x(1.0), 0.0, False)
     if label:
-        add_ppt_text(slide, f"{name}_icon_label", cx - r, cy - r * 0.92, r * 2, r * 1.84, label, 10, "FFFFFF", True, "center")
+        add_ppt_text(slide, f"{name}_icon_label", cx - r, cy - r, r * 2, r * 2, label, max(8, r * 0.9), "FFFFFF", True, "center", "middle", 0.0)
 
 
 def add_ppt_card(
