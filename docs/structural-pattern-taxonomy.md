@@ -1,32 +1,27 @@
-# PPT BIZCAM Pattern Taxonomy for MDPR
+# Structural Pattern Taxonomy for MDPR
 
-This note records a structural reference analysis used to improve MDPR's deterministic visual-diversification rules. PPT BIZCAM examples are used only as design-method references. MDPR must not copy source assets, layouts, or brand-like objects.
+This note records a source-neutral structural reference analysis used to improve MDPR's deterministic visual-diversification rules. The repository stores only aggregate metrics and derived object grammar. It does not store source names, URLs, downloaded presentations, thumbnails, copied layouts, copied images, or brand-like objects from the reference corpus.
 
-## Source Scope
-
-Reference entry points:
-
-- `https://pptbizcam.co.kr/?cat=3`
-- adjacent sampled category IDs: `2, 7, 9, 10, 11, 12, 14, 19, 21, 30, 37, 39, 67`
+## Corpus Scope
 
 Local structural report:
 
-- `artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json`
-- downloaded PPT files: `50`
+- `artifacts/reference-pattern-analysis/derived-object-rules.json`
+- `artifacts/reference-pattern-analysis/structural-summary.json`
+- downloaded presentation files analyzed locally: `50`
 - decks analyzed: `50`
 - slides analyzed structurally: `492`
 - PowerPoint-rendered PNG slides: `984`
 - PNG samples analyzed: `100`
 - aggregate objects: `4,769` shapes, `3,626` text frames, `44` tables, `19` charts, `51` pictures
-- contact sheet: `artifacts/pptbizcam-analysis/pptbizcam-downloaded-contact-sheet.png`
 
-Regenerate the pass:
+Regenerate the pass with a private or local approved corpus:
 
 ```bash
-npm run pptbizcam:rules
+npm run reference:rules
 ```
 
-The original downloaded PPT files are cached under `.cache/pptbizcam` and are not source-controlled. Only derived structural rules and metrics are kept in the repo.
+The command intentionally requires corpus location environment variables. Source-specific corpus locations are not stored in the repository.
 
 ## Element Families
 
@@ -39,8 +34,6 @@ The original downloaded PPT files are cached under `.cache/pptbizcam` and are no
 | Chart proof object | native charts, editable arc/ring proof objects, gauge proof objects, connected strips, trend backdrops | One dominant chart family per slide; labels attach to marks; same-role connectors share one style; background charts remain lower contrast than foreground claims. |
 
 ## Table Coherence Rules
-
-MDPR table rendering should treat a table as row/column grammar, not as a card grid.
 
 - Strip simple Markdown emphasis markers inside cells before PPT rendering.
 - Header row is bold, centered, and uses the strongest theme fill.
@@ -79,7 +72,7 @@ Accepted implementation families:
 - `chart-proof-object`: native bar charts plus editable `arc-ring`, `gauge`, and `connected-strip` variants in MDPR PPTX output.
 - `pictorial-metaphor-anchor`: only for provided or detected imagery.
 - `simple-shape-system`: deterministic section labels, rules, and proof callouts.
-- `pptbizcam-derived-object-patterns`: 60 reusable object/decorator seeds covering accent rails, tabs, brackets, chips, notches, image sidecars, metric lead cards, connector dots, paper/notebook metaphors, browser/window frames, speech callouts, timeline rails, hub/spoke diagrams, matrix layouts, chart proof objects, image-caption splits, status tables, and a plain-safe high-density fallback.
+- `derived-object-patterns`: 60 reusable object/decorator seeds covering accent rails, tabs, brackets, chips, notches, image sidecars, metric lead cards, connector dots, document metaphors, browser/window frames, speech callouts, timeline rails, hub/spoke diagrams, matrix layouts, chart proof objects, image-caption splits, status tables, and a plain-safe high-density fallback.
 
 Rejected pattern:
 
@@ -98,7 +91,7 @@ The seed catalog is selected by rulebase inputs rather than visual copying:
 
 ## Derived Object Pattern Families
 
-The recursive pass stores 60 object rules in `visual-diversification-seeds.json` under `pptbizcamDerivedObjectPatterns`. They are grouped as method vocabulary rather than copied slide templates:
+The reference pass stores 60 object rules in `visual-diversification-seeds.json` under `derivedObjectPatterns`. They are grouped as method vocabulary rather than copied slide templates:
 
 | Family | Example object rules | Selection signal |
 | --- | --- | --- |

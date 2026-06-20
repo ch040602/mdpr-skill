@@ -17,13 +17,22 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 ROOT = Path(__file__).resolve().parents[1]
-CACHE = ROOT / ".cache" / "pptbizcam"
+CACHE = ROOT / ".cache" / "reference-patterns"
 PPTX_DIR = CACHE / "pptx"
 PNG_DIR = CACHE / "png"
-OUT = ROOT / "artifacts" / "pptbizcam-analysis"
+OUT = ROOT / "artifacts" / "reference-pattern-analysis"
 SEEDS = ROOT / "design_components" / "design-source-adapter" / "seeds" / "visual-diversification-seeds.json"
 
-START_POST_ID = 11677
+CORPUS_URL_TEMPLATE = None
+CORPUS_START_ID = None
+try:
+    import os
+
+    CORPUS_URL_TEMPLATE = os.environ.get("REFERENCE_CORPUS_URL_TEMPLATE")
+    CORPUS_START_ID = int(os.environ["REFERENCE_CORPUS_START_ID"]) if os.environ.get("REFERENCE_CORPUS_START_ID") else None
+except Exception:
+    CORPUS_URL_TEMPLATE = None
+    CORPUS_START_ID = None
 MIN_DOWNLOADS = 50
 MAX_POST_SCAN = 900
 MAX_RENDER_DECKS = 50
@@ -127,16 +136,21 @@ def clean_title(html: str, fallback: str) -> str:
     if not match:
         return fallback
     value = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", match.group(1))).strip()
-    return value.replace(" – PPT BIZCAM", "").replace(" - PPT BIZCAM", "")[:120]
+    return re.sub(r"\s+[-–]\s+.*$", "", value)[:120]
 
 
 def discover_posts() -> list[dict[str, Any]]:
+    if not CORPUS_URL_TEMPLATE or CORPUS_START_ID is None:
+        raise SystemExit(
+            "REFERENCE_CORPUS_URL_TEMPLATE and REFERENCE_CORPUS_START_ID are required. "
+            "Source-specific corpus locations are intentionally not stored in this repository."
+        )
     posts: list[dict[str, Any]] = []
     seen_links: set[str] = set()
-    for post_id in range(START_POST_ID, START_POST_ID - MAX_POST_SCAN, -1):
+    for post_id in range(CORPUS_START_ID, CORPUS_START_ID - MAX_POST_SCAN, -1):
         if len(seen_links) >= MIN_DOWNLOADS:
             break
-        url = f"https://pptbizcam.co.kr/?p={post_id}"
+        url = CORPUS_URL_TEMPLATE.format(id=post_id)
         try:
             html = fetch_text(url)
         except Exception:
@@ -146,7 +160,7 @@ def discover_posts() -> list[dict[str, Any]]:
         if links:
             for link in links:
                 seen_links.add(link)
-            posts.append({"postId": post_id, "url": url, "title": clean_title(html, f"post-{post_id}"), "pptLinks": links})
+            posts.append({"corpusId": post_id, "title": clean_title(html, f"entry-{post_id}"), "pptLinks": links})
         time.sleep(REQUEST_DELAY_SECONDS)
     return posts
 
@@ -159,7 +173,7 @@ def download_pptx(posts: list[dict[str, Any]]) -> list[dict[str, Any]]:
         for link in post["pptLinks"]:
             ordinal += 1
             suffix = ".pptx" if link.lower().endswith("pptx") else ".ppt"
-            path = PPTX_DIR / f"{ordinal:02d}_{post['postId']}{suffix}"
+            path = PPTX_DIR / f"{ordinal:02d}_{post['corpusId']}{suffix}"
             if not path.exists() or path.stat().st_size < 1024:
                 path.write_bytes(fetch_binary(link))
             downloads.append({**post, "pptUrl": link, "localPath": str(path.relative_to(ROOT)), "bytes": path.stat().st_size})
@@ -232,7 +246,6 @@ def analyze_png(path: Path) -> dict[str, Any]:
     edge_pixels = sum(1 for value in edges.getdata() if value > 28)
     non_white = sum(count for count, color in colors if color != (255, 255, 255))
     return {
-        "file": str(path.relative_to(ROOT)),
         "size": image.size,
         "uniqueColors": len(colors),
         "nonWhitePixels": non_white,
@@ -282,26 +295,25 @@ def pattern_to_json(pattern: ObjectPattern) -> dict[str, Any]:
 def update_seed_file(report: dict[str, Any]) -> None:
     seeds = json.loads(SEEDS.read_text(encoding="utf-8"))
     seeds["observedReferenceAnalysis"] = {
-        "source": "PPT BIZCAM public post pages and downloadable PPT samples",
-        "startPost": START_POST_ID,
+        "sourceClass": "approved presentation reference corpus; source identities omitted",
         "downloadedPptFiles": report["pptDownloaded"],
         "decksAnalyzed": report["decksAnalyzed"],
         "slidesAnalyzed": report["slidesAnalyzed"],
         "renderedPngSlides": report["renderedPngSlides"],
         "aggregateObjects": report["aggregateObjects"],
-        "methodNote": "Original PPT files are kept only in .cache/pptbizcam for local structural analysis. MDPR stores derived object vocabulary and rules, not copied assets or layouts.",
+        "methodNote": "Original reference files are kept only in a local cache for structural analysis. MDPR stores derived object vocabulary and rules, not copied assets, source names, URLs, or layouts.",
     }
-    seeds["pptbizcamDerivedObjectPatterns"] = [pattern_to_json(pattern) for pattern in OBJECT_PATTERNS]
-    seeds["pptbizcamRecursiveRulePolicy"] = {
+    seeds["derivedObjectPatterns"] = [pattern_to_json(pattern) for pattern in OBJECT_PATTERNS]
+    seeds["referenceRulePolicy"] = {
         "minimumDownloadedPptFiles": MIN_DOWNLOADS,
         "minimumDerivedObjectPatterns": 50,
         "analysisLoop": [
-            "scan numbered PPT BIZCAM post pages from the seed post id",
-            "download public PPT links to .cache only",
+            "scan an approved local or private presentation reference corpus",
+            "download public presentation links to local cache only",
             "render PPT slides to PNG through Microsoft PowerPoint",
             "extract slide-object and PNG structure metrics",
             "derive reusable object grammar and coherence guards",
-            "regenerate seed JSON without storing source PPT assets in git",
+            "regenerate seed JSON without storing source assets, URLs, or identifying metadata in git",
         ],
         "selectionInputs": ["hasImage", "hasTable", "hasChart", "hasKeyNumber", "relation", "importance", "textChars", "density", "itemCount"],
         "copyGuard": "Do not copy source slide layouts, images, or brand-like objects. Use only structural grammar: alignment, grouping, connector, surface, marker, chart, and text-fitting methods.",
@@ -325,14 +337,10 @@ def main() -> None:
         slides += int(analysis["slides"])
     rendered = export_pngs(downloads)
     png_analysis = analyze_rendered_pngs(rendered)
-    contact_sheet = OUT / "pptbizcam-downloaded-contact-sheet.png"
-    make_contact_sheet(rendered, contact_sheet)
     report = {
-        "source": "https://pptbizcam.co.kr/?p=11677 with descending post-id scan",
+        "sourceClass": "approved presentation reference corpus; source identities omitted",
         "postPagesWithPpt": len(posts),
-        "posts": posts[:50],
         "pptDownloaded": len(downloads),
-        "downloads": downloads,
         "decksAnalyzed": len(deck_analyses),
         "slidesAnalyzed": slides,
         "renderedDecks": len(rendered),
@@ -341,13 +349,10 @@ def main() -> None:
         "aggregateObjects": dict(aggregate),
         "derivedObjectPatternCount": len(OBJECT_PATTERNS),
         "derivedObjectPatterns": [pattern_to_json(pattern) for pattern in OBJECT_PATTERNS],
-        "rendered": rendered,
-        "pngAnalysis": png_analysis,
-        "contactSheet": str(contact_sheet.relative_to(ROOT)),
         "ok": len(downloads) >= MIN_DOWNLOADS and len(OBJECT_PATTERNS) >= 50 and len(png_analysis) >= 50,
     }
-    (OUT / "pptbizcam-recursive-object-rules.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (OUT / "pptbizcam-analysis.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    (OUT / "derived-object-rules.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    (OUT / "structural-summary.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     update_seed_file(report)
     if not report["ok"]:
         raise SystemExit(json.dumps(report, indent=2, ensure_ascii=False))

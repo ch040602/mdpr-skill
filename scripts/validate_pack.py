@@ -97,7 +97,7 @@ REQUIRED_FILES = [
     "artifacts/ppt/powerpoint_render_compare.json",
     "scripts/create_pipeline_overview_asset.py",
     "scripts/create_infographic_seed_gallery.py",
-    "scripts/build_pptbizcam_object_rules.py",
+    "scripts/build_reference_object_rules.py",
     "scripts/create_release_check_deck.py",
     "scripts/install_mdpr.py",
     "docs/mdpr-installation.md",
@@ -120,8 +120,8 @@ REQUIRED_FILES = [
     "artifacts/mdpr-vs-skill/mdpr-source-corpus.md",
     "artifacts/mdpr-vs-skill/source-manifest.json",
     "artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json",
-    "artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json",
-    "artifacts/pptbizcam-analysis/pptbizcam-downloaded-contact-sheet.png",
+    "artifacts/reference-pattern-analysis/derived-object-rules.json",
+    "artifacts/reference-pattern-analysis/structural-summary.json",
     "artifacts/release-check/mdpr-skill-release-check.md",
     "artifacts/release-check/mdpr-skill-release-check.pptx",
     "artifacts/release-check/mdpr-skill-release-check-report.json",
@@ -221,8 +221,8 @@ REQUIRED_TEXT = {
         "split-complementary",
         "triadic",
         "WCAG contrast ratio",
-        "pptbizcamDerivedObjectPatterns",
-        "pptbizcamRecursiveRulePolicy",
+        "derivedObjectPatterns",
+        "referenceRulePolicy",
     ],
     "SOURCES.md": [
         "34e9fcf2d3da69355defad7afa5e50ff15ed8cb2",
@@ -304,18 +304,23 @@ def check_catalog_coverage() -> None:
             fail(f"variant catalog missing {variant}")
 
 
-def check_pptbizcam_recursive_rules() -> None:
+def check_reference_object_rules() -> None:
     seeds = json.loads(read("design_components/design-source-adapter/seeds/visual-diversification-seeds.json"))
-    patterns = seeds.get("pptbizcamDerivedObjectPatterns", [])
+    analysis = seeds.get("observedReferenceAnalysis", {})
+    if analysis.get("sourceClass") != "approved presentation reference corpus; source identities omitted":
+        fail("reference analysis must omit source identities")
+    patterns = seeds.get("derivedObjectPatterns", [])
     if len(patterns) < 50:
-        fail(f"expected at least 50 PPT BIZCAM-derived object patterns, found {len(patterns)}")
-    report = json.loads(read("artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json"))
+        fail(f"expected at least 50 derived object patterns, found {len(patterns)}")
+    report = json.loads(read("artifacts/reference-pattern-analysis/derived-object-rules.json"))
+    if report.get("sourceClass") != "approved presentation reference corpus; source identities omitted":
+        fail("reference object report must omit source identities")
     if report.get("pptDownloaded", 0) < 50:
-        fail("expected at least 50 downloaded PPT files in PPT BIZCAM recursive report")
+        fail("expected at least 50 downloaded PPT files in reference report")
     if report.get("pngSamplesAnalyzed", 0) < 50:
-        fail("expected at least 50 PNG samples analyzed in PPT BIZCAM recursive report")
+        fail("expected at least 50 PNG samples analyzed in reference report")
     if report.get("derivedObjectPatternCount", 0) < 50:
-        fail("expected at least 50 derived object patterns in PPT BIZCAM recursive report")
+        fail("expected at least 50 derived object patterns in reference report")
 
 
 def check_release_check_deck() -> None:
@@ -338,7 +343,7 @@ def main() -> None:
     check_json_files()
     check_required_text()
     check_catalog_coverage()
-    check_pptbizcam_recursive_rules()
+    check_reference_object_rules()
     check_release_check_deck()
     check_no_unchecked_boxes()
     print("mdpr-skill pack validation passed")

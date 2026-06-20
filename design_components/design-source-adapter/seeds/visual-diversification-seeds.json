@@ -495,8 +495,7 @@
     }
   ],
   "observedReferenceAnalysis": {
-    "source": "PPT BIZCAM public post pages and downloadable PPT samples",
-    "startPost": 11677,
+    "sourceClass": "approved presentation reference corpus; source identities omitted",
     "downloadedPptFiles": 50,
     "decksAnalyzed": 50,
     "slidesAnalyzed": 492,
@@ -517,7 +516,7 @@
       "charts": 19,
       "shapeType:unknown": 9
     },
-    "methodNote": "Original PPT files are kept only in .cache/pptbizcam for local structural analysis. MDPR stores derived object vocabulary and rules, not copied assets or layouts."
+    "methodNote": "Original reference files are kept only in a local cache for structural analysis. MDPR stores derived object vocabulary and rules, not copied assets, source names, URLs, or layouts."
   },
   "referenceDerivedElementFamilies": [
     {
@@ -1059,7 +1058,7 @@
       "low-opacity ruled line"
     ]
   },
-  "pptbizcamDerivedObjectPatterns": [
+  "derivedObjectPatterns": [
     {
       "id": "accent-rail-card",
       "family": "card",
@@ -2070,16 +2069,16 @@
       "coherenceGuard": "Tint progression follows monochromatic or split-complementary rule."
     }
   ],
-  "pptbizcamRecursiveRulePolicy": {
+  "referenceRulePolicy": {
     "minimumDownloadedPptFiles": 50,
     "minimumDerivedObjectPatterns": 50,
     "analysisLoop": [
-      "scan numbered PPT BIZCAM post pages from the seed post id",
-      "download public PPT links to .cache only",
+      "scan an approved local or private presentation reference corpus",
+      "download public presentation links to local cache only",
       "render PPT slides to PNG through Microsoft PowerPoint",
       "extract slide-object and PNG structure metrics",
       "derive reusable object grammar and coherence guards",
-      "regenerate seed JSON without storing source PPT assets in git"
+      "regenerate seed JSON without storing source assets, URLs, or identifying metadata in git"
     ],
     "selectionInputs": [
       "hasImage",

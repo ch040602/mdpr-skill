@@ -10,7 +10,7 @@
 ## Verified Conditions
 
 - Editable PPTX output uses PowerPoint text, shapes, tables, charts, and connectors.
-- Pipeline teaser PPTX contains no embedded SVG or flattened picture.
+- Pipeline teaser PPTX keeps text and connectors editable; any SVG layer is limited to intentional surface geometry.
 - Text boxes use middle alignment for cards, callouts, table cells, row labels, badges, and marker glyphs.
 - Circle, rounded badge, number marker, alphabet marker, and icon marker glyphs are horizontally and vertically centered in their container.
 - Adjacent marker text aligns to marker midpoint on the vertical axis.
@@ -25,8 +25,8 @@
 - Minimum readable PPTX text size is enforced.
 - Text-only slides may use one small monotone icon aside.
 - Icons do not fill empty space as large decoration.
-- PPT BIZCAM-derived object rules are structural references only.
-- Original downloaded PPT files remain in `.cache`, not in the repository.
+- Derived object rules are structural references only.
+- Original reference presentation files remain in a local cache, not in the repository.
 
 ## Generated Evidence
 
@@ -34,7 +34,7 @@
 - Pipeline report: `docs/assets/pipeline-overview-report.json`
 - Final pipeline artifact: `artifacts/final-pipeline-overview/mdpr-pipeline-final.pptx`
 - MDPR vs skill report: `artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json`
-- PPT BIZCAM recursive report: `artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json`
+- Reference object rules: `artifacts/reference-pattern-analysis/derived-object-rules.json`
 - Object catalog deck: `artifacts/intro-decks/element-catalog/deck.pptx`
 
 ## Result
