@@ -66,7 +66,7 @@ MDPR owns Markdown parsing, slide splitting, element splitting, semantic metadat
 
 This skill pack owns optional semantic hinting and review guidance around MDPR output:
 
-- intent, grouping, importance, and ambiguity hint guidance;
+- intent, grouping, importance, icon-search keyword, and ambiguity hint guidance;
 - validation checklists for typography, spacing, alignment, arrows, z-order, and text bounds;
 - reference seeds that may be migrated into MDPR;
 - MDPR installation checks and review-driven validation records.

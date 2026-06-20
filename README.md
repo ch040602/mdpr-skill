@@ -4,7 +4,7 @@
 
 MDPR is the presentation runtime. It parses Markdown, preserves graphs and tables, selects layouts, applies theme/color rules, renders editable PPTX/HTML/PDF output, and validates overflow/coherence without requiring an LLM.
 
-This repository only adds optional agent-side reasoning support around MDPR: compact semantic hints, review checklists, reference seeds, and validation artifacts. It must not own final slide coordinates, colors, typography, shape choices, z-order, arrows, or renderer objects.
+This repository only adds optional agent-side reasoning support around MDPR: compact semantic hints, icon-search keyword ideas, review checklists, reference seeds, and validation artifacts. It must not own final slide coordinates, colors, typography, shape choices, z-order, arrows, exact icon assets, or renderer objects.
 
 ![MDPR theme style proof contact sheet](docs/assets/theme-style-proof-contact-sheet.png)
 
@@ -16,7 +16,7 @@ The image above is generated from MDPR-rendered PPTX output and is reused by the
 | --- | --- | --- |
 | Primary role | Deterministic Markdown-to-presentation runtime | Optional Codex skill wrapper |
 | Runtime dependency | No LLM required | Uses an agent only before MDPR selection |
-| Final design decisions | Owns parsing, splitting, layout, theme colors, typography, charts, tables, diagrams, PPTX objects, and validation | May suggest short intent/grouping/importance hints |
+| Final design decisions | Owns parsing, splitting, layout, theme colors, typography, charts, tables, diagrams, icon catalog search, PPTX objects, and validation | May suggest short intent/grouping/importance/icon-keyword hints |
 | Output | Editable PPTX, HTML, PDF, reports, previews | Hint files, review artifacts, generated QA decks |
 | Safety boundary | Hints can be ignored and the deck still builds | Must not replace MDPR rules |
 

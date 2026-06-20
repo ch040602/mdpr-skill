@@ -25,6 +25,12 @@ Allowed fallback:
 
 The renderer must not use untracked web icons or multicolor icon packs.
 
+## Semantic Search
+
+Icon choice should come from keyword search over the tracked local catalog, not from index rotation alone. Search terms should be derived from the slide title, body text, list labels, table/chart labels, and diagram node labels.
+
+When this repository is used as an MDPR skill, an agent may suggest a few extra meaning keywords for ambiguous slides. Those hints must stay semantic, for example `workflow`, `validation`, `database`, `palette`, or `chart evidence`. MDPR still chooses the final icon through its deterministic catalog scoring.
+
 ## Visual Rules
 
 - Use one icon only.
