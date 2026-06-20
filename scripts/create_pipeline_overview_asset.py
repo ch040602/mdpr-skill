@@ -44,6 +44,9 @@ class PipelineLayout:
     min_padding_px: int = 14
     icon_text_gap_px: int = 12
     containment_padding_px: int = 14
+    fixed_radius_px: int = 16
+    panel_radius_px: int = 18
+    card_radius_px: int = 16
 
 
 LAYOUT = PipelineLayout()
@@ -268,8 +271,13 @@ def svg_text(
     )
 
 
+def effective_radius(rx: float, w: float, h: float) -> float:
+    return min(rx, LAYOUT.panel_radius_px, max(2.0, min(w, h) / 2 - 1))
+
+
 def rect(parts: list[str], name: str, x: float, y: float, w: float, h: float, fill: str, stroke: str, rx: float, stroke_width: float = 1.4, shadow: bool = False) -> None:
     track_box(name, x, y, w, h)
+    rx = effective_radius(rx, w, h)
     if shadow:
         SHADOWS.append({"name": name, "strategy": "ppt-compatible-svg-rect", "dx": 3, "dy": 6, "opacity": 0.12})
         parts.append(
@@ -284,7 +292,7 @@ def rect(parts: list[str], name: str, x: float, y: float, w: float, h: float, fi
 
 def background_texture(parts: list[str], theme: dict[str, str]) -> None:
     parts.append(
-        f'<path id="z00_editorial_grid" d="M72 126 H1328 M72 621 H1328 M380 126 V621 M690 126 V621 M1104 126 V621" '
+        f'<path id="z00_editorial_grid" d="M72 126 H1328 M72 621 H1328 M382.5 126 V621 M670.5 126 V621 M1132 126 V621" '
         f'fill="none" stroke="#{theme["backgroundLine"]}" stroke-width="1" opacity="0.55"/>'
     )
     parts.append(
@@ -397,9 +405,9 @@ def connect(
 
 def panel(parts: list[str], name: str, x: float, y: float, w: float, h: float, title: str, subtitle: str, fill: str, stroke: str, title_color: str) -> None:
     parent = f"{name}_panel"
-    rect(parts, parent, x, y, w, h, fill, stroke, 42, 1.5, True)
-    svg_text(parts, f"{name}_title", parent, x + 22, y + 42, title, 20, title_color, 700, "zone-title")
-    svg_text(parts, f"{name}_subtitle", parent, x + 22, y + 78, subtitle, 17, "64748B", 400, "zone-subtitle")
+    rect(parts, parent, x, y, w, h, fill, stroke, LAYOUT.panel_radius_px, 1.5, True)
+    svg_text(parts, f"{name}_title", parent, x + 24, y + 40, title, 20, title_color, 700, "zone-title")
+    svg_text(parts, f"{name}_subtitle", parent, x + 24, y + 76, subtitle, 17, "64748B", 400, "zone-subtitle")
 
 
 def card(
@@ -416,15 +424,15 @@ def card(
     fill: str = "F8FAFC",
 ) -> None:
     parent = f"{name}_card"
-    rect(parts, parent, x, y, w, h, fill, stroke, 22, 1.5, True)
+    rect(parts, parent, x, y, w, h, fill, stroke, LAYOUT.card_radius_px, 1.5, True)
     compact = w < 130
-    icon_r = 8 if compact else 11
-    icon_cx = x + (22 if compact else 31)
-    title_mid = y + (31 if compact else 37)
-    title_x = x + (42 if compact else 58)
+    icon_r = 9 if compact else 12.5
+    icon_cx = x + (23 if compact else 32)
+    title_mid = y + (32 if compact else 38)
+    title_x = x + (45 if compact else 58)
     title_size = 12 if compact else 15
     body_size = 13 if compact else 14
-    body_x = x + (22 if compact else 33)
+    body_x = x + (23 if compact else 33)
     ICON_ALIGNMENTS.append(
         {
             "name": f"{name}_icon_title_alignment",
@@ -493,7 +501,7 @@ def card_icon(parts: list[str], name: str, cx: float, cy: float, r: float, color
 
 def badge(parts: list[str], name: str, x: float, y: float, w: float, h: float, value: str, fill: str, stroke: str, text_color: str) -> None:
     rect(parts, name, x, y, w, h, fill, stroke, 7, 1.2, True)
-    svg_text(parts, f"{name}_text", name, x + 22, y + h / 2 + 1, value, 13, text_color, 700, "badge")
+    svg_text(parts, f"{name}_text", name, x + w / 2 - approx_text_width(value, font_size(13), 700) / 2, y + h / 2, value, 13, text_color, 700, "badge")
 
 
 def validation_callout(parts: list[str], name: str, x: float, y: float, w: float, h: float, value: str, theme: dict[str, str]) -> None:
@@ -727,11 +735,21 @@ def set_shape_style(shape: Any, fill: str, stroke: str, stroke_width: float = 1.
         shape.Shadow.OffsetY = 2.0
 
 
+def apply_fixed_rounding(shape: Any, w_pt: float, h_pt: float, radius_px: float = LAYOUT.fixed_radius_px) -> None:
+    try:
+        fixed_radius_pt = ppt_x(radius_px)
+        shape.Adjustments[1] = min(0.5, max(0.02, fixed_radius_pt / max(1.0, min(w_pt, h_pt))))
+    except Exception:
+        pass
+
+
 def add_ppt_rect(slide: Any, name: str, box: tuple[float, float, float, float], fill: str, stroke: str, radius: bool = True, shadow: bool = False, transparency: float = 0.0) -> Any:
     x, y, w, h = ppt_box(*box)
     shape_type = 5 if radius else 1
     shape = slide.Shapes.AddShape(shape_type, x, y, w, h)
     shape.Name = name
+    if radius:
+        apply_fixed_rounding(shape, w, h)
     set_shape_style(shape, fill, stroke, ppt_x(1.45), transparency, shadow)
     return shape
 
@@ -775,8 +793,8 @@ def add_ppt_text(
     tf = shape.TextFrame2
     tf.MarginLeft = ppt_x(margin_px)
     tf.MarginRight = ppt_x(margin_px)
-    tf.MarginTop = ppt_y(margin_px * 0.5)
-    tf.MarginBottom = ppt_y(margin_px * 0.5)
+    tf.MarginTop = ppt_y(margin_px)
+    tf.MarginBottom = ppt_y(margin_px)
     tf.WordWrap = -1
     tf.AutoSize = 0
     tf.VerticalAnchor = 3 if valign == "middle" else 1
@@ -786,8 +804,8 @@ def add_ppt_text(
         shape.TextFrame.VerticalAnchor = 3 if valign == "middle" else 1
         shape.TextFrame.MarginLeft = ppt_x(margin_px)
         shape.TextFrame.MarginRight = ppt_x(margin_px)
-        shape.TextFrame.MarginTop = ppt_y(margin_px * 0.5)
-        shape.TextFrame.MarginBottom = ppt_y(margin_px * 0.5)
+        shape.TextFrame.MarginTop = ppt_y(margin_px)
+        shape.TextFrame.MarginBottom = ppt_y(margin_px)
     except Exception:
         pass
     text_range = tf.TextRange
@@ -807,7 +825,7 @@ def add_ppt_text(
 def add_ppt_badge(slide: Any, name: str, box: tuple[float, float, float, float], value: str, fill: str, stroke: str, text_color: str, align: str = "center") -> None:
     x, y, w, h = box
     add_ppt_rect(slide, name, box, fill, stroke, radius=True, shadow=True)
-    add_ppt_text(slide, f"{name}_text", x + 8, y + 4, w - 16, h - 8, value, 13, text_color, True, align)
+    add_ppt_text(slide, f"{name}_text", x + 8, y, w - 16, h, value, 13, text_color, True, align, "middle", 0.0)
 
 
 def add_ppt_icon(slide: Any, name: str, cx: float, cy: float, r: float, fill: str, label: str = "") -> None:
@@ -815,7 +833,7 @@ def add_ppt_icon(slide: Any, name: str, cx: float, cy: float, r: float, fill: st
     shape.Name = f"{name}_icon_dot"
     set_shape_style(shape, fill, "FFFFFF", ppt_x(1.0), 0.0, False)
     if label:
-        add_ppt_text(slide, f"{name}_icon_label", cx - r, cy - r, r * 2, r * 2, label, max(8, r * 0.9), "FFFFFF", True, "center", "middle", 0.0)
+        add_ppt_text(slide, f"{name}_icon_label", cx - r, cy - r, r * 2, r * 2, label, max(8.8, min(11.5, r * 0.95)), "FFFFFF", True, "center", "middle", 0.0)
 
 
 def add_ppt_card(
@@ -832,14 +850,14 @@ def add_ppt_card(
     x, y, w, h = box
     compact = w < 130
     add_ppt_rect(slide, f"{name}_card", box, fill, stroke, radius=True, shadow=True)
-    icon_r = 8 if compact else 11
-    icon_cx = x + (22 if compact else 31)
-    title_mid = y + (31 if compact else 37)
-    title_x = x + (42 if compact else 58)
+    icon_r = 9 if compact else 12.5
+    icon_cx = x + (23 if compact else 32)
+    title_mid = y + (32 if compact else 38)
+    title_x = x + (45 if compact else 58)
     add_ppt_icon(slide, name, icon_cx, title_mid, icon_r, accent, icon_label[:1].upper())
-    add_ppt_text(slide, f"{name}_title", title_x, title_mid - 12, w - (title_x - x) - 14, 26, title, 12 if compact else 15, "111827", True)
+    add_ppt_text(slide, f"{name}_title", title_x, title_mid - 13, w - (title_x - x) - 14, 28, title, 12 if compact else 15, "111827", True, "left", "middle", 0.0)
     body_size = 13 if compact else 14
-    body_x = x + (22 if compact else 33)
+    body_x = x + (23 if compact else 33)
     body_top = y + (58 if compact else 64)
     available_h = max(18, h - (body_top - y) - 14)
     line_h = max(20 if compact else 19, available_h / max(1, len(lines)))
@@ -850,8 +868,8 @@ def add_ppt_card(
 def add_ppt_panel(slide: Any, name: str, box: tuple[float, float, float, float], title: str, subtitle: str, fill: str, stroke: str, title_color: str) -> None:
     x, y, w, _ = box
     add_ppt_rect(slide, f"{name}_panel", box, fill, stroke, radius=True, shadow=True, transparency=0.0)
-    add_ppt_text(slide, f"{name}_title", x + 22, y + 25, w - 44, 30, title, 20, title_color, True, valign="top")
-    add_ppt_text(slide, f"{name}_subtitle", x + 22, y + 60, w - 44, 22, subtitle, 16, "64748B", valign="top")
+    add_ppt_text(slide, f"{name}_title", x + 24, y + 24, w - 48, 32, title, 20, title_color, True, valign="middle", margin_px=0.0)
+    add_ppt_text(slide, f"{name}_subtitle", x + 24, y + 58, w - 48, 28, subtitle, 16, "64748B", valign="middle", margin_px=0.0)
 
 
 def add_ppt_line(slide: Any, name: str, x1: float, y1: float, x2: float, y2: float, style: dict[str, Any], arrow: bool = True) -> Any:
@@ -960,7 +978,7 @@ def create_editable_deck(pptx_path: Path) -> None:
         background.ForeColor.RGB = ppt_rgb(theme["background"])
         add_ppt_line(slide, "z00_grid_top", 72, 126, 1328, 126, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
         add_ppt_line(slide, "z00_grid_bottom", 72, 621, 1328, 621, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
-        for idx, x in enumerate([380, 690, 1104]):
+        for idx, x in enumerate([382.5, 670.5, 1132]):
             add_ppt_line(slide, f"z00_grid_v_{idx}", x, 126, x, 621, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
 
         add_ppt_text(slide, "header_title", LAYOUT.origin_x, LAYOUT.origin_y - 2, 820, 44, str(spec["title"]), 38, theme["text"], True)

@@ -315,12 +315,43 @@ def check_reference_object_rules() -> None:
     report = json.loads(read("artifacts/reference-pattern-analysis/derived-object-rules.json"))
     if report.get("sourceClass") != "approved presentation reference corpus; source identities omitted":
         fail("reference object report must omit source identities")
-    if report.get("pptDownloaded", 0) < 50:
-        fail("expected at least 50 downloaded PPT files in reference report")
-    if report.get("pngSamplesAnalyzed", 0) < 50:
-        fail("expected at least 50 PNG samples analyzed in reference report")
-    if report.get("derivedObjectPatternCount", 0) < 50:
-        fail("expected at least 50 derived object patterns in reference report")
+    if report.get("pptDownloaded", 0) < 80:
+        fail("expected at least 80 downloaded PPT files in reference report")
+    if report.get("slidesAnalyzed", 0) < 700:
+        fail("expected at least 700 analyzed slides in reference report")
+    if report.get("renderedPngSlides", 0) < 1200:
+        fail("expected at least 1200 rendered PowerPoint PNG slides in reference report")
+    if report.get("pngSamplesAnalyzed", 0) < 120:
+        fail("expected at least 120 PNG samples analyzed in reference report")
+    if report.get("derivedObjectPatternCount", 0) < 60:
+        fail("expected at least 60 derived object patterns in reference report")
+
+
+def check_theme_decoration_coverage() -> None:
+    catalog = json.loads(read("design_components/decoration/src/decorators/objectShapeCatalog.json"))
+    patterns = catalog.get("patterns", [])
+    unique_kinds = {pattern.get("kind") for pattern in patterns}
+    archetypes = {pattern.get("archetype") or f"{pattern.get('family')}:{pattern.get('shapeGrammar')}" for pattern in patterns}
+    families = {pattern.get("family") for pattern in patterns}
+    card_ratio = sum(1 for pattern in patterns if pattern.get("family") == "card") / len(patterns) if patterns else 1
+    token_ready = [
+        pattern for pattern in patterns
+        if {"surface", "line", "text"}.issubset(set(pattern.get("themeBindings", [])))
+        or {"line", "accent", "text"}.issubset(set(pattern.get("themeBindings", [])))
+    ]
+    if len(patterns) < 50 or len(unique_kinds) < 50 or len(archetypes) < 50:
+        fail(f"expected at least 50 distinct structural object patterns, found {len(patterns)} patterns / {len(unique_kinds)} kinds / {len(archetypes)} archetypes")
+    if len(families) < 12:
+        fail(f"expected at least 12 object families, found {len(families)}")
+    if card_ratio > 0.4:
+        fail(f"card-like object ratio is too high: {card_ratio:.2f}")
+    if len(token_ready) < 50:
+        fail(f"expected at least 50 theme-token-ready object patterns, found {len(token_ready)}")
+    report_path = ROOT / "artifacts/theme-decoration-review/theme-decoration-coverage-report.json"
+    if report_path.exists():
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        if not report.get("ok"):
+            fail("theme decoration coverage report is not ok")
 
 
 def check_release_check_deck() -> None:
@@ -344,6 +375,7 @@ def main() -> None:
     check_required_text()
     check_catalog_coverage()
     check_reference_object_rules()
+    check_theme_decoration_coverage()
     check_release_check_deck()
     check_no_unchecked_boxes()
     print("mdpr-skill pack validation passed")

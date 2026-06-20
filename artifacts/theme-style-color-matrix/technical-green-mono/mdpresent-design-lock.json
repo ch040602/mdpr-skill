@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "engine": "mdpresent",
+  "decorationStyle": "technical",
+  "colorSeed": "#16A34A",
+  "colorCombination": "monochromatic",
+  "paletteSeed": {
+    "sourceModel": "adobe-color-wheel",
+    "harmony": "monochromatic",
+    "base": "16A34A",
+    "sequence": [
+      "68E094",
+      "22D464",
+      "16A34A",
+      "0B662C"
+    ],
+    "contrast": [
+      "0B662C",
+      "83E4A6",
+      "09672C",
+      "0A662C"
+    ],
+    "chart": [
+      "16A34A",
+      "39DC75",
+      "0B662C",
+      "83E4A6",
+      "09672C",
+      "0A662C"
+    ],
+    "usage": {
+      "sequence": "brightness-variation",
+      "contrast": "hue-opposition"
+    }
+  },
+  "surfacePolicy": {
+    "shapeSource": "svg",
+    "cornerScale": "fixed",
+    "shadow": "soft",
+    "opacity": 1
+  },
+  "themeColors": {
+    "dark1": "111827",
+    "light1": "F9FAFB",
+    "dark2": "374151",
+    "light2": "FCFCFD",
+    "accent1": "16A34A",
+    "accent2": "39DC75",
+    "accent3": "0B662C",
+    "accent4": "83E4A6",
+    "accent5": "09672C",
+    "accent6": "0A662C",
+    "hyperlink": "16A34A",
+    "followedHyperlink": "39DC75"
+  },
+  "typography": {
+    "fontFamily": "Pretendard",
+    "titleFontSize": 34,
+    "bodyFontSize": 22,
+    "minFontSize": 18
+  }
+}

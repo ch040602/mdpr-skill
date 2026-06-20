@@ -1,0 +1,953 @@
+{
+  "purpose": "Five-pass generated PPTX -> PowerPoint PNG export -> visual/geometry review loop for theme decoration deck.",
+  "roundCount": 5,
+  "rounds": [
+    {
+      "round": 1,
+      "artifacts": "artifacts\\theme-decoration-review\\iterations\\round-01",
+      "deckOk": true,
+      "validation": {
+        "slideCount": 16,
+        "shapeCount": 853,
+        "pictureCount": 2,
+        "textShapeCount": 379,
+        "minFontPt": 7.0,
+        "boundsViolations": [],
+        "textMarginViolations": [],
+        "layoutFamilies": [
+          "contact-sheet",
+          "reference-corpus",
+          "archetype-atlas",
+          "timeline",
+          "split-comparison",
+          "process",
+          "data-table-chart",
+          "theme-primitive-matrix",
+          "catalog-grid",
+          "audit-summary"
+        ],
+        "styleEffectShapeCount": 146,
+        "tableSummaryPreviewCount": 1,
+        "aspectFindings": [],
+        "pngValidation": [
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드1.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 702,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드2.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 10588,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드3.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 15292,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드4.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1307,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드5.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 3324,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드6.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1330,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드7.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2138,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드8.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1287,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드9.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2370,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드10.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1843,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드11.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2076,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드12.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2587,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드13.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1847,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드14.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2856,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드15.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1197,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드16.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1040,
+            "hasContent": true
+          }
+        ],
+        "ok": true
+      },
+      "review": {
+        "ok": true,
+        "findings": [],
+        "vlmReviewChecklist": [
+          "text boxes appear separated from decoration marks",
+          "marker letters are centered inside circles or tabs",
+          "timeline/comparison/process/data/catalog layouts are visually distinct",
+          "no generated object crosses slide boundaries",
+          "empty space is not filled by unrelated large icons"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "round": 2,
+      "artifacts": "artifacts\\theme-decoration-review\\iterations\\round-02",
+      "deckOk": true,
+      "validation": {
+        "slideCount": 16,
+        "shapeCount": 853,
+        "pictureCount": 2,
+        "textShapeCount": 379,
+        "minFontPt": 7.0,
+        "boundsViolations": [],
+        "textMarginViolations": [],
+        "layoutFamilies": [
+          "contact-sheet",
+          "reference-corpus",
+          "archetype-atlas",
+          "timeline",
+          "split-comparison",
+          "process",
+          "data-table-chart",
+          "theme-primitive-matrix",
+          "catalog-grid",
+          "audit-summary"
+        ],
+        "styleEffectShapeCount": 146,
+        "tableSummaryPreviewCount": 1,
+        "aspectFindings": [],
+        "pngValidation": [
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드1.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 702,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드2.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 10588,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드3.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 15292,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드4.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1307,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드5.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 3324,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드6.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1330,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드7.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2138,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드8.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1287,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드9.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2370,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드10.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1843,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드11.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2076,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드12.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2587,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드13.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1847,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드14.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2856,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드15.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1197,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드16.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1040,
+            "hasContent": true
+          }
+        ],
+        "ok": true
+      },
+      "review": {
+        "ok": true,
+        "findings": [],
+        "vlmReviewChecklist": [
+          "text boxes appear separated from decoration marks",
+          "marker letters are centered inside circles or tabs",
+          "timeline/comparison/process/data/catalog layouts are visually distinct",
+          "no generated object crosses slide boundaries",
+          "empty space is not filled by unrelated large icons"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "round": 3,
+      "artifacts": "artifacts\\theme-decoration-review\\iterations\\round-03",
+      "deckOk": true,
+      "validation": {
+        "slideCount": 16,
+        "shapeCount": 853,
+        "pictureCount": 2,
+        "textShapeCount": 379,
+        "minFontPt": 7.0,
+        "boundsViolations": [],
+        "textMarginViolations": [],
+        "layoutFamilies": [
+          "contact-sheet",
+          "reference-corpus",
+          "archetype-atlas",
+          "timeline",
+          "split-comparison",
+          "process",
+          "data-table-chart",
+          "theme-primitive-matrix",
+          "catalog-grid",
+          "audit-summary"
+        ],
+        "styleEffectShapeCount": 146,
+        "tableSummaryPreviewCount": 1,
+        "aspectFindings": [],
+        "pngValidation": [
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드1.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 702,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드2.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 10588,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드3.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 15292,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드4.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1307,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드5.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 3324,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드6.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1330,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드7.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2138,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드8.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1287,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드9.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2370,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드10.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1843,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드11.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2076,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드12.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2587,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드13.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1847,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드14.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2856,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드15.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1197,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드16.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1040,
+            "hasContent": true
+          }
+        ],
+        "ok": true
+      },
+      "review": {
+        "ok": true,
+        "findings": [],
+        "vlmReviewChecklist": [
+          "text boxes appear separated from decoration marks",
+          "marker letters are centered inside circles or tabs",
+          "timeline/comparison/process/data/catalog layouts are visually distinct",
+          "no generated object crosses slide boundaries",
+          "empty space is not filled by unrelated large icons"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "round": 4,
+      "artifacts": "artifacts\\theme-decoration-review\\iterations\\round-04",
+      "deckOk": true,
+      "validation": {
+        "slideCount": 16,
+        "shapeCount": 853,
+        "pictureCount": 2,
+        "textShapeCount": 379,
+        "minFontPt": 7.0,
+        "boundsViolations": [],
+        "textMarginViolations": [],
+        "layoutFamilies": [
+          "contact-sheet",
+          "reference-corpus",
+          "archetype-atlas",
+          "timeline",
+          "split-comparison",
+          "process",
+          "data-table-chart",
+          "theme-primitive-matrix",
+          "catalog-grid",
+          "audit-summary"
+        ],
+        "styleEffectShapeCount": 146,
+        "tableSummaryPreviewCount": 1,
+        "aspectFindings": [],
+        "pngValidation": [
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드1.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 702,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드2.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 10588,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드3.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 15292,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드4.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1307,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드5.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 3324,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드6.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1330,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드7.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2138,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드8.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1287,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드9.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2370,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드10.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1843,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드11.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2076,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드12.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2587,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드13.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1847,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드14.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2856,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드15.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1197,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드16.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1040,
+            "hasContent": true
+          }
+        ],
+        "ok": true
+      },
+      "review": {
+        "ok": true,
+        "findings": [],
+        "vlmReviewChecklist": [
+          "text boxes appear separated from decoration marks",
+          "marker letters are centered inside circles or tabs",
+          "timeline/comparison/process/data/catalog layouts are visually distinct",
+          "no generated object crosses slide boundaries",
+          "empty space is not filled by unrelated large icons"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "round": 5,
+      "artifacts": "artifacts\\theme-decoration-review\\iterations\\round-05",
+      "deckOk": true,
+      "validation": {
+        "slideCount": 16,
+        "shapeCount": 853,
+        "pictureCount": 2,
+        "textShapeCount": 379,
+        "minFontPt": 7.0,
+        "boundsViolations": [],
+        "textMarginViolations": [],
+        "layoutFamilies": [
+          "contact-sheet",
+          "reference-corpus",
+          "archetype-atlas",
+          "timeline",
+          "split-comparison",
+          "process",
+          "data-table-chart",
+          "theme-primitive-matrix",
+          "catalog-grid",
+          "audit-summary"
+        ],
+        "styleEffectShapeCount": 146,
+        "tableSummaryPreviewCount": 1,
+        "aspectFindings": [],
+        "pngValidation": [
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드1.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 702,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드2.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 10588,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드3.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 15292,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드4.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1307,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드5.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 3324,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드6.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1330,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드7.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2138,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드8.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1287,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드9.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2370,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드10.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1843,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드11.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2076,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드12.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2587,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드13.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1847,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드14.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 2856,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드15.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1197,
+            "hasContent": true
+          },
+          {
+            "file": "artifacts\\theme-decoration-review\\png\\슬라이드16.PNG",
+            "size": [
+              1600,
+              900
+            ],
+            "uniqueColors": 1040,
+            "hasContent": true
+          }
+        ],
+        "ok": true
+      },
+      "review": {
+        "ok": true,
+        "findings": [],
+        "vlmReviewChecklist": [
+          "text boxes appear separated from decoration marks",
+          "marker letters are centered inside circles or tabs",
+          "timeline/comparison/process/data/catalog layouts are visually distinct",
+          "no generated object crosses slide boundaries",
+          "empty space is not filled by unrelated large icons"
+        ]
+      },
+      "ok": true
+    }
+  ],
+  "acceptedFixesBeforeLoop": [
+    "separated catalog preview decoration zones from text zones",
+    "raised review-deck minimum text size to 7pt",
+    "added non-card layout slides for timeline, comparison, process, data/table/chart, and mixed object stress checks",
+    "added bounds, text-margin, font-size, layout-family, and rendered-PNG validation gates"
+  ],
+  "ok": true
+}

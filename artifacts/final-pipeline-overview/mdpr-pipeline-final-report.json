@@ -11,8 +11,8 @@
       2600,
       1414
     ],
-    "uniqueColors": 4832,
-    "nonWhitePixels": 2125575,
+    "uniqueColors": 4207,
+    "nonWhitePixels": 2157666,
     "hasContent": true
   },
   "layoutValidation": {
@@ -209,8 +209,8 @@
     "editableShapeCount": 102,
     "connectorOrLineCount": 50,
     "textRunCount": 67,
-    "middleAnchorCount": 71,
-    "topAnchorCount": 31,
+    "middleAnchorCount": 79,
+    "topAnchorCount": 23,
     "pictureCount": 0,
     "embeddedSvgCount": 0,
     "ok": true

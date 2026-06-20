@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MDPR Theme Style and Color Matrix</title>
+<style>
+:root {
+  --bg: #E9EEF5;
+  --text: #243041;
+  --primary: #4F6F8F;
+  --secondary: #32B1B1;
+  --surface: #E9EEF5;
+  --surface-line: #CAD3E0;
+  --muted: #536579;
+  --font: "Pretendard";
+}
+body { margin: 0; background: #111; font-family: var(--font); }
+.deck { display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.slide { position: relative; width: 13.333in; height: 7.5in; background: var(--bg); color: var(--text); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.region { position: absolute; box-sizing: border-box; }
+.title { font-weight: 700; }
+.body.key-message { background: var(--surface); border-left: .08in solid var(--primary); padding: .18in .28in; }
+.body.key-message blockquote { margin: 0; font-weight: 700; color: var(--text); }
+.item { background: var(--surface); border-left: .06in solid var(--primary); padding: .12in .18in; }
+.region ul, .region ol { margin: 0; padding-left: 1.2em; }
+.structured-list { list-style: none; padding-left: 0; }
+.region li.level-1 { margin-left: 1.1em; }
+.region li.level-2 { margin-left: 2.2em; }
+.region p { margin: 0 0 .45em; }
+.region img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item-number { display: inline-flex; width: .28in; height: .28in; align-items: center; justify-content: center; margin-right: .1in; border-radius: 999px; background: var(--primary); color: var(--bg); font-weight: 700; }
+.item-label { font-weight: 700; display: block; margin-bottom: .12in; color: var(--primary); }
+.item-description { display: block; margin-left: .18in; color: var(--muted); }
+strong { color: var(--primary); }
+.pipeline { position: relative; height: 100%; min-height: 3.6in; }
+.pipeline-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+.pipeline-connector { fill: none; stroke: var(--primary); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pipeline-node { position: absolute; z-index: 2; min-width: 0; border: 1px solid var(--surface-line); background: var(--surface); padding: .12in; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: .12in; font-weight: 700; line-height: 1.18; }
+.chart { width: 100%; height: 100%; display: flex; flex-direction: column; gap: .12in; justify-content: center; }
+.chart-row { display: grid; grid-template-columns: 1.1in 1fr .45in; gap: .1in; align-items: center; font-size: .13in; }
+.chart-label { color: var(--text); font-weight: 700; }
+.chart-track { height: .18in; background: color-mix(in srgb, var(--surface-line) 60%, transparent); border-radius: 999px; overflow: hidden; }
+.chart-bar { height: 100%; background: var(--primary); border-radius: 999px; }
+.chart-value { color: var(--muted); text-align: right; }
+</style>
+</head>
+<body>
+<main class="deck">
+<section class="slide" data-slide-id="mdpr-theme-style-and-color-matrix-797102" data-layout="cover"><div class="region title title" style="left:1in;top:2.25in;width:11.3in;height:1.25in;z-index:10;font-size:48pt;line-height:1.2">MDPR Theme Style and Color Matrix</div></section>
+<section class="slide" data-slide-id="toc-53a981" data-layout="toc"><div class="region title title" style="left:0.8in;top:0.42in;width:11.7in;height:0.9in;z-index:10;font-size:38pt;line-height:1.2">목차</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Theme Contract</p>
+<p>Pipeline and Object Routing</p>
+<p>Numeric Proof Objects</p>
+<p>Arc Ring Proof</p>
+<p>Table and Text Coherence</p>
+<p>Decoration Selection Inputs</p>
+<p>Theme Matrix</p>
+<p>Final Checks</p></div></section>
+<section class="slide" data-slide-id="theme-contract-c377f2" data-layout="key-message"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Theme Contract</div>
+<div class="region body key-message" style="left:1in;top:1.55in;width:11.2in;height:1.45in;z-index:10;font-size:30pt;line-height:1.2"><blockquote>Decoration style and color seed are separate deterministic choices.</blockquote></div>
+<div class="region body body" style="left:1in;top:3.35in;width:11.2in;height:2.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Decoration style</span><span class="item-description">Controls surface grammar, shadow, density, and object treatment.</span></li><li class="level-0"><span class="item-label">Color seed</span><span class="item-description">Provides the main color; harmony rules derive chart, accent, and PowerPoint theme colors.</span></li><li class="level-0"><span class="item-label">Visual validation</span><span class="item-description">The build manifest records overflow, font floor, region count, and resolved design tokens.</span></li></ul></div></section>
+<section class="slide" data-slide-id="pipeline-and-object-routing-fb82d5" data-layout="pipeline"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Pipeline and Object Routing</div>
+<div class="region diagram diagram" style="left:0.7in;top:1.32in;width:11.95in;height:5.75in;z-index:10;font-size:22pt;line-height:1.2"><div class="pipeline pipeline-u" data-arrangement="u">
+<svg class="pipeline-connectors" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+<defs><marker id="pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--primary)" /></marker></defs>
+<polyline class="pipeline-connector" data-edge="1" points="31.20,39.40 34.40,39.40" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="2" points="65.60,39.40 68.80,39.40" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="3" points="84.40,48.40 84.40,51.60" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="4" points="68.80,60.60 65.60,60.60" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="5" points="34.40,60.60 31.20,60.60" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" />
+</svg>
+<div class="pipeline-node" data-node="1" style="left:0.00%;top:30.40%;width:31.20%;height:18.00%">Markdown Source</div><div class="pipeline-node" data-node="2" style="left:34.40%;top:30.40%;width:31.20%;height:18.00%">Semantic IR</div><div class="pipeline-node" data-node="3" style="left:68.80%;top:30.40%;width:31.20%;height:18.00%">Rule Engine</div><div class="pipeline-node" data-node="4" style="left:68.80%;top:51.60%;width:31.20%;height:18.00%">Styled Deck IR</div><div class="pipeline-node" data-node="5" style="left:34.40%;top:51.60%;width:31.20%;height:18.00%">PPTX Output</div><div class="pipeline-node" data-node="6" style="left:0.00%;top:51.60%;width:31.20%;height:18.00%">Visual Check</div>
+</div></div></section>
+<section class="slide" data-slide-id="numeric-proof-objects-cacd50" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Numeric Proof Objects</div>
+<div class="region body body" style="left:0.92in;top:1.66in;width:4.18in;height:4.62in;z-index:10;font-size:22pt;line-height:1.2"><p>The chart keeps one evidence object as the main proof while labels and theme colors remain coherent.</p></div>
+<div class="region chart chart" style="left:5.42in;top:1.56in;width:6.78in;height:4.82in;z-index:10;font-size:17pt;line-height:1.2"><div class="chart" aria-label="Coverage"><div class="chart-row"><span class="chart-label">Parser</span><span class="chart-track"><span class="chart-bar" style="width:96.8%"></span></span><span class="chart-value">91</span></div><div class="chart-row"><span class="chart-label">Layout</span><span class="chart-track"><span class="chart-bar" style="width:93.6%"></span></span><span class="chart-value">88</span></div><div class="chart-row"><span class="chart-label">PPTX</span><span class="chart-track"><span class="chart-bar" style="width:100.0%"></span></span><span class="chart-value">94</span></div><div class="chart-row"><span class="chart-label">Visual QA</span><span class="chart-track"><span class="chart-bar" style="width:91.5%"></span></span><span class="chart-value">86</span></div></div></div></section>
+<section class="slide" data-slide-id="arc-ring-proof-5379f8" data-layout="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Arc Ring Proof</div>
+<div class="region body body" style="left:0.92in;top:1.66in;width:4.18in;height:4.62in;z-index:10;font-size:22pt;line-height:1.2"><p>Editable arc geometry uses theme accents.</p></div>
+<div class="region chart chart" style="left:5.42in;top:1.56in;width:6.78in;height:4.82in;z-index:10;font-size:17pt;line-height:1.2"><p>Coverage: 78, 22</p></div></section>
+<section class="slide" data-slide-id="table-and-text-coherence-6ef8a2" data-layout="table-focus"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Table and Text Coherence</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Requirement | Rule | Visual Check
+Shape text | Middle anchor plus readable insets | No text touches a border
+Table text | Header emphasis and row labels | Cells keep row grammar
+Bullet markers | Marker and text share a centerline | No low or drifting glyphs
+Color usage | Harmony palette only | Accent color marks real contrast</p></div></section>
+<section class="slide" data-slide-id="decoration-selection-inputs-415ee1" data-layout="grid"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Decoration Selection Inputs</div>
+<div class="region item item-1" style="left:0.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Constraint</span><span class="item-description">Long text should use plain-safe or rail layouts instead of decorative cards.</span></li></ul></div>
+<div class="region item item-2" style="left:6.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Evidence</span><span class="item-description">Important proof points may receive a contrast chip, but sibling objects keep one grammar.</span></li></ul></div>
+<div class="region item item-3" style="left:0.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Image need</span><span class="item-description">Image sidecars are reserved only when the source contains or requires an image.</span></li></ul></div>
+<div class="region item item-4" style="left:6.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Density</span><span class="item-description">Dense tables and code blocks reduce decoration before shrinking below the readable font floor.</span></li></ul></div></section>
+<section class="slide" data-slide-id="theme-matrix-3bb4f9" data-layout="table-focus"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Theme Matrix</div>
+<div class="region body body" style="left:1in;top:1.6in;width:11.2in;height:4.9in;z-index:10;font-size:22pt;line-height:1.2"><p>Style | Main Color | Harmony | Intended Role
+simple | `#2563EB` | analogous | Minimal blue system for clean operational slides
+minimalism | `#111827` | monochromatic | Whitespace-first slides with thin rules and restrained emphasis
+newmorphism | `#4F6F8F` | analogous | Soft UI surfaces using same-tone panels and paired shadows
+glass | `#8A4FFF` | split-complementary | Translucent proof surfaces with contrast accents
+grid | `#DC2626` | complementary | Swiss modular grid with restrained red accent
+data | `#F59E0B` | monochromatic | Dark data-journalism page with dense proof rails
+magazine | `#C2410C` | triadic | Editorial magazine cover/page rhythm
+executive | `#0F766E` | complementary | Business deck rhythm with a warm opposing accent
+technical | `#16A34A` | monochromatic | Engineering/validation tone with brightness steps
+dark | `#E11D48` | complementary | Dark proof deck with high-contrast emphasis</p></div></section>
+<section class="slide" data-slide-id="final-checks-4f0459" data-layout="vertical-list"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Final Checks</div>
+<div class="region item item-1" style="left:1in;top:1.55in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Build writes a design lock for the resolved style/color contract.</li></ul></div>
+<div class="region item item-2" style="left:1in;top:2.8in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Build writes a manifest with source hash, output list, diagnostics, and optional visual summary.</li></ul></div>
+<div class="region item item-3" style="left:1in;top:4.05in;width:11.2in;height:0.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Generated PPTX files are exported through PowerPoint to PNG previews for visual comparison.</li></ul></div></section>
+</main>
+</body>
+</html>

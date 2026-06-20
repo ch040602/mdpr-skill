@@ -1,0 +1,177 @@
+{
+  "pptx": "artifacts\\theme-decoration-review\\theme-decoration-review.pptx",
+  "pngDir": "artifacts\\theme-decoration-review\\png",
+  "sourceAudit": "artifacts\\theme-decoration-review\\theme-decoration-coverage-report.json",
+  "validation": {
+    "slideCount": 16,
+    "shapeCount": 853,
+    "pictureCount": 2,
+    "textShapeCount": 379,
+    "minFontPt": 7.0,
+    "boundsViolations": [],
+    "textMarginViolations": [],
+    "layoutFamilies": [
+      "contact-sheet",
+      "reference-corpus",
+      "archetype-atlas",
+      "timeline",
+      "split-comparison",
+      "process",
+      "data-table-chart",
+      "theme-primitive-matrix",
+      "catalog-grid",
+      "audit-summary"
+    ],
+    "styleEffectShapeCount": 146,
+    "tableSummaryPreviewCount": 1,
+    "aspectFindings": [],
+    "pngValidation": [
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드1.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 702,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드2.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 10588,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드3.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 15292,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드4.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 1307,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드5.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 3324,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드6.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 1330,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드7.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 2138,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드8.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 1287,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드9.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 2370,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드10.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 1843,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드11.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 2076,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드12.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 2587,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드13.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 1847,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드14.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 2856,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드15.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 1197,
+        "hasContent": true
+      },
+      {
+        "file": "artifacts\\theme-decoration-review\\png\\슬라이드16.PNG",
+        "size": [
+          1600,
+          900
+        ],
+        "uniqueColors": 1040,
+        "hasContent": true
+      }
+    ],
+    "ok": true
+  },
+  "ok": true
+}

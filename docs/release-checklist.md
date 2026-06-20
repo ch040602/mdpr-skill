@@ -6,3 +6,5 @@
 - [x] Schemas exist for Element IR, Styled Deck IR, rulebooks, recipes, variants, and agent hints.
 - [x] Reference scaffolds cover core, rule engine, composition, decoration, renderer, CLI, gallery, and docs.
 - [x] Local validation is available through `npm test` or `python scripts/validate_pack.py`.
+- [x] README and Actions-page preview images are refreshed from generated MDPR PPTX renders.
+- [x] Stable visual QA assets are documented in `docs/actions-page-materials.md`.

@@ -26,6 +26,7 @@
 - [x] snapshot tests
 - [x] inspect-style output reviewed
 - [x] lint-style reviewed
+- [x] rendered preview images refreshed when visual output changed
 
 ## Upstream attribution
 

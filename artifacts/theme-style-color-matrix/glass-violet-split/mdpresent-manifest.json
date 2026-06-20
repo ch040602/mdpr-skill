@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "engine": "mdpresent",
+  "source": {
+    "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\source\\theme-style-color-matrix.md",
+    "sha256": "5625c5aeb9cb7622ebb0dda9e19b31d604e850512c40862ecfc2f9039735bd51"
+  },
+  "config": {
+    "sha256": "0b31106b94a1dac47f16ffde0774ef1a9efc93f69ee59435fa3c2a36d04956ba",
+    "sources": [
+      {
+        "kind": "default"
+      },
+      {
+        "kind": "cli-args",
+        "values": {
+          "theme": {
+            "decorationStyle": "glass",
+            "colorSeed": "#8A4FFF",
+            "primaryColor": "#8A4FFF",
+            "colorCombination": "split-complementary"
+          }
+        }
+      }
+    ]
+  },
+  "slideCount": 10,
+  "outputs": [
+    "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\glass-violet-split\\deck.html",
+    "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\glass-violet-split\\deck.pptx"
+  ],
+  "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\glass-violet-split\\mdpresent-design-lock.json",
+  "diagnostics": [],
+  "validation": {
+    "layoutOverflow": [],
+    "visual": {
+      "checked": true,
+      "slideCount": 10,
+      "checks": {
+        "nonBlankSlides": true,
+        "regionBounds": true,
+        "minimumTextSize": true,
+        "backgroundContentOverlap": true
+      },
+      "diagnostics": []
+    }
+  }
+}

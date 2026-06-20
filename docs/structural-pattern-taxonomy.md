@@ -8,12 +8,12 @@ Local structural report:
 
 - `artifacts/reference-pattern-analysis/derived-object-rules.json`
 - `artifacts/reference-pattern-analysis/structural-summary.json`
-- downloaded presentation files analyzed locally: `50`
-- decks analyzed: `50`
-- slides analyzed structurally: `492`
-- PowerPoint-rendered PNG slides: `984`
-- PNG samples analyzed: `100`
-- aggregate objects: `4,769` shapes, `3,626` text frames, `44` tables, `19` charts, `51` pictures
+- downloaded presentation files analyzed locally: `80`
+- decks analyzed: `80`
+- slides analyzed structurally: `797`
+- PowerPoint-rendered PNG slides: `1,594`
+- PNG samples analyzed: `160`
+- aggregate objects: `7,530` shapes, `5,726` text frames, `70` tables, `39` charts, `81` pictures
 
 Regenerate the pass with a private or local approved corpus:
 
@@ -88,6 +88,19 @@ The seed catalog is selected by rulebase inputs rather than visual copying:
 - `textChars`: keeps long text in plain-safe, vertical rail, side-notch, or image-sidecar forms.
 - `relation`: distinguishes plain list, sequence, ranking, comparison, proof, constraint, checklist, and flow cards.
 - `density`: prevents decoration from consuming space when readability is the primary risk.
+
+## Surface Shape Grammar
+
+MDPR now treats card backgrounds as a small deterministic shape grammar rather than a single rounded rectangle. The renderer can use:
+
+- `rounded`: safe default fixed-radius card.
+- `two-corner-left` / `two-corner-right`: two-corner rounding for linear rows, mirrored steps, and side-anchored grouping.
+- `flag-drop`: top-descending flag for method, step, or emphasis cards.
+- `circle-vine`: small circle plus curved connector for related semantic markers.
+- `notched-corner`: clipped or folded corner for proof, data, warning, and code-like panels.
+- `ticket`: side punch marks for document, evidence, checklist, or ticket-like content.
+
+These are generated as SVG-backed PPT surfaces so the visible corner radius remains absolute and coherent across different card sizes. The rulebase selects a family from role, decoration style, item index, relation, density, and importance. It must not add a decorative family when the slide is already crowded or when the shape would compete with charts, tables, images, or proof objects.
 
 ## Derived Object Pattern Families
 

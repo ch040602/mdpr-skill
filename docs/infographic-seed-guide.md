@@ -11,7 +11,7 @@ This project already had several local sources related to infographic constructi
 
 The new infographic seed layer applies those pieces to teaser-grade page composition.
 
-Approved presentation references are reviewed for design method vocabulary rather than copied assets. The latest source-neutral recursive pass analyzes 50 presentation files, 492 structural slides, 984 PowerPoint-rendered slide images, and 100 PNG samples, then derives 60 reusable object/decorator rules. Relevant recurring methods include simple shape systems, table grid systems, small icon markers, document/notebook metaphors, browser/window frames, arc/ring charts, line graphs used as background, gauge-like charts, connected chart strips, target-ring frames, pictorial metaphor charts, timelines, hub/spoke diagrams, and equal-geometry quadrant layouts. See `docs/structural-pattern-taxonomy.md`.
+Approved presentation references are reviewed for design method vocabulary rather than copied assets. The latest source-neutral recursive pass analyzes 80 presentation files, 797 structural slides, 1,594 PowerPoint-rendered slide images, and 160 PNG samples, then derives 60 reusable object/decorator rules. Relevant recurring methods include simple shape systems, table grid systems, small icon markers, document/notebook metaphors, browser/window frames, arc/ring charts, line graphs used as background, gauge-like charts, connected chart strips, target-ring frames, pictorial metaphor charts, timelines, hub/spoke diagrams, and equal-geometry quadrant layouts. See `docs/structural-pattern-taxonomy.md`.
 
 ## Deterministic Inputs
 

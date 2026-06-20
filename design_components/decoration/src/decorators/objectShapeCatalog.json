@@ -1,0 +1,1395 @@
+{
+  "schemaVersion": 2,
+  "purpose": "Renderer-neutral object and layout grammar for MDPR visual diversification. Entries are source-neutral structural rules, not copied reference slides.",
+  "minimumDistinctArchetypes": 50,
+  "themeBindingContract": {
+    "surface": "PowerPoint theme surface/background slot or harmony support color",
+    "line": "PowerPoint theme line/text2 slot or harmony muted color",
+    "accent": "PowerPoint theme accent slot or harmony emphasis/contrast color",
+    "text": "PowerPoint theme text slot",
+    "effect": "Theme decoration style controls shadow/glass/grid/data/magazine treatment"
+  },
+  "diversityPolicy": {
+    "minimumPatterns": 50,
+    "minimumFamilies": 12,
+    "maximumCardFamilyRatio": 0.4,
+    "requiredFamilies": [
+      "card",
+      "list",
+      "callout",
+      "metric",
+      "image",
+      "diagram",
+      "chart",
+      "table",
+      "surface",
+      "label"
+    ]
+  },
+  "patterns": [
+    {
+      "id": "accent-rail-card",
+      "kind": "accent-rail-card",
+      "family": "card",
+      "archetype": "card:vertical rail|title/body block",
+      "shapeGrammar": "vertical rail; title/body block",
+      "selectionSignals": [
+        "hasImage",
+        "importanceMax",
+        "medium-text",
+        "plain-list",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Use one rail width and one accent role across sibling cards."
+    },
+    {
+      "id": "top-rule-card",
+      "kind": "top-rule-card",
+      "family": "card",
+      "archetype": "card:hairline rule|quiet surface",
+      "shapeGrammar": "hairline rule; quiet surface",
+      "selectionSignals": [
+        "density",
+        "importanceMax",
+        "low-importance",
+        "short-list"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Rule weight stays subordinate to title text."
+    },
+    {
+      "id": "number-tab-card",
+      "kind": "number-tab-card",
+      "family": "card",
+      "archetype": "card:small tab|number|aligned title",
+      "shapeGrammar": "small tab; number; aligned title",
+      "selectionSignals": [
+        "itemCountMax",
+        "ordered-list",
+        "relation",
+        "sequence"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Tabs share size and use brightness sequence."
+    },
+    {
+      "id": "corner-chip-card",
+      "kind": "corner-chip-card",
+      "family": "card",
+      "archetype": "card:corner chip|compact label",
+      "shapeGrammar": "corner chip; compact label",
+      "selectionSignals": [
+        "importance-4",
+        "importanceMin",
+        "short-label",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Chip never enters the text safe area."
+    },
+    {
+      "id": "bracket-note-card",
+      "kind": "bracket-note-card",
+      "family": "card",
+      "archetype": "card:thin bracket|label|indented body",
+      "shapeGrammar": "thin bracket; label; indented body",
+      "selectionSignals": [
+        "constraint",
+        "proof",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Bracket height follows text block height, not full card height."
+    },
+    {
+      "id": "dot-marker-row",
+      "kind": "dot-marker-row",
+      "family": "list",
+      "archetype": "list:small dot|first-line alignment",
+      "shapeGrammar": "small dot; first-line alignment",
+      "selectionSignals": [
+        "itemCountMin",
+        "plain-list",
+        "semantic-cue",
+        "textOnly"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Dot center aligns to the first text line midpoint."
+    },
+    {
+      "id": "split-tone-row",
+      "kind": "split-tone-row",
+      "family": "list",
+      "archetype": "list:label zone|body zone",
+      "shapeGrammar": "label zone; body zone",
+      "selectionSignals": [
+        "comparison",
+        "relation",
+        "two-part-item"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Tint is lower contrast than text and consistent across rows."
+    },
+    {
+      "id": "proof-chip-inline",
+      "kind": "proof-chip-inline",
+      "family": "callout",
+      "archetype": "callout:small chip|metric text",
+      "shapeGrammar": "small chip; metric text",
+      "selectionSignals": [
+        "hasKeyNumber",
+        "importanceMin",
+        "key-number",
+        "validation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Only one chip in a local group may use contrast color."
+    },
+    {
+      "id": "thin-outline-card",
+      "kind": "thin-outline-card",
+      "family": "card",
+      "archetype": "card:outline|plain surface",
+      "shapeGrammar": "outline; plain surface",
+      "selectionSignals": [
+        "dense-list",
+        "density",
+        "table-adjacent"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Use surface-line stroke unless selected as the lead item."
+    },
+    {
+      "id": "bottom-meter-card",
+      "kind": "bottom-meter-card",
+      "family": "metric",
+      "archetype": "metric:bottom meter|short label",
+      "shapeGrammar": "bottom meter; short label",
+      "selectionSignals": [
+        "hasValue",
+        "progress",
+        "relation",
+        "score"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Meter length must map to data value."
+    },
+    {
+      "id": "side-notch-card",
+      "kind": "side-notch-card",
+      "family": "card",
+      "archetype": "card:side notch|aligned text",
+      "shapeGrammar": "side notch; aligned text",
+      "selectionSignals": [
+        "constraint",
+        "importanceMin",
+        "important-item"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Notch width remains fixed across siblings."
+    },
+    {
+      "id": "floating-label-pin",
+      "kind": "floating-label-pin",
+      "family": "image",
+      "archetype": "image:small pin|image edge",
+      "shapeGrammar": "small pin; image edge",
+      "selectionSignals": [
+        "hasImage",
+        "image-card",
+        "photo-present",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Pin stays inside image safe area with readable contrast."
+    },
+    {
+      "id": "caption-underlay",
+      "kind": "caption-underlay",
+      "family": "image",
+      "archetype": "image:caption band|single line label",
+      "shapeGrammar": "caption band; single line label",
+      "selectionSignals": [
+        "hasImage",
+        "long-caption",
+        "photo-present",
+        "textCharsMin"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Underlay supports readability without hiding the subject."
+    },
+    {
+      "id": "rank-ribbon-card",
+      "kind": "rank-ribbon-card",
+      "family": "ranking",
+      "archetype": "ranking:rank ribbon|large number",
+      "shapeGrammar": "rank ribbon; large number",
+      "selectionSignals": [
+        "hasKeyNumber",
+        "key-number",
+        "ranking",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Ribbon height is smaller than number height."
+    },
+    {
+      "id": "micro-icon-marker",
+      "kind": "micro-icon-marker",
+      "family": "icon",
+      "archetype": "icon:one monotone icon|left gutter",
+      "shapeGrammar": "one monotone icon; left gutter",
+      "selectionSignals": [
+        "density",
+        "semantic-cue",
+        "text-only",
+        "textOnly"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Icon stays smaller than body line-height."
+    },
+    {
+      "id": "double-rule-header",
+      "kind": "double-rule-header",
+      "family": "header",
+      "archetype": "header:two rules|header label",
+      "shapeGrammar": "two rules; header label",
+      "selectionSignals": [
+        "medium-density",
+        "relation",
+        "sectioned-list"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Rules share color and differ only by opacity."
+    },
+    {
+      "id": "soft-shadow-lift",
+      "kind": "soft-shadow-lift",
+      "family": "surface",
+      "archetype": "surface:shallow shadow|plain surface",
+      "shapeGrammar": "shallow shadow; plain surface",
+      "selectionSignals": [
+        "density",
+        "importanceMin",
+        "lead-card",
+        "low-density"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Use one shadow depth per slide."
+    },
+    {
+      "id": "inset-label-bar",
+      "kind": "inset-label-bar",
+      "family": "label",
+      "archetype": "label:inset bar|category label",
+      "shapeGrammar": "inset bar; category label",
+      "selectionSignals": [
+        "category-list",
+        "comparison",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Bar widths align across peer cards."
+    },
+    {
+      "id": "vertical-step-rail",
+      "kind": "vertical-step-rail",
+      "family": "diagram",
+      "archetype": "diagram:vertical rail|node dot|wrapped text",
+      "shapeGrammar": "vertical rail; node dot; wrapped text",
+      "selectionSignals": [
+        "long-text",
+        "relation",
+        "sequence",
+        "textCharsMin"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Same-role nodes use one connector color."
+    },
+    {
+      "id": "horizontal-step-rail",
+      "kind": "horizontal-step-rail",
+      "family": "diagram",
+      "archetype": "diagram:horizontal rail|number nodes",
+      "shapeGrammar": "horizontal rail; number nodes",
+      "selectionSignals": [
+        "relation",
+        "sequence",
+        "short-text",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Node centers align on one baseline."
+    },
+    {
+      "id": "paired-contrast-edge",
+      "kind": "paired-contrast-edge",
+      "family": "comparison",
+      "archetype": "comparison:two edge colors|split label",
+      "shapeGrammar": "two edge colors; split label",
+      "selectionSignals": [
+        "before-after",
+        "opposition",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Use complementary colors only for true oppositions."
+    },
+    {
+      "id": "quote-rule-card",
+      "kind": "quote-rule-card",
+      "family": "quote",
+      "archetype": "quote:left quote rule|body",
+      "shapeGrammar": "left quote rule; body",
+      "selectionSignals": [
+        "quote",
+        "relation",
+        "takeaway"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Italic applies only to quote body; labels remain upright."
+    },
+    {
+      "id": "metric-lead-card",
+      "kind": "metric-lead-card",
+      "family": "metric",
+      "archetype": "metric:large number|unit|caption",
+      "shapeGrammar": "large number; unit; caption",
+      "selectionSignals": [
+        "hasKeyNumber",
+        "importance-5",
+        "importanceMin",
+        "key-number"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Number uses display scale; caption stays body/caption scale."
+    },
+    {
+      "id": "checklist-grid-card",
+      "kind": "checklist-grid-card",
+      "family": "table",
+      "archetype": "table:check marker|two-column grid",
+      "shapeGrammar": "check marker; two-column grid",
+      "selectionSignals": [
+        "checklist",
+        "itemCountMin",
+        "many-short-items",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Markers are monotone or accent1 only."
+    },
+    {
+      "id": "constraint-stack-card",
+      "kind": "constraint-stack-card",
+      "family": "constraint",
+      "archetype": "constraint:bold label|indented description",
+      "shapeGrammar": "bold label; indented description",
+      "selectionSignals": [
+        "constraint",
+        "relation",
+        "risk"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Label font size is not smaller than description."
+    },
+    {
+      "id": "label-overline-card",
+      "kind": "label-overline-card",
+      "family": "label",
+      "archetype": "label:overline|title|body",
+      "shapeGrammar": "overline; title; body",
+      "selectionSignals": [
+        "category",
+        "short-title",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Uppercase overline only when under 18 characters."
+    },
+    {
+      "id": "subtle-band-card",
+      "kind": "subtle-band-card",
+      "family": "surface",
+      "archetype": "surface:surface band|text group",
+      "shapeGrammar": "surface band; text group",
+      "selectionSignals": [
+        "importanceMax",
+        "medium-list",
+        "non-lead"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Band uses surface tint and never competes with lead accent."
+    },
+    {
+      "id": "arc-corner-emphasis",
+      "kind": "arc-corner-emphasis",
+      "family": "metric",
+      "archetype": "metric:arc corner|label",
+      "shapeGrammar": "arc corner; label",
+      "selectionSignals": [
+        "hasValue",
+        "progress",
+        "ratio",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Arc must map to status or progress using real arc geometry."
+    },
+    {
+      "id": "target-ring-badge",
+      "kind": "target-ring-badge",
+      "family": "metric",
+      "archetype": "metric:ring badge|metric",
+      "shapeGrammar": "ring badge; metric",
+      "selectionSignals": [
+        "benchmark",
+        "goal",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Ring thickness remains proportional."
+    },
+    {
+      "id": "image-sidecar-card",
+      "kind": "image-sidecar-card",
+      "family": "image",
+      "archetype": "image:reserved image sidecar|text block",
+      "shapeGrammar": "reserved image sidecar; text block",
+      "selectionSignals": [
+        "hasImage",
+        "medium-text",
+        "photo-present"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Reserve image width before text fitting."
+    },
+    {
+      "id": "table-summary-card",
+      "kind": "table-summary-card",
+      "family": "table",
+      "archetype": "table:header label|two compact facts",
+      "shapeGrammar": "header label; two compact facts",
+      "selectionSignals": [
+        "hasTable",
+        "summary",
+        "table-adjacent"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Align to table column rhythm."
+    },
+    {
+      "id": "connector-dot-card",
+      "kind": "connector-dot-card",
+      "family": "diagram",
+      "archetype": "diagram:edge dot|connector anchor",
+      "shapeGrammar": "edge dot; connector anchor",
+      "selectionSignals": [
+        "dependency",
+        "flow",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Same-role connectors share arrow style and color."
+    },
+    {
+      "id": "plain-safe-card",
+      "kind": "plain-safe-card",
+      "family": "fallback",
+      "archetype": "fallback:minimal padding|no ornament",
+      "shapeGrammar": "minimal padding; no ornament",
+      "selectionSignals": [
+        "density",
+        "high-density",
+        "long-text",
+        "textCharsMin"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Use when decoration would reduce readability."
+    },
+    {
+      "id": "rounded-ticket-panel",
+      "kind": "rounded-ticket-panel",
+      "family": "surface",
+      "archetype": "surface:large rounded ticket|punched corner cue",
+      "shapeGrammar": "large rounded ticket; punched corner cue",
+      "selectionSignals": [
+        "density",
+        "process",
+        "section-cover"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Ticket affordance must encode grouping or sectioning."
+    },
+    {
+      "id": "paperclip-corner",
+      "kind": "paperclip-corner",
+      "family": "decoration",
+      "archetype": "decoration:small clip mark|corner overlap",
+      "shapeGrammar": "small clip mark; corner overlap",
+      "selectionSignals": [
+        "document",
+        "intent",
+        "worksheet"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Clip is small and never covers text."
+    },
+    {
+      "id": "binder-hole-strip",
+      "kind": "binder-hole-strip",
+      "family": "decoration",
+      "archetype": "decoration:hole strip|ruled background",
+      "shapeGrammar": "hole strip; ruled background",
+      "selectionSignals": [
+        "intent",
+        "notebook",
+        "process-note"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Holes are decorative only when document metaphor is explicit."
+    },
+    {
+      "id": "tape-label",
+      "kind": "tape-label",
+      "family": "label",
+      "archetype": "label:short tape surface|caption",
+      "shapeGrammar": "short tape surface; caption",
+      "selectionSignals": [
+        "annotation",
+        "relation",
+        "temporary-note"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Tape opacity stays low and text remains normal weight."
+    },
+    {
+      "id": "speech-bubble-callout",
+      "kind": "speech-bubble-callout",
+      "family": "callout",
+      "archetype": "callout:bubble|tail|short text",
+      "shapeGrammar": "bubble; tail; short text",
+      "selectionSignals": [
+        "comment",
+        "dialogue",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Tail points to the referenced object."
+    },
+    {
+      "id": "diagonal-sash-label",
+      "kind": "diagonal-sash-label",
+      "family": "label",
+      "archetype": "label:diagonal sash|short word",
+      "shapeGrammar": "diagonal sash; short word",
+      "selectionSignals": [
+        "importanceMin",
+        "rank",
+        "status",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Sash cannot cross body copy."
+    },
+    {
+      "id": "pill-step-node",
+      "kind": "pill-step-node",
+      "family": "diagram",
+      "archetype": "diagram:pill node|short label",
+      "shapeGrammar": "pill node; short label",
+      "selectionSignals": [
+        "process",
+        "relation",
+        "short-steps",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "All pills share height and baseline."
+    },
+    {
+      "id": "folded-corner-card",
+      "kind": "folded-corner-card",
+      "family": "card",
+      "archetype": "card:fold mark|body",
+      "shapeGrammar": "fold mark; body",
+      "selectionSignals": [
+        "document",
+        "intent",
+        "summary"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Fold is smaller than title cap height group."
+    },
+    {
+      "id": "stacked-paper-cards",
+      "kind": "stacked-paper-cards",
+      "family": "surface",
+      "archetype": "surface:offset sheets|front card",
+      "shapeGrammar": "offset sheets; front card",
+      "selectionSignals": [
+        "multi-document",
+        "references",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Offsets are consistent and shallow."
+    },
+    {
+      "id": "overlap-lens-diagram",
+      "kind": "overlap-lens-diagram",
+      "family": "diagram",
+      "archetype": "diagram:two translucent shapes|center label",
+      "shapeGrammar": "two translucent shapes; center label",
+      "selectionSignals": [
+        "intersection",
+        "overlap",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Use only two or three sets; labels remain outside or centered."
+    },
+    {
+      "id": "axis-quadrant-map",
+      "kind": "axis-quadrant-map",
+      "family": "diagram",
+      "archetype": "diagram:cross axes|quadrant labels",
+      "shapeGrammar": "cross axes; quadrant labels",
+      "selectionSignals": [
+        "2x2",
+        "positioning",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Quadrants share geometry; emphasis uses stroke/tab."
+    },
+    {
+      "id": "ladder-step-diagram",
+      "kind": "ladder-step-diagram",
+      "family": "diagram",
+      "archetype": "diagram:stepped blocks|ascending labels",
+      "shapeGrammar": "stepped blocks; ascending labels",
+      "selectionSignals": [
+        "levels",
+        "maturity",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Steps rise monotonically and labels keep one baseline offset."
+    },
+    {
+      "id": "loop-arrow-cycle",
+      "kind": "loop-arrow-cycle",
+      "family": "diagram",
+      "archetype": "diagram:curved arrows|nodes",
+      "shapeGrammar": "curved arrows; nodes",
+      "selectionSignals": [
+        "cycle",
+        "iteration",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Arrow style stays constant around the loop."
+    },
+    {
+      "id": "center-hub-spokes",
+      "kind": "center-hub-spokes",
+      "family": "diagram",
+      "archetype": "diagram:center node|spokes|outer nodes",
+      "shapeGrammar": "center node; spokes; outer nodes",
+      "selectionSignals": [
+        "features",
+        "hub",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Outer nodes use equal radius and do not cross connectors."
+    },
+    {
+      "id": "timeline-marker-strip",
+      "kind": "timeline-marker-strip",
+      "family": "diagram",
+      "archetype": "diagram:horizontal line|markers",
+      "shapeGrammar": "horizontal line; markers",
+      "selectionSignals": [
+        "milestones",
+        "relation",
+        "timeline"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Markers align to one line and labels alternate only when needed."
+    },
+    {
+      "id": "vertical-timeline-cards",
+      "kind": "vertical-timeline-cards",
+      "family": "diagram",
+      "archetype": "diagram:vertical line|side cards",
+      "shapeGrammar": "vertical line; side cards",
+      "selectionSignals": [
+        "long labels",
+        "relation",
+        "textCharsMin",
+        "timeline"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Cards keep equal gutter from line."
+    },
+    {
+      "id": "stair-progress-meter",
+      "kind": "stair-progress-meter",
+      "family": "metric",
+      "archetype": "metric:step blocks|current highlight",
+      "shapeGrammar": "step blocks; current highlight",
+      "selectionSignals": [
+        "maturity",
+        "progress",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Highlight only one current step unless multiple selected states exist."
+    },
+    {
+      "id": "donut-label-ring",
+      "kind": "donut-label-ring",
+      "family": "chart",
+      "archetype": "chart:donut ring|outside labels",
+      "shapeGrammar": "donut ring; outside labels",
+      "selectionSignals": [
+        "hasValue",
+        "part-to-whole",
+        "ratio",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Labels align to tangent starts and do not overlap ring."
+    },
+    {
+      "id": "gauge-score-card",
+      "kind": "gauge-score-card",
+      "family": "chart",
+      "archetype": "chart:semi gauge|score|caption",
+      "shapeGrammar": "semi gauge; score; caption",
+      "selectionSignals": [
+        "hasValue",
+        "readiness",
+        "relation",
+        "score"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Needle/arc maps to value; caption stays secondary."
+    },
+    {
+      "id": "small-multiple-bars",
+      "kind": "small-multiple-bars",
+      "family": "chart",
+      "archetype": "chart:equal mini bars|shared labels",
+      "shapeGrammar": "equal mini bars; shared labels",
+      "selectionSignals": [
+        "comparison",
+        "hasChart",
+        "itemCountMin",
+        "metrics"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "All bars share scale and baseline."
+    },
+    {
+      "id": "trend-line-backdrop",
+      "kind": "trend-line-backdrop",
+      "family": "chart",
+      "archetype": "chart:low contrast line|foreground statement",
+      "shapeGrammar": "low contrast line; foreground statement",
+      "selectionSignals": [
+        "forecast",
+        "hasChart",
+        "relation",
+        "trend"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Backdrop opacity stays below foreground text contrast."
+    },
+    {
+      "id": "pictorial-anchor-labels",
+      "kind": "pictorial-anchor-labels",
+      "family": "image",
+      "archetype": "image:image anchor|attached labels",
+      "shapeGrammar": "image anchor; attached labels",
+      "selectionSignals": [
+        "hasImage",
+        "metaphor",
+        "needsImage",
+        "provided-image"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Labels attach to real image features, not invented decoration."
+    },
+    {
+      "id": "photo-window-mask",
+      "kind": "photo-window-mask",
+      "family": "image",
+      "archetype": "image:cropped window|caption",
+      "shapeGrammar": "cropped window; caption",
+      "selectionSignals": [
+        "hasImage",
+        "photo-focus",
+        "product"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Use object-fit cover/contain according to subject inspection."
+    },
+    {
+      "id": "image-caption-split",
+      "kind": "image-caption-split",
+      "family": "image",
+      "archetype": "image:image region|caption rail",
+      "shapeGrammar": "image region; caption rail",
+      "selectionSignals": [
+        "hasImage",
+        "image-plus-explanation",
+        "textCharsMin"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Caption rail never overlaps image subject."
+    },
+    {
+      "id": "tag-cloud-strip",
+      "kind": "tag-cloud-strip",
+      "family": "label",
+      "archetype": "label:small chips|wrap row",
+      "shapeGrammar": "small chips; wrap row",
+      "selectionSignals": [
+        "keywords",
+        "relation",
+        "taxonomy"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Chips wrap on grid; no random chip colors."
+    },
+    {
+      "id": "status-dot-table",
+      "kind": "status-dot-table",
+      "family": "table",
+      "archetype": "table:dot status column|row labels",
+      "shapeGrammar": "dot status column; row labels",
+      "selectionSignals": [
+        "checklist",
+        "hasTable",
+        "relation",
+        "status-table"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Dots align to row midpoints and use limited semantic colors."
+    },
+    {
+      "id": "risk-heat-grid",
+      "kind": "risk-heat-grid",
+      "family": "table",
+      "archetype": "table:grid|severity tint",
+      "shapeGrammar": "grid; severity tint",
+      "selectionSignals": [
+        "hasTable",
+        "matrix",
+        "relation",
+        "risk"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Tint progression follows monochromatic or split-complementary rule."
+    },
+    {
+      "id": "left-accent-rail",
+      "kind": "left-accent-rail",
+      "family": "card",
+      "archetype": "compat:left-accent-rail:vertical rail; title/body block",
+      "shapeGrammar": "vertical rail; title/body block",
+      "selectionSignals": [
+        "hasImage",
+        "importanceMax",
+        "legacy-selector-compatible",
+        "medium-text",
+        "plain-list",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Use one rail width and one accent role across sibling cards."
+    },
+    {
+      "id": "top-hairline-rule",
+      "kind": "top-hairline-rule",
+      "family": "card",
+      "archetype": "compat:top-hairline-rule:hairline rule; quiet surface",
+      "shapeGrammar": "hairline rule; quiet surface",
+      "selectionSignals": [
+        "density",
+        "importanceMax",
+        "legacy-selector-compatible",
+        "low-importance",
+        "short-list"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Rule weight stays subordinate to title text."
+    },
+    {
+      "id": "number-tab",
+      "kind": "number-tab",
+      "family": "card",
+      "archetype": "compat:number-tab:small tab; number; aligned title",
+      "shapeGrammar": "small tab; number; aligned title",
+      "selectionSignals": [
+        "itemCountMax",
+        "legacy-selector-compatible",
+        "ordered-list",
+        "relation",
+        "sequence"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Tabs share size and use brightness sequence."
+    },
+    {
+      "id": "corner-chip",
+      "kind": "corner-chip",
+      "family": "card",
+      "archetype": "compat:corner-chip:corner chip; compact label",
+      "shapeGrammar": "corner chip; compact label",
+      "selectionSignals": [
+        "importance-4",
+        "importanceMin",
+        "legacy-selector-compatible",
+        "short-label",
+        "textCharsMax"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Chip never enters the text safe area."
+    },
+    {
+      "id": "bracket-callout",
+      "kind": "bracket-callout",
+      "family": "card",
+      "archetype": "compat:bracket-callout:thin bracket; label; indented body",
+      "shapeGrammar": "thin bracket; label; indented body",
+      "selectionSignals": [
+        "constraint",
+        "legacy-selector-compatible",
+        "proof",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Bracket height follows text block height, not full card height."
+    },
+    {
+      "id": "bottom-meter",
+      "kind": "bottom-meter",
+      "family": "metric",
+      "archetype": "compat:bottom-meter:bottom meter; short label",
+      "shapeGrammar": "bottom meter; short label",
+      "selectionSignals": [
+        "hasValue",
+        "legacy-selector-compatible",
+        "progress",
+        "relation",
+        "score"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Meter length must map to data value."
+    },
+    {
+      "id": "side-notch",
+      "kind": "side-notch",
+      "family": "card",
+      "archetype": "compat:side-notch:side notch; aligned text",
+      "shapeGrammar": "side notch; aligned text",
+      "selectionSignals": [
+        "constraint",
+        "importanceMin",
+        "important-item",
+        "legacy-selector-compatible"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text",
+        "effect"
+      ],
+      "coherenceGuard": "Notch width remains fixed across siblings."
+    },
+    {
+      "id": "rank-ribbon",
+      "kind": "rank-ribbon",
+      "family": "ranking",
+      "archetype": "compat:rank-ribbon:rank ribbon; large number",
+      "shapeGrammar": "rank ribbon; large number",
+      "selectionSignals": [
+        "hasKeyNumber",
+        "key-number",
+        "legacy-selector-compatible",
+        "ranking",
+        "relation"
+      ],
+      "themeBindings": [
+        "surface",
+        "line",
+        "accent",
+        "text"
+      ],
+      "coherenceGuard": "Ribbon height is smaller than number height."
+    }
+  ]
+}

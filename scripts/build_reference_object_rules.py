@@ -33,9 +33,9 @@ try:
 except Exception:
     CORPUS_URL_TEMPLATE = None
     CORPUS_START_ID = None
-MIN_DOWNLOADS = 50
-MAX_POST_SCAN = 900
-MAX_RENDER_DECKS = 50
+MIN_DOWNLOADS = int(os.environ.get("REFERENCE_MIN_DOWNLOADS", "80")) if "os" in globals() else 80
+MAX_POST_SCAN = int(os.environ.get("REFERENCE_MAX_POST_SCAN", "1600")) if "os" in globals() else 1600
+MAX_RENDER_DECKS = int(os.environ.get("REFERENCE_MAX_RENDER_DECKS", "80")) if "os" in globals() else 80
 REQUEST_DELAY_SECONDS = 0.08
 USER_AGENT = "Mozilla/5.0 mdpr-skill structural pattern analysis"
 
@@ -346,6 +346,7 @@ def main() -> None:
         "renderedDecks": len(rendered),
         "renderedPngSlides": sum(int(item["pngCount"]) for item in rendered),
         "pngSamplesAnalyzed": len(png_analysis),
+        "contactSheet": None,
         "aggregateObjects": dict(aggregate),
         "derivedObjectPatternCount": len(OBJECT_PATTERNS),
         "derivedObjectPatterns": [pattern_to_json(pattern) for pattern in OBJECT_PATTERNS],

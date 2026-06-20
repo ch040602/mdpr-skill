@@ -2,26 +2,26 @@
   <title id="title">MDPR Deterministic Presentation Pipeline</title>
   <desc id="desc">A polished overview image generated from pipeline.md, showing MDPR content splitting, optional LLM reasoning hints, deterministic design rules, and editable outputs.</desc>
   <rect id="z00_background" width="1400" height="760" fill="#F7F2EA"/>
-<path id="z00_editorial_grid" d="M72 126 H1328 M72 621 H1328 M380 126 V621 M690 126 V621 M1104 126 V621" fill="none" stroke="#E7D8C7" stroke-width="1" opacity="0.55"/>
+<path id="z00_editorial_grid" d="M72 126 H1328 M72 621 H1328 M382.5 126 V621 M670.5 126 V621 M1132 126 V621" fill="none" stroke="#E7D8C7" stroke-width="1" opacity="0.55"/>
 <path id="z00_flow_trace" d="M102 628 C280 602 400 622 553 604 S835 604 966 632 1190 655 1300 618" fill="none" stroke="#E7D8C7" stroke-width="2.4" opacity="0.48"/>
 <text id="header_title" x="68.0" y="66.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="38" font-weight="700" dominant-baseline="middle">MDPR Deterministic Presentation Pipeline</text>
 <text id="header_subtitle" x="68.0" y="106.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">Markdown becomes coherent PPTX/HTML/PDF through MDPR rules; mdpr-skill can add compact reasoning hints but never owns final design.</text>
-<rect id="zone_content_panel_shadow" x="93.0" y="156.0" width="280.0" height="430.0" rx="42.0" fill="#0F172A" opacity="0.12"/>
-<rect id="zone_content_panel" x="90.0" y="150.0" width="280.0" height="430.0" rx="42.0" fill="#EEF4EF" stroke="#C8D8C8" stroke-width="1.5"/>
-<text id="zone_content_title" x="112.0" y="192.0" fill="#334155" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">1. Content Contract</text>
-<text id="zone_content_subtitle" x="112.0" y="228.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">semantic structure only</text>
-<rect id="zone_reasoning_panel_shadow" x="398.0" y="156.0" width="270.0" height="430.0" rx="42.0" fill="#0F172A" opacity="0.12"/>
-<rect id="zone_reasoning_panel" x="395.0" y="150.0" width="270.0" height="430.0" rx="42.0" fill="#FFF3DE" stroke="#E4BF75" stroke-width="1.5"/>
-<text id="zone_reasoning_title" x="417.0" y="192.0" fill="#8B4E16" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">2. Agent Hints</text>
-<text id="zone_reasoning_subtitle" x="417.0" y="228.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">small optional tags</text>
-<rect id="zone_rules_panel_shadow" x="679.0" y="156.0" width="448.0" height="430.0" rx="42.0" fill="#0F172A" opacity="0.12"/>
-<rect id="zone_rules_panel" x="676.0" y="150.0" width="448.0" height="430.0" rx="42.0" fill="#EAF7F3" stroke="#7CC7BA" stroke-width="1.5"/>
-<text id="zone_rules_title" x="698.0" y="192.0" fill="#115E59" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">3. MDPR Design Rules</text>
-<text id="zone_rules_subtitle" x="698.0" y="228.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">final visual choices</text>
-<rect id="zone_outputs_panel_shadow" x="1143.0" y="156.0" width="230.0" height="430.0" rx="42.0" fill="#0F172A" opacity="0.12"/>
-<rect id="zone_outputs_panel" x="1140.0" y="150.0" width="230.0" height="430.0" rx="42.0" fill="#F1F0FA" stroke="#B8B5E6" stroke-width="1.5"/>
-<text id="zone_outputs_title" x="1162.0" y="192.0" fill="#4338CA" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">4. Outputs</text>
-<text id="zone_outputs_subtitle" x="1162.0" y="228.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">PPTX, HTML, PDF</text>
+<rect id="zone_content_panel_shadow" x="93.0" y="156.0" width="280.0" height="430.0" rx="18.0" fill="#0F172A" opacity="0.12"/>
+<rect id="zone_content_panel" x="90.0" y="150.0" width="280.0" height="430.0" rx="18.0" fill="#EEF4EF" stroke="#C8D8C8" stroke-width="1.5"/>
+<text id="zone_content_title" x="114.0" y="190.0" fill="#334155" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">1. Content Contract</text>
+<text id="zone_content_subtitle" x="114.0" y="226.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">semantic structure only</text>
+<rect id="zone_reasoning_panel_shadow" x="398.0" y="156.0" width="270.0" height="430.0" rx="18.0" fill="#0F172A" opacity="0.12"/>
+<rect id="zone_reasoning_panel" x="395.0" y="150.0" width="270.0" height="430.0" rx="18.0" fill="#FFF3DE" stroke="#E4BF75" stroke-width="1.5"/>
+<text id="zone_reasoning_title" x="419.0" y="190.0" fill="#8B4E16" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">2. Agent Hints</text>
+<text id="zone_reasoning_subtitle" x="419.0" y="226.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">small optional tags</text>
+<rect id="zone_rules_panel_shadow" x="679.0" y="156.0" width="448.0" height="430.0" rx="18.0" fill="#0F172A" opacity="0.12"/>
+<rect id="zone_rules_panel" x="676.0" y="150.0" width="448.0" height="430.0" rx="18.0" fill="#EAF7F3" stroke="#7CC7BA" stroke-width="1.5"/>
+<text id="zone_rules_title" x="700.0" y="190.0" fill="#115E59" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">3. MDPR Design Rules</text>
+<text id="zone_rules_subtitle" x="700.0" y="226.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">final visual choices</text>
+<rect id="zone_outputs_panel_shadow" x="1143.0" y="156.0" width="230.0" height="430.0" rx="18.0" fill="#0F172A" opacity="0.12"/>
+<rect id="zone_outputs_panel" x="1140.0" y="150.0" width="230.0" height="430.0" rx="18.0" fill="#F1F0FA" stroke="#B8B5E6" stroke-width="1.5"/>
+<text id="zone_outputs_title" x="1164.0" y="190.0" fill="#4338CA" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" font-weight="700" dominant-baseline="middle">4. Outputs</text>
+<text id="zone_outputs_subtitle" x="1164.0" y="226.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="400" dominant-baseline="middle">PPTX, HTML, PDF</text>
   <g id="arrow_layer">
     <path id="main_start_markdown" d="M230.0,284.0 L230.0,299.7" fill="none" stroke="#111827" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
     <polygon id="main_start_markdown_head" points="230.0,308.0 226.2,297.9 233.8,297.9" fill="#111827"/>
@@ -54,105 +54,105 @@
   </g>
 <rect id="start_flag_shadow" x="193.0" y="254.0" width="80.0" height="36.0" rx="7.0" fill="#0F172A" opacity="0.12"/>
 <rect id="start_flag" x="190.0" y="248.0" width="80.0" height="36.0" rx="7.0" fill="#EEF4EF" stroke="#C8D8C8" stroke-width="1.2"/>
-<text id="start_flag_text" x="212.0" y="267.0" fill="#334155" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">source</text>
-<rect id="markdown_card_shadow" x="119.0" y="314.0" width="228.0" height="108.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="markdown_card" x="116.0" y="308.0" width="228.0" height="108.0" rx="22.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
-<circle id="markdown_dot" cx="147.0" cy="345.0" r="11" fill="#86A789" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="markdown_icon" d="M141.7,341.3 H152.3 M141.7,345.0 H150.1 M141.7,348.7 H151.6" fill="none" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
-<text id="markdown_title" x="174.0" y="345.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Markdown</text>
+<text id="start_flag_text" x="207.0" y="266.0" fill="#334155" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">source</text>
+<rect id="markdown_card_shadow" x="119.0" y="314.0" width="228.0" height="108.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="markdown_card" x="116.0" y="308.0" width="228.0" height="108.0" rx="16.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
+<circle id="markdown_dot" cx="148.0" cy="346.0" r="12.5" fill="#86A789" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="markdown_icon" d="M142.0,341.8 H154.0 M142.0,346.0 H151.5 M142.0,350.2 H153.2" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text id="markdown_title" x="174.0" y="346.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Markdown</text>
 <text id="markdown_line_0" x="149.0" y="372.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">headings, tables</text>
 <text id="markdown_line_1" x="149.0" y="393.2" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">charts and images</text>
-<rect id="splitter_card_shadow" x="119.0" y="454.0" width="228.0" height="112.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="splitter_card" x="116.0" y="448.0" width="228.0" height="112.0" rx="22.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
-<circle id="splitter_dot" cx="147.0" cy="485.0" r="11" fill="#86A789" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="splitter_icon" d="M142.4,485.0 H147.9 M147.9,485.0 L151.6,481.0 M147.9,485.0 L151.6,489.0" fill="none" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
-<text id="splitter_title" x="174.0" y="485.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">MDPR Splitter</text>
+<rect id="splitter_card_shadow" x="119.0" y="454.0" width="228.0" height="112.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="splitter_card" x="116.0" y="448.0" width="228.0" height="112.0" rx="16.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
+<circle id="splitter_dot" cx="148.0" cy="486.0" r="12.5" fill="#86A789" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="splitter_icon" d="M142.8,486.0 H149.0 M149.0,486.0 L153.2,481.5 M149.0,486.0 L153.2,490.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text id="splitter_title" x="174.0" y="486.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">MDPR Splitter</text>
 <text id="splitter_line_0" x="149.0" y="512.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">Pandoc or simple AST</text>
 <text id="splitter_line_1" x="149.0" y="537.2" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">slide/object split</text>
-<rect id="ir_core_card_shadow" x="423.0" y="244.0" width="220.0" height="105.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="ir_core_card" x="420.0" y="238.0" width="220.0" height="105.0" rx="22.0" fill="#FFFFFF" stroke="#E4BF75" stroke-width="1.5"/>
-<circle id="ir_core_dot" cx="451.0" cy="275.0" r="11" fill="#E9B44C" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="ir_core_icon" d="M446.2,269.9 H455.8 V280.1 H446.2 Z M448.6,273.7 H453.4 M448.6,277.0 H452.3" fill="none" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
-<text id="ir_core_title" x="478.0" y="275.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Slide Element IR</text>
+<rect id="ir_core_card_shadow" x="423.0" y="244.0" width="220.0" height="105.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="ir_core_card" x="420.0" y="238.0" width="220.0" height="105.0" rx="16.0" fill="#FFFFFF" stroke="#E4BF75" stroke-width="1.5"/>
+<circle id="ir_core_dot" cx="452.0" cy="276.0" r="12.5" fill="#E9B44C" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="ir_core_icon" d="M446.5,270.2 H457.5 V281.8 H446.5 Z M449.2,274.5 H454.8 M449.2,278.2 H453.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text id="ir_core_title" x="478.0" y="276.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Slide Element IR</text>
 <text id="ir_core_line_0" x="453.0" y="302.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">semantic blocks</text>
 <text id="ir_core_line_1" x="453.0" y="320.2" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">graph kept whole</text>
-<rect id="reasoning_card_shadow" x="423.0" y="406.0" width="220.0" height="160.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="reasoning_card" x="420.0" y="400.0" width="220.0" height="160.0" rx="22.0" fill="#FFFFFF" stroke="#E4BF75" stroke-width="1.5"/>
-<circle id="reasoning_dot" cx="451.0" cy="437.0" r="11" fill="#E9B44C" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="reasoning_icon" d="M451.0,431.3 L452.8,435.9 L457.4,437.0 L452.8,438.3 L451.0,442.7 L449.2,438.3 L444.6,437.0 L449.2,435.9 Z" fill="#FFFFFF"/>
-<text id="reasoning_title" x="478.0" y="437.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Hint Packet</text>
+<rect id="reasoning_card_shadow" x="423.0" y="406.0" width="220.0" height="160.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="reasoning_card" x="420.0" y="400.0" width="220.0" height="160.0" rx="16.0" fill="#FFFFFF" stroke="#E4BF75" stroke-width="1.5"/>
+<circle id="reasoning_dot" cx="452.0" cy="438.0" r="12.5" fill="#E9B44C" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="reasoning_icon" d="M452.0,431.5 L454.0,436.8 L459.2,438.0 L454.0,439.5 L452.0,444.5 L450.0,439.5 L444.8,438.0 L450.0,436.8 Z" fill="#FFFFFF"/>
+<text id="reasoning_title" x="478.0" y="438.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Hint Packet</text>
 <text id="reasoning_line_0" x="453.0" y="464.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">intent + importance</text>
 <rect id="reasoning_guard_shadow" x="451.0" y="500.0" width="164.0" height="36.0" rx="7.0" fill="#0F172A" opacity="0.12"/>
 <rect id="reasoning_guard" x="448.0" y="494.0" width="164.0" height="36.0" rx="7.0" fill="#FFF7E6" stroke="#E9B44C" stroke-width="1.2"/>
-<text id="reasoning_guard_text" x="470.0" y="513.0" fill="#7C3D12" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">hints only</text>
+<text id="reasoning_guard_text" x="491.6" y="512.0" fill="#7C3D12" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">hints only</text>
 <text id="reasoning_limit" x="445.0" y="536.0" fill="#64748B" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">no coords/styles</text>
-<rect id="rule_engine_card_shadow" x="718.0" y="256.5" width="370.0" height="80.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="rule_engine_card" x="715.0" y="250.5" width="370.0" height="80.0" rx="22.0" fill="#DCFCE7" stroke="#7CC7BA" stroke-width="1.5"/>
+<rect id="rule_engine_card_shadow" x="718.0" y="256.5" width="370.0" height="80.0" rx="18.0" fill="#0F172A" opacity="0.12"/>
+<rect id="rule_engine_card" x="715.0" y="250.5" width="370.0" height="80.0" rx="18.0" fill="#DCFCE7" stroke="#7CC7BA" stroke-width="1.5"/>
 <text id="rule_engine_title" x="745.0" y="277.5" fill="#14532D" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" dominant-baseline="middle">Rule Engine Boundary</text>
 <text id="rule_engine_body" x="745.0" y="306.5" fill="#166534" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">recipes, colors, z-order</text>
-<rect id="features_card_shadow" x="699.0" y="356.0" width="124.0" height="102.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="features_card" x="696.0" y="350.0" width="124.0" height="102.0" rx="22.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
-<circle id="features_dot" cx="718.0" cy="381.0" r="8" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="features_icon" d="M714.0,383.6 H722.0" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-<rect id="features_bar_0" x="715.0" y="380.3" width="1.4" height="2.8" rx="1.0" fill="#FFFFFF"/>
-<rect id="features_bar_1" x="717.8" y="378.1" width="1.4" height="5.0" rx="1.0" fill="#FFFFFF"/>
-<rect id="features_bar_2" x="720.7" y="379.2" width="1.4" height="3.8" rx="1.0" fill="#FFFFFF"/>
-<text id="features_title" x="738.0" y="381.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Features</text>
-<text id="features_line_0" x="718.0" y="408.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">density</text>
-<text id="features_line_1" x="718.0" y="429.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">size risk</text>
-<rect id="recipes_card_shadow" x="841.0" y="356.0" width="124.0" height="102.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="recipes_card" x="838.0" y="350.0" width="124.0" height="102.0" rx="22.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
-<circle id="recipes_dot" cx="860.0" cy="381.0" r="8" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
-<rect id="recipes_layer_0" x="856.6" y="378.1" width="6.7" height="1.3" rx="1.2" fill="#FFFFFF"/>
-<rect id="recipes_layer_1" x="856.6" y="380.8" width="6.7" height="1.3" rx="1.2" fill="#FFFFFF"/>
-<rect id="recipes_layer_2" x="856.6" y="383.6" width="6.7" height="1.3" rx="1.2" fill="#FFFFFF"/>
-<text id="recipes_title" x="880.0" y="381.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Recipes</text>
-<text id="recipes_line_0" x="860.0" y="408.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">profile</text>
-<text id="recipes_line_1" x="860.0" y="429.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">variant</text>
-<rect id="theme_card_shadow" x="983.0" y="356.0" width="124.0" height="102.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="theme_card" x="980.0" y="350.0" width="124.0" height="102.0" rx="22.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
-<circle id="theme_dot" cx="1002.0" cy="381.0" r="8" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
-<ellipse id="theme_palette" cx="1002.0" cy="381.0" rx="4.2" ry="3.4" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle id="theme_dot_0" cx="1000.4" cy="380.0" r="0.7" fill="#FFFFFF"/>
-<circle id="theme_dot_1" cx="1002.8" cy="379.2" r="0.7" fill="#FFFFFF"/>
-<circle id="theme_dot_2" cx="1002.0" cy="382.3" r="0.7" fill="#FFFFFF"/>
-<text id="theme_title" x="1022.0" y="381.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Theme</text>
-<text id="theme_line_0" x="1002.0" y="408.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">harmony</text>
-<text id="theme_line_1" x="1002.0" y="429.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">PPT accents</text>
-<rect id="compose_card_shadow" x="699.0" y="470.0" width="124.0" height="102.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="compose_card" x="696.0" y="464.0" width="124.0" height="102.0" rx="22.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
-<circle id="compose_dot" cx="718.0" cy="495.0" r="8" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="compose_icon" d="M714.2,491.2 H721.8 V498.8 H714.2 Z M718.0,491.2 V498.8 M714.2,495.0 H721.8" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-<text id="compose_title" x="738.0" y="495.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Compose</text>
-<text id="compose_line_0" x="718.0" y="522.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">regions</text>
-<text id="compose_line_1" x="718.0" y="543.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">overflow</text>
-<rect id="objects_card_shadow" x="841.0" y="470.0" width="124.0" height="102.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="objects_card" x="838.0" y="464.0" width="124.0" height="102.0" rx="22.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
-<circle id="objects_dot" cx="860.0" cy="495.0" r="8" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
-<circle id="objects_ring" cx="860.0" cy="495.0" r="3.4" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="objects_slice" d="M860.0,495.0 L863.4,495.0 A3.4,3.4 0 0 0 860.0,491.6 Z" fill="#FFFFFF"/>
-<text id="objects_title" x="880.0" y="495.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Objects</text>
-<text id="objects_line_0" x="860.0" y="522.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">charts</text>
-<text id="objects_line_1" x="860.0" y="543.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">icons</text>
-<rect id="decorate_card_shadow" x="983.0" y="470.0" width="124.0" height="102.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="decorate_card" x="980.0" y="464.0" width="124.0" height="102.0" rx="22.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
-<circle id="decorate_dot" cx="1002.0" cy="495.0" r="8" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="decorate_icon" d="M998.3,498.0 C1000.6,495.8 1003.4,495.8 1005.7,492.1 M1003.8,493.4 L1006.0,491.2" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-<text id="decorate_title" x="1022.0" y="495.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Decorate</text>
-<text id="decorate_line_0" x="1002.0" y="522.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">type</text>
-<text id="decorate_line_1" x="1002.0" y="543.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">effects</text>
-<rect id="styled_ir_card_shadow" x="1160.0" y="244.0" width="196.0" height="105.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="styled_ir_card" x="1157.0" y="238.0" width="196.0" height="105.0" rx="22.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
-<circle id="styled_ir_dot" cx="1188.0" cy="275.0" r="11" fill="#818CF8" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="styled_ir_icon" d="M1183.2,269.9 H1192.8 V280.1 H1183.2 Z M1185.6,273.7 H1190.4 M1185.6,277.0 H1189.3" fill="none" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
-<text id="styled_ir_title" x="1215.0" y="275.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Styled Deck IR</text>
+<rect id="features_card_shadow" x="699.0" y="356.0" width="124.0" height="102.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="features_card" x="696.0" y="350.0" width="124.0" height="102.0" rx="16.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
+<circle id="features_dot" cx="719.0" cy="382.0" r="9" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="features_icon" d="M714.5,384.9 H723.5" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect id="features_bar_0" x="715.6" y="381.2" width="1.6" height="3.1" rx="1.0" fill="#FFFFFF"/>
+<rect id="features_bar_1" x="718.8" y="378.8" width="1.6" height="5.6" rx="1.0" fill="#FFFFFF"/>
+<rect id="features_bar_2" x="722.1" y="380.0" width="1.6" height="4.3" rx="1.0" fill="#FFFFFF"/>
+<text id="features_title" x="741.0" y="382.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Features</text>
+<text id="features_line_0" x="719.0" y="408.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">density</text>
+<text id="features_line_1" x="719.0" y="429.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">size risk</text>
+<rect id="recipes_card_shadow" x="841.0" y="356.0" width="124.0" height="102.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="recipes_card" x="838.0" y="350.0" width="124.0" height="102.0" rx="16.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
+<circle id="recipes_dot" cx="861.0" cy="382.0" r="9" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
+<rect id="recipes_layer_0" x="857.2" y="378.8" width="7.6" height="1.4" rx="1.2" fill="#FFFFFF"/>
+<rect id="recipes_layer_1" x="857.2" y="381.8" width="7.6" height="1.4" rx="1.2" fill="#FFFFFF"/>
+<rect id="recipes_layer_2" x="857.2" y="384.9" width="7.6" height="1.4" rx="1.2" fill="#FFFFFF"/>
+<text id="recipes_title" x="883.0" y="382.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Recipes</text>
+<text id="recipes_line_0" x="861.0" y="408.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">profile</text>
+<text id="recipes_line_1" x="861.0" y="429.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">variant</text>
+<rect id="theme_card_shadow" x="983.0" y="356.0" width="124.0" height="102.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="theme_card" x="980.0" y="350.0" width="124.0" height="102.0" rx="16.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
+<circle id="theme_dot" cx="1003.0" cy="382.0" r="9" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
+<ellipse id="theme_palette" cx="1003.0" cy="382.0" rx="4.7" ry="3.8" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle id="theme_dot_0" cx="1001.2" cy="380.9" r="0.8" fill="#FFFFFF"/>
+<circle id="theme_dot_1" cx="1003.9" cy="380.0" r="0.8" fill="#FFFFFF"/>
+<circle id="theme_dot_2" cx="1003.0" cy="383.4" r="0.8" fill="#FFFFFF"/>
+<text id="theme_title" x="1025.0" y="382.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Theme</text>
+<text id="theme_line_0" x="1003.0" y="408.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">harmony</text>
+<text id="theme_line_1" x="1003.0" y="429.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">PPT accents</text>
+<rect id="compose_card_shadow" x="699.0" y="470.0" width="124.0" height="102.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="compose_card" x="696.0" y="464.0" width="124.0" height="102.0" rx="16.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
+<circle id="compose_dot" cx="719.0" cy="496.0" r="9" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="compose_icon" d="M714.7,491.7 H723.3 V500.3 H714.7 Z M719.0,491.7 V500.3 M714.7,496.0 H723.3" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text id="compose_title" x="741.0" y="496.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Compose</text>
+<text id="compose_line_0" x="719.0" y="522.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">regions</text>
+<text id="compose_line_1" x="719.0" y="543.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">overflow</text>
+<rect id="objects_card_shadow" x="841.0" y="470.0" width="124.0" height="102.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="objects_card" x="838.0" y="464.0" width="124.0" height="102.0" rx="16.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
+<circle id="objects_dot" cx="861.0" cy="496.0" r="9" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
+<circle id="objects_ring" cx="861.0" cy="496.0" r="3.8" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="objects_slice" d="M861.0,496.0 L864.8,496.0 A3.8,3.8 0 0 0 861.0,492.2 Z" fill="#FFFFFF"/>
+<text id="objects_title" x="883.0" y="496.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Objects</text>
+<text id="objects_line_0" x="861.0" y="522.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">charts</text>
+<text id="objects_line_1" x="861.0" y="543.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">icons</text>
+<rect id="decorate_card_shadow" x="983.0" y="470.0" width="124.0" height="102.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="decorate_card" x="980.0" y="464.0" width="124.0" height="102.0" rx="16.0" fill="#F8FAFC" stroke="#BBF7D0" stroke-width="1.5"/>
+<circle id="decorate_dot" cx="1003.0" cy="496.0" r="9" fill="#14B8A6" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="decorate_icon" d="M998.9,499.4 C1001.4,496.9 1004.6,496.9 1007.1,492.8 M1005.0,494.2 L1007.5,491.7" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text id="decorate_title" x="1025.0" y="496.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" dominant-baseline="middle">Decorate</text>
+<text id="decorate_line_0" x="1003.0" y="522.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">type</text>
+<text id="decorate_line_1" x="1003.0" y="543.9" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="400" dominant-baseline="middle">effects</text>
+<rect id="styled_ir_card_shadow" x="1160.0" y="244.0" width="196.0" height="105.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="styled_ir_card" x="1157.0" y="238.0" width="196.0" height="105.0" rx="16.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
+<circle id="styled_ir_dot" cx="1189.0" cy="276.0" r="12.5" fill="#818CF8" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="styled_ir_icon" d="M1183.5,270.2 H1194.5 V281.8 H1183.5 Z M1186.2,274.5 H1191.8 M1186.2,278.2 H1190.5" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text id="styled_ir_title" x="1215.0" y="276.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Styled Deck IR</text>
 <text id="styled_ir_line_0" x="1190.0" y="302.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">renderer-neutral</text>
 <text id="styled_ir_line_1" x="1190.0" y="320.2" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">coherent contract</text>
-<rect id="renderers_card_shadow" x="1160.0" y="396.0" width="196.0" height="105.0" rx="22.0" fill="#0F172A" opacity="0.12"/>
-<rect id="renderers_card" x="1157.0" y="390.0" width="196.0" height="105.0" rx="22.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
-<circle id="renderers_dot" cx="1188.0" cy="427.0" r="11" fill="#818CF8" stroke="#B7C6D8" stroke-width="1.2"/>
-<path id="renderers_icon" d="M1182.5,423.3 H1193.5 V429.9 H1182.5 Z M1186.0,432.3 H1190.0" fill="none" stroke="#FFFFFF" stroke-width="2.0" stroke-linecap="round" stroke-linejoin="round"/>
-<text id="renderers_title" x="1215.0" y="427.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Renderers</text>
+<rect id="renderers_card_shadow" x="1160.0" y="396.0" width="196.0" height="105.0" rx="16.0" fill="#0F172A" opacity="0.12"/>
+<rect id="renderers_card" x="1157.0" y="390.0" width="196.0" height="105.0" rx="16.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.5"/>
+<circle id="renderers_dot" cx="1189.0" cy="428.0" r="12.5" fill="#818CF8" stroke="#B7C6D8" stroke-width="1.2"/>
+<path id="renderers_icon" d="M1182.8,423.8 H1195.2 V431.2 H1182.8 Z M1186.8,434.0 H1191.2" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text id="renderers_title" x="1215.0" y="428.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" dominant-baseline="middle">Renderers</text>
 <text id="renderers_line_0" x="1190.0" y="454.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">editable PPTX</text>
 <text id="renderers_line_1" x="1190.0" y="472.2" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">HTML / PDF</text>
 <rect id="visual_check_shadow" x="1160.0" y="512.0" width="196.0" height="60.0" rx="14" fill="#0F172A" opacity="0.16"/>

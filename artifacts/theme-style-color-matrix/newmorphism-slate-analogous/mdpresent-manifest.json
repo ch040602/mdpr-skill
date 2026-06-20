@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "engine": "mdpresent",
+  "source": {
+    "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\source\\theme-style-color-matrix.md",
+    "sha256": "5625c5aeb9cb7622ebb0dda9e19b31d604e850512c40862ecfc2f9039735bd51"
+  },
+  "config": {
+    "sha256": "418168b86dab34714b57d87300c51f31bf1e76996c030bab4989a9289910edd5",
+    "sources": [
+      {
+        "kind": "default"
+      },
+      {
+        "kind": "cli-args",
+        "values": {
+          "theme": {
+            "decorationStyle": "newmorphism",
+            "colorSeed": "#4F6F8F",
+            "primaryColor": "#4F6F8F",
+            "colorCombination": "analogous"
+          }
+        }
+      }
+    ]
+  },
+  "slideCount": 10,
+  "outputs": [
+    "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\newmorphism-slate-analogous\\deck.html",
+    "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\newmorphism-slate-analogous\\deck.pptx"
+  ],
+  "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\theme-style-color-matrix\\newmorphism-slate-analogous\\mdpresent-design-lock.json",
+  "diagnostics": [],
+  "validation": {
+    "layoutOverflow": [],
+    "visual": {
+      "checked": true,
+      "slideCount": 10,
+      "checks": {
+        "nonBlankSlides": true,
+        "regionBounds": true,
+        "minimumTextSize": true,
+        "backgroundContentOverlap": true
+      },
+      "diagnostics": []
+    }
+  }
+}

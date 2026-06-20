@@ -1,0 +1,715 @@
+{
+  "criteria": {
+    "minimumDistinctObjectKinds": 50,
+    "minimumReferenceCorpus": "80 PPT files, 700 slides, 1200 PowerPoint PNG renders, and 60 source-neutral derived object patterns",
+    "diversityDefinition": "count structural archetypes and families; card variants alone do not satisfy diversity",
+    "themeAndColorAdjustable": "each counted object kind must declare themeBindings and generated decks must write Adobe-style palette/theme colors",
+    "themeFeel": "style-specific design locks plus PowerPoint-exported PNG previews must pass checks"
+  },
+  "catalogAudit": {
+    "catalogPath": "design_components\\decoration\\src\\decorators\\objectShapeCatalog.json",
+    "catalogPatternCount": 68,
+    "uniqueKindCount": 68,
+    "structuralArchetypeCount": 68,
+    "themeTokenReadyCount": 68,
+    "selectorPatternCount": 33,
+    "selectorMissingFromCatalog": [],
+    "families": [
+      "callout",
+      "card",
+      "chart",
+      "comparison",
+      "constraint",
+      "decoration",
+      "diagram",
+      "fallback",
+      "header",
+      "icon",
+      "image",
+      "label",
+      "list",
+      "metric",
+      "quote",
+      "ranking",
+      "surface",
+      "table"
+    ],
+    "familyCounts": {
+      "callout": 2,
+      "card": 14,
+      "chart": 4,
+      "comparison": 1,
+      "constraint": 1,
+      "decoration": 2,
+      "diagram": 11,
+      "fallback": 1,
+      "header": 1,
+      "icon": 1,
+      "image": 6,
+      "label": 5,
+      "list": 2,
+      "metric": 6,
+      "quote": 1,
+      "ranking": 2,
+      "surface": 4,
+      "table": 4
+    },
+    "cardFamilyRatio": 0.206,
+    "missingRequiredFamilies": [],
+    "sampleKinds": [
+      "accent-rail-card",
+      "arc-corner-emphasis",
+      "axis-quadrant-map",
+      "binder-hole-strip",
+      "bottom-meter",
+      "bottom-meter-card",
+      "bracket-callout",
+      "bracket-note-card",
+      "caption-underlay",
+      "center-hub-spokes",
+      "checklist-grid-card",
+      "connector-dot-card",
+      "constraint-stack-card",
+      "corner-chip",
+      "corner-chip-card",
+      "diagonal-sash-label",
+      "donut-label-ring",
+      "dot-marker-row",
+      "double-rule-header",
+      "floating-label-pin",
+      "folded-corner-card",
+      "gauge-score-card",
+      "horizontal-step-rail",
+      "image-caption-split",
+      "image-sidecar-card",
+      "inset-label-bar",
+      "label-overline-card",
+      "ladder-step-diagram",
+      "left-accent-rail",
+      "loop-arrow-cycle",
+      "metric-lead-card",
+      "micro-icon-marker",
+      "number-tab",
+      "number-tab-card",
+      "overlap-lens-diagram",
+      "paired-contrast-edge",
+      "paperclip-corner",
+      "photo-window-mask",
+      "pictorial-anchor-labels",
+      "pill-step-node"
+    ],
+    "ok": true
+  },
+  "referenceCorpusAudit": {
+    "reportPath": "artifacts\\reference-pattern-analysis\\derived-object-rules.json",
+    "pptDownloaded": 80,
+    "slidesAnalyzed": 797,
+    "renderedPngSlides": 1594,
+    "pngSamplesAnalyzed": 160,
+    "derivedObjectPatternCount": 60,
+    "contactSheet": null,
+    "checks": {
+      "sourceNeutral": true,
+      "downloadedEnough": true,
+      "slidesEnough": true,
+      "renderedEnough": true,
+      "samplesEnough": true,
+      "derivedEnough": true
+    },
+    "ok": true
+  },
+  "themeMatrixAudit": {
+    "matrixPath": "artifacts\\theme-style-color-matrix\\theme-style-color-report.json",
+    "comboCount": 10,
+    "visualDistinctness": {
+      "minMeanRgbDistance": 8.34,
+      "averageMeanRgbDistance": 206.77,
+      "policy": "average RGB distance must be high; a low minimum is allowed for multiple dark-style themes when style-specific grammar checks pass"
+    },
+    "themeAudits": [
+      {
+        "id": "simple-blue-analogous",
+        "style": "simple",
+        "color": "#2563EB",
+        "harmony": "analogous",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "none",
+          "opacity": 1
+        },
+        "paletteBase": "2563EB",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            41.18,
+            104.88,
+            235.53
+          ],
+          "darkPixelRatio": 0.001,
+          "lightPixelRatio": 0.0185
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            246.82,
+            248.54,
+            252.48
+          ],
+          "darkPixelRatio": 0.0078,
+          "lightPixelRatio": 0.9638
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "minimalism-ink-mono",
+        "style": "minimalism",
+        "color": "#111827",
+        "harmony": "monochromatic",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "none",
+          "opacity": 1
+        },
+        "paletteBase": "111827",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            250.76,
+            250.88,
+            251.15
+          ],
+          "darkPixelRatio": 0.0168,
+          "lightPixelRatio": 0.9809
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            246.39,
+            246.65,
+            247.22
+          ],
+          "darkPixelRatio": 0.0317,
+          "lightPixelRatio": 0.9642
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "newmorphism-slate-analogous",
+        "style": "newmorphism",
+        "color": "#4F6F8F",
+        "harmony": "analogous",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "newmorphic",
+          "opacity": 1
+        },
+        "paletteBase": "4F6F8F",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            229.46,
+            234.56,
+            241.82
+          ],
+          "darkPixelRatio": 0.0172,
+          "lightPixelRatio": 0.9802
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            227.86,
+            233.2,
+            240.5
+          ],
+          "darkPixelRatio": 0.0077,
+          "lightPixelRatio": 0.9635
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "glass-violet-split",
+        "style": "glass",
+        "color": "#8A4FFF",
+        "harmony": "split-complementary",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "glass",
+          "opacity": 0.42
+        },
+        "paletteBase": "8A4FFF",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            29.78,
+            31.81,
+            49.91
+          ],
+          "darkPixelRatio": 0.9614,
+          "lightPixelRatio": 0.0225
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            39.85,
+            39.55,
+            65.06
+          ],
+          "darkPixelRatio": 0.8321,
+          "lightPixelRatio": 0.0073
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "grid-red-complementary",
+        "style": "grid",
+        "color": "#DC2626",
+        "harmony": "complementary",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "none",
+          "opacity": 1
+        },
+        "paletteBase": "DC2626",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            238.0,
+            244.56,
+            246.85
+          ],
+          "darkPixelRatio": 0.0164,
+          "lightPixelRatio": 0.9543
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            245.47,
+            242.32,
+            244.27
+          ],
+          "darkPixelRatio": 0.0069,
+          "lightPixelRatio": 0.9633
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "data-amber-mono",
+        "style": "data",
+        "color": "#F59E0B",
+        "harmony": "monochromatic",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "none",
+          "opacity": 0.96
+        },
+        "paletteBase": "F59E0B",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            21.89,
+            29.2,
+            36.18
+          ],
+          "darkPixelRatio": 0.9743,
+          "lightPixelRatio": 0.0162
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            26.42,
+            32.04,
+            35.88
+          ],
+          "darkPixelRatio": 0.959,
+          "lightPixelRatio": 0.0071
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "magazine-rust-triadic",
+        "style": "magazine",
+        "color": "#C2410C",
+        "harmony": "triadic",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "soft",
+          "opacity": 1
+        },
+        "paletteBase": "C2410C",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            209.59,
+            230.25,
+            208.39
+          ],
+          "darkPixelRatio": 0.0176,
+          "lightPixelRatio": 0.8172
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            244.22,
+            236.4,
+            230.01
+          ],
+          "darkPixelRatio": 0.0081,
+          "lightPixelRatio": 0.9513
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "executive-teal-complementary",
+        "style": "executive",
+        "color": "#0F766E",
+        "harmony": "complementary",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "soft",
+          "opacity": 1
+        },
+        "paletteBase": "0F766E",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            23.84,
+            117.57,
+            110.24
+          ],
+          "darkPixelRatio": 0.0298,
+          "lightPixelRatio": 0.0184
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            238.6,
+            243.64,
+            245.21
+          ],
+          "darkPixelRatio": 0.0088,
+          "lightPixelRatio": 0.9562
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "technical-green-mono",
+        "style": "technical",
+        "color": "#16A34A",
+        "harmony": "monochromatic",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "soft",
+          "opacity": 1
+        },
+        "paletteBase": "16A34A",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            27.74,
+            166.32,
+            78.84
+          ],
+          "darkPixelRatio": 0.001,
+          "lightPixelRatio": 0.0207
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            241.31,
+            246.15,
+            244.69
+          ],
+          "darkPixelRatio": 0.0084,
+          "lightPixelRatio": 0.9637
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      },
+      {
+        "id": "dark-rose-complementary",
+        "style": "dark",
+        "color": "#E11D48",
+        "harmony": "complementary",
+        "surfacePolicy": {
+          "shapeSource": "svg",
+          "cornerScale": "fixed",
+          "shadow": "soft",
+          "opacity": 1
+        },
+        "paletteBase": "E11D48",
+        "previewStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            23.84,
+            29.65,
+            44.47
+          ],
+          "darkPixelRatio": 0.9655,
+          "lightPixelRatio": 0.0224
+        },
+        "proofStats": {
+          "size": [
+            1600,
+            900
+          ],
+          "meanRgb": [
+            27.85,
+            28.83,
+            44.38
+          ],
+          "darkPixelRatio": 0.9571,
+          "lightPixelRatio": 0.0071
+        },
+        "checks": {
+          "styleMatchesLock": true,
+          "harmonyMatchesLock": true,
+          "colorSeedMatchesAccent1": true,
+          "adobePaletteSeed": true,
+          "themeAccentCount": true,
+          "boundsOk": true,
+          "pngExported": true,
+          "shapeSource": true,
+          "shadow": true,
+          "darkFeel": true,
+          "lightFeel": true,
+          "warmFeel": true,
+          "frostedGlassSvg": true,
+          "newmorphicSvg": true
+        },
+        "ok": true
+      }
+    ],
+    "contactSheets": {
+      "cover": {
+        "ok": true,
+        "file": "artifacts\\theme-style-color-matrix\\theme-style-color-cover-contact-sheet.png",
+        "size": [
+          1520,
+          858
+        ],
+        "previewCount": 10
+      },
+      "proof": {
+        "ok": true,
+        "file": "artifacts\\theme-style-color-matrix\\theme-style-color-proof-contact-sheet.png",
+        "size": [
+          1520,
+          858
+        ],
+        "previewCount": 10
+      }
+    },
+    "ok": true
+  },
+  "assessment": "sufficient",
+  "ok": true
+}
