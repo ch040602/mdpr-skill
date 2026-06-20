@@ -38,12 +38,13 @@ class PipelineLayout:
     canvas_x: int = 55
     canvas_y: int = 112
     canvas_w: int = 1330
-    canvas_h: int = 600
+    canvas_h: int = 580
     scale: float = 1.0
     min_font_px: int = 13
     min_padding_px: int = 14
     icon_text_gap_px: int = 12
     containment_padding_px: int = 14
+    bottom_safe_px: int = 54
     fixed_radius_px: int = 16
     panel_radius_px: int = 18
     card_radius_px: int = 16
@@ -153,7 +154,7 @@ def base_placement() -> dict[str, tuple[float, float, float, float]]:
         "styled_ir_card": (1157, 238, 196, 105),
         "renderers_card": (1157, 390, 196, 105),
         "visual_check": (1157, 506, 196, 60),
-        "coherence_band": (90, 625, 1220, 72),
+        "coherence_band": (90, 610, 1220, 66),
     }
 
 
@@ -977,7 +978,7 @@ def create_editable_deck(pptx_path: Path) -> None:
         background = slide.Background.Fill
         background.ForeColor.RGB = ppt_rgb(theme["background"])
         add_ppt_line(slide, "z00_grid_top", 72, 126, 1328, 126, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
-        add_ppt_line(slide, "z00_grid_bottom", 72, 621, 1328, 621, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
+        add_ppt_line(slide, "z00_grid_bottom", 72, 596, 1328, 596, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
         for idx, x in enumerate([382.5, 670.5, 1132]):
             add_ppt_line(slide, f"z00_grid_v_{idx}", x, 126, x, 621, {"color": theme["backgroundLine"], "width": 1.0, "dashed": False}, False)
 
@@ -1035,8 +1036,8 @@ def create_editable_deck(pptx_path: Path) -> None:
 
         add_ppt_rect(slide, "coherence_band", placement["coherence_band"], theme["card"], theme["cardStroke"], radius=True, shadow=True)
         cx, cy, cw, ch = placement["coherence_band"]
-        add_ppt_text(slide, "coherence_title", cx + 32, cy + 19, 185, 38, coherence["title"], 17, theme["text"], True)
-        add_ppt_text(slide, "coherence_body", cx + 235, cy + 16, cw - 270, 42, coherence["line"], 14, "526071")
+        add_ppt_text(slide, "coherence_title", cx + 32, cy + 14, 185, 36, coherence["title"], 17, theme["text"], True)
+        add_ppt_text(slide, "coherence_body", cx + 235, cy + 12, cw - 270, 40, coherence["line"], 14, "526071")
         presentation.SaveAs(str(pptx_path.resolve()), 24)
     finally:
         if presentation is not None:
@@ -1210,14 +1211,45 @@ def validate_layout() -> dict[str, Any]:
     arrow_style_violations: list[dict[str, Any]] = []
     arrow_anchor_violations: list[dict[str, Any]] = []
     group_center_violations: list[dict[str, Any]] = []
+    bottom_safe_violations: list[dict[str, Any]] = []
+    bottom_limit = LAYOUT.svg_h - LAYOUT.bottom_safe_px
     for item in TEXT_BOUNDS:
         parent = str(item["parent"])
         if parent and parent in BOX_BOUNDS:
             text_box = (float(item["x"]), float(item["y"]), float(item["w"]), float(item["h"]))
             if not fits_inside(text_box, BOX_BOUNDS[parent], required_text_padding(str(item["role"]))):
                 overflow.append(item)
+        text_bottom = float(item["y"]) + float(item["h"])
+        if text_bottom > bottom_limit:
+            bottom_safe_violations.append({"type": "text", "item": item, "bottomLimit": bottom_limit})
         if int(item["fontSize"]) < LAYOUT.min_font_px:
             font_violations.append(item)
+    for name, (x, y, w, h) in BOX_BOUNDS.items():
+        if y + h > bottom_limit:
+            bottom_safe_violations.append(
+                {
+                    "type": "box",
+                    "name": name,
+                    "box": [round(x, 2), round(y, 2), round(w, 2), round(h, 2)],
+                    "bottom": round(y + h, 2),
+                    "bottomLimit": bottom_limit,
+                }
+            )
+    for item in SHADOWS:
+        name = str(item["name"])
+        if name not in BOX_BOUNDS:
+            continue
+        x, y, w, h = BOX_BOUNDS[name]
+        shadow_bottom = y + h + float(item.get("dy", 0))
+        if shadow_bottom > bottom_limit:
+            bottom_safe_violations.append(
+                {
+                    "type": "shadow",
+                    "name": name,
+                    "bottom": round(shadow_bottom, 2),
+                    "bottomLimit": bottom_limit,
+                }
+            )
     for item in ICON_ALIGNMENTS:
         if abs(float(item["iconCy"]) - float(item["titleMidY"])) > 0.5 or float(item["gap"]) < LAYOUT.icon_text_gap_px:
             icon_violations.append(item)
@@ -1301,6 +1333,7 @@ def validate_layout() -> dict[str, Any]:
         "minPaddingPx": LAYOUT.min_padding_px,
         "iconTextGapPx": LAYOUT.icon_text_gap_px,
         "containmentPaddingPx": LAYOUT.containment_padding_px,
+        "bottomSafePx": LAYOUT.bottom_safe_px,
         "trackedTextBoxes": len(TEXT_BOUNDS),
         "trackedShadows": len(SHADOWS),
         "trackedArrows": len(ARROW_CONNECTIONS),
@@ -1322,6 +1355,7 @@ def validate_layout() -> dict[str, Any]:
         "arrowStyleViolationCount": len(arrow_style_violations),
         "arrowAnchorViolationCount": len(arrow_anchor_violations),
         "groupCenterViolationCount": len(group_center_violations),
+        "bottomSafeViolationCount": len(bottom_safe_violations),
         "overflow": overflow,
         "fontViolations": font_violations,
         "iconAlignmentViolations": icon_violations,
@@ -1332,7 +1366,8 @@ def validate_layout() -> dict[str, Any]:
         "arrowStyleViolations": arrow_style_violations,
         "arrowAnchorViolations": arrow_anchor_violations,
         "groupCenterViolations": group_center_violations,
-        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations and not alignment_violations and not arrow_style_violations and not arrow_anchor_violations and not group_center_violations,
+        "bottomSafeViolations": bottom_safe_violations,
+        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations and not alignment_violations and not arrow_style_violations and not arrow_anchor_violations and not group_center_violations and not bottom_safe_violations,
     }
 
 
@@ -1370,6 +1405,8 @@ def main() -> None:
     shutil.copyfile(PPTX, MDPR_README_ASSETS / "mdpr-pipeline-teaser.pptx")
     shutil.copyfile(PNG, MDPR_README_ASSETS / "mdpr-pipeline-teaser.png")
     shutil.copyfile(PNG, MDPR_README_ASSETS / "design-components-pipeline.png")
+    shutil.copyfile(SVG, MDPR_README_ASSETS / "pipeline.svg")
+    shutil.copyfile(PNG, MDPR_README_ASSETS / "pipeline.png")
     shutil.copyfile(REPORT, MDPR_README_ASSETS / "mdpr-pipeline-teaser-report.json")
     shutil.copyfile(LAYOUT_REPORT, MDPR_README_ASSETS / "mdpr-pipeline-teaser-layout.json")
     shutil.copyfile(PPTX, FINAL_ARTIFACTS / "mdpr-pipeline-final.pptx")

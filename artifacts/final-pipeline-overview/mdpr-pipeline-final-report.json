@@ -11,8 +11,8 @@
       2600,
       1414
     ],
-    "uniqueColors": 4207,
-    "nonWhitePixels": 2157666,
+    "uniqueColors": 4204,
+    "nonWhitePixels": 2130086,
     "hasContent": true
   },
   "layoutValidation": {
@@ -41,6 +41,7 @@
     "minPaddingPx": 14,
     "iconTextGapPx": 12,
     "containmentPaddingPx": 14,
+    "bottomSafePx": 54,
     "trackedTextBoxes": 54,
     "trackedShadows": 21,
     "trackedArrows": 16,
@@ -192,6 +193,7 @@
     "arrowStyleViolationCount": 0,
     "arrowAnchorViolationCount": 0,
     "groupCenterViolationCount": 0,
+    "bottomSafeViolationCount": 0,
     "overflow": [],
     "fontViolations": [],
     "iconAlignmentViolations": [],
@@ -202,6 +204,7 @@
     "arrowStyleViolations": [],
     "arrowAnchorViolations": [],
     "groupCenterViolations": [],
+    "bottomSafeViolations": [],
     "ok": true
   },
   "pptxValidation": {

@@ -163,8 +163,8 @@
 <path id="visual_check_spark" d="M1310.0,525.0 l7,-7 l7,7 M1295.0,550.0 h34" fill="none" stroke="#F59E0B" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
 <text id="visual_check_label" x="1214.0" y="529.0" fill="#881337" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">PROOF POINT</text>
 <text id="visual_check_text" x="1214.0" y="549.0" fill="#881337" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" dominant-baseline="middle">visual validation</text>
-<rect id="coherence_band_shadow" x="93.0" y="631.0" width="1220.0" height="72.0" rx="18.0" fill="#0F172A" opacity="0.12"/>
-<rect id="coherence_band" x="90.0" y="625.0" width="1220.0" height="72.0" rx="18.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.4"/>
-<text id="coherence_title" x="122.0" y="662.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" dominant-baseline="middle">Coherence checks</text>
-<text id="coherence_body" x="325.0" y="662.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">One graph per slide; text is bounded; icons are centered; arrows keep role-level style.</text>
+<rect id="coherence_band_shadow" x="93.0" y="616.0" width="1220.0" height="66.0" rx="18.0" fill="#0F172A" opacity="0.12"/>
+<rect id="coherence_band" x="90.0" y="610.0" width="1220.0" height="66.0" rx="18.0" fill="#FFFDF8" stroke="#DACFC0" stroke-width="1.4"/>
+<text id="coherence_title" x="122.0" y="647.0" fill="#111827" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="17" font-weight="700" dominant-baseline="middle">Coherence checks</text>
+<text id="coherence_body" x="325.0" y="647.0" fill="#526071" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="400" dominant-baseline="middle">One graph per slide; text is bounded; icons are centered; arrows keep role-level style.</text>
 </svg>

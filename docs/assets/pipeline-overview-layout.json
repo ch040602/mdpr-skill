@@ -7,7 +7,7 @@
       55,
       112,
       1330,
-      600
+      580
     ],
     "zone_content_panel": [
       90,
@@ -131,9 +131,9 @@
     ],
     "coherence_band": [
       90,
-      625,
+      610,
       1220,
-      72
+      66
     ]
   },
   "alignedPlacement": {
@@ -141,7 +141,7 @@
       55,
       112,
       1330,
-      600
+      580
     ],
     "zone_content_panel": [
       90.0,
@@ -265,9 +265,9 @@
     ],
     "coherence_band": [
       90,
-      625,
+      610,
       1220,
-      72
+      66
     ]
   },
   "alignmentRules": [
