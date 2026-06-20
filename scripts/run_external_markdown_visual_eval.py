@@ -22,6 +22,8 @@ RAW = OUT / "raw"
 ITERATIONS = 4
 MIN_SOURCE_COUNT = 20
 PNG_SIZE = (1600, 900)
+CARD_HEAVY_PRESETS = {"grid", "vertical-list", "single-card"}
+EXEMPT_LAYOUT_PRESETS = {"cover", "toc"}
 
 
 @dataclass(frozen=True)
@@ -128,7 +130,7 @@ def collect_sources() -> list[dict[str, Any]]:
         raw_path.write_text(cleaned, encoding="utf-8")
         records.append({
             "slug": source.slug,
-            "title": first_heading(cleaned) or source.title_hint,
+            "title": select_source_title(cleaned, source.title_hint),
             "url": source.url,
             "path": str(raw_path.relative_to(ROOT)),
             "ok": True,
@@ -158,6 +160,24 @@ def sanitize_markdown(text: str) -> str:
     text = re.sub(r"!\[[^\]]*]\([^)]+\)", "", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip() + "\n"
+
+
+def select_source_title(text: str, fallback: str) -> str:
+    heading = first_heading(text)
+    if not heading:
+        return fallback
+    normalized = heading.lower()
+    if fallback and (
+        normalized == heading
+        or normalized.startswith(("if ", "when ", "how ", "why ", "venv", "install", "usage"))
+        or "/" in heading
+    ):
+        return fallback
+    if len(heading) < 3 or normalized in {"readme", "documentation", "overview"}:
+        return fallback
+    if "build status" in normalized or "coverage" in normalized:
+        return fallback
+    return heading[:64]
 
 
 def first_heading(text: str) -> str | None:
@@ -255,15 +275,62 @@ def render_source_section(index: int, record: dict[str, Any], source_text: str, 
     bullets = extract_bullets(source_text, iteration)
     code = extract_code_block(source_text)
     table = extract_table(source_text)
+    structure_line = f"{record['headings']} headings, {record['tables']} table-like lines, {record['codeFences']} fenced code blocks."
     section = [
         f"## {index:02d}. {title}",
         "",
+    ]
+
+    if iteration >= 4:
+        variant = index % 6
+        if variant == 1:
+            section.extend([
+                f"> {title} is evaluated as a Markdown-to-PPTX coherence source.",
+                "",
+                f"- **Structure**\n  {structure_line}",
+                "- **Design target**\n  Preserve hierarchy while avoiding repeated card-only continuation slides.",
+            ])
+            return section + [""]
+        if variant == 2:
+            section.extend([
+                "```chart",
+                "labels: Headings, Tables, Code",
+                f"Source: {record['headings']}, {record['tables']}, {record['codeFences']}",
+                "```",
+                "",
+                f"- **Source**\n  `{record['slug']}`",
+                "- **Proof use**\n  Numeric structure is shown as a chart beside explanatory text.",
+            ])
+            return section + [""]
+        if variant == 3:
+            section.extend([
+                "- **Before**\n  Imported Markdown often becomes a repeated list-card continuation.",
+                "- **After**\n  The same source is routed through comparison, table, chart, or diagram layouts when the structure supports it.",
+            ])
+            return section + [""]
+        if variant == 4:
+            section.extend([
+                f"Markdown intake => {title} structure => MDPR layout choice => PPTX visual QA",
+                "",
+            ])
+            return section + [""]
+        if variant == 5:
+            section.extend([
+                "| Signal | Value | Use |",
+                "| --- | ---: | --- |",
+                f"| Headings | {record['headings']} | section planning |",
+                f"| Tables | {record['tables']} | table-aware layout |",
+                f"| Code fences | {record['codeFences']} | code-focus layout |",
+            ])
+            return section + [""]
+
+    section.extend([
         f"- **Source**",
         f"  `{record['slug']}` from `{record['url']}`",
         f"- **Structure**",
-        f"  {record['headings']} headings, {record['tables']} table-like lines, {record['codeFences']} fenced code blocks.",
-    ]
-    section.extend(bullets)
+        f"  {structure_line}",
+    ])
+    section.extend(bullets[:4])
     if table and iteration >= 2:
         section.extend(["", "### Representative Table", "", table])
     if code and iteration >= 3:
@@ -395,11 +462,13 @@ def export_pngs(pptx: Path, png_dir: Path) -> None:
 def evaluate_iteration(iteration: int, deck_md: Path, build_dir: Path, png_dir: Path, previous_first_slide: Path | None) -> dict[str, Any]:
     manifest = json.loads((build_dir / "mdpresent-manifest.json").read_text(encoding="utf-8"))
     lock = json.loads((build_dir / "mdpresent-design-lock.json").read_text(encoding="utf-8"))
+    layout_plan = read_layout_plan(deck_md)
+    composition_report = analyze_layout_composition(layout_plan)
     pptx = build_dir / "deck.pptx"
     pptx_report = inspect_pptx(pptx)
     png_report = inspect_pngs(png_dir, previous_first_slide)
     contact_sheet = make_contact_sheet(iteration, png_dir)
-    quality = score_quality(manifest, pptx_report, png_report)
+    quality = score_quality(manifest, pptx_report, png_report, composition_report)
     return {
         "iteration": iteration,
         "source": str(deck_md.relative_to(ROOT)),
@@ -417,6 +486,7 @@ def evaluate_iteration(iteration: int, deck_md: Path, build_dir: Path, png_dir: 
         "manifestValidation": manifest.get("validation", {}),
         "pptxInspection": pptx_report,
         "pngInspection": png_report,
+        "compositionInspection": composition_report,
         "contactSheet": contact_sheet,
         "teaserComparisonRubric": {
             "referenceBasis": [
@@ -427,6 +497,102 @@ def evaluate_iteration(iteration: int, deck_md: Path, build_dir: Path, png_dir: 
         },
         "quality": quality,
         "ok": quality["ok"],
+    }
+
+
+def read_layout_plan(deck_md: Path) -> dict[str, Any]:
+    cmd = [
+        shutil.which("npm.cmd") or shutil.which("npm") or "npm",
+        "--silent",
+        "run",
+        "cli",
+        "--",
+        "plan",
+        str(deck_md.resolve()),
+        "--json",
+    ]
+    result = subprocess.run(cmd, cwd=MDPR, check=True, capture_output=True, text=True)
+    return parse_json_from_cli_output(result.stdout)
+
+
+def parse_json_from_cli_output(output: str) -> dict[str, Any]:
+    start = output.find("{")
+    end = output.rfind("}")
+    if start < 0 or end < start:
+        raise RuntimeError("mdpresent plan did not return JSON")
+    return json.loads(output[start:end + 1])
+
+
+def analyze_layout_composition(plan: dict[str, Any]) -> dict[str, Any]:
+    slides = plan.get("slides", [])
+    content_slides = [
+        slide for slide in slides
+        if slide.get("layout", {}).get("preset") not in EXEMPT_LAYOUT_PRESETS
+    ]
+    presets = [slide.get("layout", {}).get("preset", "unknown") for slide in content_slides]
+    preset_counts: dict[str, int] = {}
+    for preset in presets:
+        preset_counts[preset] = preset_counts.get(preset, 0) + 1
+
+    card_flags = [preset in CARD_HEAVY_PRESETS for preset in presets]
+    max_card_run = 0
+    current_run = 0
+    for flag in card_flags:
+        current_run = current_run + 1 if flag else 0
+        max_card_run = max(max_card_run, current_run)
+
+    scale_violations = []
+    title_sizes = []
+    for slide_index, slide in enumerate(slides, start=1):
+        title_font_sizes = [
+            region.get("typography", {}).get("fontSize")
+            for region in slide.get("regions", [])
+            if region.get("role") == "title" and region.get("typography", {}).get("fontSize") is not None
+        ]
+        child_font_sizes = [
+            region.get("typography", {}).get("fontSize")
+            for region in slide.get("regions", [])
+            if region.get("role") != "title" and region.get("typography", {}).get("fontSize") is not None
+        ]
+        if not title_font_sizes:
+            continue
+        min_title = min(float(size) for size in title_font_sizes)
+        title_sizes.append(min_title)
+        if child_font_sizes:
+            max_child = max(float(size) for size in child_font_sizes)
+            if max_child > min_title:
+                scale_violations.append({
+                    "slide": slide_index,
+                    "titleFontSize": min_title,
+                    "maxChildFontSize": max_child,
+                })
+
+    content_count = len(content_slides)
+    card_count = sum(1 for flag in card_flags if flag)
+    card_ratio = card_count / content_count if content_count else 0
+    layout_family_count = len(preset_counts)
+    issues = []
+    if content_count >= 3 and card_ratio > 0.58 and max_card_run >= 3:
+        issues.append(f"repeated card-heavy layout sequence: ratio {card_ratio:.2f}, max run {max_card_run}")
+    if content_count >= 8 and layout_family_count < 5:
+        issues.append(f"layout family diversity too low: {layout_family_count}")
+    if title_sizes and min(title_sizes) < 30:
+        issues.append(f"weak title scale hierarchy: minimum title font {min(title_sizes):.1f}pt")
+    if scale_violations:
+        issues.append(f"child text exceeds title scale on {len(scale_violations)} slide(s)")
+
+    return {
+        "ok": not issues,
+        "issues": issues,
+        "slideCount": len(slides),
+        "contentSlideCount": content_count,
+        "layoutPresetCounts": preset_counts,
+        "layoutFamilyCount": layout_family_count,
+        "cardHeavyPresetCount": card_count,
+        "cardHeavyRatio": round(card_ratio, 3),
+        "maxCardHeavyRun": max_card_run,
+        "minimumTitleFontPt": min(title_sizes) if title_sizes else None,
+        "scaleHierarchyViolations": scale_violations,
     }
 
 
@@ -544,7 +710,7 @@ def make_contact_sheet(iteration: int, png_dir: Path) -> dict[str, Any]:
     return {"ok": True, "file": str(out.relative_to(ROOT)), "slidesShown": len(sample), "size": sheet.size}
 
 
-def score_quality(manifest: dict[str, Any], pptx: dict[str, Any], png: dict[str, Any]) -> dict[str, Any]:
+def score_quality(manifest: dict[str, Any], pptx: dict[str, Any], png: dict[str, Any], composition: dict[str, Any]) -> dict[str, Any]:
     diagnostics = manifest.get("diagnostics", [])
     overflow = manifest.get("validation", {}).get("layoutOverflow", [])
     issues = []
@@ -564,6 +730,8 @@ def score_quality(manifest: dict[str, Any], pptx: dict[str, Any], png: dict[str,
         issues.append(f"expected at least 20 rendered slides, got {png['pngCount']}")
     if png["meanUniqueColors"] < 120:
         issues.append(f"rendered slides look too sparse: mean unique colors {png['meanUniqueColors']:.1f}")
+    if not composition["ok"]:
+        issues.extend(composition["issues"])
     return {
         "score": max(0, 100 - len(issues) * 12),
         "ok": not issues,

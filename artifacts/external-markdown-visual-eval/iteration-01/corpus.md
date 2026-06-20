@@ -51,7 +51,7 @@ Downloaded Markdown => MDPR Parser => Slide Splitter => Layout Planner => PPTX R
 - Universal Plugin Interface
 - A dev server that provides rich feature enhancements over native ES modules, for example extremely fast Hot Module Replacement (HMR).
 
-## 03. vuejs/core
+## 03. Vue
 
 - **Source**
   `vue` from `https://raw.githubusercontent.com/vuejs/core/main/README.md`
@@ -167,7 +167,7 @@ Downloaded Markdown => MDPR Parser => Slide Splitter => Layout Planner => PPTX R
 - **Performance:** Fast and memory-efficient, suitable for critical services, embedded devices, and easily integrated with other languages.
 - **Reliability:** Our rich type system and ownership model ensure memory and thread safety, reducing bugs at compile-time.
 
-## 15. if you are updating an existing checkout
+## 15. PyTorch
 
 - **Source**
   `pytorch` from `https://raw.githubusercontent.com/pytorch/pytorch/main/README.md`
@@ -207,7 +207,7 @@ Downloaded Markdown => MDPR Parser => Slide Splitter => Layout Planner => PPTX R
 - **Documentation:** https://numpy.org/doc
 - **Mailing list:** https://mail.python.org/mailman/listinfo/numpy-discussion
 
-## 19. venv
+## 19. Transformers
 
 - **Source**
   `huggingface-transformers` from `https://raw.githubusercontent.com/huggingface/transformers/main/README.md`
@@ -235,7 +235,7 @@ Downloaded Markdown => MDPR Parser => Slide Splitter => Layout Planner => PPTX R
 - + Download from the official website + npm install echarts --save + CDN: jsDelivr CDN
 - + GitHub Issues for bug report and feature requests + Email dev@echarts.apache.org for general questions + Subscribe to the mailing list to get updated with the project
 
-## 22. plotly.py
+## 22. Plotly.py
 
 - **Source**
   `plotly` from `https://raw.githubusercontent.com/plotly/plotly.py/master/README.md`

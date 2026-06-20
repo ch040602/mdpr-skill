@@ -24,13 +24,30 @@ PowerPoint-rendered slides.
 
 | Iteration | Build path | Rendered slides | Result |
 | --- | --- | ---: | --- |
-| 1 | Markdown download -> corpus deck -> PPTX/PNG | 30 | Pass after TOC splitting fix |
-| 2 | Bounded bullet extraction applied | 30 | Pass |
-| 3 | Corpus evidence chart added | 30 | Pass |
-| 4 | Local pipeline Markdown included through MDPR diagram path | 30 | Pass |
+| 1 | Markdown download -> corpus deck -> PPTX/PNG | 48 | Pass after TOC splitting fix |
+| 2 | Bounded bullet extraction applied | 51 | Pass |
+| 3 | Corpus evidence chart added | 28 | Pass |
+| 4 | Rule-based composition diversification and local pipeline Markdown | 38 | Pass |
 
 The final report records 23 sources, 4 iterations, 4 generated PPTX decks, 4
 PowerPoint PNG export sets, and all-slide contact sheets for VLM review.
+
+## Composition Gate
+
+The evaluation now reads MDPR's normal `plan` output and scores layout
+composition in addition to overflow, font size, nonblank rendering, and contrast.
+The gate fails decks with excessive repeated card-heavy layout sequences, weak
+title/body scale hierarchy, or too few layout families on larger decks.
+
+Observed improvement in the final iteration:
+
+- Card-heavy layout ratio changed from `0.778` in the previous final deck to
+  `0.235`.
+- Maximum consecutive card-heavy run changed from `13` to `2`.
+- Layout families in the final deck: `vertical-list`, `pipeline`,
+  `table-focus`, `chart-table`, `grid`, `key-message`, and `comparison`.
+- Source title selection now prefers stable source hints over incidental README
+  setup headings such as virtual-environment or checkout instructions.
 
 ## Fix Applied
 
@@ -44,23 +61,22 @@ Regression coverage:
 - `packages/layout/test/layout.test.mjs`: large TOC decks produce no region
   bounds overflow.
 
-## VLM Review Notes
+## Visual Review Notes
 
-The generated slides are readable and bounded after the TOC fix. The fourth
-iteration is stronger than the first because source cards use a 2x2 structure,
-the evidence chart gives the deck a proof object, and the pipeline slide is no
-longer a special drawing path.
+The generated slides are readable and bounded after the TOC and composition
+fixes. The fourth iteration is stronger than the earlier card-heavy result
+because source sections are deterministically routed across quote/key-message,
+chart, comparison, table, pipeline, and compact bullet forms while still using
+one MDPR parser, layout planner, PPTX renderer, and PowerPoint PNG export path.
 
 Remaining improvements for paper/product-teaser quality:
 
 - Add stronger hero/key-message composition for the first slide. The current
   cover is safe but less memorable than recent research/product teasers.
-- Add more non-card continuation layouts. Several source continuation slides
-  still rely on simple row cards and could use comparison, timeline, or proof
-  object variants when the source semantics support them.
-- Improve source-title extraction. Some README files expose setup headings
-  before the real project name.
-- Add a visual-quality score that penalizes excessive repeated card grammar even
-  when overflow and font checks pass.
+- Improve low-density continuation slides that are mostly URLs or sparse
+  extracted bullets. They pass bounds checks but still look less editorial than
+  strong paper/product teaser pages.
+- Add a stronger first-slide hero/proof composition, preferably driven by corpus
+  summary statistics rather than a custom drawing path.
 - Unify README teaser asset generation with the MDPR build path so pipeline
   previews and external-eval pipeline slides share the same renderer contract.

@@ -28,9 +28,9 @@
   },
   "pptxInspection": {
     "slideCount": 28,
-    "textRuns": 229,
+    "textRuns": 217,
     "minFontSizePt": 8.0,
-    "fontSizeCount": 229,
+    "fontSizeCount": 217,
     "boundsViolationCount": 0,
     "boundsViolations": [],
     "chartPartCount": 1,
@@ -42,7 +42,7 @@
     "blankSlides": [],
     "lowContrastSlides": [],
     "minUniqueColors": 57,
-    "meanUniqueColors": 269.57142857142856,
+    "meanUniqueColors": 206.75,
     "contentBoxes": [
       {
         "slide": "slide-01.png",
@@ -206,6 +206,26 @@
       "right": "artifacts\\external-markdown-visual-eval\\iteration-03\\png\\slide-01.png",
       "meanAbsDiff": 0.0
     }
+  },
+  "compositionInspection": {
+    "ok": true,
+    "issues": [],
+    "slideCount": 28,
+    "contentSlideCount": 25,
+    "layoutPresetCounts": {
+      "vertical-list": 5,
+      "pipeline": 1,
+      "table-focus": 1,
+      "chart-table": 1,
+      "grid": 8,
+      "comparison": 9
+    },
+    "layoutFamilyCount": 6,
+    "cardHeavyPresetCount": 13,
+    "cardHeavyRatio": 0.52,
+    "maxCardHeavyRun": 2,
+    "minimumTitleFontPt": 34.0,
+    "scaleHierarchyViolations": []
   },
   "contactSheet": {
     "ok": true,

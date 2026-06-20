@@ -58,7 +58,6 @@ Useful: 20, 72, 12, 14
 - Add React to an Existing Project to use as little or as much React as you need.
 - Create a New React App if you're looking for a powerful JavaScript toolchain.
 - Adding Interactivity
-- Where to Get Support
 
 ### Code Sample
 
@@ -92,7 +91,7 @@ root.render(<HelloMessage name="Taylor" />);
 | @vitejs/plugin-legacy |  |
 | create-vite |  |
 
-## 03. vuejs/core
+## 03. Vue
 
 - **Source**
   `vue` from `https://raw.githubusercontent.com/vuejs/core/main/README.md`
@@ -120,7 +119,6 @@ root.render(<HelloMessage name="Taylor" />);
 - Language service crashes that substantially impact mainline usage
 - Serious regressions from 5.9 (these must *seriously* impact a *large* proportion of users)
 - Submit bugs and help us verify fixes as they are checked in.
-- Review the source code changes.
 
 ### Code Sample
 
@@ -138,8 +136,6 @@ npm install -D typescript
 - Contributing to Node.js
 - Current project team members
 - TSC (Technical Steering Committee)
-- ****Current****
-  Under active development. Code for the Current release is in the
 
 ### Code Sample
 
@@ -157,7 +153,6 @@ curl -fsLo "/path/to/nodejs-keyring.kbx" "https://github.com/nodejs/release-keys
 - TC (Technical Committee)
 - Focus on high performance
 - Super-high test coverage
-- View system supporting 14+ template engines
 
 ### Code Sample
 
@@ -186,8 +181,6 @@ app.get('/', (req, res) => {
   Reduce about 40% of human (developer) induced errors. *
 - ****Intuitive****
   Great editor support. Completion everywhere. Less time debugging.
-- ****Easy****
-  Designed to be easy to use and learn. Less time reading docs.
 
 ### Code Sample
 
@@ -207,7 +200,6 @@ $ pip install "fastapi[standard]"
 - Converting to a dictionary, model.to_dict()
 - Additional advanced functionality
 - azure_endpoint (or the AZURE_OPENAI_ENDPOINT environment variable)
-- api_version (or the OPENAI_API_VERSION environment variable)
 
 ### Representative Table
 
@@ -235,7 +227,6 @@ pip install openai
 - **LangGraph** Build agents that can reliably handle complex tasks with our low-level agent orchestration framework
 - **Integrations** Chat & embedding models, tools & toolkits, and more
 - **LangSmith** Agent evals, observability, and debugging for LLM apps
-- **LangSmith Deployment** Deploy and scale agents with a purpose-built platform for long-running, stateful workflows
 
 ### Code Sample
 
@@ -255,7 +246,6 @@ uv add langchain
 - checkbox "Toggle Todo" [ref=e10]
 - **text**
   "Buy groceries"
-- CLI for coding agents
 
 ### Representative Table
 
@@ -310,7 +300,7 @@ make
 - ****Reliability**
   ** Our rich type system and ownership model ensure memory and thread safety, reducing bugs at compile-time.
 
-## 15. if you are updating an existing checkout
+## 15. PyTorch
 
 - **Source**
   `pytorch` from `https://raw.githubusercontent.com/pytorch/pytorch/main/README.md`
@@ -321,7 +311,6 @@ make
 - A GPU-Ready Tensor Library
 - **Dynamic Neural Networks**
   Tape-Based Autograd
-- Imperative Experiences
 
 ### Representative Table
 
@@ -350,7 +339,6 @@ $ conda activate <CONDA_NAME>
 - Apply the desired changes (i.e., cherry-pick them) and resolve any code
 - Run TensorFlow tests and ensure they pass.
 - Build the TensorFlow pip
-- TensorFlow Tutorials
 
 ### Representative Table
 
@@ -374,8 +362,6 @@ pip install tensorflow
 - Discussion and Development
 - Contributing to pandas
 - Easy handling of [**missing data**][missing-data] (represented as
-- **Size mutability**
-  columns can be [**inserted and
 
 ### Representative Table
 
@@ -406,10 +392,8 @@ conda install -c conda-forge pandas
   ** https://mail.python.org/mailman/listinfo/numpy-discussion
 - ****Source code**
   ** https://github.com/numpy/numpy
-- ****Contributing**
-  ** https://numpy.org/devdocs/dev/index.html
 
-## 19. venv
+## 19. Transformers
 
 - **Source**
   `huggingface-transformers` from `https://raw.githubusercontent.com/huggingface/transformers/main/README.md`
@@ -419,7 +403,6 @@ conda install -c conda-forge pandas
 - Low barrier to entry for researchers, engineers, and developers.
 - Few user-facing abstractions with just three classes to learn.
 - A unified API for using all our pretrained models.
-- Share trained models instead of training from scratch.
 
 ### Representative Table
 
@@ -472,7 +455,7 @@ npm install
 npm run dev
 ```
 
-## 22. plotly.py
+## 22. Plotly.py
 
 - **Source**
   `plotly` from `https://raw.githubusercontent.com/plotly/plotly.py/master/README.md`
@@ -499,7 +482,6 @@ fig.show()
 - System design interview questions, **with solutions**
 - Object-oriented design interview questions, **with solutions**
 - Additional system design interview questions
-- System design exercises deck
 
 ### Representative Table
 

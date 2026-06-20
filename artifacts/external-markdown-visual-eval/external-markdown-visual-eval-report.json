@@ -19,7 +19,7 @@
     },
     {
       "slug": "vue",
-      "title": "vuejs/core",
+      "title": "Vue",
       "url": "https://raw.githubusercontent.com/vuejs/core/main/README.md",
       "chars": 1922
     },
@@ -91,7 +91,7 @@
     },
     {
       "slug": "pytorch",
-      "title": "if you are updating an existing checkout",
+      "title": "PyTorch",
       "url": "https://raw.githubusercontent.com/pytorch/pytorch/main/README.md",
       "chars": 27535
     },
@@ -115,7 +115,7 @@
     },
     {
       "slug": "huggingface-transformers",
-      "title": "venv",
+      "title": "Transformers",
       "url": "https://raw.githubusercontent.com/huggingface/transformers/main/README.md",
       "chars": 15612
     },
@@ -133,7 +133,7 @@
     },
     {
       "slug": "plotly",
-      "title": "plotly.py",
+      "title": "Plotly.py",
       "url": "https://raw.githubusercontent.com/plotly/plotly.py/master/README.md",
       "chars": 3885
     },

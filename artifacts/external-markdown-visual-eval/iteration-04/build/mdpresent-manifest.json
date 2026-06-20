@@ -3,7 +3,7 @@
   "engine": "mdpresent",
   "source": {
     "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\external-markdown-visual-eval\\iteration-04\\corpus.md",
-    "sha256": "5ef0a48fe919c7030ca23654adf278201ad75c1fcf92e92aff01e65496bcb353"
+    "sha256": "74388b53840edcdf4c1d3dd99d4eebc0714edc78d5197261cc4f0606a0473e00"
   },
   "config": {
     "sha256": "57c1d9d44bdf4868944b7873f3d1a3579a14414ee8698097d5d434ea02e83314",
@@ -24,7 +24,7 @@
       }
     ]
   },
-  "slideCount": 30,
+  "slideCount": 38,
   "outputs": [
     "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\external-markdown-visual-eval\\iteration-04\\build\\deck.html",
     "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\external-markdown-visual-eval\\iteration-04\\build\\deck.pptx"
@@ -35,7 +35,7 @@
     "layoutOverflow": [],
     "visual": {
       "checked": true,
-      "slideCount": 30,
+      "slideCount": 38,
       "checks": {
         "nonBlankSlides": true,
         "regionBounds": true,

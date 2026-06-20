@@ -203,6 +203,25 @@
     ],
     "firstSlideDeltaFromPrevious": null
   },
+  "compositionInspection": {
+    "ok": true,
+    "issues": [],
+    "slideCount": 48,
+    "contentSlideCount": 45,
+    "layoutPresetCounts": {
+      "vertical-list": 22,
+      "pipeline": 1,
+      "table-focus": 1,
+      "comparison": 18,
+      "grid": 3
+    },
+    "layoutFamilyCount": 5,
+    "cardHeavyPresetCount": 25,
+    "cardHeavyRatio": 0.556,
+    "maxCardHeavyRun": 2,
+    "minimumTitleFontPt": 34.0,
+    "scaleHierarchyViolations": []
+  },
   "contactSheet": {
     "ok": true,
     "file": "artifacts\\external-markdown-visual-eval\\iteration-01\\contact-sheet.png",

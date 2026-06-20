@@ -10,13 +10,13 @@
     "colorSeed": "#0F766E",
     "colorCombination": "split-complementary"
   },
-  "slideCount": 30,
+  "slideCount": 38,
   "diagnostics": [],
   "manifestValidation": {
     "layoutOverflow": [],
     "visual": {
       "checked": true,
-      "slideCount": 30,
+      "slideCount": 38,
       "checks": {
         "nonBlankSlides": true,
         "regionBounds": true,
@@ -27,22 +27,22 @@
     }
   },
   "pptxInspection": {
-    "slideCount": 30,
-    "textRuns": 250,
+    "slideCount": 38,
+    "textRuns": 329,
     "minFontSizePt": 8.0,
-    "fontSizeCount": 250,
+    "fontSizeCount": 329,
     "boundsViolationCount": 0,
     "boundsViolations": [],
-    "chartPartCount": 1,
-    "tableShapeMentions": 1,
+    "chartPartCount": 5,
+    "tableShapeMentions": 5,
     "diagramMentions": 3
   },
   "pngInspection": {
-    "pngCount": 30,
+    "pngCount": 38,
     "blankSlides": [],
     "lowContrastSlides": [],
     "minUniqueColors": 57,
-    "meanUniqueColors": 275.1666666666667,
+    "meanUniqueColors": 213.8421052631579,
     "contentBoxes": [
       {
         "slide": "slide-01.png",
@@ -207,13 +207,34 @@
       "meanAbsDiff": 0.0
     }
   },
+  "compositionInspection": {
+    "ok": true,
+    "issues": [],
+    "slideCount": 38,
+    "contentSlideCount": 34,
+    "layoutPresetCounts": {
+      "vertical-list": 3,
+      "pipeline": 6,
+      "table-focus": 5,
+      "chart-table": 5,
+      "grid": 5,
+      "key-message": 4,
+      "comparison": 6
+    },
+    "layoutFamilyCount": 7,
+    "cardHeavyPresetCount": 8,
+    "cardHeavyRatio": 0.235,
+    "maxCardHeavyRun": 2,
+    "minimumTitleFontPt": 34.0,
+    "scaleHierarchyViolations": []
+  },
   "contactSheet": {
     "ok": true,
     "file": "artifacts\\external-markdown-visual-eval\\iteration-04\\contact-sheet.png",
-    "slidesShown": 30,
+    "slidesShown": 38,
     "size": [
       1500,
-      1260
+      1680
     ]
   },
   "teaserComparisonRubric": {
