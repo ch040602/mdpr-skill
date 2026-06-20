@@ -12,12 +12,12 @@ Reference entry points:
 Local structural report:
 
 - `artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json`
-- downloaded PPT files: `30`
-- decks analyzed: `30`
-- slides analyzed structurally: `294`
-- PowerPoint-rendered PNG slides: `588`
-- PNG samples analyzed: `60`
-- aggregate objects: `2,856` shapes, `2,098` text frames, `37` tables, `13` charts, `31` pictures
+- downloaded PPT files: `50`
+- decks analyzed: `50`
+- slides analyzed structurally: `492`
+- PowerPoint-rendered PNG slides: `984`
+- PNG samples analyzed: `100`
+- aggregate objects: `4,769` shapes, `3,626` text frames, `44` tables, `19` charts, `51` pictures
 - contact sheet: `artifacts/pptbizcam-analysis/pptbizcam-downloaded-contact-sheet.png`
 
 Regenerate the pass:

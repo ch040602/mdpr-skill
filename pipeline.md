@@ -41,7 +41,7 @@ The selected theme is `sage-editorial`: a warm editorial palette that combines f
           "title": "Hint Packet",
           "lines": ["intent + importance"],
           "badge": "hints only",
-          "limit": "no coordinates or styles"
+          "limit": "no coords/styles"
         }
       }
     },

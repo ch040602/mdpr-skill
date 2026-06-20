@@ -497,25 +497,25 @@
   "observedReferenceAnalysis": {
     "source": "PPT BIZCAM public post pages and downloadable PPT samples",
     "startPost": 11677,
-    "downloadedPptFiles": 30,
-    "decksAnalyzed": 30,
-    "slidesAnalyzed": 294,
-    "renderedPngSlides": 588,
+    "downloadedPptFiles": 50,
+    "decksAnalyzed": 50,
+    "slidesAnalyzed": 492,
+    "renderedPngSlides": 984,
     "aggregateObjects": {
-      "shapes": 2856,
-      "shapeType:6": 539,
-      "shapeType:5": 224,
-      "textFrames": 2098,
-      "shapeType:17": 228,
-      "shapeType:1": 1646,
-      "shapeType:9": 132,
-      "shapeType:13": 31,
-      "pictures": 31,
-      "shapeType:19": 37,
-      "tables": 37,
-      "shapeType:3": 13,
-      "charts": 13,
-      "shapeType:unknown": 6
+      "shapes": 4769,
+      "shapeType:6": 804,
+      "shapeType:5": 470,
+      "textFrames": 3626,
+      "shapeType:17": 366,
+      "shapeType:1": 2790,
+      "shapeType:9": 216,
+      "shapeType:13": 51,
+      "pictures": 51,
+      "shapeType:19": 44,
+      "tables": 44,
+      "shapeType:3": 19,
+      "charts": 19,
+      "shapeType:unknown": 9
     },
     "methodNote": "Original PPT files are kept only in .cache/pptbizcam for local structural analysis. MDPR stores derived object vocabulary and rules, not copied assets or layouts."
   },
@@ -2071,7 +2071,7 @@
     }
   ],
   "pptbizcamRecursiveRulePolicy": {
-    "minimumDownloadedPptFiles": 30,
+    "minimumDownloadedPptFiles": 50,
     "minimumDerivedObjectPatterns": 50,
     "analysisLoop": [
       "scan numbered PPT BIZCAM post pages from the seed post id",

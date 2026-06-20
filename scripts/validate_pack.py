@@ -310,10 +310,10 @@ def check_pptbizcam_recursive_rules() -> None:
     if len(patterns) < 50:
         fail(f"expected at least 50 PPT BIZCAM-derived object patterns, found {len(patterns)}")
     report = json.loads(read("artifacts/pptbizcam-analysis/pptbizcam-recursive-object-rules.json"))
-    if report.get("pptDownloaded", 0) < 30:
-        fail("expected at least 30 downloaded PPT files in PPT BIZCAM recursive report")
-    if report.get("pngSamplesAnalyzed", 0) < 30:
-        fail("expected at least 30 PNG samples analyzed in PPT BIZCAM recursive report")
+    if report.get("pptDownloaded", 0) < 50:
+        fail("expected at least 50 downloaded PPT files in PPT BIZCAM recursive report")
+    if report.get("pngSamplesAnalyzed", 0) < 50:
+        fail("expected at least 50 PNG samples analyzed in PPT BIZCAM recursive report")
     if report.get("derivedObjectPatternCount", 0) < 50:
         fail("expected at least 50 derived object patterns in PPT BIZCAM recursive report")
 

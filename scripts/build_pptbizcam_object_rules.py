@@ -24,9 +24,9 @@ OUT = ROOT / "artifacts" / "pptbizcam-analysis"
 SEEDS = ROOT / "design_components" / "design-source-adapter" / "seeds" / "visual-diversification-seeds.json"
 
 START_POST_ID = 11677
-MIN_DOWNLOADS = 30
+MIN_DOWNLOADS = 50
 MAX_POST_SCAN = 900
-MAX_RENDER_DECKS = 30
+MAX_RENDER_DECKS = 50
 REQUEST_DELAY_SECONDS = 0.08
 USER_AGENT = "Mozilla/5.0 mdpr-skill structural pattern analysis"
 
@@ -251,7 +251,7 @@ def analyze_rendered_pngs(rendered: list[dict[str, Any]]) -> list[dict[str, Any]
 
 def make_contact_sheet(rendered: list[dict[str, Any]], output: Path) -> None:
     thumbs = []
-    for item in rendered[:30]:
+    for item in rendered[:50]:
         if not item["samplePngs"]:
             continue
         image = Image.open(ROOT / item["samplePngs"][0]).convert("RGB")
@@ -344,7 +344,7 @@ def main() -> None:
         "rendered": rendered,
         "pngAnalysis": png_analysis,
         "contactSheet": str(contact_sheet.relative_to(ROOT)),
-        "ok": len(downloads) >= MIN_DOWNLOADS and len(OBJECT_PATTERNS) >= 50 and len(png_analysis) >= 30,
+        "ok": len(downloads) >= MIN_DOWNLOADS and len(OBJECT_PATTERNS) >= 50 and len(png_analysis) >= 50,
     }
     (OUT / "pptbizcam-recursive-object-rules.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     (OUT / "pptbizcam-analysis.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

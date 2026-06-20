@@ -41,9 +41,9 @@ class PipelineLayout:
     canvas_h: int = 600
     scale: float = 1.0
     min_font_px: int = 13
-    min_padding_px: int = 8
-    icon_text_gap_px: int = 10
-    containment_padding_px: int = 8
+    min_padding_px: int = 14
+    icon_text_gap_px: int = 12
+    containment_padding_px: int = 14
 
 
 LAYOUT = PipelineLayout()
@@ -131,25 +131,25 @@ def base_placement() -> dict[str, tuple[float, float, float, float]]:
     return {
         "z01_canvas": (LAYOUT.canvas_x, LAYOUT.canvas_y, LAYOUT.canvas_w, LAYOUT.canvas_h),
         "zone_content_panel": (90, 150, 280, 430),
-        "zone_reasoning_panel": (395, 150, 280, 430),
-        "zone_rules_panel": (700, 150, 395, 430),
-        "zone_outputs_panel": (1120, 150, 250, 430),
-        "start_flag": (190, 246, 80, 34),
-        "markdown_card": (115, 306, 230, 105),
-        "splitter_card": (115, 448, 230, 112),
-        "ir_core_card": (425, 230, 220, 112),
-        "reasoning_card": (425, 390, 220, 170),
-        "reasoning_guard": (450, 486, 170, 34),
-        "rule_engine_card": (730, 236, 345, 80),
-        "features_card": (713, 338, 116, 100),
-        "recipes_card": (842, 338, 116, 100),
-        "theme_card": (971, 338, 116, 100),
-        "compose_card": (713, 464, 116, 100),
-        "objects_card": (842, 464, 116, 100),
-        "decorate_card": (971, 464, 116, 100),
-        "styled_ir_card": (1145, 235, 200, 105),
-        "renderers_card": (1145, 390, 200, 105),
-        "visual_check": (1140, 512, 210, 60),
+        "zone_reasoning_panel": (395, 150, 270, 430),
+        "zone_rules_panel": (676, 150, 448, 430),
+        "zone_outputs_panel": (1140, 150, 230, 430),
+        "start_flag": (190, 248, 80, 36),
+        "markdown_card": (116, 308, 228, 108),
+        "splitter_card": (116, 448, 228, 112),
+        "ir_core_card": (420, 238, 220, 105),
+        "reasoning_card": (420, 400, 220, 160),
+        "reasoning_guard": (448, 494, 164, 36),
+        "rule_engine_card": (715, 250, 370, 80),
+        "features_card": (696, 350, 124, 102),
+        "recipes_card": (838, 350, 124, 102),
+        "theme_card": (980, 350, 124, 102),
+        "compose_card": (696, 464, 124, 102),
+        "objects_card": (838, 464, 124, 102),
+        "decorate_card": (980, 464, 124, 102),
+        "styled_ir_card": (1157, 238, 196, 105),
+        "renderers_card": (1157, 390, 196, 105),
+        "visual_check": (1157, 506, 196, 60),
         "coherence_band": (90, 625, 1220, 72),
     }
 
@@ -418,13 +418,13 @@ def card(
     parent = f"{name}_card"
     rect(parts, parent, x, y, w, h, fill, stroke, 22, 1.5, True)
     compact = w < 130
-    icon_r = 9 if compact else 11
-    icon_cx = x + (23 if compact else 29)
+    icon_r = 8 if compact else 11
+    icon_cx = x + (22 if compact else 31)
     title_mid = y + (31 if compact else 37)
-    title_x = x + (42 if compact else 53)
-    title_size = 13 if compact else 16
+    title_x = x + (42 if compact else 58)
+    title_size = 12 if compact else 15
     body_size = 13 if compact else 14
-    body_x = x + (17 if compact else 29)
+    body_x = x + (22 if compact else 33)
     ICON_ALIGNMENTS.append(
         {
             "name": f"{name}_icon_title_alignment",
@@ -437,10 +437,10 @@ def card(
     card_icon(parts, name, icon_cx, title_mid, icon_r, "FFFFFF")
     svg_text(parts, f"{name}_title", parent, title_x, title_mid, title, title_size, "111827", 700, "card-title")
     line_count = max(1, len(lines))
-    body_top = y + (59 if compact else 70)
+    body_top = y + (58 if compact else 64)
     line_h = font_size(body_size) * 1.25
     body_bottom = y + h - LAYOUT.min_padding_px - line_h / 2
-    gap = 0 if line_count == 1 else max(16 if compact else 18, (body_bottom - body_top) / (line_count - 1))
+    gap = 0 if line_count == 1 else max(1, (body_bottom - body_top) / (line_count - 1))
     for idx, body in enumerate(lines):
         svg_text(parts, f"{name}_line_{idx}", parent, body_x, body_top + idx * gap, body, body_size, "526071", 400, "card-body")
 
@@ -529,11 +529,11 @@ def validation_callout(parts: list[str], name: str, x: float, y: float, w: float
             "name": f"{name}_seal_title_alignment",
             "iconCy": cy,
             "titleMidY": cy,
-            "gap": (x + 56) - (cx + 17),
+            "gap": (x + 57) - (cx + 17),
         }
     )
-    svg_text(parts, f"{name}_label", name, x + 56, y + 23, "PROOF POINT", 11, theme["validationText"], 800, "callout-label")
-    svg_text(parts, f"{name}_text", name, x + 56, y + 43, value, 14, theme["validationText"], 800, "callout-title")
+    svg_text(parts, f"{name}_label", name, x + 57, y + 23, "PROOF POINT", 11, theme["validationText"], 800, "callout-label")
+    svg_text(parts, f"{name}_text", name, x + 57, y + 43, value, 13, theme["validationText"], 800, "callout-title")
 
 
 def build_svg(path: Path) -> None:
@@ -631,7 +631,7 @@ def build_svg(path: Path) -> None:
     card(p, "reasoning", *box("reasoning_card"), reasoning_cards["result"]["title"], reasoning_cards["result"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF")
     badge(p, "reasoning_guard", *box("reasoning_guard"), reasoning_cards["result"]["badge"], theme["hintBadgeFill"], theme["hintBadgeStroke"], theme["hintText"])
     reasoning_x, reasoning_y, _, _ = box("reasoning_card")
-    svg_text(p, "reasoning_limit", "reasoning_card", reasoning_x + 25, reasoning_y + 140, reasoning_cards["result"]["limit"], 13, theme["muted"], 700, "card-body")
+    svg_text(p, "reasoning_limit", "reasoning_card", reasoning_x + 25, reasoning_y + 136, reasoning_cards["result"]["limit"], 13, theme["muted"], 700, "card-body")
     rect(p, "rule_engine_card", *box("rule_engine_card"), "DCFCE7", theme["rulesStroke"], 22, 1.5, True)
     rule_x, rule_y, _, _ = box("rule_engine_card")
     svg_text(p, "rule_engine_title", "rule_engine_card", rule_x + 30, rule_y + 27, engine["title"], 17, "14532D", 700, "card-title")
@@ -832,18 +832,18 @@ def add_ppt_card(
     compact = w < 130
     add_ppt_rect(slide, f"{name}_card", box, fill, stroke, radius=True, shadow=True)
     icon_r = 8 if compact else 11
-    icon_cx = x + (21 if compact else 29)
+    icon_cx = x + (22 if compact else 31)
     title_mid = y + (31 if compact else 37)
-    title_x = x + (37 if compact else 53)
+    title_x = x + (42 if compact else 58)
     add_ppt_icon(slide, name, icon_cx, title_mid, icon_r, accent, icon_label[:1].upper())
-    add_ppt_text(slide, f"{name}_title", title_x, title_mid - 12, w - (title_x - x) - 8, 26, title, 13 if compact else 16, "111827", True)
+    add_ppt_text(slide, f"{name}_title", title_x, title_mid - 12, w - (title_x - x) - 14, 26, title, 12 if compact else 15, "111827", True)
     body_size = 13 if compact else 14
-    body_x = x + (20 if compact else 29)
+    body_x = x + (22 if compact else 33)
     body_top = y + (58 if compact else 64)
-    available_h = max(18, h - (body_top - y) - 12)
+    available_h = max(18, h - (body_top - y) - 14)
     line_h = max(20 if compact else 19, available_h / max(1, len(lines)))
     for idx, body in enumerate(lines):
-        add_ppt_text(slide, f"{name}_line_{idx}", body_x, body_top + idx * line_h, w - (body_x - x) - 12, min(line_h + 2, 26), body, body_size, "526071", False, valign="top")
+        add_ppt_text(slide, f"{name}_line_{idx}", body_x, body_top + idx * line_h, w - (body_x - x) - 14, min(line_h + 2, 26), body, body_size, "526071", False, valign="top")
 
 
 def add_ppt_panel(slide: Any, name: str, box: tuple[float, float, float, float], title: str, subtitle: str, fill: str, stroke: str, title_color: str) -> None:
@@ -928,8 +928,8 @@ def add_ppt_validation_callout(slide: Any, name: str, box: tuple[float, float, f
     stripe.Name = f"{name}_stripe"
     set_shape_style(stripe, theme["validationContrast"], theme["validationContrast"], 0.0)
     add_ppt_icon(slide, f"{name}_seal", x + 28, y + h / 2, 17, theme["validationContrast"], "V")
-    add_ppt_text(slide, f"{name}_label", x + 56, y + 12, w - 66, 22, "PROOF POINT", 11, theme["validationText"], True)
-    add_ppt_text(slide, f"{name}_text", x + 56, y + 33, w - 66, 24, value, 14, theme["validationText"], True)
+    add_ppt_text(slide, f"{name}_label", x + 57, y + 12, w - 71, 22, "PROOF POINT", 11, theme["validationText"], True)
+    add_ppt_text(slide, f"{name}_text", x + 57, y + 33, w - 71, 24, value, 13, theme["validationText"], True)
 
 
 def create_editable_deck(pptx_path: Path) -> None:
@@ -998,7 +998,7 @@ def create_editable_deck(pptx_path: Path) -> None:
         add_ppt_card(slide, "reasoning", placement["reasoning_card"], reasoning_cards["result"]["title"], reasoning_cards["result"]["lines"], theme["reasoningAccent"], theme["reasoningStroke"], "FFFFFF", "H")
         add_ppt_badge(slide, "reasoning_guard", placement["reasoning_guard"], reasoning_cards["result"]["badge"], theme["hintBadgeFill"], theme["hintBadgeStroke"], theme["hintText"])
         rx, ry, rw, _ = placement["reasoning_card"]
-        add_ppt_text(slide, "reasoning_limit", rx + 25, ry + 128, rw - 50, 24, reasoning_cards["result"]["limit"], 13, theme["muted"], True)
+        add_ppt_text(slide, "reasoning_limit", rx + 25, ry + 124, rw - 50, 24, reasoning_cards["result"]["limit"], 13, theme["muted"], True)
         add_ppt_rect(slide, "rule_engine_card", placement["rule_engine_card"], "DCFCE7", theme["rulesStroke"], radius=True, shadow=True)
         ex, ey, ew, _ = placement["rule_engine_card"]
         engine = regions["rules"]["engine"]
@@ -1174,6 +1174,12 @@ def point_on_box_boundary(point: tuple[float, float], box: tuple[float, float, f
     return (on_vertical and in_y) or (on_horizontal and in_x)
 
 
+def required_text_padding(role: str) -> float:
+    if role in {"badge", "callout-label", "callout-title"}:
+        return 8
+    return LAYOUT.min_padding_px
+
+
 def validate_layout() -> dict[str, Any]:
     overflow: list[dict[str, Any]] = []
     font_violations: list[dict[str, Any]] = []
@@ -1184,11 +1190,12 @@ def validate_layout() -> dict[str, Any]:
     alignment_violations: list[dict[str, Any]] = []
     arrow_style_violations: list[dict[str, Any]] = []
     arrow_anchor_violations: list[dict[str, Any]] = []
+    group_center_violations: list[dict[str, Any]] = []
     for item in TEXT_BOUNDS:
         parent = str(item["parent"])
         if parent and parent in BOX_BOUNDS:
             text_box = (float(item["x"]), float(item["y"]), float(item["w"]), float(item["h"]))
-            if not fits_inside(text_box, BOX_BOUNDS[parent], LAYOUT.min_padding_px):
+            if not fits_inside(text_box, BOX_BOUNDS[parent], required_text_padding(str(item["role"]))):
                 overflow.append(item)
         if int(item["fontSize"]) < LAYOUT.min_font_px:
             font_violations.append(item)
@@ -1235,6 +1242,32 @@ def validate_layout() -> dict[str, Any]:
         values = [center_of(name)[1 if rule["axis"] == "middle" else 0] for name in members]
         if max(values) - min(values) > 0.75:
             alignment_violations.append({"id": rule["id"], "axis": rule["axis"], "members": members, "centers": values})
+    for group in [
+        {"id": "content-children-centered", "parent": "zone_content_panel", "children": ["start_flag", "markdown_card", "splitter_card"]},
+        {"id": "reasoning-children-centered", "parent": "zone_reasoning_panel", "children": ["ir_core_card", "reasoning_card"]},
+        {"id": "rules-top-row-centered", "parent": "zone_rules_panel", "children": ["features_card", "recipes_card", "theme_card"]},
+        {"id": "rules-bottom-row-centered", "parent": "zone_rules_panel", "children": ["compose_card", "objects_card", "decorate_card"]},
+        {"id": "rules-main-card-centered", "parent": "zone_rules_panel", "children": ["rule_engine_card"]},
+        {"id": "outputs-children-centered", "parent": "zone_outputs_panel", "children": ["styled_ir_card", "renderers_card", "visual_check"]},
+    ]:
+        parent = str(group["parent"])
+        children = [str(child) for child in group["children"] if str(child) in BOX_BOUNDS]
+        if parent not in BOX_BOUNDS or len(children) != len(group["children"]):
+            group_center_violations.append({**group, "reason": "missing-member"})
+            continue
+        parent_center_x = center_of(parent)[0]
+        group_left = min(BOX_BOUNDS[child][0] for child in children)
+        group_right = max(BOX_BOUNDS[child][0] + BOX_BOUNDS[child][2] for child in children)
+        group_center_x = (group_left + group_right) / 2
+        if abs(parent_center_x - group_center_x) > 1.0:
+            group_center_violations.append(
+                {
+                    **group,
+                    "parentCenterX": round(parent_center_x, 2),
+                    "groupCenterX": round(group_center_x, 2),
+                    "delta": round(group_center_x - parent_center_x, 2),
+                }
+            )
     return {
         "source": "svg",
         "markdownSource": str(PIPELINE_MD.relative_to(ROOT)),
@@ -1269,6 +1302,7 @@ def validate_layout() -> dict[str, Any]:
         "alignmentViolationCount": len(alignment_violations),
         "arrowStyleViolationCount": len(arrow_style_violations),
         "arrowAnchorViolationCount": len(arrow_anchor_violations),
+        "groupCenterViolationCount": len(group_center_violations),
         "overflow": overflow,
         "fontViolations": font_violations,
         "iconAlignmentViolations": icon_violations,
@@ -1278,7 +1312,8 @@ def validate_layout() -> dict[str, Any]:
         "alignmentViolations": alignment_violations,
         "arrowStyleViolations": arrow_style_violations,
         "arrowAnchorViolations": arrow_anchor_violations,
-        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations and not alignment_violations and not arrow_style_violations and not arrow_anchor_violations,
+        "groupCenterViolations": group_center_violations,
+        "ok": not overflow and not font_violations and not icon_violations and not hierarchy_violations and not containment_violations and not arrow_violations and not alignment_violations and not arrow_style_violations and not arrow_anchor_violations and not group_center_violations,
     }
 
 
