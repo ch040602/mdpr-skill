@@ -145,6 +145,7 @@ reference corpus.
 
 ## Documentation
 
+- [Contributing guide](CONTRIBUTING.md)
 - [MDPR installation and handoff](docs/mdpr-installation.md)
 - [Agent hint guide](docs/agent-hint-guide.md)
 - [MDPR vs skill results](docs/mdpr-vs-skill-results.md)
