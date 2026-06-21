@@ -14,13 +14,17 @@ agent-side hints, review notes, and validation artifacts around MDPR output.
 npm install
 ```
 
-The `postinstall` hook runs:
+This installs the mdpr-skill package only. It does not clone, update, or install
+MDPR as a side effect.
+
+Prepare the local MDPR runtime explicitly when you want to run validation or
+generate comparison artifacts:
 
 ```bash
-python scripts/install_mdpr.py
+npm run install:mdpr
 ```
 
-By default it clones or updates MDPR from `https://github.com/ch040602/mdpr` into a local install directory:
+That command clones or updates MDPR from `https://github.com/ch040602/mdpr` into a local install directory and installs MDPR's package dependencies:
 
 ```text
 .cache/mdpr
@@ -35,26 +39,18 @@ mdpr-skill repository structure. A local install report is written to
 Use `MDPR_SOURCE_DIR` when MDPR is already available locally:
 
 ```bash
-MDPR_SOURCE_DIR=/path/to/mdpr npm install
+MDPR_SOURCE_DIR=/path/to/mdpr npm run install:mdpr
 ```
 
 On Windows PowerShell:
 
 ```powershell
-$env:MDPR_SOURCE_DIR="C:\path\to\mdpr"; npm install
+$env:MDPR_SOURCE_DIR="C:\path\to\mdpr"; npm run install:mdpr
 ```
 
 The script records the local path and commit when the directory is a git checkout.
 
 ## Dependency Install
-
-The default `postinstall` prepares the MDPR source but does not install MDPR's own package dependencies. This avoids running nested package installs during every skill-pack install.
-
-Run the explicit dependency command when the local MDPR runtime must be executable:
-
-```bash
-npm run install:mdpr
-```
 
 The installer chooses the package manager from MDPR lockfiles in this order: `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json`, then `package.json`.
 
@@ -64,7 +60,7 @@ The installer chooses the package manager from MDPR lockfiles in this order: `pn
 - `MDPR_REF`: clone or update a specific MDPR branch, tag, or ref. Defaults to `HEAD`.
 - `MDPR_INSTALL_DIR`: override the default `.cache/mdpr` install directory.
 - `MDPR_SOURCE_DIR`: use an existing local MDPR checkout instead of cloning.
-- `MDPR_SKIP_INSTALL=1`: skip automatic installation during `postinstall`.
+- `MDPR_SKIP_INSTALL=1`: skip installation when invoking the installer script directly.
 
 ## Role Boundary
 

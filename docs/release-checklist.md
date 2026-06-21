@@ -1,7 +1,8 @@
 # Release Checklist
 
 - [x] README links upstream Design Components and MDPR.
-- [x] `npm install` prepares MDPR for the optional visual-review skill pack.
+- [x] `npm install` installs mdpr-skill without MDPR side effects.
+- [x] `npm run install:mdpr` explicitly prepares MDPR for optional visual-review checks.
 - [x] Source refs and MIT license metadata are recorded.
 - [x] Schemas exist for Element IR, Styled Deck IR, rulebooks, recipes, variants, and agent hints.
 - [x] Reference scaffolds cover core, rule engine, composition, decoration, renderer, CLI, gallery, and docs.

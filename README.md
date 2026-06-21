@@ -57,7 +57,7 @@ npm run install:mdpr
 Use an existing MDPR checkout when needed:
 
 ```bash
-MDPR_SOURCE_DIR=/path/to/mdpr npm install
+MDPR_SOURCE_DIR=/path/to/mdpr npm run install:mdpr
 ```
 
 Verify the MDPR handoff:

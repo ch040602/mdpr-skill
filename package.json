@@ -4,7 +4,6 @@
   "private": true,
   "description": "Thin Codex skill companion for MDPR semantic hints, review checks, and validation artifacts.",
   "scripts": {
-    "postinstall": "python scripts/install_mdpr.py",
     "check:mdpr": "python scripts/install_mdpr.py --check",
     "check:mdpr-pandoc": "python scripts/check_mdpr_pandoc_update.py",
     "install:mdpr": "python scripts/install_mdpr.py --with-deps",
