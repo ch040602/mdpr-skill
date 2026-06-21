@@ -1,8 +1,12 @@
 # Installing With MDPR
 
-This repository is a visual diversification skill pack for MDPR, not a fork or replacement of MDPR.
+This repository is an optional visual-review skill pack for MDPR, not a fork or
+replacement of MDPR.
 
-The install flow prepares MDPR as the content-splitting runtime and keeps this repository responsible for deterministic visual decisions: recipe selection, component variants, layout, decoration, coherence checks, and editable PPTX rendering.
+The install flow prepares MDPR as the deterministic presentation runtime. MDPR
+owns parsing, slide/object splitting, layout, decoration styles, theme colors,
+coherence checks, and editable PPTX rendering. This repository only adds
+agent-side hints, review notes, and validation artifacts around MDPR output.
 
 ## Default Install
 
@@ -16,13 +20,15 @@ The `postinstall` hook runs:
 python scripts/install_mdpr.py
 ```
 
-By default it clones or updates MDPR from `https://github.com/ch040602/mdpr` into:
+By default it clones or updates MDPR from `https://github.com/ch040602/mdpr` into a local install directory:
 
 ```text
 .cache/mdpr
 ```
 
-The checkout is intentionally ignored by git. A local install report is written to `reports/mdpr-install.json`.
+The checkout is intentionally ignored by git. It is not part of the public
+mdpr-skill repository structure. A local install report is written to
+`reports/mdpr-install.json`.
 
 ## Existing MDPR Checkout
 
@@ -62,11 +68,13 @@ The installer chooses the package manager from MDPR lockfiles in this order: `pn
 
 ## Role Boundary
 
-MDPR owns Markdown parsing, slide splitting, element splitting, semantic metadata, layout, design presets, color combinations, rendering, and validation.
+MDPR owns Markdown parsing, slide splitting, element splitting, semantic
+metadata, layout, design presets, color combinations, object selection,
+rendering, and validation.
 
 This skill pack owns optional semantic hinting and review guidance around MDPR output:
 
 - intent, grouping, importance, icon-search keyword, and ambiguity hint guidance;
 - validation checklists for typography, spacing, alignment, arrows, z-order, and text bounds;
-- reference seeds that may be migrated into MDPR;
+- source-neutral review seeds that may suggest future MDPR improvements;
 - MDPR installation checks and review-driven validation records.

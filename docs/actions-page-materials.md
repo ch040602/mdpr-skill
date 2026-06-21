@@ -15,10 +15,10 @@ This document lists the stable images that can be shown in GitHub Actions summar
 
 ## Recommended Actions Summary
 
-Use this Markdown block when a workflow publishes visual QA output:
+Use this Markdown block when a workflow publishes skill-side visual review output:
 
 ```md
-## MDPR Visual QA
+## MDPR Skill Visual Review
 
 ![Theme style proof contact sheet](docs/assets/theme-style-proof-contact-sheet.png)
 

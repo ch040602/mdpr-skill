@@ -1,24 +1,44 @@
 # mdpr-skill
 
-`mdpr-skill` is a thin Codex skill companion for [MDPR](https://github.com/ch040602/mdpr).
+`mdpr-skill` is a thin Codex skill companion for
+[MDPR](https://github.com/ch040602/mdpr).
 
-MDPR is the presentation runtime. It parses Markdown, preserves graphs and tables, selects layouts, applies theme/color rules, renders editable PPTX/HTML/PDF output, and validates overflow/coherence without requiring an LLM.
+Use this repository when you want LLM-advised presentation review around MDPR:
+compact semantic hints, icon-keyword ideas, visual-review loops, and review
+artifacts. MDPR remains the deterministic presentation runtime.
 
-This repository only adds optional agent-side reasoning support around MDPR: compact semantic hints, icon-search keyword ideas, review checklists, reference seeds, and validation artifacts. It must not own final slide coordinates, colors, typography, shape choices, z-order, arrows, exact icon assets, or renderer objects.
+For LLM-advised high-quality output, run the skill before MDPR finalizes the
+deck. For normal Markdown-to-PPTX generation, use MDPR directly.
 
 ![MDPR theme style proof contact sheet](docs/assets/theme-style-proof-contact-sheet.png)
-
-The image above is generated from MDPR-rendered PPTX output and is reused by the README and Actions-page validation materials. The stable image set is documented in [`docs/actions-page-materials.md`](docs/actions-page-materials.md).
 
 ## Difference from MDPR
 
 | Area | MDPR | mdpr-skill |
 | --- | --- | --- |
-| Primary role | Deterministic Markdown-to-presentation runtime | Optional Codex skill wrapper |
-| Runtime dependency | No LLM required | Uses an agent only before MDPR selection |
-| Final design decisions | Owns parsing, splitting, layout, theme colors, typography, charts, tables, diagrams, icon catalog search, PPTX objects, and validation | May suggest short intent/grouping/importance/icon-keyword hints |
-| Output | Editable PPTX, HTML, PDF, reports, previews | Hint files, review artifacts, generated QA decks |
-| Safety boundary | Hints can be ignored and the deck still builds | Must not replace MDPR rules |
+| Primary role | Markdown-to-presentation runtime | Optional Codex skill wrapper |
+| Runtime dependency | No LLM required | Agent used only for hints and review |
+| Final decisions | Parsing, splitting, layout, theme colors, typography, charts, tables, diagrams, icon catalog search, PPTX objects, validation | Short intent/grouping/importance/icon-keyword hints and critique notes |
+| Output | Editable PPTX, HTML, PDF, reports, previews | Hint files, review artifacts, generated review decks |
+| Safety boundary | Builds must work without hints | Must not choose final coordinates, colors, z-order, arrows, geometry, exact icons, or renderer object IDs |
+
+## Repository Structure
+
+```text
+skills/             Codex skill instructions for the optional wrapper
+docs/               Skill-side guides, handoff notes, and preview materials
+scripts/            Installation, review, validation, and artifact helpers
+design_components/  Source-neutral review seeds and design grammar scaffolds
+artifacts/          Generated review/example outputs
+reports/            Local validation reports
+schemas/            Hint, rulebook, and intermediate schema contracts
+todo/               Development and review-driven task records
+```
+
+MDPR source code is not vendored in this repository. The installer prepares a
+local MDPR checkout for development and validation; that local checkout is an
+install artifact, not the mdpr-skill repository structure. See
+[docs/mdpr-installation.md](docs/mdpr-installation.md).
 
 ## Installation
 
@@ -28,26 +48,57 @@ cd mdpr-skill
 npm install
 ```
 
-The `postinstall` hook prepares MDPR in `.cache/mdpr` from `https://github.com/ch040602/mdpr`.
-
-Use an existing local MDPR checkout when needed:
-
-```bash
-MDPR_SOURCE_DIR=/path/to/mdpr npm install
-```
-
-Install or refresh MDPR dependencies:
+Prepare or refresh the local MDPR runtime used by the skill checks:
 
 ```bash
 npm run install:mdpr
 ```
 
-Verify the MDPR checkout:
+Use an existing MDPR checkout when needed:
+
+```bash
+MDPR_SOURCE_DIR=/path/to/mdpr npm install
+```
+
+Verify the MDPR handoff:
 
 ```bash
 npm run check:mdpr
 npm run check:mdpr-pandoc
 ```
+
+## Usage
+
+Run MDPR directly when you only need deterministic presentation output. MDPR is
+where parser, layout, theme, object, and renderer changes should land.
+
+Run mdpr-skill when you want a review pass before MDPR builds or rebuilds the
+deck:
+
+```text
+Markdown source
+  -> optional mdpr-skill semantic hints and review notes
+  -> MDPR deterministic parsing, layout, validation, and rendering
+  -> editable PPTX / HTML / PDF
+```
+
+Allowed skill outputs:
+
+- semantic intent tags
+- grouping and importance hints
+- icon-search keyword ideas
+- visual concern notes with evidence paths
+- Markdown cleanup suggestions
+
+Forbidden skill outputs:
+
+- final coordinates
+- exact colors
+- z-order
+- arrow geometry
+- shape geometry
+- renderer object IDs
+- exact icon asset choices
 
 ## Validation
 
@@ -69,7 +120,7 @@ Run the external Markdown visual evaluation loop:
 npm run eval:external-md
 ```
 
-Key generated QA artifacts include:
+Generated review artifacts include:
 
 - `artifacts/release-check/mdpr-skill-release-check.md`
 - `artifacts/release-check/mdpr-skill-release-check.pptx`
@@ -87,24 +138,31 @@ Key generated QA artifacts include:
 - `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
 - `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
 
-The release check deck is generated from bullet-style Markdown through MDPR and verifies readable font size, PowerPoint-rendered PNG output, and editable PPTX text/shape content.
+The public repository stores aggregate reference metrics and derived structural
+grammar only. It does not store source URLs, downloaded reference PPT files,
+source thumbnails, copied layouts, copied images, or brand-like objects from the
+reference corpus.
 
-The theme-decoration review deck verifies source-neutral visual diversity from an expanded local reference pass: 80 PPT files, 797 slides, 1,594 PowerPoint-rendered PNG slides, 160 sampled PNGs, and 60 derived structural object patterns. The public repository stores only aggregate counts and derived grammar, not source URLs or slide thumbnails.
+## Documentation
 
-Actions-page visual material is kept under `docs/assets/theme-*.png` so workflow summaries, pull requests, and release notes can point to the same rendered previews without depending on generated artifact paths.
+- [MDPR installation and handoff](docs/mdpr-installation.md)
+- [Agent hint guide](docs/agent-hint-guide.md)
+- [MDPR vs skill results](docs/mdpr-vs-skill-results.md)
+- [Structural pattern taxonomy](docs/structural-pattern-taxonomy.md)
+- [Actions page materials](docs/actions-page-materials.md)
 
-The external Markdown evaluation is documented in [`docs/external-markdown-visual-eval.md`](docs/external-markdown-visual-eval.md). It downloads 20+ Markdown files, builds one combined corpus deck through MDPR, exports PPTX slides to PNG, and repeats the visual QA loop four times.
+MDPR runtime documentation lives in the MDPR repository:
 
-## MDPR Documentation
-
-The long-form design and object rules live in the prepared MDPR checkout:
-
-- `.cache/mdpr/docs/12-design-methodology.md`
-- `.cache/mdpr/docs/13-object-forms-and-icons.md`
-- `.cache/mdpr/docs/07-rendering-rules.md`
+- [MDPR](https://github.com/ch040602/mdpr)
+- [mdpr-skill](https://github.com/ch040602/mdpr-skill)
 
 ## Acknowledgements
 
-Pipeline preview assets are generated at `docs/assets/pipeline-overview.svg`, `docs/assets/pipeline-overview.pptx`, and `docs/assets/pipeline-overview.png`.
+This skill uses source-neutral design vocabulary and local SVG/icon references.
+Relevant upstream references include:
 
-Inside MDPR, SVG-backed PPT surfaces are implemented at `.cache/mdpr/packages/render-pptx/src/designPresets.ts`, and the local SVG icon catalog is implemented at `.cache/mdpr/packages/render-pptx/src/iconCatalog.ts`.
+- [MDPR](https://github.com/ch040602/mdpr)
+- [Google Material Design Icons](https://github.com/google/material-design-icons)
+- [Simple Icons](https://github.com/simple-icons/simple-icons)
+- [SVG Repo](https://www.svgrepo.com/)
+- [Tabler Icons](https://github.com/tabler/tabler-icons)

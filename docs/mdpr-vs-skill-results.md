@@ -1,6 +1,6 @@
 # MDPR vs Current Skill Results
 
-This comparison uses Markdown files from the local MDPR checkout as a shared source corpus. The generated source deck includes root README files, product docs, architecture docs, splitting/layout/rendering docs, QA docs, one ADR, and multiple example decks.
+This comparison uses Markdown files from the local MDPR checkout as a shared source corpus. The generated source deck includes root README files, product docs, architecture docs, splitting/layout/rendering docs, validation docs, one ADR, and multiple example decks.
 
 ## Result Files
 

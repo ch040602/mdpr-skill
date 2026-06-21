@@ -200,6 +200,19 @@
         "examples",
         "release checklist"
       ]
+    },
+    {
+      "id": "P17",
+      "name": "LLM-advised Quality Handoff",
+      "dependsOn": [
+        "P15",
+        "P16"
+      ],
+      "doneWhen": [
+        "MDPR validation artifacts are consumed as skill review input",
+        "skill review outputs only semantic hints and critique notes",
+        "README/docs clearly separate MDPR deterministic validation from skill-side visual QA"
+      ]
     }
   ]
 }
