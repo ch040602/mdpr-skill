@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -285,6 +286,32 @@ def check_no_unchecked_boxes() -> None:
         fail("unchecked boxes remain:\n" + "\n".join(offenders[:50]))
 
 
+def check_no_reference_source_leaks() -> None:
+    terms = [
+        bytes([112, 112, 116, 98, 105, 122, 99, 97, 109]),
+        bytes([112, 112, 116, 98, 105, 122]),
+        bytes([112, 112, 116, 32, 98, 105, 122]),
+    ]
+    tracked = subprocess.run(
+        ["git", "ls-files", "-z"],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.PIPE,
+    ).stdout.decode("utf-8", errors="replace").split("\0")
+    offenders: list[str] = []
+    for rel in tracked:
+        if not rel:
+            continue
+        path = ROOT / rel
+        if not path.is_file():
+            continue
+        data = path.read_bytes().lower()
+        if any(term in data for term in terms):
+            offenders.append(rel)
+    if offenders:
+        fail("source-specific reference identifiers found in tracked files:\n" + "\n".join(offenders[:50]))
+
+
 def check_catalog_coverage() -> None:
     recipe_catalog = read("examples/recipe-catalog.sample.yaml")
     for recipe in [
@@ -380,6 +407,7 @@ def main() -> None:
     check_reference_object_rules()
     check_theme_decoration_coverage()
     check_release_check_deck()
+    check_no_reference_source_leaks()
     check_no_unchecked_boxes()
     print("mdpr-skill pack validation passed")
 

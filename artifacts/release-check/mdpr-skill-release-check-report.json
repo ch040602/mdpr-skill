@@ -5,9 +5,9 @@
   "minRequiredFontPt": 14.0,
   "pptxValidation": {
     "slides": 11,
-    "shapes": 255,
-    "textFrames": 255,
-    "pictures": 0,
+    "shapes": 227,
+    "textFrames": 173,
+    "pictures": 54,
     "tables": 0,
     "charts": 0,
     "minFontSizePt": 22.0,
@@ -40,7 +40,7 @@
         1600,
         900
       ],
-      "uniqueColors": 190,
+      "uniqueColors": 317,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -60,7 +60,7 @@
         1600,
         900
       ],
-      "uniqueColors": 191,
+      "uniqueColors": 286,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -70,7 +70,7 @@
         1600,
         900
       ],
-      "uniqueColors": 191,
+      "uniqueColors": 306,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -80,7 +80,7 @@
         1600,
         900
       ],
-      "uniqueColors": 191,
+      "uniqueColors": 286,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -90,7 +90,7 @@
         1600,
         900
       ],
-      "uniqueColors": 191,
+      "uniqueColors": 287,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -100,7 +100,7 @@
         1600,
         900
       ],
-      "uniqueColors": 191,
+      "uniqueColors": 275,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -120,7 +120,7 @@
         1600,
         900
       ],
-      "uniqueColors": 222,
+      "uniqueColors": 312,
       "nonWhitePixels": 1440000,
       "hasContent": true
     }
