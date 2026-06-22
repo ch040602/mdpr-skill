@@ -11,8 +11,8 @@
       2600,
       1414
     ],
-    "uniqueColors": 4204,
-    "nonWhitePixels": 2130086,
+    "uniqueColors": 4184,
+    "nonWhitePixels": 2130080,
     "hasContent": true
   },
   "layoutValidation": {
@@ -209,10 +209,10 @@
   },
   "pptxValidation": {
     "file": "docs\\assets\\pipeline-overview.pptx",
-    "editableShapeCount": 102,
+    "editableShapeCount": 87,
     "connectorOrLineCount": 50,
     "textRunCount": 67,
-    "middleAnchorCount": 79,
+    "middleAnchorCount": 64,
     "topAnchorCount": 23,
     "pictureCount": 0,
     "embeddedSvgCount": 0,
@@ -230,11 +230,13 @@
       "minimumTextSize": true,
       "longWordsFitTextBoxes": true,
       "connectorsUseStraightOrElbowRoutes": true,
+      "shapeOwnedMarkerTextCentered": true,
       "sourceChipAvoidsHeavyStartBlock": true,
       "noUnnecessaryBottomKeypoint": true,
       "middleAlignmentSerialized": true
     },
     "textBoxCount": 67,
+    "shapeOwnedMarkerTextCount": 15,
     "connectorRouteCount": 16,
     "connectorRoleCounts": {
       "child": 3,
@@ -247,6 +249,7 @@
     "fontViolations": [],
     "wordFitViolations": [],
     "connectorViolations": [],
+    "centeredShapeTextViolations": [],
     "manualVisualReview": {
       "observedIssues": [],
       "status": "no remaining actionable defects after rendered PNG review"

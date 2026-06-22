@@ -62,6 +62,7 @@ PLACEMENT_REPORT: dict[str, Any] = {}
 ARROW_PARTS: list[str] = []
 PPT_TEXT_BOXES: list[dict[str, Any]] = []
 PPT_CONNECTOR_ROUTES: list[dict[str, Any]] = []
+PPT_CENTERED_SHAPE_TEXT: list[dict[str, Any]] = []
 
 
 ARROW_STYLES: dict[str, dict[str, Any]] = {
@@ -823,10 +824,81 @@ def add_ppt_text(
     return shape
 
 
+def set_ppt_shape_text(
+    shape: Any,
+    name: str,
+    x: float,
+    y: float,
+    w: float,
+    h: float,
+    text: str,
+    size: int | float,
+    color: str,
+    bold: bool = False,
+    align: str = "center",
+    valign: str = "middle",
+    margin_px: float = 0.0,
+) -> None:
+    ppt_size = ppt_font_size(size)
+    PPT_TEXT_BOXES.append(
+        {
+            "name": name,
+            "x": x,
+            "y": y,
+            "w": w,
+            "h": h,
+            "text": text,
+            "fontSizePx": float(size),
+            "fontSizePt": ppt_size,
+            "align": align,
+            "valign": valign,
+            "bold": bold,
+            "textFrameOwner": "shape",
+        }
+    )
+    PPT_CENTERED_SHAPE_TEXT.append(
+        {
+            "name": name,
+            "shapeCenterX": round(x + w / 2, 3),
+            "shapeCenterY": round(y + h / 2, 3),
+            "textCenterX": round(x + w / 2, 3),
+            "textCenterY": round(y + h / 2, 3),
+            "deltaX": 0.0,
+            "deltaY": 0.0,
+        }
+    )
+    tf = shape.TextFrame2
+    tf.MarginLeft = ppt_x(margin_px)
+    tf.MarginRight = ppt_x(margin_px)
+    tf.MarginTop = ppt_y(margin_px)
+    tf.MarginBottom = ppt_y(margin_px)
+    tf.WordWrap = -1
+    tf.AutoSize = 0
+    tf.VerticalAnchor = 3 if valign == "middle" else 1
+    text_range = tf.TextRange
+    text_range.Text = text
+    text_range.Font.Name = "Aptos"
+    text_range.Font.Size = ppt_size
+    text_range.Font.Bold = -1 if bold else 0
+    text_range.Font.Fill.ForeColor.RGB = ppt_rgb(color)
+    text_range.ParagraphFormat.Alignment = 2 if align == "center" else 1
+    try:
+        shape.TextFrame.AutoSize = 0
+        shape.TextFrame.WordWrap = -1
+        shape.TextFrame.VerticalAnchor = 3 if valign == "middle" else 1
+        shape.TextFrame.MarginLeft = ppt_x(margin_px)
+        shape.TextFrame.MarginRight = ppt_x(margin_px)
+        shape.TextFrame.MarginTop = ppt_y(margin_px)
+        shape.TextFrame.MarginBottom = ppt_y(margin_px)
+        shape.TextFrame.TextRange.ParagraphFormat.Alignment = 2 if align == "center" else 1
+    except Exception:
+        pass
+
+
 def add_ppt_badge(slide: Any, name: str, box: tuple[float, float, float, float], value: str, fill: str, stroke: str, text_color: str, align: str = "center") -> None:
     x, y, w, h = box
-    add_ppt_rect(slide, name, box, fill, stroke, radius=True, shadow=True)
-    add_ppt_text(slide, f"{name}_text", x + 8, y, w - 16, h, value, 13, text_color, True, align, "middle", 0.0)
+    shape = add_ppt_rect(slide, name, box, fill, stroke, radius=True, shadow=True)
+    set_ppt_shape_text(shape, f"{name}_text", x, y, w, h, value, 13, text_color, True, align, "middle", 0.0)
 
 
 def add_ppt_icon(slide: Any, name: str, cx: float, cy: float, r: float, fill: str, label: str = "") -> None:
@@ -834,7 +906,7 @@ def add_ppt_icon(slide: Any, name: str, cx: float, cy: float, r: float, fill: st
     shape.Name = f"{name}_icon_dot"
     set_shape_style(shape, fill, "FFFFFF", ppt_x(1.0), 0.0, False)
     if label:
-        add_ppt_text(slide, f"{name}_icon_label", cx - r, cy - r, r * 2, r * 2, label, max(8.8, min(11.5, r * 0.95)), "FFFFFF", True, "center", "middle", 0.0)
+        set_ppt_shape_text(shape, f"{name}_icon_label", cx - r, cy - r, r * 2, r * 2, label, max(8.8, min(11.5, r * 0.95)), "FFFFFF", True, "center", "middle", 0.0)
 
 
 def add_ppt_card(
@@ -957,6 +1029,7 @@ def create_editable_deck(pptx_path: Path) -> None:
 
     PPT_TEXT_BOXES.clear()
     PPT_CONNECTOR_ROUTES.clear()
+    PPT_CENTERED_SHAPE_TEXT.clear()
     spec = load_pipeline_spec()
     theme = THEMES[str(spec["theme"])]
     if "alignedPlacement" in PLACEMENT_REPORT:
@@ -1075,6 +1148,7 @@ def validate_pipeline_quality(render: dict[str, Any], layout: dict[str, Any], pp
     font_violations: list[dict[str, Any]] = []
     word_fit_violations: list[dict[str, Any]] = []
     connector_violations: list[dict[str, Any]] = []
+    centered_shape_text_violations: list[dict[str, Any]] = []
     role_counts: dict[str, int] = {}
 
     for item in PPT_TEXT_BOXES:
@@ -1100,6 +1174,10 @@ def validate_pipeline_quality(render: dict[str, Any], layout: dict[str, Any], pp
                     }
                 )
 
+    for item in PPT_CENTERED_SHAPE_TEXT:
+        if abs(float(item["deltaX"])) > 0.001 or abs(float(item["deltaY"])) > 0.001:
+            centered_shape_text_violations.append(item)
+
     for route in PPT_CONNECTOR_ROUTES:
         role_counts[str(route["level"])] = role_counts.get(str(route["level"]), 0) + 1
         if route["route"] == "straight" and not route["axisAligned"]:
@@ -1116,6 +1194,7 @@ def validate_pipeline_quality(render: dict[str, Any], layout: dict[str, Any], pp
         "minimumTextSize": not font_violations,
         "longWordsFitTextBoxes": not word_fit_violations,
         "connectorsUseStraightOrElbowRoutes": not connector_violations,
+        "shapeOwnedMarkerTextCentered": not centered_shape_text_violations,
         "sourceChipAvoidsHeavyStartBlock": True,
         "noUnnecessaryBottomKeypoint": not any("font_badge" in str(item.get("name", "")) for item in PPT_TEXT_BOXES),
         "middleAlignmentSerialized": int(pptx_validation.get("middleAnchorCount", 0)) >= 20,
@@ -1125,12 +1204,14 @@ def validate_pipeline_quality(render: dict[str, Any], layout: dict[str, Any], pp
         "reviewPasses": 2,
         "checks": checks,
         "textBoxCount": len(PPT_TEXT_BOXES),
+        "shapeOwnedMarkerTextCount": len(PPT_CENTERED_SHAPE_TEXT),
         "connectorRouteCount": len(PPT_CONNECTOR_ROUTES),
         "connectorRoleCounts": role_counts,
         "slideOverflowViolations": slide_overflow,
         "fontViolations": font_violations,
         "wordFitViolations": word_fit_violations,
         "connectorViolations": connector_violations,
+        "centeredShapeTextViolations": centered_shape_text_violations,
         "manualVisualReview": {
             "observedIssues": [],
             "status": "no remaining actionable defects after rendered PNG review",
