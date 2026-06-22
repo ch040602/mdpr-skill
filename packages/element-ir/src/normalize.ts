@@ -1,4 +1,4 @@
-import type { SlideElementIR } from '../../../src-scaffolds/element-ir-types';
+import type { SlideElementIR } from './types';
 
 export function normalizeSlideElementIR(deck: SlideElementIR): SlideElementIR {
   return {

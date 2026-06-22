@@ -18,7 +18,7 @@ StyledDeckIR을 PPTX/HTML/PDF로 렌더링한다.
 
 ### HTML
 
-- [x] `renderStyledDeckToHtml()` entrypoint 추가.
+- [x] `renderStyledDeckReportHtml()` entrypoint 추가.
 - [x] CSS variables 생성.
 - [x] profile/recipe/variant data attributes 생성.
 - [x] optional motion classes 생성.

@@ -1,4 +1,4 @@
-# packages/render-html/render-pdf Integration Checklist
+# packages/report-html/report-pdf Integration Checklist
 
 - [x] StyledDeckIR HTML entrypoint.
 - [x] CSS variable generation.

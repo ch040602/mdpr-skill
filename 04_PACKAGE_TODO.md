@@ -63,7 +63,7 @@
 - [x] table/chart style mapping.
 - [x] editable object smoke tests.
 
-## packages/render-html
+## packages/report-html
 
 - [x] `StyledDeckIR` rendering entrypoint 추가.
 - [x] CSS variables 생성.
@@ -71,7 +71,7 @@
 - [x] optional motion CSS 추가.
 - [x] prefers-reduced-motion 대응.
 
-## packages/render-pdf
+## packages/report-pdf
 
 - [x] Styled HTML path 재사용.
 - [x] static effect fallback 확인.

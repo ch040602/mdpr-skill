@@ -25,6 +25,6 @@ Audit Design Components Styled Deck IR for design coherence violations before re
 ## Rule
 
 The skill may explain why a finding exists, but it must not choose new recipes,
-variants, coordinates, colors, typography, arrows, z-order, effects, or exact
-icon assets. Fixes must be expressed as MDPR rulebook/config changes or
-deterministic policy changes.
+variants, coordinates, colors, typography, arrows, z-order, effects, renderer
+object IDs, or exact icon assets. Fixes must be expressed as MDPR
+rulebook/config changes or deterministic policy changes.

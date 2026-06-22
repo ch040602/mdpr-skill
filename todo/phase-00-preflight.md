@@ -6,7 +6,7 @@
 
 ## Tasks
 
-- [x] 현재 `packages/cli`, `packages/core`, `packages/layout`, `packages/override`, `packages/render-html`, `packages/render-pdf`, `design_components/pptx`의 public API를 확인한다.
+- [x] 현재 `packages/cli`, `packages/core`, `packages/layout`, `packages/override`, `packages/report-html`, `packages/report-pdf`, `design_components/pptx`의 public API를 확인한다.
 - [x] 기존 `build`, `inspect`, `plan`, `validate` 명령의 입력/출력 snapshot을 저장한다.
 - [x] 신규 pipeline mode 이름 확정: `design-components-rule-based`.
 - [x] 신규 design integration root 확정: `design_components/`.

@@ -80,8 +80,8 @@
 | Effects | Design Components decoration | effect budget + renderer capability |
 | PPT theme colors | Design Components decoration + design_components/pptx | ColorRef -> scheme color |
 | Editable object rendering | design_components/pptx | no text flattening |
-| HTML motion | render-html | reduced motion respect |
-| PDF static output | render-pdf | HTML print/static |
+| HTML report motion | report-html | reduced motion respect |
+| PDF static report output | report-pdf | HTML print/static |
 
 ## New packages
 
@@ -99,8 +99,8 @@ design_components/design-source-adapter
 packages/core
 packages/cli
 design_components/pptx
-packages/render-html
-packages/render-pdf
+packages/report-html
+packages/report-pdf
 schemas/config.schema.json
 examples/
 tests/

@@ -1,4 +1,4 @@
-import type { ContentMetrics } from '../../../src-scaffolds/element-ir-types';
+import type { ContentMetrics } from '../../element-ir/src/types';
 
 export function computeContentMetrics(block: { text?: string; items?: string[]; rows?: unknown[][]; kind?: string }): ContentMetrics {
   const text = block.text ?? '';

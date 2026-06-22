@@ -1,4 +1,4 @@
-import type { SlideElementIR, SlideNode } from '../../../src-scaffolds/element-ir-types';
+import type { SlideElementIR, SlideNode } from '../../element-ir/src/types';
 import { computeContentMetrics } from './computeContentMetrics';
 import { inferElementType, inferGroups, inferImportance, inferRole, inferSlideIntent } from './inference';
 

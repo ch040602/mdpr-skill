@@ -1,4 +1,4 @@
-import type { SlideNode } from '../../../src-scaffolds/element-ir-types';
+import type { SlideNode } from './types';
 
 export function summarizeSlideMetrics(slide: SlideNode) {
   return {

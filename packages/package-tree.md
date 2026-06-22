@@ -2,6 +2,22 @@
 
 ```text
 packages/
+  mdpr-adapter/
+    src/
+      index.ts
+
+  hints-core/
+    src/
+      index.ts
+
+  review-core/
+    src/
+      index.ts
+
+  eval-core/
+    src/
+      index.ts
+
   core/
     src/
       buildSlideElementIR.ts
@@ -18,18 +34,23 @@ packages/
       metrics.ts
       index.ts
 
-  render-html/
+  report-html/
     src/
-      renderStyledDeck.ts
+      renderReportDeck.ts
       cssVariables.ts
       motionCss.ts
 
-  render-pdf/
+  report-pdf/
     src/
-      renderStyledDeck.ts
+      renderReportDeck.ts
 
   cli/
     src/
+      commands/hint.ts
+      commands/review.ts
+      commands/compare.ts
+      commands/inspectBoundary.ts
+      commands/validateSchemaSync.ts
       commands/inspectStyle.ts
       commands/lintStyle.ts
       commands/buildStyleGallery.ts

@@ -1,4 +1,4 @@
-import type { ElementGroup, ElementNode, ElementRole, ElementType, SlideIntent } from '../../../src-scaffolds/element-ir-types';
+import type { ElementGroup, ElementNode, ElementRole, ElementType, SlideIntent } from '../../element-ir/src/types';
 
 export function inferElementType(block: { kind: string }): ElementType {
   const map: Record<string, ElementType> = {
