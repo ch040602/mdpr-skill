@@ -66,8 +66,10 @@ class EvalCoreRunnerContractTests(unittest.TestCase):
         package_json = (ROOT / "package.json").read_text(encoding="utf-8")
         self.assertIn('"typecheck"', package_json)
         self.assertIn('"test:eval-core"', package_json)
+        self.assertIn('"test:eval-core:e2e"', package_json)
         self.assertTrue((ROOT / "tsconfig.json").is_file())
         self.assertTrue((ROOT / "tests" / "eval-core-runtime.test.ts").is_file())
+        self.assertTrue((ROOT / "tests" / "eval-core-mdpresent-e2e.test.ts").is_file())
 
 
 if __name__ == "__main__":

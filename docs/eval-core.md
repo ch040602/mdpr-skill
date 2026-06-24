@@ -16,6 +16,11 @@ Markdown source
   -> mdpr-skill-eval-v1 report
 ```
 
+`npm run test:eval-core:e2e` runs this flow against the actual local MDPR CLI
+from `.cache/mdpr/packages/cli/dist/index.js` when that checkout is available.
+It builds a tiny Markdown deck twice, verifies that the guided build accepts a
+schema-valid hint, and checks the emitted eval report.
+
 ## Gates
 
 `schemaSync` verifies that the hint manifest is `mdpr-agent-hint-v1`, was

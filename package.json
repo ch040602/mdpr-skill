@@ -24,8 +24,9 @@
     "test:external-md-eval": "python -m unittest tests.test_external_markdown_visual_eval",
     "typecheck": "tsc --noEmit",
     "test:eval-core": "tsx tests/eval-core-runtime.test.ts",
+    "test:eval-core:e2e": "tsx tests/eval-core-mdpresent-e2e.test.ts",
     "validate": "python scripts/design_source_inventory.py --source .cache/design-source --check && python scripts/render_compare_powerpoint.py && python scripts/create_pipeline_overview_asset.py && python scripts/create_infographic_seed_gallery.py && python scripts/create_design_showcase_deck.py && python scripts/check_mdpr_pandoc_update.py && python scripts/validate_pack.py",
-    "test": "npm run typecheck && npm run test:eval-core && npm run validate && python -m unittest discover tests"
+    "test": "npm run typecheck && npm run test:eval-core && npm run test:eval-core:e2e && npm run validate && python -m unittest discover tests"
   },
   "keywords": [
     "mdpr",
