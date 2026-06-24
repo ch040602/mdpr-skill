@@ -20,7 +20,9 @@ Markdown source
 `npm run test:eval-core:e2e` runs this flow against the actual local MDPR CLI
 from `.cache/mdpr/packages/cli/dist/index.js` when that checkout is available.
 It builds a tiny Markdown deck twice, verifies that the guided build accepts a
-schema-valid hint, and checks the emitted eval report.
+schema-valid hint, checks the emitted eval report, and includes a review
+regression fixture that proves a successful MDPR CLI build can still fail the
+`review` gate when guided artifacts introduce non-editable primary objects.
 
 ## Gates
 
@@ -51,6 +53,7 @@ The emitted report uses `schemaVersion: "mdpr-skill-eval-v1"` and records:
 - `summary.overallStatus`
 - baseline and guided manifest paths
 - baseline and guided run artifacts
+- optional baseline and guided profile metadata copied from MDPR manifests
 - baseline and guided review summaries
 - `schemaSync`, `boundary`, `regression`, and `review` gate findings
 - thresholds used for the regression decision

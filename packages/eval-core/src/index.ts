@@ -63,6 +63,14 @@ export type EvalRunArtifacts = {
   sourceSha256: string;
   metrics: MdprRunMetrics;
   review: ReviewRunSummary;
+  profile?: MdprRunProfile;
+};
+
+export type MdprRunProfile = {
+  profile?: Record<string, unknown>;
+  performance?: Record<string, unknown>;
+  pdf?: Record<string, unknown>;
+  renderer?: Record<string, unknown>;
 };
 
 export type ReviewRunSummary = {
@@ -254,6 +262,7 @@ function runEvalBuild(input: MdprRunInput, deps: EvalDeps): EvalRunArtifacts {
   const context: MdprContext = loadArtifacts(outDir);
   const metrics = collectEvalMetrics(context.manifest, collectMetrics, buildMs);
   const review = runReviews(context);
+  const profile = extractRunProfile(context.manifest);
   return {
     run,
     outDir,
@@ -261,6 +270,7 @@ function runEvalBuild(input: MdprRunInput, deps: EvalDeps): EvalRunArtifacts {
     sourceSha256: context.sourceSha256,
     metrics,
     review,
+    ...(profile ? { profile } : {}),
   };
 }
 
@@ -387,6 +397,20 @@ function collectEvalMetrics(
     contrastFailures: firstNumber(visual, ["contrastFailures", "contrastFailureCount"]) ?? countDiagnostics(diagnostics, "contrast"),
     connectorWarnings: firstNumber(visual, ["connectorWarnings", "connectorWarningCount"]) ?? countDiagnostics(diagnostics, "connector"),
   };
+}
+
+function extractRunProfile(manifest: Record<string, unknown>): MdprRunProfile | undefined {
+  const profile = asRecord(manifest.profile) ?? asRecord(manifest.performanceProfile);
+  const performance = asRecord(manifest.performance);
+  const pdf = asRecord(manifest.pdf);
+  const renderer = asRecord(manifest.renderer);
+  const result: MdprRunProfile = {
+    ...(profile ? { profile } : {}),
+    ...(performance ? { performance } : {}),
+    ...(pdf ? { pdf } : {}),
+    ...(renderer ? { renderer } : {}),
+  };
+  return Object.keys(result).length > 0 ? result : undefined;
 }
 
 function validateHintManifest(value: unknown, sourceSha256: string): asserts value is AgentHintManifest {

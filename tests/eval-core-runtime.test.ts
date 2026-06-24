@@ -100,12 +100,14 @@ test("runMdprSkillEval executes baseline and guided builds with injected MDPR ad
         ? {
             metrics: { overflowCount: 0, coherenceWarnings: 0, visualErrors: 0, slideCount: 3 },
             visualValidation: { minFontPt: 9, textClipRiskCount: 1 },
-            performance: { outputBytes: 1300 },
+            performance: { outputBytes: 1300, renderPptxMs: 80 },
+            profile: { mode: "guided" },
           }
         : {
             metrics: { overflowCount: 0, coherenceWarnings: 0, visualErrors: 0, slideCount: 3 },
             visualValidation: { minFontPt: 10, textClipRiskCount: 0 },
-            performance: { outputBytes: 1000 },
+            performance: { outputBytes: 1000, renderPptxMs: 60 },
+            profile: { mode: "baseline" },
           },
     }),
     collectMetrics: (manifest) => {
@@ -123,6 +125,9 @@ test("runMdprSkillEval executes baseline and guided builds with injected MDPR ad
   assert.equal(report.gates.boundary.status, "pass");
   assert.equal(report.gates.regression.status, "fail");
   assert.equal(report.summary.overallStatus, "fail");
+  assert.equal(report.baseline.profile?.profile?.mode, "baseline");
+  assert.equal(report.skillGuided.profile?.profile?.mode, "guided");
+  assert.equal(report.skillGuided.profile?.performance?.renderPptxMs, 80);
   assert.match(written.get(".tmp/eval/report.json") ?? "", /"overallStatus": "fail"/);
 });
 

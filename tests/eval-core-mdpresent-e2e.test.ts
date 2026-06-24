@@ -5,6 +5,7 @@ import { join, resolve } from "node:path";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { runMdprSkillEval } from "../packages/eval-core/src/index";
+import { loadMdprArtifacts, type MdprContext } from "../packages/mdpr-adapter/src/index";
 
 const mdprRoot = resolve(".cache/mdpr");
 const mdprCli = join(mdprRoot, "packages/cli/dist/index.js");
@@ -59,3 +60,129 @@ test("runMdprSkillEval builds a tiny deck through the actual MDPR CLI", { skip: 
     rmSync(workDir, { recursive: true, force: true });
   }
 });
+
+test("runMdprSkillEval distinguishes a review regression from a successful MDPR CLI run", { skip: !existsSync(mdprCli) }, () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-e2e-review-"));
+  try {
+    const deckPath = join(workDir, "deck.md");
+    writeFileSync(deckPath, [
+      "# Review Regression Fixture",
+      "",
+      "A stable claim keeps the generated evidence slide grounded.",
+      "",
+      "| Stage | Users |",
+      "| --- | ---: |",
+      "| Awareness | 8000 |",
+      "| Activation | 4000 |",
+      "",
+      "Figure: Funnel stages remain tied to the evidence.",
+      "",
+    ].join("\n"), "utf-8");
+    const sourceSha256 = createHash("sha256").update(readFileSync(deckPath)).digest("hex");
+
+    const report = runMdprSkillEval({
+      deckPath,
+      mdprPath: mdprRoot,
+      outDir: join(workDir, "eval"),
+      formats: ["html"],
+      hintManifest: {
+        schemaVersion: "mdpr-agent-hint-v1",
+        sourceSha256,
+        generatedBy: "mdpr-skill",
+        generatedAt: "2026-06-24T00:00:00Z",
+        hints: [{ slideId: "slide-1", confidence: 0.78, intentCandidate: "evidence" }],
+      },
+      thresholds: { maxBuildMsMultiplier: 100 },
+    }, {
+      loadArtifacts: (outDir) => augmentReviewRegressionArtifacts(outDir, loadMdprArtifacts(outDir)),
+    });
+
+    assert.equal(report.baseline.run.exitCode, 0);
+    assert.equal(report.skillGuided.run.exitCode, 0);
+    assert.equal(report.gates.schemaSync.status, "pass");
+    assert.equal(report.gates.boundary.status, "pass");
+    assert.equal(report.gates.regression.status, "pass");
+    assert.equal(report.gates.review.status, "fail");
+    assert.equal(report.summary.overallStatus, "fail");
+    assert.ok(report.reviews.skillGuided.errorCount > report.reviews.baseline.errorCount);
+    assert.ok(report.gates.review.findings.includes("reviewErrors increased"));
+    assert.ok(report.reviews.skillGuided.findings.some((finding) => finding.type === "NON_EDITABLE_PRIMARY_OBJECT"));
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+function augmentReviewRegressionArtifacts(outDir: string, context: MdprContext): MdprContext {
+  const normalizedOutDir = outDir.replace(/\\/g, "/");
+  const guided = normalizedOutDir.endsWith("/guided");
+  const sourceSha256 = context.sourceSha256 || String((context.manifest.source as { sha256?: unknown } | undefined)?.sha256 ?? "");
+  const presentation = guided ? guidedReviewPresentation() : cleanReviewPresentation();
+  const layout = guided ? guidedReviewLayout() : cleanReviewLayout();
+  return {
+    ...context,
+    sourceSha256,
+    manifest: {
+      ...context.manifest,
+      ...(guided ? {
+        pptxObjects: [{
+          slideId: "slide-1",
+          role: "table",
+          objectKind: "raster-image",
+          blockIds: ["b-table"],
+        }],
+      } : {}),
+    },
+    presentation,
+    layout,
+  };
+}
+
+function cleanReviewPresentation(): Record<string, unknown> {
+  return {
+    slides: [{
+      id: "source-slide-1",
+      title: "Review Regression Fixture",
+      headingPath: ["Review Regression Fixture"],
+      blocks: [
+        { id: "b-claim", type: "paragraph", text: "A stable claim keeps the generated evidence slide grounded." },
+        { id: "b-chart", type: "chart", text: "Funnel chart" },
+        { id: "b-caption", type: "paragraph", text: "Figure: Funnel stages remain tied to the evidence." },
+      ],
+    }],
+  };
+}
+
+function cleanReviewLayout(): Record<string, unknown> {
+  return {
+    slides: [{
+      id: "slide-1",
+      sourceSlideId: "source-slide-1",
+      layout: { preset: "chart-table" },
+      regions: [{ id: "main", blockIds: ["b-claim", "b-chart", "b-caption"] }],
+    }],
+  };
+}
+
+function guidedReviewPresentation(): Record<string, unknown> {
+  return {
+    slides: [{
+      id: "source-slide-1",
+      title: "Review Regression Fixture",
+      headingPath: ["Review Regression Fixture"],
+      blocks: [
+        { id: "b-table", type: "table", text: "Stage and user table" },
+      ],
+    }],
+  };
+}
+
+function guidedReviewLayout(): Record<string, unknown> {
+  return {
+    slides: [{
+      id: "slide-1",
+      sourceSlideId: "source-slide-1",
+      layout: { preset: "table-focus" },
+      regions: [{ id: "main", blockIds: ["b-table"] }],
+    }],
+  };
+}

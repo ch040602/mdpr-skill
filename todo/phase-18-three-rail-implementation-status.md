@@ -50,11 +50,11 @@ scope because several TODOs belong to MDPR or a future `mdpr-ppt` repository.
 | P0 hint manifest contract | Done | `packages/hints-core/src/index.ts` uses `schemaVersion: "mdpr-agent-hint-v1"`, `sourceSha256`, `generatedBy`, and `generatedAt`. | 100% |
 | P0 forbidden final-decision fields | Mostly done | `FORBIDDEN_AGENT_HINT_FIELDS` and `assertNoForbiddenFields()` reject coordinates, color, typography, recipe, variant, icon path, geometry, and renderer IDs. | 85% |
 | P1 MDPR adapter runner | Hardened functional runner | `packages/mdpr-adapter/src/index.ts` can resolve MDPR, run build/validate/inspect, load artifacts, collect metrics, and report typed command/artifact failures. | 80% |
-| P1 eval-core runner | Review-integrated runner | `packages/eval-core/src/index.ts` runs baseline/guided builds, validates hints, compares metrics, runs review-core, emits reports, and has runtime/e2e tests. | 85% |
+| P1 eval-core runner | Review-integrated runner | `packages/eval-core/src/index.ts` runs baseline/guided builds, validates hints, compares metrics, preserves MDPR profile metadata, runs review-core, emits reports, and has runtime/e2e tests. | 90% |
 | P1 review-core coherence rules | Done for first production slice | `packages/review-core/src/index.ts` now reports detached captions, orphan evidence, claimless evidence slides, and section rhythm drift without final design fields. | 70% |
 | P1 review-core visual rules | Done for first production slice | `packages/review-core/src/index.ts` now reports raw hex leakage, mixed corner/depth scales, visual treatment budget overuse, accent overuse, and non-editable primary objects. | 70% |
 | P2 selection schemas | Schema and docs only | `schemas/mdpr-ppt-selection.schema.json`, `schemas/mdpr-selection-context.schema.json`, and `docs/mdpr-ppt-bridge.md` exist. | 35% |
-| P2 approval/change request flow | Helper lifecycle implemented | `packages/change-core/src/index.ts` creates proposed changes, enforces reviewed approval transitions, and blocks unapproved runtime candidates. | 60% |
+| P2 approval/change request flow | Helper lifecycle implemented and CLI-exported | `packages/change-core/src/index.ts` creates proposed changes, enforces reviewed approval transitions, blocks unapproved runtime candidates, and `packages/cli/src/commands/change.ts` exposes the lifecycle boundary. | 70% |
 | P2 PowerPoint bridge implementation | Not started | No `mdpr-ppt` add-in, Office.js capture, or selection export implementation exists here. | 0% |
 | P3 MDPR pack package | Not started in this repo | Pack concepts are documented, but MDPR-side `pack` package and commands are not implemented here. | 0% |
 | P3 renderer metadata contract | Not owned here | Shape metadata and PPTX object manifest contract must be implemented in MDPR renderer. | 0% |
@@ -186,9 +186,8 @@ Acceptance:
 - [x] Regression gate fails when guided output increases review errors or
   violates the no-final-decision boundary.
 - [x] Runtime tests cover review integration.
-Pending:
-
-- MDPR CLI e2e test covers a real review regression fixture.
+- [x] MDPR CLI e2e test covers a successful build that still fails on review
+  regression.
 
 ### TRI-RAIL-P1-005 - Harden mdpr-adapter into a stable runner API
 
@@ -214,10 +213,10 @@ Acceptance:
 
 - [x] Tests distinguish command failure and artifact load failure.
 - [x] Error messages contain command, cwd, exit code, and artifact path context.
-Pending:
-
-- E2E test distinguishes regression failure from adapter failure.
-- Optional profile metadata passthrough from MDPR manifests.
+- [x] E2E test distinguishes review regression failure from adapter/CLI
+  failure by asserting both MDPR runs exit successfully while the review gate
+  fails.
+- [x] Optional profile metadata passthrough from MDPR manifests.
 
 ### TRI-RAIL-P2-006 - Consume selection context in review and hint flows
 
@@ -261,11 +260,14 @@ Completed state:
 - `change-core` enforces valid stage transitions.
 - `approvalGate()` and `assertApprovedForRuntime()` block unapproved runtime
   candidates.
+- The CLI package exports the change lifecycle boundary for command wiring.
 
 Completed work:
 
 - Added `packages/change-core/src/index.ts`.
+- Added `packages/cli/src/commands/change.ts`.
 - Added lifecycle tests for valid reviewed approval flow.
+- Added CLI boundary tests for exported approval lifecycle helpers.
 - Added approval-gate tests for pack and override candidates.
 
 Acceptance:
@@ -273,6 +275,7 @@ Acceptance:
 - [x] Tests cover valid transition order and invalid direct
   `proposed -> applied`.
 - [x] Pack/override candidates fail gates without explicit approval metadata.
+- [x] CLI command boundary exposes approval lifecycle helpers.
 
 ### TRI-RAIL-P2-008 - Create separate mdpr-ppt bridge implementation
 
@@ -391,9 +394,8 @@ Acceptance:
 
 1. Start `mdpr-ppt` as a separate bridge boundary.
 2. Move pack/import/render metadata work to MDPR.
-3. Add a real MDPR CLI e2e fixture that triggers review regression findings.
-4. Add CLI commands around change-core proposal, review, approval, and apply
-  helpers.
+3. Keep `mdpr-ppt`, pack/import, and renderer metadata work in their owning
+  repositories while preserving mdpr-skill boundary gates here.
 
 The immediate next code change should be `TRI-RAIL-P2-008`, but it belongs to a
 future `mdpr-ppt` repository or package boundary rather than silently expanding
