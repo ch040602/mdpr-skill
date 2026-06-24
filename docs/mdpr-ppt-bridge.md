@@ -9,6 +9,7 @@ can share PowerPoint context without giving an agent final design authority.
 | --- | --- | --- | --- |
 | hint rail | `mdpr-skill` / agent | Forbidden | `agent-hint.json` with weak semantic hints |
 | review rail | `mdpr-skill` / agent | Forbidden | `review-report.json` with findings and MDPR policy suggestions |
+| edit-intent rail | `mdpr-skill` / agent | Forbidden | `mdpr-edit-intent-v1` inside a proposed change request |
 | approved override / pack rail | `mdpr-ppt` plus explicit user approval | Allowed only after approval | `override.json`, `style-pack.json`, `component-pack.json` |
 
 MDPR remains the deterministic runtime. `mdpr-skill` may propose semantic
@@ -16,6 +17,31 @@ grouping, importance, intent, icon-keyword ideas, and review findings. It must
 not create final coordinates, raw colors, typography, z-order, arrow geometry,
 component variants, renderer object IDs, or exact icon asset decisions.
 In short, `mdpr-skill` must not create final coordinates.
+
+## Edit Intent Rail
+
+The edit-intent rail is for natural-language editing UX. A user or agent may
+say things like "make slide 3 more data focused", "turn the list page into a
+numbered rail", or "make the proof point more prominent". `mdpr-skill` stores
+that as `mdpr-edit-intent-v1`, not as coordinates or raw style values.
+
+Allowed edit-intent fields:
+
+- target slide references, block hints, and region hints
+- high-level emphasis changes
+- high-level layout families such as `chart-table`, `timeline`, `matrix`, or
+  `summary`
+- high-level decoration families such as `numbered-rail`, `callout`,
+  `proof-point`, `minimal`, `glass`, `data`, or `icon-aside`
+- semantic grouping roles and icon keyword candidates
+
+Forbidden edit-intent fields are the same final-decision fields forbidden in
+agent hints: coordinates, raw colors, typography, z-order, exact recipe IDs,
+variants, exact icon paths, geometry, arrows, and renderer object IDs.
+
+Edit intents become `edit-intent` entries inside `mdpr-change-request-v1`.
+They remain proposals until reviewed and approved. MDPR still owns the final
+layout family resolution, recipe selection, renderer output, and validation.
 
 ## `mdpr-ppt` Role
 
@@ -62,6 +88,10 @@ Approved and applied change requests both require approval metadata. Helper
 APIs reject invalid source hashes, empty change lists, and malformed approval
 timestamps before runtime use.
 
+`schemas/mdpr-edit-intent.schema.json` defines `mdpr-edit-intent-v1`. It is
+used for safe natural-language edit proposals such as page emphasis, layout
+family, or decoration family changes. It cannot contain final design fields.
+
 ## Runtime Boundary
 
 MDPR owns:
@@ -77,6 +107,7 @@ MDPR owns:
 `mdpr-skill` owns:
 
 - weak semantic hint generation
+- safe edit-intent proposal generation
 - review findings
 - baseline/guided evaluation
 - schema sync and boundary gates

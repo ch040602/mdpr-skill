@@ -54,6 +54,7 @@ scope because several TODOs belong to MDPR or a future `mdpr-ppt` repository.
 | P1 review-core coherence rules | Done for first production slice | `packages/review-core/src/index.ts` now reports detached captions, orphan evidence, claimless evidence slides, and section rhythm drift without final design fields. | 70% |
 | P1 review-core visual rules | Done for first production slice | `packages/review-core/src/index.ts` now reports raw hex leakage, mixed corner/depth scales, visual treatment budget overuse, accent overuse, and non-editable primary objects. | 70% |
 | P2 selection schemas | Schema and docs only | `schemas/mdpr-ppt-selection.schema.json`, `schemas/mdpr-selection-context.schema.json`, and `docs/mdpr-ppt-bridge.md` exist. | 35% |
+| P2 edit-intent rail | First production slice done | `packages/edit-core/src/index.ts` records safe page/layout/decoration edit proposals and rejects final-decision fields before change-request creation. | 60% |
 | P2 approval/change request flow | Helper lifecycle implemented and CLI-exported | `packages/change-core/src/index.ts` creates proposed changes, validates source hashes/change lists/approval timestamps, enforces reviewed approval transitions, blocks unapproved runtime candidates, and `packages/cli/src/commands/change.ts` exposes the lifecycle boundary. | 75% |
 | P2 PowerPoint bridge implementation | Not started | No `mdpr-ppt` add-in, Office.js capture, or selection export implementation exists here. | 0% |
 | P3 MDPR pack package | Not started in this repo | Pack concepts are documented, but MDPR-side `pack` package and commands are not implemented here. | 0% |
@@ -288,6 +289,41 @@ Acceptance:
 - [x] Pack/override candidates fail gates without explicit approval metadata.
 - [x] CLI command boundary exposes approval lifecycle helpers.
 - [x] Helper and schema boundaries reject invalid runtime handoff inputs.
+
+### TRI-RAIL-P2-007B - Add safe edit-intent proposal rail
+
+Priority: P2  
+Owner: `mdpr-skill`
+
+Status: completed in first production slice.
+
+Completed state:
+
+- `edit-core` exposes `buildEditIntent()`.
+- `edit-core` exposes `editIntentToChangeRequest()`.
+- Edit intents can capture natural-language requests for a target slide,
+  block hints, emphasis changes, layout-family preferences, and
+  decoration-family preferences.
+- Edit intents reject coordinates, raw colors, typography, exact recipe IDs,
+  variants, geometry, arrows, exact icon paths, and renderer object IDs.
+- Edit intents become proposed `mdpr-change-request-v1` entries and require the
+  same approval/review gates as other mdpr-skill proposals.
+
+Completed work:
+
+- Added `packages/edit-core/src/index.ts`.
+- Added `packages/cli/src/commands/edit.ts`.
+- Added runtime tests for safe edit-intent creation and boundary rejection.
+- Added `edit-intent` to `ChangeKind` and the change-request schema.
+- Documented the edit-intent rail in README and bridge docs.
+
+Acceptance:
+
+- [x] A natural-language page/layout/decoration edit can become a proposed
+  change request.
+- [x] Final design fields are rejected before proposal creation.
+- [x] MDPR remains responsible for final layout, recipe, renderer, and
+  validation decisions.
 
 ### TRI-RAIL-P2-008 - Create separate mdpr-ppt bridge implementation
 

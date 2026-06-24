@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-edit-intent.schema.json",
+  "title": "MDPR Skill Edit Intent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "sourceSha256", "instruction", "target", "boundary"],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-edit-intent-v1" },
+    "id": { "type": "string", "minLength": 1 },
+    "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "instruction": { "type": "string", "minLength": 1 },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slideRef"],
+      "properties": {
+        "slideRef": { "type": "string", "minLength": 1 },
+        "blockHints": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "regionHints": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "emphasis": { "enum": ["increase", "decrease", "preserve"] },
+        "layoutFamily": { "enum": ["chart-table", "timeline", "numbered-rail", "matrix", "proof", "comparison", "summary"] },
+        "decorationFamily": { "enum": ["numbered-rail", "callout", "proof-point", "minimal", "glass", "data", "icon-aside"] },
+        "groupingRole": { "enum": ["claim", "evidence-pack", "workflow", "summary", "comparison"] },
+        "iconKeywordCandidates": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "preserveContent": { "type": "boolean" }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finalDesignDecision", "mdprOwnsRendering"],
+      "properties": {
+        "finalDesignDecision": { "const": "forbidden" },
+        "mdprOwnsRendering": { "const": true }
+      }
+    }
+  }
+}

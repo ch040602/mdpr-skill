@@ -115,6 +115,7 @@ and review the generated artifacts, but should not own the final slide layout:
 
 - compact semantic tags for ambiguous Markdown
 - icon-search keyword ideas
+- safe edit-intent proposals for page, emphasis, layout-family, and decoration-family changes
 - coherence and visual policy findings with evidence paths
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
@@ -154,6 +155,8 @@ Future PowerPoint selection workflows are split into three rails:
 
 - `hint rail`: `mdpr-skill` emits weak `agent-hint.json` semantics only.
 - `review rail`: `mdpr-skill` emits `review-report.json` findings only.
+- `edit-intent rail`: `mdpr-skill` records page or decoration change requests
+  as safe proposals, not final geometry.
 - `approved override / pack rail`: a user-approved `mdpr-ppt` bridge may emit
   override or pack candidates for MDPR to validate and apply.
 

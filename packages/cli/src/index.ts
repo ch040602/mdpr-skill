@@ -1,6 +1,7 @@
 export * from './commands/buildStyleGallery';
 export * from './commands/change';
 export * from './commands/compare';
+export * from './commands/edit';
 export * from './commands/hint';
 export * from './commands/inspectStyle';
 export * from './commands/inspectBoundary';

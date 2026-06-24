@@ -2,6 +2,7 @@ export type ChangeStage = "proposed" | "reviewed" | "approved" | "applied" | "re
 
 export type ChangeKind =
   | "agent-hint"
+  | "edit-intent"
   | "mdpr-policy-suggestion"
   | "user-override-candidate"
   | "pack-candidate";

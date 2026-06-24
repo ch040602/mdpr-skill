@@ -27,7 +27,7 @@
         "additionalProperties": true,
         "required": ["kind"],
         "properties": {
-          "kind": { "enum": ["agent-hint", "mdpr-policy-suggestion", "user-override-candidate", "pack-candidate"] }
+          "kind": { "enum": ["agent-hint", "edit-intent", "mdpr-policy-suggestion", "user-override-candidate", "pack-candidate"] }
         }
       }
     },
