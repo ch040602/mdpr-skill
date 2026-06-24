@@ -10,6 +10,13 @@ artifacts. MDPR remains the deterministic presentation runtime.
 For LLM-advised high-quality output, run the skill before MDPR finalizes the
 deck. For normal Markdown-to-PPTX generation, use MDPR directly.
 
+Positioning:
+
+```text
+MDPR is the deterministic runtime. mdpr-skill is the optional agent review
+companion. The LLM can suggest; MDPR renders.
+```
+
 Star, bug reports, Markdown edge cases, and PPTX feature requests should go to
 the main MDPR repository:
 
@@ -101,6 +108,15 @@ Markdown source
   -> MDPR deterministic parsing, layout, validation, and rendering
   -> editable PPTX / HTML / PDF
 ```
+
+The skill is most useful for workflows where an agent can improve the source
+and review the generated artifacts, but should not own the final slide layout:
+
+- compact semantic tags for ambiguous Markdown
+- icon-search keyword ideas
+- visual critique notes with evidence paths
+- Markdown cleanup suggestions before MDPR builds
+- review loops that turn generated PPTX/PNG issues into MDPR rule improvements
 
 Allowed skill outputs:
 

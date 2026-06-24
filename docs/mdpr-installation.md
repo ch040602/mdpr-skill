@@ -3,6 +3,11 @@
 This repository is an optional visual-review skill pack for MDPR, not a fork or
 replacement of MDPR.
 
+```text
+MDPR is the deterministic runtime. mdpr-skill is the optional agent review
+companion. The LLM can suggest; MDPR renders.
+```
+
 MDPR is available as an npm CLI package for normal usage. The local source
 checkout described below is only needed when this skill repository runs
 development checks, comparison artifacts, or validation loops against MDPR
