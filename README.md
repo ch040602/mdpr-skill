@@ -14,6 +14,7 @@ Star, bug reports, Markdown edge cases, and PPTX feature requests should go to
 the main MDPR repository:
 
 - MDPR: https://github.com/ch040602/MdPr
+- npm CLI: https://www.npmjs.com/package/@mdpresent/cli
 - Preview gallery: https://ch040602.github.io/MdPr/theme-preview/
 - New issue: https://github.com/ch040602/MdPr/issues/new/choose
 
@@ -26,6 +27,7 @@ the main MDPR repository:
 | Primary role | Markdown-to-presentation runtime | Optional Codex skill wrapper |
 | Runtime dependency | No LLM required | Agent used only for hints and review |
 | Final decisions | Parsing, splitting, layout, theme colors, typography, charts, tables, diagrams, icon catalog search, PPTX objects, validation | Short intent/grouping/importance/icon-keyword hints and critique notes |
+| Install path | `npm install -g @mdpresent/cli` | `git clone` this repository for Codex skill workflows |
 | Output | Editable PPTX, HTML, PDF, reports, previews | Hint files, review artifacts, generated review decks |
 | Safety boundary | Builds must work without hints | Must not choose final coordinates, colors, z-order, arrows, geometry, exact icons, or renderer object IDs |
 
@@ -49,13 +51,24 @@ install artifact, not the mdpr-skill repository structure. See
 
 ## Installation
 
+Install MDPR for normal Markdown-to-PPTX usage:
+
+```bash
+npm install -g @mdpresent/cli
+mdpresent build deck.md --to pptx,html --out dist
+```
+
+Install this optional skill repository when you want Codex-assisted review,
+hint generation, and local validation artifacts around MDPR output:
+
 ```bash
 git clone https://github.com/ch040602/mdpr-skill.git
 cd mdpr-skill
 npm install
 ```
 
-Prepare or refresh the local MDPR runtime used by the skill checks:
+For skill development and validation, prepare or refresh a local MDPR source
+checkout:
 
 ```bash
 npm run install:mdpr
@@ -161,7 +174,7 @@ reference corpus.
 
 MDPR runtime documentation lives in the MDPR repository:
 
-- [MDPR](https://github.com/ch040602/mdpr)
+- [MDPR](https://github.com/ch040602/MdPr)
 - [mdpr-skill](https://github.com/ch040602/mdpr-skill)
 
 ## Acknowledgements
@@ -169,7 +182,7 @@ MDPR runtime documentation lives in the MDPR repository:
 This skill uses source-neutral design vocabulary and local SVG/icon references.
 Relevant upstream references include:
 
-- [MDPR](https://github.com/ch040602/mdpr)
+- [MDPR](https://github.com/ch040602/MdPr)
 - [Google Material Design Icons](https://github.com/google/material-design-icons)
 - [Simple Icons](https://github.com/simple-icons/simple-icons)
 - [SVG Repo](https://www.svgrepo.com/)

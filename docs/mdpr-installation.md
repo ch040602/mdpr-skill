@@ -3,19 +3,33 @@
 This repository is an optional visual-review skill pack for MDPR, not a fork or
 replacement of MDPR.
 
-The install flow prepares MDPR as the deterministic presentation runtime. MDPR
-owns parsing, slide/object splitting, layout, decoration styles, theme colors,
-coherence checks, and editable PPTX rendering. This repository only adds
+MDPR is available as an npm CLI package for normal usage. The local source
+checkout described below is only needed when this skill repository runs
+development checks, comparison artifacts, or validation loops against MDPR
+internals.
+
+MDPR owns parsing, slide/object splitting, layout, decoration styles, theme
+colors, coherence checks, and editable PPTX rendering. This repository only adds
 agent-side hints, review notes, and validation artifacts around MDPR output.
 
-## Default Install
+## MDPR Runtime Install
+
+Use MDPR directly when you only need deterministic Markdown-to-PPTX generation:
+
+```bash
+npm install -g @mdpresent/cli
+mdpresent build deck.md --to pptx,html --out dist
+```
+
+## Skill Repository Install
 
 ```bash
 npm install
 ```
 
-This installs the mdpr-skill package only. It does not clone, update, or install
-MDPR as a side effect.
+This installs the mdpr-skill package only. It does not clone or update the MDPR
+source checkout as a side effect, and it does not replace the npm-installed
+MDPR CLI.
 
 Prepare the local MDPR runtime explicitly when you want to run validation or
 generate comparison artifacts:
@@ -24,7 +38,8 @@ generate comparison artifacts:
 npm run install:mdpr
 ```
 
-That command clones or updates MDPR from `https://github.com/ch040602/mdpr` into a local install directory and installs MDPR's package dependencies:
+That command clones or updates MDPR from `https://github.com/ch040602/MdPr`
+into a local install directory and installs MDPR's package dependencies:
 
 ```text
 .cache/mdpr
