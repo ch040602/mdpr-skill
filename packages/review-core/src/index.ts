@@ -31,6 +31,9 @@ export type ReviewCoreInput = {
   manifest?: Record<string, unknown>;
   designLock?: Record<string, unknown>;
   selectionContext?: Record<string, unknown>;
+  htmlDesignAnalysis?: Record<string, unknown>;
+  componentPackCandidate?: Record<string, unknown>;
+  diagramMetrics?: Record<string, unknown>;
 };
 
 export type ScreenshotEvidenceInput = {
@@ -276,6 +279,125 @@ export function reviewVisualPolicy(input: ReviewCoreInput): ReviewFinding[] {
     ...accentOveruseFindings(input),
     ...nonEditableObjectFindings(input),
   ];
+}
+
+export function reviewDesignPolicy(input: ReviewCoreInput): ReviewFinding[] {
+  return [
+    ...pptEffectUnsupportedFindings(input),
+    ...rasterPrimaryContentRiskFindings(input),
+    ...componentStyleDriftFindings(input),
+    ...diagramComplexityBudgetFindings(input),
+    ...diagramAccentBudgetFindings(input),
+  ];
+}
+
+export function pptEffectUnsupportedFindings(input: ReviewCoreInput): ReviewFinding[] {
+  return htmlEffectMappings(input)
+    .filter((mapping) => stringValue(mapping.feasibility) === "unsupported")
+    .map((mapping) => ({
+      severity: "warning" as const,
+      type: "PPT_EFFECT_UNSUPPORTED",
+      slideId: "deck",
+      evidence: {
+        cssDeclaration: stringValue(mapping.cssPath) ?? "unknown",
+        feasibility: stringValue(mapping.feasibility) ?? "unsupported",
+        riskLevel: stringValue(mapping.editabilityRisk) ?? "medium",
+      },
+      suggestion: {
+        kind: "mdpr-policy" as const,
+        target: "design.pptEffectFeasibility",
+        operation: "enableRule" as const,
+      },
+    }));
+}
+
+export function rasterPrimaryContentRiskFindings(input: ReviewCoreInput): ReviewFinding[] {
+  return htmlEffectMappings(input)
+    .filter((mapping) => stringValue(mapping.feasibility) === "raster-risk" || stringValue(mapping.editabilityRisk) === "high")
+    .filter((mapping) => stringValue(mapping.feasibility) !== "unsupported")
+    .map((mapping) => ({
+      severity: "warning" as const,
+      type: "RASTER_PRIMARY_CONTENT_RISK",
+      slideId: "deck",
+      evidence: {
+        cssDeclaration: stringValue(mapping.cssPath) ?? "unknown",
+        feasibility: stringValue(mapping.feasibility) ?? "raster-risk",
+        riskLevel: stringValue(mapping.editabilityRisk) ?? "high",
+      },
+      suggestion: {
+        kind: "mdpr-policy" as const,
+        target: "renderer.editablePrimaryContent",
+        operation: "enableRule" as const,
+      },
+    }));
+}
+
+export function componentStyleDriftFindings(input: ReviewCoreInput): ReviewFinding[] {
+  const pack = asRecord(input.componentPackCandidate);
+  const radiusCount = new Set(stringArrayAt(pack, "radiusScale")).size;
+  const depthCount = new Set(stringArrayAt(pack, "depthScale")).size;
+  if (radiusCount < 4 && depthCount < 4) return [];
+  return [{
+    severity: "warning",
+    type: "COMPONENT_STYLE_DRIFT",
+    slideId: "deck",
+    evidence: {
+      distinctCornerCount: radiusCount,
+      distinctDepthCount: depthCount,
+      maxRecommendedDistinctCount: 3,
+    },
+    suggestion: {
+      kind: "mdpr-policy",
+      target: "design.packConsistency",
+      operation: "enableRule",
+    },
+  }];
+}
+
+export function diagramComplexityBudgetFindings(input: ReviewCoreInput): ReviewFinding[] {
+  const metrics = asRecord(input.diagramMetrics);
+  const nodes = numberValue(metrics?.nodes) ?? 0;
+  const edges = numberValue(metrics?.edges) ?? 0;
+  if (nodes <= 9 && edges <= 12) return [];
+  return [{
+    severity: "warning",
+    type: "DIAGRAM_COMPLEXITY_BUDGET_EXCEEDED",
+    slideId: "deck",
+    evidence: {
+      diagramId: stringValue(metrics?.diagramId) ?? "unknown",
+      nodeCount: nodes,
+      edgeCount: edges,
+      maxNodeCount: 9,
+      maxEdgeCount: 12,
+    },
+    suggestion: {
+      kind: "mdpr-policy",
+      target: "diagram.split.overviewDetail",
+      operation: "enableRule",
+    },
+  }];
+}
+
+export function diagramAccentBudgetFindings(input: ReviewCoreInput): ReviewFinding[] {
+  const metrics = asRecord(input.diagramMetrics);
+  const accentCount = numberValue(metrics?.accentCount) ?? 0;
+  if (accentCount <= 2) return [];
+  return [{
+    severity: "warning",
+    type: "DIAGRAM_ACCENT_BUDGET_EXCEEDED",
+    slideId: "deck",
+    evidence: {
+      diagramId: stringValue(metrics?.diagramId) ?? "unknown",
+      accentCount,
+      maxAccentCount: 2,
+    },
+    suggestion: {
+      kind: "mdpr-policy",
+      target: "diagram.visualHierarchy.accentBudget",
+      operation: "decreaseWeight",
+      value: 0.1,
+    },
+  }];
 }
 
 export function rawHexFindings(input: ReviewCoreInput): ReviewFinding[] {
@@ -546,6 +668,10 @@ function numberValue(value: unknown): number | undefined {
 
 function stringArrayAt(record: Record<string, unknown> | undefined, key: string): string[] {
   return asArray(record?.[key]).map((value) => String(value)).filter(Boolean);
+}
+
+function htmlEffectMappings(input: ReviewCoreInput): Record<string, unknown>[] {
+  return asArray(asRecord(input.htmlDesignAnalysis)?.pptEffectMapping).map((value) => asRecord(value) ?? {});
 }
 
 function collectRawHexPaths(value: unknown, path: string[] = []): string[] {

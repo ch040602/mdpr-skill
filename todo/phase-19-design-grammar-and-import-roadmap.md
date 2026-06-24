@@ -78,98 +78,103 @@ Acceptance:
 
 Priority: P0  
 Owner: `mdpr-skill`
-Status: partially complete.
+Status: completed in this production slice.
 
 Completed work:
 
 - Added `schemas/mdpr-theme-candidate.schema.json`.
 - Added schema contract test.
-
-Remaining work:
-
-- Add a small gate that checks provenance, approval requirement, and token
-  shape.
-- Keep raw colors legal only in theme/pack candidate rails, never in
+- Added `themeCandidateGate()` for provenance, approval, token-shape, and
+  forbidden final-decision field checks.
+- Kept raw color tokens legal only in the theme candidate rail, not in
   `agent-hint.json`.
 
 Acceptance:
 
 - [x] Schema contract is tested.
-- Gate fails missing provenance or approval requirement.
-- Boundary docs explain why color tokens are legal here but forbidden in hints.
+- [x] Gate fails missing provenance or approval requirement.
+- [x] Boundary docs explain why color tokens are legal here but forbidden in hints.
 
 ### DESIGN-P0-003 - Add CLI export for design import
 
 Priority: P0  
 Owner: `mdpr-skill`
-Status: partially complete.
+Status: completed in this production slice.
 
 Completed work:
 
 - Added `packages/cli/src/commands/design.ts`.
 - Exported design import helpers for future argv command wiring.
-- Add npm runtime test script.
+- Added npm runtime test script for the CLI design boundary.
 
 Acceptance:
 
 - [x] `packages/cli/src/index.ts` exposes design import APIs.
-- Tests cover CLI export boundary.
+- [x] Tests cover CLI export boundary.
 
 ### DESIGN-P1-004 - Add HTML design analysis model
 
 Priority: P1  
 Owner: `mdpr-skill`
+Status: completed in this production slice.
 
-Work:
+Completed work:
 
-- Add `mdpr-html-design-analysis-v1` types and schema.
-- Model extracted colors, typography, spacing, radius, elevation, layout motifs,
+- Added `mdpr-html-design-analysis-v1` types and schema.
+- Modeled extracted colors, typography, spacing, radius, elevation, layout motifs,
   component patterns, and PPT effect feasibility.
-- Do not implement network/browser capture in the first slice.
+- Kept network/browser capture out of this slice; analysis is deterministic over
+  local HTML strings.
 
 Acceptance:
 
-- Local HTML-like input can produce a deterministic analysis object.
-- Effects are classified as native-editable, approximation, raster-risk, or
+- [x] Local HTML-like input can produce a deterministic analysis object.
+- [x] Effects are classified as native-editable, approximation, raster-risk, or
   unsupported.
 
 ### DESIGN-P1-005 - Add CSS-to-PPT effect feasibility mapper
 
 Priority: P1  
 Owner: `mdpr-skill`
+Status: completed in this production slice.
 
-Work:
+Completed work:
 
-- Map common CSS effects to PPT-native or approximation categories.
-- Flag backdrop blur, clip-path, animation, and primary raster content risk.
+- Added `mapCssDeclarationToPptEffect()`.
+- Mapped common CSS effects to PPT-native or approximation categories.
+- Flagged backdrop blur, clip-path, animation, and raster-risk declarations.
 
 Acceptance:
 
-- Tests cover background, border, radius, shadow, gradient, blur, font, grid,
+- [x] Tests cover background, border, radius, shadow, gradient, blur, font, grid,
   and unsupported effects.
 
 ### DESIGN-P1-006 - Add design review findings
 
 Priority: P1  
 Owner: `mdpr-skill`
+Status: completed in this production slice.
 
-Work:
+Completed work:
 
-- Add review findings for token reference errors, PPT effect unsupported,
-  raster primary content risk, brand exact clone risk, accent budget overuse,
-  component style drift, diagram complexity budget, and token contrast failure.
-- Prefer adding rule modules before broad review-core refactoring.
+- Added `reviewDesignPolicy()`.
+- Added first production-slice findings for PPT unsupported effects, raster
+  primary content risk, component style drift, diagram complexity budget, and
+  diagram accent budget overuse.
+- Deferred token reference, brand clone, and contrast-specific rules until MDPR
+  exposes approved pack/theme import and a brand-safe asset rail to validate.
 
 Acceptance:
 
-- Findings include evidence and MDPR policy/config suggestions only.
-- Findings do not include final coordinates, exact colors as suggestions, exact
+- [x] Findings include evidence and MDPR policy/config suggestions only.
+- [x] Findings do not include final coordinates, exact colors as suggestions, exact
   component variants, or renderer object IDs.
 
 ### DESIGN-P2-007 - Add eval comparison for theme/pack candidates
 
 Priority: P2  
 Owner: `mdpr-skill`
+Status: deferred until MDPR supports approved theme/pack import.
 
 Work:
 
@@ -186,6 +191,7 @@ Acceptance:
 
 Priority: P0  
 Owner: MDPR
+Status: deferred to MDPR repository.
 
 Work:
 
@@ -202,6 +208,7 @@ Acceptance:
 
 Priority: P0  
 Owner: MDPR
+Status: deferred to MDPR repository.
 
 Work:
 
@@ -218,6 +225,7 @@ Acceptance:
 
 Priority: P1  
 Owner: MDPR
+Status: deferred to MDPR repository.
 
 Work:
 
@@ -234,6 +242,7 @@ Acceptance:
 
 Priority: P2  
 Owner: future `mdpr-ppt`
+Status: deferred to future `mdpr-ppt` repository.
 
 Work:
 
@@ -247,8 +256,8 @@ Acceptance:
 
 ## Next Execution Order
 
-1. `DESIGN-P0-001`: implement DESIGN.md import core.
-2. `DESIGN-P0-002`: add schema/gates around theme candidates.
-3. `DESIGN-P0-003`: expose design import through CLI package boundary.
-4. `DESIGN-P1-004`: add local HTML analysis model.
-5. Coordinate MDPR-owned diagram/component/pack work in the MDPR repository.
+1. Coordinate MDPR-owned diagram/component/pack work in the MDPR repository.
+2. Coordinate exact PowerPoint selection capture in a future `mdpr-ppt`
+   repository.
+3. Return to `DESIGN-P2-007` after MDPR exposes approved theme/pack import that
+   mdpr-skill can invoke through `mdpr-adapter`.

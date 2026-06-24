@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   reviewCoherence,
+  reviewDesignPolicy,
   reviewVisualPolicy,
   reviewFindingHasFinalDecisionField,
   screenshotEvidence,
@@ -254,4 +255,52 @@ test("reviewFindingHasFinalDecisionField checks keys instead of evidence text", 
       color: "#ffffff",
     },
   }), true);
+});
+
+test("reviewDesignPolicy reports design rail risks without final design fields", () => {
+  const findings = reviewDesignPolicy({
+    htmlDesignAnalysis: {
+      schemaVersion: "mdpr-html-design-analysis-v1",
+      pptEffectMapping: [
+        {
+          cssPath: "clip-path",
+          cssValue: "polygon(0 0,100% 0,80% 100%)",
+          pptEffect: "freeform/SVG fallback risk",
+          feasibility: "unsupported",
+          editabilityRisk: "high",
+        },
+        {
+          cssPath: "backdrop-filter",
+          cssValue: "blur(16px)",
+          pptEffect: "semi-transparent fill plus line fallback",
+          feasibility: "raster-risk",
+          editabilityRisk: "high",
+        },
+      ],
+      tokens: {
+        colors: ["#ffffff", "#f8f8f8"],
+      },
+    },
+    componentPackCandidate: {
+      radiusScale: ["sm", "md", "lg", "pill"],
+      depthScale: ["soft", "hard", "glow", "blur"],
+    },
+    diagramMetrics: {
+      diagramId: "diagram-1",
+      nodes: 13,
+      edges: 16,
+      accentCount: 5,
+    },
+  });
+  const types = findings.map((finding) => finding.type);
+
+  assert.deepEqual(types.sort(), [
+    "COMPONENT_STYLE_DRIFT",
+    "DIAGRAM_ACCENT_BUDGET_EXCEEDED",
+    "DIAGRAM_COMPLEXITY_BUDGET_EXCEEDED",
+    "PPT_EFFECT_UNSUPPORTED",
+    "RASTER_PRIMARY_CONTENT_RISK",
+  ].sort());
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+  assert.equal(findings.every((finding) => finding.suggestion), true);
 });

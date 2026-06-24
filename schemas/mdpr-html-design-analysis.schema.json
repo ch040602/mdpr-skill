@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpr.dev/schemas/mdpr-html-design-analysis.schema.json",
+  "title": "MDPR HTML Design Analysis",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "source",
+    "tokens",
+    "motifs",
+    "pptEffectMapping",
+    "warnings"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "mdpr-html-design-analysis-v1"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "capturedAt"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "html",
+            "url"
+          ]
+        },
+        "path": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "capturedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "colors",
+        "typography",
+        "spacing",
+        "radius",
+        "elevation"
+      ],
+      "properties": {
+        "colors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "typography": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "property",
+              "value"
+            ],
+            "properties": {
+              "property": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "spacing": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "radius": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "elevation": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "motifs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "confidence",
+          "evidence"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "evidence": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pptEffectMapping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cssPath",
+          "cssValue",
+          "pptEffect",
+          "feasibility",
+          "editabilityRisk"
+        ],
+        "properties": {
+          "cssPath": {
+            "type": "string"
+          },
+          "cssValue": {
+            "type": "string"
+          },
+          "pptEffect": {
+            "type": "string"
+          },
+          "feasibility": {
+            "enum": [
+              "native-editable",
+              "native-approximation",
+              "token-approximation",
+              "raster-risk",
+              "unsupported"
+            ]
+          },
+          "editabilityRisk": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "mdprTokenPath": {
+            "type": "string"
+          },
+          "approximationNote": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -47,8 +47,8 @@ scripts/            Installation, review, validation, and artifact helpers
 design_components/  Source-neutral review seeds and design grammar scaffolds
 artifacts/          Generated review/example outputs
 reports/            Local validation reports
-schemas/            Hint, rulebook, and intermediate schema contracts
-packages/change-core/  Approval lifecycle helpers for proposed changes
+schemas/            Hint, review, design rail, and intermediate schema contracts
+packages/           Hint, review, eval, edit, change, and design import helpers
 todo/               Development and review-driven task records
 ```
 
@@ -117,7 +117,9 @@ and review the generated artifacts, but should not own the final slide layout:
 - icon-search keyword ideas
 - safe edit-intent proposals for page, emphasis, layout-family, and decoration-family changes
 - approval-bound DESIGN.md theme candidates for MDPR theme/pack workflows
+- local HTML design analysis with CSS-to-PPT feasibility notes
 - coherence and visual policy findings with evidence paths
+- design rail review findings for unsupported PPT effects, raster risks, component drift, and diagram budgets
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
 
@@ -153,6 +155,9 @@ Forbidden skill outputs:
 Theme candidates are a separate approved rail. They may contain color,
 typography, spacing, and shape tokens with provenance, but they are not
 `agent-hint.json` files and must pass approval/gates before MDPR runtime use.
+HTML design analysis is also proposal-only: it records motifs, token candidates,
+and PPT editability risks, then review-core turns those risks into MDPR policy
+suggestions rather than final coordinates or exact object choices.
 
 ## PowerPoint Bridge Boundary
 

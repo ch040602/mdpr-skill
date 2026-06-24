@@ -34,6 +34,64 @@ export type BuildThemeCandidateInput = {
   generatedAt?: string;
 };
 
+export type ThemeCandidateGateResult = {
+  status: "pass" | "fail";
+  findings: string[];
+  metrics: {
+    colorTokenCount: number;
+    typographyRoleCount: number;
+    spacingTokenCount: number;
+    shapeTokenCount: number;
+  };
+};
+
+export type PptEffectFeasibility =
+  | "native-editable"
+  | "native-approximation"
+  | "token-approximation"
+  | "raster-risk"
+  | "unsupported";
+
+export type CssToPptEffectMapping = {
+  cssPath: string;
+  cssValue: string;
+  pptEffect: string;
+  feasibility: PptEffectFeasibility;
+  editabilityRisk: "low" | "medium" | "high";
+  mdprTokenPath?: string;
+  approximationNote?: string;
+};
+
+export type MdprHtmlDesignAnalysis = {
+  schemaVersion: "mdpr-html-design-analysis-v1";
+  source: {
+    kind: "html" | "url";
+    path?: string;
+    url?: string;
+    capturedAt: string;
+  };
+  tokens: {
+    colors: string[];
+    typography: Array<{ property: string; value: string }>;
+    spacing: number[];
+    radius: number[];
+    elevation: string[];
+  };
+  motifs: Array<{ kind: string; confidence: number; evidence: string }>;
+  pptEffectMapping: CssToPptEffectMapping[];
+  warnings: string[];
+};
+
+export type AnalyzeHtmlDesignInput = {
+  html: string;
+  source?: {
+    kind: "html" | "url";
+    path?: string;
+    url?: string;
+  };
+  capturedAt?: string;
+};
+
 const FORBIDDEN_DESIGN_IMPORT_FIELDS = new Set([
   "x",
   "y",
@@ -86,6 +144,191 @@ export function buildThemeCandidateFromDesignMd(input: BuildThemeCandidateInput)
       dosDonts: bulletLines(parsed.sections["Do's and Don'ts"] ?? parsed.sections["Dos and Donts"] ?? ""),
     },
     requiresApproval: true,
+  };
+}
+
+export function themeCandidateGate(candidate: unknown): ThemeCandidateGateResult {
+  const findings: string[] = [];
+  const root = asRecord(candidate);
+  if (!root) {
+    return emptyGateResult(["candidate must be an object"]);
+  }
+
+  if (root.schemaVersion !== "mdpr-theme-candidate-v1") {
+    findings.push("schemaVersion must be mdpr-theme-candidate-v1");
+  }
+
+  const source = asRecord(root.source);
+  if (!source) {
+    findings.push("source must be an object");
+  } else {
+    if (source.kind !== "design-md") findings.push("source.kind must be design-md");
+    if (source.generatedBy !== "mdpr-skill") findings.push("source.generatedBy must be mdpr-skill");
+    if (typeof source.path !== "string" || !source.path) findings.push("source.path must be a non-empty string");
+    if (typeof source.sourceSha256 !== "string" || !/^[a-f0-9]{64}$/i.test(source.sourceSha256)) {
+      findings.push("source.sourceSha256 must be a 64-character sha256 hex string");
+    }
+    if (typeof source.generatedAt !== "string" || Number.isNaN(Date.parse(source.generatedAt))) {
+      findings.push("source.generatedAt must be an ISO-compatible date string");
+    }
+  }
+
+  if (root.requiresApproval !== true) findings.push("requiresApproval must be true");
+
+  const tokens = asRecord(root.tokens);
+  if (!tokens) findings.push("tokens must be an object");
+  const colors = asRecord(tokens?.colors);
+  const typography = asRecord(tokens?.typography);
+  const spacing = asRecord(tokens?.spacing);
+  const shape = asRecord(tokens?.shape);
+  validateStringMap(colors, "tokens.colors", findings);
+  validateTypographyMap(typography, findings);
+  validateNumberMap(spacing, "tokens.spacing", findings);
+  validateNumberMap(shape, "tokens.shape", findings);
+
+  findings.push(...collectDesignImportForbiddenFields(root).map((path) => `${path} is a forbidden final-decision field for mdpr-skill design import`));
+
+  return {
+    status: findings.length ? "fail" : "pass",
+    findings,
+    metrics: {
+      colorTokenCount: colors ? Object.keys(colors).length : 0,
+      typographyRoleCount: typography ? Object.keys(typography).length : 0,
+      spacingTokenCount: spacing ? Object.keys(spacing).length : 0,
+      shapeTokenCount: shape ? Object.keys(shape).length : 0,
+    },
+  };
+}
+
+export function analyzeHtmlDesign(input: AnalyzeHtmlDesignInput): MdprHtmlDesignAnalysis {
+  const declarations = collectCssDeclarations(input.html);
+  const mappings = declarations.map((declaration) => mapCssDeclarationToPptEffect(declaration.property, declaration.value));
+  const lowerHtml = input.html.toLowerCase();
+  return {
+    schemaVersion: "mdpr-html-design-analysis-v1",
+    source: {
+      kind: input.source?.kind ?? "html",
+      ...(input.source?.path ? { path: input.source.path } : {}),
+      ...(input.source?.url ? { url: input.source.url } : {}),
+      capturedAt: input.capturedAt ?? new Date().toISOString(),
+    },
+    tokens: {
+      colors: unique(declarations.flatMap(({ value }) => extractHexColors(value))),
+      typography: declarations
+        .filter(({ property }) => property === "font-family" || property === "font-size" || property === "font-weight")
+        .map(({ property, value }) => ({ property, value })),
+      spacing: uniqueNumbers(declarations.filter(({ property }) => ["gap", "padding", "margin"].includes(property)).flatMap(({ value }) => extractPixelNumbers(value))),
+      radius: uniqueNumbers(declarations.filter(({ property }) => property === "border-radius").flatMap(({ value }) => extractPixelNumbers(value))),
+      elevation: declarations.filter(({ property }) => property === "box-shadow").map(({ value }) => value),
+    },
+    motifs: detectHtmlMotifs(lowerHtml, declarations),
+    pptEffectMapping: mappings,
+    warnings: mappings
+      .filter((mapping) => mapping.feasibility === "unsupported" || mapping.feasibility === "raster-risk")
+      .map((mapping) => `${mapping.cssPath} maps to ${mapping.feasibility}`),
+  };
+}
+
+export function mapCssDeclarationToPptEffect(property: string, value: string): CssToPptEffectMapping {
+  const cssPath = property.trim().toLowerCase();
+  const cssValue = value.trim();
+  if (cssPath === "background-color" || cssPath === "color") {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: cssPath === "color" ? "theme.tokens.text" : "theme.tokens.surface",
+      pptEffect: cssPath === "color" ? "text color token" : "shape fill color token",
+      feasibility: "native-editable",
+      editabilityRisk: "low",
+    };
+  }
+  if (cssPath === "border" || cssPath === "border-color" || cssPath === "border-width") {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: "theme.tokens.rule",
+      pptEffect: "shape line token",
+      feasibility: "native-editable",
+      editabilityRisk: "low",
+    };
+  }
+  if (cssPath === "border-radius") {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: "theme.tokens.radius",
+      pptEffect: "shape radius token",
+      feasibility: "native-editable",
+      editabilityRisk: "low",
+    };
+  }
+  if (cssPath === "box-shadow") {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: "theme.tokens.elevation",
+      pptEffect: "PowerPoint shadow effect approximation",
+      feasibility: "native-approximation",
+      editabilityRisk: "medium",
+      approximationNote: "Blur spread and multiple shadows are normalized to a tokenized PPT shadow.",
+    };
+  }
+  if ((cssPath === "background" || cssPath === "background-image") && /linear-gradient|radial-gradient/i.test(cssValue)) {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: "theme.tokens.gradient",
+      pptEffect: "PowerPoint gradient fill approximation",
+      feasibility: "native-approximation",
+      editabilityRisk: "medium",
+    };
+  }
+  if (cssPath === "backdrop-filter" || (cssPath === "filter" && /blur\(/i.test(cssValue))) {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: "theme.tokens.glass",
+      pptEffect: "semi-transparent fill plus line fallback",
+      feasibility: "raster-risk",
+      editabilityRisk: "high",
+      approximationNote: "Live backdrop blur is not a stable editable PowerPoint primitive.",
+    };
+  }
+  if (cssPath === "font-family" || cssPath === "font-size" || cssPath === "font-weight" || cssPath === "letter-spacing") {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: "theme.tokens.typography",
+      pptEffect: "PowerPoint text run typography",
+      feasibility: "native-editable",
+      editabilityRisk: "low",
+    };
+  }
+  if (["display", "gap", "padding", "margin"].includes(cssPath)) {
+    return {
+      cssPath,
+      cssValue,
+      mdprTokenPath: cssPath === "display" ? "layout.motif" : "theme.tokens.spacing",
+      pptEffect: cssPath === "display" ? "layout motif token" : "spacing token",
+      feasibility: "token-approximation",
+      editabilityRisk: "low",
+    };
+  }
+  if (cssPath === "clip-path" || cssPath === "animation" || cssPath === "transition") {
+    return {
+      cssPath,
+      cssValue,
+      pptEffect: cssPath === "clip-path" ? "freeform/SVG fallback risk" : "static-state only",
+      feasibility: "unsupported",
+      editabilityRisk: "high",
+    };
+  }
+  return {
+    cssPath,
+    cssValue,
+    pptEffect: "unsupported CSS declaration",
+    feasibility: "unsupported",
+    editabilityRisk: "medium",
   };
 }
 
@@ -192,15 +435,140 @@ function bulletLines(value: string): string[] {
 }
 
 function assertNoDesignImportForbiddenFields(value: unknown, path = "$"): void {
-  if (!value || typeof value !== "object") return;
+  const [first] = collectDesignImportForbiddenFields(value, path);
+  if (first) {
+    throw new Error(`${first} is a forbidden final-decision field for mdpr-skill design import`);
+  }
+}
+
+function collectDesignImportForbiddenFields(value: unknown, path = "$"): string[] {
+  const findings: string[] = [];
+  if (!value || typeof value !== "object") return findings;
   if (Array.isArray(value)) {
-    value.forEach((item, index) => assertNoDesignImportForbiddenFields(item, `${path}[${index}]`));
-    return;
+    value.forEach((item, index) => findings.push(...collectDesignImportForbiddenFields(item, `${path}[${index}]`)));
+    return findings;
   }
   for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
     if (FORBIDDEN_DESIGN_IMPORT_FIELDS.has(key)) {
-      throw new Error(`${path}.${key} is a forbidden final-decision field for mdpr-skill design import`);
+      findings.push(`${path}.${key}`);
     }
-    assertNoDesignImportForbiddenFields(child, `${path}.${key}`);
+    findings.push(...collectDesignImportForbiddenFields(child, `${path}.${key}`));
   }
+  return findings;
+}
+
+function validateStringMap(value: Record<string, unknown> | undefined, path: string, findings: string[]): void {
+  if (!value) {
+    findings.push(`${path} must be an object`);
+    return;
+  }
+  for (const [key, child] of Object.entries(value)) {
+    if (typeof child !== "string") findings.push(`${path}.${key} must be a string`);
+  }
+}
+
+function validateNumberMap(value: Record<string, unknown> | undefined, path: string, findings: string[]): void {
+  if (!value) {
+    findings.push(`${path} must be an object`);
+    return;
+  }
+  for (const [key, child] of Object.entries(value)) {
+    if (typeof child !== "number" || !Number.isFinite(child)) findings.push(`${path}.${key} must be a finite number`);
+  }
+}
+
+function validateTypographyMap(value: Record<string, unknown> | undefined, findings: string[]): void {
+  if (!value) {
+    findings.push("tokens.typography must be an object");
+    return;
+  }
+  for (const [role, rawSpec] of Object.entries(value)) {
+    const spec = asRecord(rawSpec);
+    if (!spec) {
+      findings.push(`tokens.typography.${role} must be an object`);
+      continue;
+    }
+    for (const [key, child] of Object.entries(spec)) {
+      if (typeof child !== "string" && typeof child !== "number") {
+        findings.push(`tokens.typography.${role}.${key} must be a string or number`);
+      }
+    }
+  }
+}
+
+function emptyGateResult(findings: string[]): ThemeCandidateGateResult {
+  return {
+    status: "fail",
+    findings,
+    metrics: {
+      colorTokenCount: 0,
+      typographyRoleCount: 0,
+      spacingTokenCount: 0,
+      shapeTokenCount: 0,
+    },
+  };
+}
+
+function asRecord(value: unknown): Record<string, unknown> | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  return value as Record<string, unknown>;
+}
+
+function collectCssDeclarations(html: string): Array<{ property: string; value: string }> {
+  const declarationTexts: string[] = [];
+  for (const match of html.matchAll(/style\s*=\s*["']([^"']+)["']/gi)) {
+    declarationTexts.push(match[1] ?? "");
+  }
+  for (const match of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)) {
+    const styleBlock = match[1] ?? "";
+    for (const rule of styleBlock.matchAll(/\{([^{}]+)\}/g)) {
+      declarationTexts.push(rule[1] ?? "");
+    }
+  }
+  return declarationTexts.flatMap(parseCssDeclarationText);
+}
+
+function parseCssDeclarationText(text: string): Array<{ property: string; value: string }> {
+  return text
+    .split(";")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .flatMap((part) => {
+      const index = part.indexOf(":");
+      if (index <= 0) return [];
+      return [{
+        property: part.slice(0, index).trim().toLowerCase(),
+        value: part.slice(index + 1).trim(),
+      }];
+    });
+}
+
+function detectHtmlMotifs(lowerHtml: string, declarations: Array<{ property: string; value: string }>): Array<{ kind: string; confidence: number; evidence: string }> {
+  const motifs: Array<{ kind: string; confidence: number; evidence: string }> = [];
+  const hasGrid = declarations.some(({ property, value }) => property === "display" && value.toLowerCase().includes("grid"));
+  const hasGap = declarations.some(({ property }) => property === "gap");
+  if (hasGrid && hasGap) motifs.push({ kind: "card-grid", confidence: 0.82, evidence: "display:grid with gap" });
+  const hasPillRadius = declarations.some(({ property, value }) => property === "border-radius" && extractPixelNumbers(value).some((number) => number >= 48 || value.includes("999")));
+  if (hasPillRadius || /\b(badge|chip|pill)\b/.test(lowerHtml)) {
+    motifs.push({ kind: "pill-badge", confidence: 0.78, evidence: "badge-like class or pill radius" });
+  }
+  const hasFlex = declarations.some(({ property, value }) => property === "display" && value.toLowerCase().includes("flex"));
+  if (hasFlex && lowerHtml.includes("<img")) motifs.push({ kind: "split-media", confidence: 0.7, evidence: "flex layout with image" });
+  return motifs;
+}
+
+function extractHexColors(value: string): string[] {
+  return [...value.matchAll(/#[0-9a-f]{3,8}\b/gi)].map((match) => match[0]!.toLowerCase());
+}
+
+function extractPixelNumbers(value: string): number[] {
+  return [...value.matchAll(/(-?\d+(?:\.\d+)?)px\b/gi)].map((match) => Number(match[1])).filter(Number.isFinite);
+}
+
+function unique<T>(values: T[]): T[] {
+  return [...new Set(values)];
+}
+
+function uniqueNumbers(values: number[]): number[] {
+  return [...new Set(values)].sort((a, b) => a - b);
 }
