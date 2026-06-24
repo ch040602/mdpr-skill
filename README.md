@@ -116,6 +116,7 @@ and review the generated artifacts, but should not own the final slide layout:
 - compact semantic tags for ambiguous Markdown
 - icon-search keyword ideas
 - safe edit-intent proposals for page, emphasis, layout-family, and decoration-family changes
+- approval-bound DESIGN.md theme candidates for MDPR theme/pack workflows
 - coherence and visual policy findings with evidence paths
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
@@ -148,6 +149,10 @@ Forbidden skill outputs:
 - shape geometry
 - renderer object IDs
 - exact icon asset choices
+
+Theme candidates are a separate approved rail. They may contain color,
+typography, spacing, and shape tokens with provenance, but they are not
+`agent-hint.json` files and must pass approval/gates before MDPR runtime use.
 
 ## PowerPoint Bridge Boundary
 

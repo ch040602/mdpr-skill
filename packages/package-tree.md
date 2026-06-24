@@ -18,6 +18,10 @@ packages/
     src/
       index.ts              baseline/guided MDPR runner, metric comparison, eval report
 
+  design-import-core/
+    src/
+      index.ts              DESIGN.md parser and approval-bound theme candidate builder
+
   core/
     src/
       buildSlideElementIR.ts
@@ -49,6 +53,7 @@ packages/
       commands/hint.ts
       commands/review.ts
       commands/compare.ts
+      commands/design.ts
       commands/inspectBoundary.ts
       commands/validateSchemaSync.ts
       commands/inspectStyle.ts

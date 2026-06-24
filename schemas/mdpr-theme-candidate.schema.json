@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-theme-candidate.schema.json",
+  "title": "MDPR Theme Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "source", "tokens", "rationale", "requiresApproval"],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-theme-candidate-v1" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path", "sourceSha256", "generatedBy", "generatedAt"],
+      "properties": {
+        "kind": { "const": "design-md" },
+        "path": { "type": "string", "minLength": 1 },
+        "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "generatedBy": { "const": "mdpr-skill" },
+        "generatedAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["colors", "typography", "spacing", "shape"],
+      "properties": {
+        "colors": { "type": "object", "additionalProperties": { "type": "string" } },
+        "typography": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": { "type": ["string", "number"] }
+          }
+        },
+        "spacing": { "type": "object", "additionalProperties": { "type": "number" } },
+        "shape": { "type": "object", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "rationale": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dosDonts"],
+      "properties": {
+        "overview": { "type": "string" },
+        "layout": { "type": "string" },
+        "dosDonts": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "requiresApproval": { "const": true }
+  }
+}
