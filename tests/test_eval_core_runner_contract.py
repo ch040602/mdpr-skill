@@ -62,6 +62,13 @@ class EvalCoreRunnerContractTests(unittest.TestCase):
         source = (ROOT / "packages" / "cli" / "src" / "commands" / "compare.ts").read_text(encoding="utf-8")
         self.assertIn("runMdprSkillEval", source)
 
+    def test_eval_core_has_executable_typescript_validation(self):
+        package_json = (ROOT / "package.json").read_text(encoding="utf-8")
+        self.assertIn('"typecheck"', package_json)
+        self.assertIn('"test:eval-core"', package_json)
+        self.assertTrue((ROOT / "tsconfig.json").is_file())
+        self.assertTrue((ROOT / "tests" / "eval-core-runtime.test.ts").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()
