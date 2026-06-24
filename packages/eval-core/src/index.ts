@@ -9,6 +9,12 @@ import {
   type MdprRunResult,
 } from "../../mdpr-adapter/src/index";
 import { assertNoForbiddenFields, type AgentHintManifest } from "../../hints-core/src/index";
+import {
+  reviewCoherence,
+  reviewFindingHasFinalDecisionField,
+  reviewVisualPolicy,
+  type ReviewFinding,
+} from "../../review-core/src/index";
 
 export type MdprRunMetrics = {
   overflowCount: number;
@@ -56,6 +62,16 @@ export type EvalRunArtifacts = {
   manifestPath: string;
   sourceSha256: string;
   metrics: MdprRunMetrics;
+  review: ReviewRunSummary;
+};
+
+export type ReviewRunSummary = {
+  findingCount: number;
+  errorCount: number;
+  warningCount: number;
+  forbiddenFieldCount: number;
+  missingEvidenceCount: number;
+  findings: ReviewFinding[];
 };
 
 export type MdprSkillEvalInput = Omit<MdprRunInput, "outDir" | "hintsPath"> & {
@@ -83,6 +99,11 @@ export type MdprSkillEvalReport = {
     schemaSync: EvalGateResult;
     boundary: EvalGateResult;
     regression: EvalGateResult;
+    review: EvalGateResult;
+  };
+  reviews: {
+    baseline: ReviewRunSummary;
+    skillGuided: ReviewRunSummary;
   };
   hintsPath?: string;
   regressions: string[];
@@ -179,7 +200,8 @@ export function runMdprSkillEval(input: MdprSkillEvalInput, deps: EvalDeps = {})
   const skillGuided = runSkillGuided({ ...input, sourceSha256: baseline.sourceSha256 }, deps);
   const thresholds = { ...DEFAULT_REGRESSION_THRESHOLDS, ...input.thresholds };
   const comparison = compareMdprRuns(baseline.metrics, skillGuided.metrics, thresholds);
-  const overallStatus = [skillGuided.hintGates.schemaSync, skillGuided.hintGates.boundary, comparison.regressionGate]
+  const reviewGate = buildReviewRegressionGate(baseline.review, skillGuided.review);
+  const overallStatus = [skillGuided.hintGates.schemaSync, skillGuided.hintGates.boundary, comparison.regressionGate, reviewGate]
     .every((gate) => gate.status === "pass") ? "pass" : "fail";
   const report: MdprSkillEvalReport = {
     schemaVersion: "mdpr-skill-eval-v1",
@@ -196,6 +218,11 @@ export function runMdprSkillEval(input: MdprSkillEvalInput, deps: EvalDeps = {})
       schemaSync: skillGuided.hintGates.schemaSync,
       boundary: skillGuided.hintGates.boundary,
       regression: comparison.regressionGate,
+      review: reviewGate,
+    },
+    reviews: {
+      baseline: baseline.review,
+      skillGuided: skillGuided.review,
     },
     hintsPath: skillGuided.hintsPath,
     regressions: comparison.regressions,
@@ -226,12 +253,62 @@ function runEvalBuild(input: MdprRunInput, deps: EvalDeps): EvalRunArtifacts {
   const outDir = run.outDir ?? resolve(input.outDir ?? ".");
   const context: MdprContext = loadArtifacts(outDir);
   const metrics = collectEvalMetrics(context.manifest, collectMetrics, buildMs);
+  const review = runReviews(context);
   return {
     run,
     outDir,
     manifestPath: run.manifestPath ?? join(outDir, "mdpresent-manifest.json"),
     sourceSha256: context.sourceSha256,
     metrics,
+    review,
+  };
+}
+
+export function runReviews(context: MdprContext): ReviewRunSummary {
+  return summarizeReviewFindings([
+    ...reviewCoherence({
+      manifest: context.manifest,
+      presentation: context.presentation,
+      layout: context.layout,
+    }),
+    ...reviewVisualPolicy({
+      manifest: context.manifest,
+      presentation: context.presentation,
+      layout: context.layout,
+    }),
+  ]);
+}
+
+export function buildReviewRegressionGate(baseline: ReviewRunSummary, skillGuided: ReviewRunSummary): EvalGateResult {
+  const findings: string[] = [];
+  if (skillGuided.errorCount > baseline.errorCount) findings.push("reviewErrors increased");
+  if (skillGuided.warningCount > baseline.warningCount) findings.push("reviewWarnings increased");
+  if (skillGuided.forbiddenFieldCount > 0) findings.push("guidedReviewForbiddenFields present");
+  if (skillGuided.missingEvidenceCount > 0) findings.push("guidedReviewMissingEvidence present");
+  return {
+    status: findings.length === 0 ? "pass" : "fail",
+    findings,
+    metrics: {
+      baselineReviewFindings: baseline.findingCount,
+      guidedReviewFindings: skillGuided.findingCount,
+      baselineReviewErrors: baseline.errorCount,
+      guidedReviewErrors: skillGuided.errorCount,
+      baselineReviewWarnings: baseline.warningCount,
+      guidedReviewWarnings: skillGuided.warningCount,
+      guidedReviewForbiddenFields: skillGuided.forbiddenFieldCount,
+      guidedReviewMissingEvidence: skillGuided.missingEvidenceCount,
+    },
+  };
+}
+
+function summarizeReviewFindings(findings: ReviewFinding[]): ReviewRunSummary {
+  return {
+    findingCount: findings.length,
+    errorCount: findings.filter((finding) => finding.severity === "error").length,
+    warningCount: findings.filter((finding) => finding.severity === "warning").length,
+    forbiddenFieldCount: findings.filter(reviewFindingHasFinalDecisionField).length,
+    missingEvidenceCount: findings.filter((finding) => !finding.evidence || Object.keys(finding.evidence).length === 0).length,
+    findings,
   };
 }
 

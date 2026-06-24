@@ -48,6 +48,7 @@ design_components/  Source-neutral review seeds and design grammar scaffolds
 artifacts/          Generated review/example outputs
 reports/            Local validation reports
 schemas/            Hint, rulebook, and intermediate schema contracts
+packages/change-core/  Approval lifecycle helpers for proposed changes
 todo/               Development and review-driven task records
 ```
 
@@ -114,7 +115,7 @@ and review the generated artifacts, but should not own the final slide layout:
 
 - compact semantic tags for ambiguous Markdown
 - icon-search keyword ideas
-- visual critique notes with evidence paths
+- coherence and visual policy findings with evidence paths
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
 

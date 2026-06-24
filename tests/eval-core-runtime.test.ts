@@ -125,3 +125,107 @@ test("runMdprSkillEval executes baseline and guided builds with injected MDPR ad
   assert.equal(report.summary.overallStatus, "fail");
   assert.match(written.get(".tmp/eval/report.json") ?? "", /"overallStatus": "fail"/);
 });
+
+test("runMdprSkillEval attaches review summaries and fails on review regressions", () => {
+  const report = runMdprSkillEval({
+    deckPath: "deck.md",
+    outDir: ".tmp/eval-review",
+    thresholds: { maxBuildMsMultiplier: 10 },
+    hintManifest: {
+      schemaVersion: "mdpr-agent-hint-v1",
+      sourceSha256,
+      generatedBy: "mdpr-skill",
+      generatedAt: "2026-06-24T00:00:00Z",
+      hints: [{ slideId: "slide-1", confidence: 0.8, intentCandidate: "evidence" }],
+    },
+  }, {
+    now: () => 0,
+    mkdirp: () => undefined,
+    writeText: () => undefined,
+    runBuild: (input) => ({
+      command: ["mdpresent", "build"],
+      cwd: process.cwd(),
+      exitCode: 0,
+      stdout: "",
+      stderr: "",
+      outDir: input.outDir,
+      manifestPath: `${input.outDir}/mdpresent-manifest.json`,
+    }),
+    loadArtifacts: (outDir) => outDir.includes("guided")
+      ? {
+          sourceSha256,
+          manifest: {
+            metrics: { overflowCount: 0, coherenceWarnings: 0, visualErrors: 0, slideCount: 1 },
+            pptxObjects: [
+              { slideId: "layout-guided", objectKind: "raster-image", role: "table", blockIds: ["table-1"] },
+            ],
+          },
+          presentation: {
+            slides: [
+              {
+                id: "slide-guided",
+                intent: "evidence",
+                headingPath: ["Evidence"],
+                blocks: [
+                  { id: "table-1", type: "table", text: "Metrics" },
+                ],
+              },
+            ],
+          },
+          layout: {
+            slides: [
+              {
+                id: "layout-guided",
+                sourceSlideId: "slide-guided",
+                layout: { preset: "table-focus" },
+                regions: [{ id: "table", role: "table", blockIds: ["table-1"] }],
+              },
+            ],
+          },
+        }
+      : {
+          sourceSha256,
+          manifest: { metrics: { overflowCount: 0, coherenceWarnings: 0, visualErrors: 0, slideCount: 1 } },
+          presentation: {
+            slides: [
+              {
+                id: "slide-baseline",
+                intent: "evidence",
+                headingPath: ["Evidence"],
+                blocks: [
+                  { id: "claim-1", type: "paragraph", text: "Activation is the main bottleneck." },
+                  { id: "chart-1", type: "chart", text: "Activation funnel" },
+                  { id: "caption-1", type: "paragraph", text: "Figure 1. Activation drops by stage." },
+                ],
+              },
+            ],
+          },
+          layout: {
+            slides: [
+              {
+                id: "layout-baseline",
+                sourceSlideId: "slide-baseline",
+                layout: { preset: "chart-table" },
+                regions: [
+                  { id: "claim", role: "body", blockIds: ["claim-1"] },
+                  { id: "chart", role: "chart", blockIds: ["chart-1"] },
+                  { id: "caption", role: "body", blockIds: ["caption-1"] },
+                ],
+              },
+            ],
+          },
+        },
+    collectMetrics: (manifest) => {
+      const metrics = manifest.metrics as MdprRunMetrics | undefined;
+      assert.ok(metrics);
+      return metrics;
+    },
+  });
+
+  assert.equal(report.reviews.baseline.findingCount, 0);
+  assert.equal(report.reviews.skillGuided.errorCount, 1);
+  assert.equal(report.reviews.skillGuided.warningCount, 1);
+  assert.equal(report.gates.review.status, "fail");
+  assert.match(report.gates.review.findings.join("\n"), /reviewErrors increased/);
+  assert.equal(report.summary.overallStatus, "fail");
+});

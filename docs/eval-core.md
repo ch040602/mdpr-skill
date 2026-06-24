@@ -12,6 +12,7 @@ Markdown source
   -> sourceSha256 and manifest metrics
   -> schema/boundary checked agent-hint.json
   -> MDPR guided build
+  -> review-core coherence and visual policy review on both outputs
   -> regression gate
   -> mdpr-skill-eval-v1 report
 ```
@@ -36,6 +37,13 @@ gate when it increases overflow, coherence warnings, visual errors, text
 clipping risk, contrast failures, or connector warnings. It also checks
 thresholded build-time, slide-count, output-size, and minimum-font regressions.
 
+`review` compares baseline and guided `review-core` summaries. A guided build
+fails the gate when review errors increase, review warnings increase, review
+findings contain forbidden final-decision fields, or findings lack evidence.
+The review pass can flag detached captions, orphan evidence, claimless evidence
+slides, section rhythm drift, raw hex leakage, mixed visual scales, effect
+budget overuse, accent overuse, and non-editable primary PPTX objects.
+
 ## Report
 
 The emitted report uses `schemaVersion: "mdpr-skill-eval-v1"` and records:
@@ -43,7 +51,8 @@ The emitted report uses `schemaVersion: "mdpr-skill-eval-v1"` and records:
 - `summary.overallStatus`
 - baseline and guided manifest paths
 - baseline and guided run artifacts
-- `schemaSync`, `boundary`, and `regression` gate findings
+- baseline and guided review summaries
+- `schemaSync`, `boundary`, `regression`, and `review` gate findings
 - thresholds used for the regression decision
 - accepted hint path
 

@@ -10,6 +10,19 @@ export type MdprManifestRef = {
   layoutPath?: string;
 };
 
+export type MdprAdapterFailureKind = "command-failed" | "artifact-missing" | "artifact-invalid";
+
+export class MdprAdapterError extends Error {
+  constructor(
+    public readonly kind: MdprAdapterFailureKind,
+    message: string,
+    public readonly context: Record<string, unknown> = {},
+  ) {
+    super(message);
+    this.name = "MdprAdapterError";
+  }
+}
+
 export type MdprContext = {
   sourceSha256: string;
   manifest: Record<string, unknown>;
@@ -40,14 +53,14 @@ export type MdprRunResult = {
 };
 
 export function loadMdprContext(ref: MdprManifestRef): MdprContext {
-  const manifest = JSON.parse(readFileSync(ref.path, "utf-8")) as Record<string, unknown>;
+  const manifest = readJsonArtifact(ref.path, "manifest");
   const source = manifest.source && typeof manifest.source === "object" ? manifest.source as Record<string, unknown> : {};
   const sourceSha256 = ref.sourceSha256 ?? String(manifest.sourceSha256 ?? source.sha256 ?? "");
   return {
     sourceSha256,
     manifest,
-    presentation: ref.presentationPath ? JSON.parse(readFileSync(ref.presentationPath, "utf-8")) : undefined,
-    layout: ref.layoutPath ? JSON.parse(readFileSync(ref.layoutPath, "utf-8")) : undefined,
+    presentation: ref.presentationPath ? readJsonArtifact(ref.presentationPath, "presentation") : undefined,
+    layout: ref.layoutPath ? readJsonArtifact(ref.layoutPath, "layout") : undefined,
   };
 }
 
@@ -78,6 +91,21 @@ export function runMdpr(args: string[], input: { mdprPath?: string; mdprBinary?:
     stdout: result.stdout ?? "",
     stderr: result.stderr ?? "",
   };
+}
+
+export function assertMdprRunSucceeded(result: MdprRunResult): void {
+  if (result.exitCode === 0) return;
+  throw new MdprAdapterError(
+    "command-failed",
+    `MDPR command failed with exit code ${result.exitCode}: ${result.command.join(" ")} (cwd: ${result.cwd})`,
+    {
+      command: result.command,
+      cwd: result.cwd,
+      exitCode: result.exitCode,
+      stderr: result.stderr,
+      stdout: result.stdout,
+    },
+  );
 }
 
 export function runMdprInspect(input: MdprRunInput): MdprRunResult {
@@ -140,4 +168,19 @@ export function collectMdprMetrics(manifest: Record<string, unknown>): {
     visualErrors: Number(visual.errors ?? 0),
     slideCount: typeof manifest.slideCount === "number" ? manifest.slideCount : undefined,
   };
+}
+
+function readJsonArtifact(path: string, label: string): Record<string, unknown> {
+  if (!existsSync(path)) {
+    throw new MdprAdapterError("artifact-missing", `Missing MDPR ${label} artifact: ${path}`, { path, label });
+  }
+  try {
+    return JSON.parse(readFileSync(path, "utf-8")) as Record<string, unknown>;
+  } catch (error) {
+    throw new MdprAdapterError(
+      "artifact-invalid",
+      `Invalid MDPR ${label} artifact JSON: ${path}`,
+      { path, label, cause: error instanceof Error ? error.message : String(error) },
+    );
+  }
 }
