@@ -58,6 +58,9 @@ It records proposal stages:
 
 Only approved changes may become runtime inputs. Agent-created changes should
 enter as proposals and pass boundary, schema, provenance, and regression gates.
+Approved and applied change requests both require approval metadata. Helper
+APIs reject invalid source hashes, empty change lists, and malformed approval
+timestamps before runtime use.
 
 ## Runtime Boundary
 

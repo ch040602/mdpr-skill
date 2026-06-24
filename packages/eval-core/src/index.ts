@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import {
+  assertMdprRunSucceeded,
   collectMdprMetrics,
   loadMdprArtifacts,
   runMdprBuild,
@@ -255,9 +256,7 @@ function runEvalBuild(input: MdprRunInput, deps: EvalDeps): EvalRunArtifacts {
   const start = now();
   const run = runBuild(input);
   const buildMs = now() - start;
-  if (run.exitCode !== 0) {
-    throw new Error(`MDPR build failed (${run.exitCode}): ${run.stderr || run.stdout}`);
-  }
+  assertMdprRunSucceeded(run);
   const outDir = run.outDir ?? resolve(input.outDir ?? ".");
   const context: MdprContext = loadArtifacts(outDir);
   const metrics = collectEvalMetrics(context.manifest, collectMetrics, buildMs);

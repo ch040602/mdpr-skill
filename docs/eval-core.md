@@ -38,6 +38,8 @@ component variants, recipes, or renderer object IDs.
 gate when it increases overflow, coherence warnings, visual errors, text
 clipping risk, contrast failures, or connector warnings. It also checks
 thresholded build-time, slide-count, output-size, and minimum-font regressions.
+MDPR command failures are preserved as adapter failures, not converted into
+quality regressions.
 
 `review` compares baseline and guided `review-core` summaries. A guided build
 fails the gate when review errors increase, review warnings increase, review

@@ -22,7 +22,7 @@ export function buildReviewReport(findings: ReviewFinding[]): ReviewReport {
 }
 
 export function reviewFindingHasFinalDecisionField(finding: ReviewFinding): boolean {
-  return JSON.stringify(finding).match(/\b(x|y|w|h|box|color|colors|fontSize|fontFamily|typography|zOrder|z-order|recipeId|variantId|radius|shadow|effect|arrow|component|style|iconPath|iconName|coordinates|geometry|rendererObjectId)\b/) !== null;
+  return hasFinalDecisionKey(finding);
 }
 
 export type ReviewCoreInput = {
@@ -68,6 +68,33 @@ type LayoutSlideLike = {
 };
 
 const EVIDENCE_BLOCK_TYPES = new Set(["chart", "table", "image", "code", "diagram"]);
+const FINAL_DECISION_FIELDS = new Set([
+  "x",
+  "y",
+  "w",
+  "h",
+  "box",
+  "color",
+  "colors",
+  "fontSize",
+  "fontFamily",
+  "typography",
+  "zOrder",
+  "z-order",
+  "recipeId",
+  "variantId",
+  "radius",
+  "shadow",
+  "effect",
+  "arrow",
+  "component",
+  "style",
+  "iconPath",
+  "iconName",
+  "coordinates",
+  "geometry",
+  "rendererObjectId",
+]);
 
 export function reviewCoherence(input: ReviewCoreInput): ReviewFinding[] {
   const model = normalizeReviewModel(input);
@@ -461,6 +488,14 @@ function normalizeLayoutSlides(value: unknown): LayoutSlideLike[] {
 
 function isReviewModel(value: ReviewModel | ReviewCoreInput): value is ReviewModel {
   return "presentationSlides" in value && "layoutSlides" in value && "blockById" in value;
+}
+
+function hasFinalDecisionKey(value: unknown): boolean {
+  if (!value || typeof value !== "object") return false;
+  if (Array.isArray(value)) return value.some(hasFinalDecisionKey);
+  return Object.entries(value as Record<string, unknown>).some(([key, child]) =>
+    FINAL_DECISION_FIELDS.has(key) || hasFinalDecisionKey(child)
+  );
 }
 
 function blocksForLayoutSlide(layoutSlide: LayoutSlideLike, blockById: Map<string, BlockLike>): BlockLike[] {

@@ -43,7 +43,7 @@
   },
   "allOf": [
     {
-      "if": { "properties": { "stage": { "const": "approved" } } },
+      "if": { "properties": { "stage": { "enum": ["approved", "applied"] } } },
       "then": { "properties": { "approval": { "type": "object" } } }
     }
   ]

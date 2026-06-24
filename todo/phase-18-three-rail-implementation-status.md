@@ -48,13 +48,13 @@ scope because several TODOs belong to MDPR or a future `mdpr-ppt` repository.
 | Area | Status | Evidence | Estimate |
 | --- | --- | --- | ---: |
 | P0 hint manifest contract | Done | `packages/hints-core/src/index.ts` uses `schemaVersion: "mdpr-agent-hint-v1"`, `sourceSha256`, `generatedBy`, and `generatedAt`. | 100% |
-| P0 forbidden final-decision fields | Mostly done | `FORBIDDEN_AGENT_HINT_FIELDS` and `assertNoForbiddenFields()` reject coordinates, color, typography, recipe, variant, icon path, geometry, and renderer IDs. | 85% |
-| P1 MDPR adapter runner | Hardened functional runner | `packages/mdpr-adapter/src/index.ts` can resolve MDPR, run build/validate/inspect, load artifacts, collect metrics, and report typed command/artifact failures. | 80% |
+| P0 forbidden final-decision fields | Hardened | `FORBIDDEN_AGENT_HINT_FIELDS`, `assertNoForbiddenFields()`, and key-based review finding checks reject final-decision keys without false positives from evidence prose. | 90% |
+| P1 MDPR adapter runner | Hardened functional runner | `packages/mdpr-adapter/src/index.ts` can resolve MDPR, run build/validate/inspect, load artifacts, collect metrics, and report typed command/artifact failures; eval-core preserves those typed failures. | 85% |
 | P1 eval-core runner | Review-integrated runner | `packages/eval-core/src/index.ts` runs baseline/guided builds, validates hints, compares metrics, preserves MDPR profile metadata, runs review-core, emits reports, and has runtime/e2e tests. | 90% |
 | P1 review-core coherence rules | Done for first production slice | `packages/review-core/src/index.ts` now reports detached captions, orphan evidence, claimless evidence slides, and section rhythm drift without final design fields. | 70% |
 | P1 review-core visual rules | Done for first production slice | `packages/review-core/src/index.ts` now reports raw hex leakage, mixed corner/depth scales, visual treatment budget overuse, accent overuse, and non-editable primary objects. | 70% |
 | P2 selection schemas | Schema and docs only | `schemas/mdpr-ppt-selection.schema.json`, `schemas/mdpr-selection-context.schema.json`, and `docs/mdpr-ppt-bridge.md` exist. | 35% |
-| P2 approval/change request flow | Helper lifecycle implemented and CLI-exported | `packages/change-core/src/index.ts` creates proposed changes, enforces reviewed approval transitions, blocks unapproved runtime candidates, and `packages/cli/src/commands/change.ts` exposes the lifecycle boundary. | 70% |
+| P2 approval/change request flow | Helper lifecycle implemented and CLI-exported | `packages/change-core/src/index.ts` creates proposed changes, validates source hashes/change lists/approval timestamps, enforces reviewed approval transitions, blocks unapproved runtime candidates, and `packages/cli/src/commands/change.ts` exposes the lifecycle boundary. | 75% |
 | P2 PowerPoint bridge implementation | Not started | No `mdpr-ppt` add-in, Office.js capture, or selection export implementation exists here. | 0% |
 | P3 MDPR pack package | Not started in this repo | Pack concepts are documented, but MDPR-side `pack` package and commands are not implemented here. | 0% |
 | P3 renderer metadata contract | Not owned here | Shape metadata and PPTX object manifest contract must be implemented in MDPR renderer. | 0% |
@@ -79,12 +79,15 @@ Current state:
 
 - The local TypeScript manifest matches MDPR's `mdpr-agent-hint-v1` shape.
 - Tests check schema sync against the local MDPR checkout.
+- `packages/cli/src/commands/validateSchemaSync.ts` exposes
+  `runValidateSchemaSync()` for CLI command wiring.
 
 Remaining work:
 
-- Add a CLI-visible schema sync command, for example
+- Add an argv-level executable entrypoint for
   `mdpr-skill validate-schema-sync --mdpr-path ../MdPr`.
-- Compare schema version, hint shape, enums, confidence bounds,
+- Extend command comparison beyond byte-for-byte schema drift to schema
+  version, hint shape, enums, confidence bounds,
   `additionalProperties`, and forbidden-field policy.
 - Fail CI if MDPR schema changes without mdpr-skill boundary updates.
 
@@ -217,6 +220,8 @@ Acceptance:
   failure by asserting both MDPR runs exit successfully while the review gate
   fails.
 - [x] Optional profile metadata passthrough from MDPR manifests.
+- [x] Eval-core preserves typed adapter command failures instead of converting
+  them into generic quality regressions.
 
 ### TRI-RAIL-P2-006 - Consume selection context in review and hint flows
 
@@ -261,6 +266,10 @@ Completed state:
 - `approvalGate()` and `assertApprovedForRuntime()` block unapproved runtime
   candidates.
 - The CLI package exports the change lifecycle boundary for command wiring.
+- Runtime helpers reject invalid `sourceSha256`, empty change lists, and
+  malformed approval timestamps.
+- The JSON schema requires approval metadata for both `approved` and `applied`
+  stages.
 
 Completed work:
 
@@ -269,6 +278,8 @@ Completed work:
 - Added lifecycle tests for valid reviewed approval flow.
 - Added CLI boundary tests for exported approval lifecycle helpers.
 - Added approval-gate tests for pack and override candidates.
+- Added runtime validation tests for invalid helper inputs.
+- Tightened `schemas/mdpr-change-request.schema.json`.
 
 Acceptance:
 
@@ -276,6 +287,7 @@ Acceptance:
   `proposed -> applied`.
 - [x] Pack/override candidates fail gates without explicit approval metadata.
 - [x] CLI command boundary exposes approval lifecycle helpers.
+- [x] Helper and schema boundaries reject invalid runtime handoff inputs.
 
 ### TRI-RAIL-P2-008 - Create separate mdpr-ppt bridge implementation
 

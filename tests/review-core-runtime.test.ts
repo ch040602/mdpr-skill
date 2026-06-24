@@ -231,3 +231,27 @@ test("reviewSelectionContext consumes selected block evidence without coordinate
   assert.equal(JSON.stringify(findings[0]).includes('"x"'), false);
   assert.equal(reviewFindingHasFinalDecisionField(findings[0]), false);
 });
+
+test("reviewFindingHasFinalDecisionField checks keys instead of evidence text", () => {
+  assert.equal(reviewFindingHasFinalDecisionField({
+    severity: "warning",
+    type: "TEXT_ONLY_BOUNDARY_WORDS",
+    evidence: {
+      path: ".mdpresent/review/style-notes.json",
+      note: "The reviewer mentioned color and typography as prose only.",
+    },
+    suggestion: {
+      kind: "mdpr-policy",
+      target: "review.boundary",
+      operation: "document",
+    },
+  }), false);
+
+  assert.equal(reviewFindingHasFinalDecisionField({
+    severity: "warning",
+    type: "BAD_BOUNDARY_KEY",
+    evidence: {
+      color: "#ffffff",
+    },
+  }), true);
+});

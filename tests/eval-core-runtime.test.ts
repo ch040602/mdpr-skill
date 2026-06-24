@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  MdprAdapterError,
+} from "../packages/mdpr-adapter/src/index";
+import {
   buildRegressionGate,
   runMdprSkillEval,
   validateEvalHints,
@@ -233,4 +236,33 @@ test("runMdprSkillEval attaches review summaries and fails on review regressions
   assert.equal(report.gates.review.status, "fail");
   assert.match(report.gates.review.findings.join("\n"), /reviewErrors increased/);
   assert.equal(report.summary.overallStatus, "fail");
+});
+
+test("runMdprSkillEval preserves adapter command failures as typed errors", () => {
+  assert.throws(() => runMdprSkillEval({
+    deckPath: "deck.md",
+    outDir: ".tmp/eval-error",
+    hintManifest: {
+      schemaVersion: "mdpr-agent-hint-v1",
+      sourceSha256,
+      generatedBy: "mdpr-skill",
+      generatedAt: "2026-06-24T00:00:00Z",
+      hints: [{ slideId: "slide-1", confidence: 0.8 }],
+    },
+  }, {
+    runBuild: (input) => ({
+      command: ["mdpresent", "build"],
+      cwd: process.cwd(),
+      exitCode: 7,
+      stdout: "",
+      stderr: "boom",
+      outDir: input.outDir,
+      manifestPath: `${input.outDir}/mdpresent-manifest.json`,
+    }),
+  }), (error) => {
+    assert.ok(error instanceof MdprAdapterError);
+    assert.equal(error.kind, "command-failed");
+    assert.match(error.message, /MDPR command failed/);
+    return true;
+  });
 });

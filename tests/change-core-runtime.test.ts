@@ -49,3 +49,41 @@ test("pack and override candidates fail approval gate until explicitly approved"
   assert.match(gate.findings.join("\n"), /requires approved stage/);
   assert.throws(() => assertApprovedForRuntime(request), /not approved for runtime/);
 });
+
+test("change request helpers reject schema-invalid runtime inputs", () => {
+  assert.throws(() => createChangeRequest({
+    id: "bad-sha",
+    createdBy: "mdpr-skill",
+    sourceSha256: "not-a-sha",
+    changes: [{ kind: "agent-hint" }],
+  }), /sourceSha256 must be a 64-character lowercase hex string/);
+
+  assert.throws(() => createChangeRequest({
+    id: "empty-changes",
+    createdBy: "mdpr-skill",
+    sourceSha256,
+    changes: [],
+  }), /changes must contain at least one entry/);
+
+  const reviewed = transitionChangeRequest(createChangeRequest({
+    id: "approved",
+    createdBy: "mdpr-skill",
+    sourceSha256,
+    changes: [{ kind: "agent-hint" }],
+  }), "reviewed");
+  assert.throws(() => transitionChangeRequest(reviewed, "approved", {
+    approvedBy: "user",
+    approvedAt: "not-a-date",
+  }), /approvedAt must start with an ISO timestamp date/);
+
+  assert.equal(approvalGate({
+    schemaVersion: "mdpr-change-request-v1",
+    id: "applied-without-approval",
+    stage: "applied",
+    createdBy: "mdpr-ppt",
+    source: { sourceSha256 },
+    changes: [{ kind: "pack-candidate" }],
+    requiresApproval: true,
+    approval: null,
+  }).status, "fail");
+});

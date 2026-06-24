@@ -51,6 +51,10 @@ const allowedTransitions: Record<ChangeStage, ChangeStage[]> = {
 };
 
 export function createChangeRequest(input: CreateChangeRequestInput): ChangeRequest {
+  validateSourceSha256(input.sourceSha256);
+  if (!input.changes.length) {
+    throw new Error("changes must contain at least one entry");
+  }
   return {
     schemaVersion: "mdpr-change-request-v1",
     id: input.id,
@@ -78,6 +82,7 @@ export function transitionChangeRequest(
     if (!approval.approvedBy || !approval.approvedAt) {
       throw new Error("Approval requires approvedBy and approvedAt");
     }
+    validateApprovalTimestamp(approval.approvedAt);
     return {
       ...request,
       stage: nextStage,
@@ -117,5 +122,17 @@ export function assertApprovedForRuntime(request: ChangeRequest): void {
   const gate = approvalGate(request);
   if (gate.status === "fail") {
     throw new Error(`Change request ${request.id} is not approved for runtime: ${gate.findings.join("; ")}`);
+  }
+}
+
+function validateSourceSha256(value: string): void {
+  if (!/^[a-f0-9]{64}$/.test(value)) {
+    throw new Error("sourceSha256 must be a 64-character lowercase hex string");
+  }
+}
+
+function validateApprovalTimestamp(value: string): void {
+  if (!/^\d{4}-\d{2}-\d{2}T/.test(value)) {
+    throw new Error("approvedAt must start with an ISO timestamp date");
   }
 }
