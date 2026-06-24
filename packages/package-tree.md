@@ -16,7 +16,7 @@ packages/
 
   eval-core/
     src/
-      index.ts
+      index.ts              baseline/guided MDPR runner, metric comparison, eval report
 
   core/
     src/

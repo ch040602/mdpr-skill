@@ -118,6 +118,12 @@ and review the generated artifacts, but should not own the final slide layout:
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
 
+`eval-core` can run a deterministic baseline MDPR build, rerun MDPR with a
+schema-valid `agent-hint.json`, compare metrics, and emit an
+`mdpr-skill-eval-v1` report. The comparison gate tracks overflow, coherence
+warnings, visual errors, build-time regressions, manifests, and hint paths; it
+does not choose final slide coordinates or styles.
+
 Allowed skill outputs:
 
 - semantic intent tags
