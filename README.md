@@ -125,6 +125,9 @@ coherence warnings, visual errors, text clipping risk, contrast failures,
 connector warnings, font-floor regressions, slide-count drift, output size, and
 build-time regressions; it does not choose final slide coordinates or styles.
 See [eval-core runner](docs/eval-core.md).
+See [three-rail implementation status](todo/phase-18-three-rail-implementation-status.md)
+for the current completion analysis and remaining TODOs around hint, review,
+approved override, pack, and future `mdpr-ppt` boundaries.
 
 Allowed skill outputs:
 
