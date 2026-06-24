@@ -119,10 +119,12 @@ and review the generated artifacts, but should not own the final slide layout:
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
 
 `eval-core` can run a deterministic baseline MDPR build, rerun MDPR with a
-schema-valid `agent-hint.json`, compare metrics, and emit an
-`mdpr-skill-eval-v1` report. The comparison gate tracks overflow, coherence
-warnings, visual errors, build-time regressions, manifests, and hint paths; it
-does not choose final slide coordinates or styles.
+schema-valid `agent-hint.json`, compare quality and performance metrics, and
+emit an `mdpr-skill-eval-v1` report. The comparison gate tracks overflow,
+coherence warnings, visual errors, text clipping risk, contrast failures,
+connector warnings, font-floor regressions, slide-count drift, output size, and
+build-time regressions; it does not choose final slide coordinates or styles.
+See [eval-core runner](docs/eval-core.md).
 
 Allowed skill outputs:
 
@@ -202,6 +204,7 @@ reference corpus.
 - [Contributing guide](CONTRIBUTING.md)
 - [MDPR installation and handoff](docs/mdpr-installation.md)
 - [Agent hint guide](docs/agent-hint-guide.md)
+- [Eval-core runner](docs/eval-core.md)
 - [MDPR PowerPoint bridge boundary](docs/mdpr-ppt-bridge.md)
 - [MDPR vs skill results](docs/mdpr-vs-skill-results.md)
 - [Structural pattern taxonomy](docs/structural-pattern-taxonomy.md)

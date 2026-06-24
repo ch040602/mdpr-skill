@@ -36,6 +36,28 @@ class EvalCoreRunnerContractTests(unittest.TestCase):
         ]:
             self.assertIn(required, source)
 
+    def test_eval_core_has_non_mvp_quality_gates(self):
+        source = (ROOT / "packages" / "eval-core" / "src" / "index.ts").read_text(encoding="utf-8")
+        for required in [
+            "EvalGateResult",
+            "EvalRegressionThresholds",
+            "DEFAULT_REGRESSION_THRESHOLDS",
+            "buildRegressionGate",
+            "validateEvalHints",
+            "summary",
+            "overallStatus",
+            "findings",
+            "thresholds",
+            "minFontPt",
+            "textClipRiskCount",
+            "contrastFailures",
+            "connectorWarnings",
+        ]:
+            self.assertIn(required, source)
+        self.assertNotIn('schemaSync: "pass"', source)
+        self.assertNotIn('boundary: "pass"', source)
+        self.assertNotIn('regression: regressionGate(comparison)', source)
+
     def test_cli_compare_exports_eval_runner(self):
         source = (ROOT / "packages" / "cli" / "src" / "commands" / "compare.ts").read_text(encoding="utf-8")
         self.assertIn("runMdprSkillEval", source)
