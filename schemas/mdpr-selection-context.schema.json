@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-selection-context.schema.json",
+  "title": "MDPR Selection Context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "source", "slideId"],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-selection-context-v1" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "sourceSha256"],
+      "properties": {
+        "kind": { "enum": ["mdpr-ppt", "mdpr-preview"] },
+        "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "slideId": { "type": "string", "minLength": 1 },
+    "overlappedBlocks": { "type": "array", "items": { "type": "string" } },
+    "overlappedRegions": { "type": "array", "items": { "type": "string" } },
+    "screenshotPath": { "type": "string" },
+    "selectionPath": { "type": "string" },
+    "userInstruction": { "type": "string", "maxLength": 1000 }
+  }
+}

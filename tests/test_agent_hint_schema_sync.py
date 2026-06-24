@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import unittest
 
 
@@ -17,6 +18,49 @@ class AgentHintSchemaSyncTests(unittest.TestCase):
             mdpr_schema.read_text(encoding="utf-8"),
             "mdpr-skill agent-hint.schema.json must stay a synced copy of MDPR's schema",
         )
+
+    def test_hints_core_manifest_uses_mdpr_agent_hint_schema_version(self):
+        source = (ROOT / "packages" / "hints-core" / "src" / "index.ts").read_text(encoding="utf-8")
+
+        self.assertIn('schemaVersion: "mdpr-agent-hint-v1"', source)
+        self.assertIn('generatedBy: "mdpr-skill"', source)
+        self.assertIn("generatedAt", source)
+        self.assertNotRegex(source, r'\bversion:\s*"1\.0"')
+
+    def test_hints_core_forbidden_fields_match_final_decision_boundary(self):
+        source = (ROOT / "packages" / "hints-core" / "src" / "index.ts").read_text(encoding="utf-8")
+        match = re.search(r"FORBIDDEN_AGENT_HINT_FIELDS\s*=\s*\[(.*?)\]\s*as const", source, re.S)
+        self.assertIsNotNone(match, "FORBIDDEN_AGENT_HINT_FIELDS const is missing")
+        fields = set(re.findall(r'"([^"]+)"', match.group(1)))
+
+        expected = {
+            "recipeId",
+            "variantId",
+            "box",
+            "x",
+            "y",
+            "w",
+            "h",
+            "color",
+            "colors",
+            "fontSize",
+            "fontFamily",
+            "typography",
+            "zOrder",
+            "z-order",
+            "radius",
+            "shadow",
+            "effect",
+            "arrow",
+            "component",
+            "style",
+            "iconPath",
+            "iconName",
+            "coordinates",
+            "geometry",
+            "rendererObjectId",
+        }
+        self.assertEqual(expected - fields, set())
 
 
 if __name__ == "__main__":

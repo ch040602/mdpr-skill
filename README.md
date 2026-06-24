@@ -136,6 +136,18 @@ Forbidden skill outputs:
 - renderer object IDs
 - exact icon asset choices
 
+## PowerPoint Bridge Boundary
+
+Future PowerPoint selection workflows are split into three rails:
+
+- `hint rail`: `mdpr-skill` emits weak `agent-hint.json` semantics only.
+- `review rail`: `mdpr-skill` emits `review-report.json` findings only.
+- `approved override / pack rail`: a user-approved `mdpr-ppt` bridge may emit
+  override or pack candidates for MDPR to validate and apply.
+
+See [MDPR PowerPoint bridge boundary](docs/mdpr-ppt-bridge.md) for the schema
+and approval contract.
+
 ## Validation
 
 Run the local validation pack:
@@ -184,6 +196,7 @@ reference corpus.
 - [Contributing guide](CONTRIBUTING.md)
 - [MDPR installation and handoff](docs/mdpr-installation.md)
 - [Agent hint guide](docs/agent-hint-guide.md)
+- [MDPR PowerPoint bridge boundary](docs/mdpr-ppt-bridge.md)
 - [MDPR vs skill results](docs/mdpr-vs-skill-results.md)
 - [Structural pattern taxonomy](docs/structural-pattern-taxonomy.md)
 - [Actions page materials](docs/actions-page-materials.md)

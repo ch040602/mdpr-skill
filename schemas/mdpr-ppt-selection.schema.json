@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-ppt-selection.schema.json",
+  "title": "MDPR PowerPoint Selection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "source", "selection", "mdprMapping", "shapes", "allowedUses", "disallowedUses"],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-ppt-selection-v1" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "host", "capturedAt"],
+      "properties": {
+        "tool": { "const": "mdpr-ppt" },
+        "host": { "const": "powerpoint" },
+        "presentationId": { "type": "string" },
+        "pptxSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "capturedAt": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" }
+      }
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "userApproved", "slideId", "shapeCount"],
+      "properties": {
+        "kind": { "enum": ["shape-selection", "anchor-point", "style-sample"] },
+        "userApproved": { "const": true },
+        "slideId": { "type": "string", "minLength": 1 },
+        "shapeCount": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "mdprMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceSha256", "slideId", "mappingConfidence"],
+      "properties": {
+        "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "slideId": { "type": "string", "minLength": 1 },
+        "regionId": { "type": "string" },
+        "blockIds": { "type": "array", "items": { "type": "string" } },
+        "mappingConfidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "shapes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["pptShapeId", "type", "bboxPt"],
+        "properties": {
+          "pptShapeId": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "type": { "type": "string", "minLength": 1 },
+          "bboxPt": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["left", "top", "width", "height"],
+            "properties": {
+              "left": { "type": "number" },
+              "top": { "type": "number" },
+              "width": { "type": "number", "exclusiveMinimum": 0 },
+              "height": { "type": "number", "exclusiveMinimum": 0 },
+              "rotation": { "type": "number" }
+            }
+          },
+          "styleSnapshot": { "type": "object" }
+        }
+      }
+    },
+    "allowedUses": {
+      "type": "array",
+      "items": { "enum": ["selection-context", "pack-candidate", "user-override-candidate"] }
+    },
+    "disallowedUses": {
+      "type": "array",
+      "contains": { "const": "agent-hint-final-decision" },
+      "items": { "type": "string" }
+    }
+  }
+}

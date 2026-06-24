@@ -1,7 +1,7 @@
 # Design Components Port Coverage
 
 - Source: external-design-source
-- Ref: `cac12a7c945c1cd86221f2eb9db916c5e10b021e`
+- Ref: `ad460777783574892078d14fe6581d1b89b3005c`
 - Status: complete
 
 ## Counts

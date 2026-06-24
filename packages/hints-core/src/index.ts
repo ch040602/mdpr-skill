@@ -9,8 +9,11 @@ export type SkillHint = {
 };
 
 export type AgentHintManifest = {
-  version: "1.0";
+  schemaVersion: "mdpr-agent-hint-v1";
   sourceSha256: string;
+  mdprVersion?: string;
+  generatedBy: "mdpr-skill";
+  generatedAt: string;
   hints: SkillHint[];
 };
 
@@ -23,18 +26,40 @@ export const FORBIDDEN_AGENT_HINT_FIELDS = [
   "w",
   "h",
   "color",
+  "colors",
   "fontSize",
+  "fontFamily",
+  "typography",
   "zOrder",
+  "z-order",
   "radius",
   "shadow",
   "effect",
+  "arrow",
+  "component",
+  "style",
   "iconPath",
   "iconName",
+  "coordinates",
+  "geometry",
+  "rendererObjectId",
 ] as const;
 
-export function buildAgentHintManifest(sourceSha256: string, hints: SkillHint[]): AgentHintManifest {
-  assertNoForbiddenFields({ version: "1.0", sourceSha256, hints });
-  return { version: "1.0", sourceSha256, hints };
+export function buildAgentHintManifest(
+  sourceSha256: string,
+  hints: SkillHint[],
+  options: { mdprVersion?: string; generatedAt?: string } = {},
+): AgentHintManifest {
+  const manifest: AgentHintManifest = {
+    schemaVersion: "mdpr-agent-hint-v1",
+    sourceSha256,
+    ...(options.mdprVersion ? { mdprVersion: options.mdprVersion } : {}),
+    generatedBy: "mdpr-skill",
+    generatedAt: options.generatedAt ?? new Date().toISOString(),
+    hints,
+  };
+  assertNoForbiddenFields(manifest);
+  return manifest;
 }
 
 export function assertNoForbiddenFields(value: unknown, path = "$"): void {
