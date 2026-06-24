@@ -1,7 +1,7 @@
 # mdpr-skill
 
 `mdpr-skill` is a thin Codex skill companion for
-[MDPR](https://github.com/ch040602/mdpr).
+[MDPR](https://github.com/ch040602/MdPr).
 
 Use this repository when you want LLM-advised presentation review around MDPR:
 compact semantic hints, icon-keyword ideas, visual-review loops, and review
@@ -9,6 +9,13 @@ artifacts. MDPR remains the deterministic presentation runtime.
 
 For LLM-advised high-quality output, run the skill before MDPR finalizes the
 deck. For normal Markdown-to-PPTX generation, use MDPR directly.
+
+Star, bug reports, Markdown edge cases, and PPTX feature requests should go to
+the main MDPR repository:
+
+- MDPR: https://github.com/ch040602/MdPr
+- Preview gallery: https://ch040602.github.io/MdPr/theme-preview/
+- New issue: https://github.com/ch040602/MdPr/issues/new/choose
 
 ![MDPR theme style proof contact sheet](docs/assets/theme-style-proof-contact-sheet.png)
 
