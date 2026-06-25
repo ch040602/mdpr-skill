@@ -1,26 +1,26 @@
-# Phase 09 — Design Source Port
+# Phase 09 - Design Source Port
 
 ## Goal
 
-Design Components의 규칙/토큰/스킨/모션/패턴을 MDPR renderer-neutral 형식으로 가져온다.
+Port Design Components rules, tokens, skins, motion, and patterns into MDPR's renderer-neutral format.
 
 ## Tasks
 
-- [x] `third_party/design-source` attribution/license boundary 생성.
-- [x] `design_components/design-source-adapter` 적용 데이터 구조 생성.
-- [x] upstream commit/tag 기록.
-- [x] `LICENSE` 포함.
-- [x] `UPSTREAM.md` 작성.
-- [x] import script 작성.
-- [x] `DESIGN-LANGUAGE.md`를 `design_components/design-source-adapter/reference` rule reference로 복사.
-- [x] `VISUAL-CRAFT.md`를 `design_components/design-source-adapter/reference` coherence lint reference로 복사.
-- [x] tokens를 MDPR style tokens로 매핑.
-- [x] skins를 visual profile axes/fallback preview colors로 매핑.
-- [x] motion seeds/keywords를 renderer capability로 매핑.
-- [x] React component implementation은 직접 runtime import하지 않는다.
+- [x] Create `third_party/design-source` attribution and license boundary.
+- [x] Create applied data structure under `design_components/design-source-adapter`.
+- [x] Record upstream commit/tag.
+- [x] Include `LICENSE`.
+- [x] Write `UPSTREAM.md`.
+- [x] Write import script.
+- [x] Copy `DESIGN-LANGUAGE.md` into `design_components/design-source-adapter/reference` as a rule reference.
+- [x] Copy `VISUAL-CRAFT.md` into `design_components/design-source-adapter/reference` as a coherence lint reference.
+- [x] Map tokens into MDPR style tokens.
+- [x] Map skins into visual profile axes and fallback preview colors.
+- [x] Map motion seeds/keywords into renderer capabilities.
+- [x] Do not directly import React component implementation at runtime.
 
 ## Acceptance
 
-- [x] Design Components upstream attribution이 남아 있다.
-- [x] final PPTX path에 skin hardcoded hex가 들어가지 않는다.
-- [x] Design Components motion은 PPTX/PDF에서 static fallback을 가진다.
+- [x] Design Components upstream attribution is retained.
+- [x] Final PPTX path does not contain skin hardcoded hex values.
+- [x] Design Components motion has static fallback in PPTX/PDF.

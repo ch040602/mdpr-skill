@@ -174,69 +174,95 @@ Acceptance:
 
 Priority: P2  
 Owner: `mdpr-skill`
-Status: deferred until MDPR supports approved theme/pack import.
+Status: completed for approved pack comparison.
 
 Work:
 
-- Extend eval-core to compare baseline vs candidate-assisted builds once MDPR
-  can import packs/themes.
-- Keep candidate application behind approval gates.
+- Extended `packages/mdpr-adapter/src/index.ts` so build/validate commands can
+  pass `--pack`.
+- Extended `packages/eval-core/src/index.ts` with `baselinePackPath` and
+  `guidedPackPath`.
+- Allowed pack-only guided eval by emitting an empty schema-valid hint manifest
+  when no agent hints are supplied.
+- Added runtime and actual MDPR CLI e2e tests for approved pack comparison.
 
 Acceptance:
 
-- Eval report distinguishes candidate gate failure, MDPR adapter failure, and
-  visual/coherence regression.
+- [x] Eval report distinguishes MDPR adapter failure, visual/coherence
+  regression, review regression, and boundary/schema hint failures.
+- [x] Guided pack application is isolated from agent hint final-decision fields.
+- [x] Actual local MDPR CLI e2e verifies pack-applied HTML output colors.
 
 ### MDPR-P0-008 - Add deterministic diagram package
 
 Priority: P0  
 Owner: MDPR
-Status: deferred to MDPR repository.
+Status: first deterministic grammar slice completed in local MDPR checkout.
 
 Work:
 
-- Add `packages/diagram`.
-- Add `DiagramIR`, 14+ diagram type registry, grammar rules, layout, taste gates,
-  and PPT native renderer dispatcher.
+- Added `packages/diagram`.
+- Added `diagram-ir.schema.json`.
+- Added `DiagramIR`, 16 diagram type registry, node/edge validation,
+  connector role normalization, complexity budget checks, and focal accent
+  taste gates.
+- Remaining: integrate with Markdown diagram parsing/layout and PPT native
+  renderer dispatcher.
 
 Acceptance:
 
-- Markdown diagram blocks can render to editable PPT shapes/connectors without
-  agent runtime.
+- [x] Diagram grammar and taste gates run without agent runtime.
+- Deferred follow-up: Markdown diagram blocks should render through this
+  package to editable PPT shapes/connectors without agent runtime.
 
 ### MDPR-P0-009 - Add deterministic component package
 
 Priority: P0  
 Owner: MDPR
-Status: deferred to MDPR repository.
+Status: first deterministic taxonomy slice completed in local MDPR checkout.
 
 Work:
 
-- Add `packages/component`.
-- Add component taxonomy for cards, badges, callouts, progress, steppers,
-  timeline, quote, tabs, separators, breadcrumbs, tree views, and hero blocks.
+- Added `packages/component`.
+- Added `component-ir.schema.json`.
+- Added component taxonomy for cards, badges, callouts, progress, steppers,
+  timeline, quote, tabs, separators, breadcrumbs, tree views, hero blocks, and
+  table cards.
+- Added editable-primary-content, token-reference, raw-style, and final-decision
+  field gates.
+- Remaining: connect component selection/rendering to layout and PPTX renderer.
 
 Acceptance:
 
-- Components render as editable PPT-native shapes and text.
-- Layout engine owns placement.
+- [x] Component taxonomy and validation run without agent runtime.
+- [x] Layout engine remains the owner of placement.
+- Deferred follow-up: components should render as editable PPT-native shapes and
+  text through the shared renderer dispatcher.
 
 ### MDPR-P1-010 - Add pack/theme import runtime
 
 Priority: P1  
 Owner: MDPR
-Status: deferred to MDPR repository.
+Status: completed for first runtime slice in local MDPR checkout.
 
 Work:
 
-- Add `packages/pack`.
-- Add `mdpresent pack validate/import/list/preview`.
-- Add schemas for packs, themes, diagram IR, component IR, and PPTX object maps.
+- Added `packages/pack`.
+- Added `schemas/mdpr-pack.schema.json`.
+- Added `mdpresent pack validate/import/list/preview`.
+- Added `mdpresent build --pack mdpr.pack.json`.
+- Added runtime validation for approval, provenance, editable primary content,
+  accent budget, and external asset references.
+- Added manifest pack validation evidence.
+- Deferred dedicated diagram/component/PPTX object-map schemas to
+  `MDPR-P0-008`, `MDPR-P0-009`, and renderer metadata work.
 
 Acceptance:
 
-- MDPR can import approved packs/themes without agent runtime.
-- Pack import rejects unsafe external assets and non-editable primary content.
+- [x] MDPR can import approved packs/themes without agent runtime.
+- [x] Pack import rejects unsafe external assets and non-editable primary
+  content.
+- [x] CLI package copies `mdpr-pack.schema.json` into distributed schemas.
 
 ### PPT-P2-011 - Add PowerPoint bridge repository
 

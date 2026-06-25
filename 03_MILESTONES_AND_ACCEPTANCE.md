@@ -1,131 +1,131 @@
 # 03. Milestones and Acceptance Criteria
 
-## M0 — Baseline alignment
+## M0 - Baseline Alignment
 
-### Deliverables
+Deliverables:
 
-- feature flag 설계
-- existing pipeline snapshot
-- third-party license metadata
+- Feature flag design
+- Existing pipeline snapshot
+- Third-party license metadata
 
-### Acceptance
+Acceptance:
 
-- [x] 기존 `mdpresent build` 결과가 바뀌지 않는다.
-- [x] 신규 모드는 config/CLI flag 없이는 실행되지 않는다.
-- [x] Design Components import 범위와 license notice가 문서화된다.
+- [x] Existing `mdpresent build` output does not change.
+- [x] The new mode does not run without a config or CLI flag.
+- [x] Design Components import scope and license notices are documented.
 
-## M1 — Element IR ready
+## M1 - Element IR Ready
 
-### Deliverables
+Deliverables:
 
 - `SlideElementIR` types/schema
 - `PresentationIR -> SlideElementIR` adapter
-- content metrics
+- Content metrics
 
-### Acceptance
+Acceptance:
 
-- [x] 모든 slide element에는 `type`, `role`, `importance`, `contentMetrics`가 있다.
-- [x] IR validator가 `x/y/w/h/color/radius/shadow`를 거부한다.
-- [x] sample deck 5개가 Element IR snapshot을 통과한다.
+- [x] Every slide element has `type`, `role`, `importance`, and `contentMetrics`.
+- [x] The IR validator rejects `x/y/w/h/color/radius/shadow`.
+- [x] Five sample decks pass Element IR snapshots.
 
-## M2 — Rule selector ready
+## M2 - Rule Selector Ready
 
-### Deliverables
+Deliverables:
 
-- feature extractor
-- rule DSL
-- hard/scoring/tie-break selector
-- selection trace
+- Feature extractor
+- Rule DSL
+- Hard/scoring/tie-break selector
+- Selection trace
 
-### Acceptance
+Acceptance:
 
-- [x] 같은 입력은 항상 같은 recipe를 선택한다.
-- [x] reject reason이 inspect output에 남는다.
-- [x] agent hint 없이도 selector가 작동한다.
+- [x] Identical input always selects the same recipe.
+- [x] Reject reasons are recorded in inspect output.
+- [x] The selector works without agent hints.
 
-## M3 — Profile + recipe + variant ready
+## M3 - Profile + Recipe + Variant Ready
 
-### Deliverables
+Deliverables:
 
-- profile catalog
-- slide recipe catalog
-- element variant registry
+- Profile catalog
+- Slide recipe catalog
+- Element variant registry
 
-### Acceptance
+Acceptance:
 
-- [x] cover/content/data/comparison/process/code/summary 계열이 최소 1개 이상 동작한다.
-- [x] high-density slide에서 hero-only recipe가 hard reject된다.
-- [x] KPI+chart slide에서 data recipe가 content recipe보다 높은 점수를 받는다.
+- [x] Cover, content, data, comparison, process, code, and summary families each have at least one working option.
+- [x] High-density slides hard-reject hero-only recipes.
+- [x] KPI+chart slides score data recipes above content recipes.
 
-## M4 — Composition + decoration ready
+## M4 - Composition + Decoration Ready
 
-### Deliverables
+Deliverables:
 
-- regions/boxes 계산
-- typography/surface/accent/effect policy
-- coherence lock
+- Region and box calculation
+- Typography, surface, accent, and effect policies
+- Coherence lock
 
-### Acceptance
+Acceptance:
 
-- [x] 모든 StyledElement에는 box가 있다.
-- [x] 모든 style token은 profile axes와 coherence lock을 따른다.
-- [x] effect budget이 초과되면 lint error 또는 automatic downshift가 발생한다.
+- [x] Every `StyledElement` has a box.
+- [x] Every style token follows profile axes and coherence locks.
+- [x] Effect budget overflow produces a lint error or automatic downshift.
 
-## M5 — Renderer integration ready
+## M5 - Renderer Integration Ready
 
-### Deliverables
+Deliverables:
 
-- PPTX/HTML/PDF renderer adapter
-- theme color binding
-- raw hex lint
+- PPTX/HTML/PDF renderer adapters
+- Theme color binding
+- Raw hex lint
 
-### Acceptance
+Acceptance:
 
-- [x] PPTX 주요 텍스트는 editable text object다.
-- [x] PPTX 주요 도형은 editable shape다.
-- [x] `color.mode: ppt-theme`에서 final StyledDeckIR에 non-preview raw hex가 없다.
-- [x] HTML preview에는 CSS variables가 생성된다.
+- [x] Primary PPTX text remains editable text.
+- [x] Primary PPTX shapes remain editable shapes.
+- [x] In `color.mode: ppt-theme`, final `StyledDeckIR` has no non-preview raw hex.
+- [x] HTML previews generate CSS variables.
 
-## M6 — CLI and inspect ready
+## M6 - CLI and Inspect Ready
 
-### Deliverables
+Deliverables:
 
 - `inspect-style`
 - `lint-style`
 - `--style-gallery`
-- config schema 확장
+- Config schema extensions
 
-### Acceptance
+Acceptance:
 
-- [x] `inspect-style --json`이 features, selected recipe, selected variants, rejected candidates를 출력한다.
-- [x] `style-gallery`가 동일 Element IR로 여러 profile output을 만든다.
-- [x] strict lint가 CI에서 실패 신호를 반환한다.
+- [x] `inspect-style --json` prints features, selected recipe, selected variants, and rejected candidates.
+- [x] `style-gallery` creates multiple profile outputs from the same Element IR.
+- [x] Strict lint returns a failing signal in CI.
 
-## M7 — Agent hint safety ready
+## M7 - Agent Hint Safety Ready
 
-### Deliverables
+Deliverables:
 
 - `AgentHint` schema
-- validation
-- override 방지 tests
+- Validation
+- Override-prevention tests
 
-### Acceptance
+Acceptance:
 
-- [x] agent가 recipeId를 주면 reject된다.
-- [x] agent가 x/y/w/h/color/effect를 주면 reject된다.
-- [x] agent disabled/enabled 결과 차이가 허용된 semantic fields에만 기인한다.
+- [x] Agent-provided `recipeId` is rejected.
+- [x] Agent-provided `x/y/w/h/color/effect` is rejected.
+- [x] Agent enabled/disabled output differences are limited to allowed semantic fields.
 
-## M8 — Release ready
+## M8 - Release Ready
 
-### Deliverables
+Deliverables:
 
-- docs
-- examples
-- migration guide
-- snapshots
+- Docs
+- Examples
+- Migration guide
+- Snapshots
 
-### Acceptance
+Acceptance:
 
-- [x] 기존 legacy mode test 통과.
-- [x] design-components-rule-based mode test 통과.
-- [x] release note에 breaking change 없음 또는 명확히 기재.
+- [x] Existing legacy mode tests pass.
+- [x] `design-components-rule-based` mode tests pass.
+- [x] Release notes have no breaking changes, or breaking changes are explicit.

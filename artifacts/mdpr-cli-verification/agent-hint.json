@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "mdpr-agent-hint-v1",
+  "sourceSha256": "5f84e448a01040d5fae24469381cfda4efb202113c9e8fb54ebc764f9893c50c",
+  "generatedBy": "mdpr-skill",
+  "generatedAt": "2026-06-24T00:00:00Z",
+  "hints": [
+    {
+      "slideId": "slide-1",
+      "confidence": 0.86,
+      "intentCandidate": "summary",
+      "rationale": "Verification cover and runtime boundary overview"
+    },
+    {
+      "slideId": "slide-2",
+      "confidence": 0.82,
+      "intentCandidate": "evidence",
+      "groupCandidates": [
+        {
+          "elementIds": [
+            "b2",
+            "b3"
+          ],
+          "role": "evidence-pack",
+          "confidence": 0.8
+        }
+      ]
+    }
+  ]
+}

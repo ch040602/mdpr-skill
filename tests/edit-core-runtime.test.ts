@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   buildEditIntent,
+  editIntentToOverrideCandidate,
   editIntentToChangeRequest,
 } from "../packages/edit-core/src/index";
 
@@ -51,9 +52,45 @@ test("edit intent rejects coordinates, raw colors, and exact recipe choices", ()
   }), /forbidden final-decision field/);
 });
 
+test("edit intent can propose an approved-rail setSplit override candidate", () => {
+  const intent = buildEditIntent({
+    id: "edit-keep-together",
+    sourceSha256,
+    instruction: "Keep this dense evidence slide as one generated slide.",
+    target: { slideRef: "Dense Evidence" },
+    preferences: {
+      preserveContent: true,
+      splitPreference: {
+        forceSingleSlide: true,
+      },
+    },
+  });
+  const override = editIntentToOverrideCandidate(intent);
+  assert.deepEqual(override, {
+    version: "1.0",
+    operations: [{
+      op: "setSplit",
+      target: { title: "Dense Evidence" },
+      value: { forceSingleSlide: true },
+      reason: "Keep this dense evidence slide as one generated slide.",
+    }],
+  });
+});
+
+test("edit intent setSplit override candidates reject missing split preference", () => {
+  const intent = buildEditIntent({
+    id: "edit-no-split",
+    sourceSha256,
+    instruction: "Make this clearer.",
+    target: { slideRef: "slide-2" },
+  });
+  assert.throws(() => editIntentToOverrideCandidate(intent), /splitPreference is required/);
+});
+
 test("edit intent schema declares the deterministic boundary contract", () => {
   const schema = JSON.parse(readFileSync("schemas/mdpr-edit-intent.schema.json", "utf-8"));
   assert.equal(schema.properties.schemaVersion.const, "mdpr-edit-intent-v1");
   assert.equal(schema.properties.boundary.properties.finalDesignDecision.const, "forbidden");
   assert.equal(schema.properties.boundary.properties.mdprOwnsRendering.const, true);
+  assert.equal(schema.properties.preferences.properties.splitPreference.properties.forceSingleSlide.type, "boolean");
 });

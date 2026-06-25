@@ -2,104 +2,104 @@
 
 ## packages/core
 
-- [x] `PresentationIR -> SlideElementIR` adapter 추가.
-- [x] element type inference rule 추가.
-- [x] intent inference rule 추가.
-- [x] group inference rule 추가.
-- [x] importance scoring rule 추가.
-- [x] `core`는 renderer/style package를 import하지 않도록 유지.
+- [x] Add the `PresentationIR -> SlideElementIR` adapter.
+- [x] Add element type inference rules.
+- [x] Add intent inference rules.
+- [x] Add group inference rules.
+- [x] Add importance scoring rules.
+- [x] Keep `core` independent from renderer and style packages.
 
 ## packages/element-ir
 
-- [x] `schema.ts` 작성.
-- [x] `validators.ts` 작성.
-- [x] `normalize.ts` 작성.
-- [x] `metrics.ts` 작성.
-- [x] `fixtures/` 추가.
-- [x] `schema.json` export.
+- [x] Add `schema.ts`.
+- [x] Add `validators.ts`.
+- [x] Add `normalize.ts`.
+- [x] Add `metrics.ts`.
+- [x] Add `fixtures/`.
+- [x] Export `schema.json`.
 
 ## design_components/rule-engine
 
-- [x] condition DSL parser/evaluator.
-- [x] profile selector.
-- [x] recipe selector.
-- [x] variant selector.
-- [x] scoring trace.
-- [x] conflict resolver.
-- [x] rulebook loader.
+- [x] Condition DSL parser and evaluator.
+- [x] Profile selector.
+- [x] Recipe selector.
+- [x] Variant selector.
+- [x] Scoring trace.
+- [x] Conflict resolver.
+- [x] Rulebook loader.
 
 ## design_components/composition
 
-- [x] layout primitives.
-- [x] region solver.
-- [x] safe area utilities.
-- [x] density adaptation.
-- [x] fit/overflow fallback.
-- [x] source element mapping 보존.
+- [x] Layout primitives.
+- [x] Region solver.
+- [x] Safe area utilities.
+- [x] Density adaptation.
+- [x] Fit and overflow fallback.
+- [x] Preserve source element mapping.
 
 ## design_components/decoration
 
-- [x] profile axes -> token family mapping.
-- [x] typography builder.
-- [x] surface/border/radius/shadow builder.
-- [x] accent builder.
-- [x] effect mapper.
-- [x] coherence lint.
+- [x] Profile-axis to token-family mapping.
+- [x] Typography builder.
+- [x] Surface, border, radius, and shadow builder.
+- [x] Accent builder.
+- [x] Effect mapper.
+- [x] Coherence lint.
 
 ## design_components/design-source-adapter
 
 - [x] Design Components upstream metadata.
-- [x] token import/mapping.
-- [x] skin fallback mapping.
-- [x] motion keyword mapping.
-- [x] component pattern mapping.
+- [x] Token import and mapping.
+- [x] Skin fallback mapping.
+- [x] Motion keyword mapping.
+- [x] Component pattern mapping.
 
 ## design_components/pptx
 
-- [x] `StyledDeckIR` rendering entrypoint 추가.
-- [x] `ThemeColorRef -> pptx scheme color` adapter.
-- [x] text run style mapping.
-- [x] shape style mapping.
-- [x] table/chart style mapping.
-- [x] editable object smoke tests.
+- [x] Add `StyledDeckIR` rendering entry point.
+- [x] Add `ThemeColorRef -> pptx scheme color` adapter.
+- [x] Map text run styles.
+- [x] Map shape styles.
+- [x] Map table and chart styles.
+- [x] Add editable object smoke tests.
 
 ## packages/report-html
 
-- [x] `StyledDeckIR` rendering entrypoint 추가.
-- [x] CSS variables 생성.
-- [x] data-profile/data-recipe attributes 추가.
-- [x] optional motion CSS 추가.
-- [x] prefers-reduced-motion 대응.
+- [x] Add `StyledDeckIR` rendering entry point.
+- [x] Generate CSS variables.
+- [x] Add `data-profile` and `data-recipe` attributes.
+- [x] Add optional motion CSS.
+- [x] Respect `prefers-reduced-motion`.
 
 ## packages/report-pdf
 
-- [x] Styled HTML path 재사용.
-- [x] static effect fallback 확인.
-- [x] print snapshot 추가.
+- [x] Reuse the styled HTML path.
+- [x] Verify static effect fallbacks.
+- [x] Add print snapshots.
 
 ## packages/cli
 
-- [x] style engine options.
+- [x] Style engine options.
 - [x] `inspect-style` command.
 - [x] `lint-style` command.
 - [x] `style-gallery` output handling.
-- [x] config merge order 정의.
+- [x] Define config merge order.
 
 ## schemas
 
-- [x] config schema 확장.
-- [x] Slide Element IR schema 추가.
-- [x] Styled Deck IR schema 추가.
-- [x] Rulebook schema 추가.
-- [x] Agent hint schema 추가.
+- [x] Extend config schema.
+- [x] Add Slide Element IR schema.
+- [x] Add Styled Deck IR schema.
+- [x] Add Rulebook schema.
+- [x] Add Agent hint schema.
 
 ## tests
 
-- [x] legacy regression tests.
-- [x] element-ir snapshots.
-- [x] feature snapshots.
-- [x] selector tests.
-- [x] composition snapshots.
-- [x] decoration snapshots.
-- [x] renderer smoke tests.
-- [x] gallery tests.
+- [x] Legacy regression tests.
+- [x] Element IR snapshots.
+- [x] Feature snapshots.
+- [x] Selector tests.
+- [x] Composition snapshots.
+- [x] Decoration snapshots.
+- [x] Renderer smoke tests.
+- [x] Gallery tests.

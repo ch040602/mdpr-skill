@@ -1,29 +1,29 @@
-# Phase 04 — Visual Profile Catalog
+# Phase 04 - Visual Profile Catalog
 
 ## Goal
 
-디자인 다양화의 단위인 `DeckVisualProfile`과 `CoherenceLock`을 정의한다.
+Define `DeckVisualProfile` and `CoherenceLock`, the units used for design diversity and deck consistency.
 
 ## Tasks
 
-- [x] `DeckVisualProfile` 타입 정의.
-- [x] `CoherenceLock` 타입 정의.
-- [x] profile catalog loader 작성.
-- [x] 기본 profile 7개 작성:
-  - [x] friendly-dashboard
-  - [x] layered-product
-  - [x] sharp-technical
-  - [x] editorial-brief
-  - [x] command-dense
-  - [x] expressive-hero
-  - [x] minimal-system
-- [x] profile auto selection scoring 구현.
-- [x] user-forced profile 처리.
-- [x] unsupported profile error 처리.
-- [x] deck coherence lock 생성.
+- [x] Define `DeckVisualProfile`.
+- [x] Define `CoherenceLock`.
+- [x] Add profile catalog loader.
+- [x] Add seven default profiles:
+  - [x] `friendly-dashboard`
+  - [x] `layered-product`
+  - [x] `sharp-technical`
+  - [x] `editorial-brief`
+  - [x] `command-dense`
+  - [x] `expressive-hero`
+  - [x] `minimal-system`
+- [x] Implement profile auto-selection scoring.
+- [x] Handle user-forced profiles.
+- [x] Handle unsupported profile errors.
+- [x] Create deck coherence locks.
 
 ## Acceptance
 
-- [x] profile을 지정하면 해당 profile만 사용한다.
-- [x] profile 자동 선택은 deterministic하다.
-- [x] coherence lock이 모든 slide selection에 전달된다.
+- [x] When a profile is specified, only that profile is used.
+- [x] Profile auto-selection is deterministic.
+- [x] Coherence lock is passed into every slide selection.

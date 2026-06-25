@@ -1,30 +1,30 @@
 # 05. Rule Engine Specification
 
-## Selection sequence
+## Selection Sequence
 
 ```text
-1. Extract features
-2. Select or lock deck visual profile
-3. Build candidate slide recipe set
-4. Apply hard reject rules
-5. Score remaining recipes
-6. Apply coherence penalty
-7. Apply diversity penalty
-8. Deterministic tie-break
-9. Select element variants inside selected recipe
-10. Resolve conflicts
-11. Emit selection trace
+1. Extract features.
+2. Select or lock the deck visual profile.
+3. Build candidate slide recipe set.
+4. Apply hard reject rules.
+5. Score remaining recipes.
+6. Apply coherence penalty.
+7. Apply diversity penalty.
+8. Apply deterministic tie-break.
+9. Select element variants inside the selected recipe.
+10. Resolve conflicts.
+11. Emit selection trace.
 ```
 
-## Rule priority
+## Rule Priority
 
 ```text
 P0 Renderer capability
-P1 Accessibility / readability
-P2 PPT theme color / editable object constraint
-P3 Content fit / overflow
+P1 Accessibility and readability
+P2 PPT theme color and editable object constraints
+P3 Content fit and overflow
 P4 Slide purpose
-P5 Element role / importance
+P5 Element role and importance
 P6 Deck coherence lock
 P7 Density adaptation
 P8 Diversity scheduler
@@ -32,18 +32,18 @@ P9 Seed/profile-specific preference
 P10 Stable tie-breaker
 ```
 
-## Hard rejects
+## Hard Rejects
 
-- [x] unsupported element type
-- [x] high density + hero-only recipe
-- [x] large table + non-table-first recipe
-- [x] long code + non-code recipe
-- [x] text-heavy slide + decorative expressive recipe
-- [x] raw hex in PPT theme mode
-- [x] non-editable primary text in PPTX
-- [x] effect budget exceeded without downshift
+- [x] Unsupported element type.
+- [x] High density with a hero-only recipe.
+- [x] Large table with a non-table-first recipe.
+- [x] Long code with a non-code recipe.
+- [x] Text-heavy slide with an expressive decorative recipe.
+- [x] Raw hex color in PPT theme mode.
+- [x] Non-editable primary text in PPTX.
+- [x] Effect budget exceeded without downshift.
 
-## Scoring formula
+## Scoring Formula
 
 ```text
 score =
@@ -59,9 +59,9 @@ score =
   - repetitionPenalty * 10
 ```
 
-## Deterministic tie-break
+## Deterministic Tie-Break
 
-동점 처리에는 random을 쓰지 않는다.
+Tie handling must not use randomness.
 
 ```ts
 sortBy([
@@ -74,9 +74,9 @@ sortBy([
 ]);
 ```
 
-## Diversity scheduler
+## Diversity Scheduler
 
-다양화는 무작위가 아니라 repetition penalty로 처리한다.
+Diversity is handled with repetition penalties, not randomness.
 
 ```yaml
 diversity:
@@ -89,7 +89,7 @@ diversity:
   maxDecorativeEffectsPerSlide: 2
 ```
 
-## Selection trace shape
+## Selection Trace Shape
 
 ```ts
 type SelectionTrace = {
@@ -111,7 +111,7 @@ type CandidateTrace = {
 };
 ```
 
-## Rule DSL examples
+## Rule DSL Examples
 
 ```yaml
 recipes:

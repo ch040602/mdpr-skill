@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-user-override-candidate.schema.json",
+  "title": "MDPR User Override Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "source", "operations", "requiresApproval"],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-user-override-candidate-v1" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "selectionRef", "userApproved"],
+      "properties": {
+        "kind": { "const": "mdpr-ppt" },
+        "selectionRef": { "type": "string", "minLength": 1 },
+        "userApproved": { "const": true }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["op", "target"],
+        "properties": {
+          "op": { "enum": ["pinBlock", "moveBlock", "hideBlock", "setSplit", "keepTogether"] },
+          "target": { "type": "object" }
+        }
+      }
+    },
+    "requiresApproval": { "const": true },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "preferSemanticOverride": { "const": true },
+        "rawCoordinatesAreLastResort": { "const": true }
+      }
+    }
+  }
+}

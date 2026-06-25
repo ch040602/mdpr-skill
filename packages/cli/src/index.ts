@@ -10,3 +10,4 @@ export * from './commands/lintStyle';
 export * from './commands/review';
 export * from './commands/validateSchemaSync';
 export * from './config/styleConfig';
+export * from './main';

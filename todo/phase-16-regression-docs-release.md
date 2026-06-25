@@ -1,30 +1,30 @@
-# Phase 16 — Regression / Docs / Release
+# Phase 16 - Regression / Docs / Release
 
 ## Goal
 
-기능을 안정화하고 사용자/기여자가 이해할 수 있게 문서화한다.
+Stabilize the feature and document it clearly for users and contributors.
 
 ## Tasks
 
-- [x] legacy mode regression 통과.
-- [x] design-components-rule-based mode regression 통과.
-- [x] sample decks 추가.
-- [x] style gallery examples 추가.
-- [x] config examples 추가.
-- [x] rulebook authoring guide 작성.
-- [x] profile authoring guide 작성.
-- [x] renderer capability guide 작성.
-- [x] PPT theme color guide 작성.
-- [x] agent hint guide 작성.
-- [x] migration guide 작성.
-- [x] release note 작성.
+- [x] Legacy mode regression passes.
+- [x] `design-components-rule-based` mode regression passes.
+- [x] Add sample decks.
+- [x] Add style gallery examples.
+- [x] Add config examples.
+- [x] Write rulebook authoring guide.
+- [x] Write profile authoring guide.
+- [x] Write renderer capability guide.
+- [x] Write PPT theme color guide.
+- [x] Write agent hint guide.
+- [x] Write migration guide.
+- [x] Write release notes.
 
-## Release checklist
+## Release Checklist
 
-- [x] typecheck pass.
-- [x] tests pass.
-- [x] snapshots reviewed.
-- [x] license notice included.
-- [x] docs linked from README.
-- [x] examples build locally.
-- [x] style gallery screenshots or HTML preview generated.
+- [x] Typecheck passes.
+- [x] Tests pass.
+- [x] Snapshots reviewed.
+- [x] License notice included.
+- [x] Docs linked from README.
+- [x] Examples build locally.
+- [x] Style gallery screenshots or HTML preview generated.

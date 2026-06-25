@@ -1,26 +1,26 @@
-# Phase 02 — Feature Extractor
+# Phase 02 - Feature Extractor
 
 ## Goal
 
-Rule engine이 사용할 feature를 deterministic하게 계산한다.
+Calculate deterministic features for the rule engine.
 
 ## Tasks
 
-- [x] `extractDeckFeatures()` 작성.
-- [x] `extractSlideFeatures()` 작성.
-- [x] `extractElementFeatures()` 작성.
-- [x] density 계산: low/medium/high + numeric score.
-- [x] text metrics 계산: totalTextChars, maxTextCharsInOneElement, line count.
-- [x] data metrics 계산: kpiCount, chartCount, tableCellCount, numericDensity.
-- [x] technical metrics 계산: codeLineCount, equationCount.
-- [x] visual metrics 계산: imageCount, aspect ratios.
-- [x] narrativeWeight/dataWeight/visualComplexity/informationDensity 계산.
-- [x] overflowRisk estimate 추가.
-- [x] golden feature snapshots 추가.
+- [x] Add `extractDeckFeatures()`.
+- [x] Add `extractSlideFeatures()`.
+- [x] Add `extractElementFeatures()`.
+- [x] Calculate density as low/medium/high plus a numeric score.
+- [x] Calculate text metrics: `totalTextChars`, `maxTextCharsInOneElement`, and line count.
+- [x] Calculate data metrics: `kpiCount`, `chartCount`, `tableCellCount`, and `numericDensity`.
+- [x] Calculate technical metrics: `codeLineCount` and `equationCount`.
+- [x] Calculate visual metrics: `imageCount` and aspect ratios.
+- [x] Calculate `narrativeWeight`, `dataWeight`, `visualComplexity`, and `informationDensity`.
+- [x] Add `overflowRisk` estimate.
+- [x] Add golden feature snapshots.
 
 ## Acceptance
 
-- [x] KPI+chart fixture가 dataWeight=5 근처로 계산된다.
-- [x] long text fixture가 narrativeWeight=5 근처로 계산된다.
-- [x] large table fixture가 high overflowRisk를 가진다.
-- [x] code fixture가 code-capable recipe 후보를 유도할 features를 가진다.
+- [x] KPI + chart fixture calculates near `dataWeight=5`.
+- [x] Long text fixture calculates near `narrativeWeight=5`.
+- [x] Large table fixture has high `overflowRisk`.
+- [x] Code fixture exposes features that steer selection toward code-capable recipes.

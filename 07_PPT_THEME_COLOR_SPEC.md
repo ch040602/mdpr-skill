@@ -2,11 +2,11 @@
 
 ## Goal
 
-사용자가 PowerPoint 안에서 theme colors를 바꾸면 MDPR 출력물의 색상 조합도 같이 바뀌어야 한다.
+When a user changes theme colors inside PowerPoint, MDPR output should follow the same color system.
 
 ## Rule
 
-`color.mode: ppt-theme`에서는 최종 PPTX rendering path에 raw hex를 기본 삽입하지 않는다.
+In `color.mode: ppt-theme`, the final PPTX rendering path must not insert raw hex colors by default.
 
 ## ThemeColorRef
 
@@ -38,7 +38,7 @@ type PptThemeSlot =
   | 'accent6';
 ```
 
-## Default semantic mapping
+## Default Semantic Mapping
 
 | Semantic token | PPT theme slot | Usage |
 |---|---|---|
@@ -53,22 +53,22 @@ type PptThemeSlot =
 | danger | accent5 | destructive state |
 | info | accent6 | information/chart state |
 
-## Renderer rules
+## Renderer Rules
 
-- [x] text color uses `ThemeColorRef`.
-- [x] shape fill uses `ThemeColorRef`.
-- [x] shape line uses `ThemeColorRef`.
-- [x] chart series uses theme slots.
-- [x] icon fill/line uses theme slots.
-- [x] fallback hex is allowed only for HTML preview or contrast estimation.
-- [x] config option `allowRawHexInPptx: true` may exist for debugging, but default is false.
+- [x] Text color uses `ThemeColorRef`.
+- [x] Shape fill uses `ThemeColorRef`.
+- [x] Shape line uses `ThemeColorRef`.
+- [x] Chart series use theme slots.
+- [x] Icon fill/line uses theme slots.
+- [x] Fallback hex is allowed only for HTML preview or contrast estimation.
+- [x] `allowRawHexInPptx: true` may exist for debugging, but the default is false.
 
-## Lint rules
+## Lint Rules
 
 - [x] `raw-hex-in-pptx-mode` -> error
 - [x] `too-many-accents` -> error
-- [x] `accent-without-purpose` -> warn
-- [x] `low-contrast-theme-slot-pair` -> warn/error depending on strict mode
+- [x] `accent-without-purpose` -> warning
+- [x] `low-contrast-theme-slot-pair` -> warning or error depending on strict mode
 
 ## Example
 

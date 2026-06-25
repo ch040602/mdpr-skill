@@ -2,24 +2,24 @@
 
 ## Slide Element IR
 
-`Slide Element IR`은 MDPR이 출력하는 headless content contract다. 시각 필드를 포함하지 않는다.
+`Slide Element IR` is the headless content contract emitted by MDPR. It must not contain visual decision fields.
 
-### Allowed fields
+### Allowed Fields
 
-- deck metadata
-- slide id
-- slide intent
-- density
-- reading order
-- element type
-- element role
-- element importance
-- element content
-- content metrics
-- semantic groups
-- source mapping
+- Deck metadata.
+- Slide id.
+- Slide intent.
+- Density.
+- Reading order.
+- Element type.
+- Element role.
+- Element importance.
+- Element content.
+- Content metrics.
+- Semantic groups.
+- Source mapping.
 
-### Forbidden fields
+### Forbidden Fields
 
 - `x`, `y`, `w`, `h`
 - `fontSize`, `fontFamily`
@@ -30,25 +30,25 @@
 
 ## Styled Deck IR
 
-`Styled Deck IR`은 Design Components rule engine이 출력하는 visual contract다. renderer는 이를 소비한다.
+`Styled Deck IR` is the visual contract emitted by the Design Components rule engine. Renderers consume this IR.
 
-### Required fields
+### Required Fields
 
-- profile
-- coherenceLock
-- slides
-- recipeId
-- elements
-- box
-- variantId
-- style specs
-- effects
-- theme color refs
-- source element mapping
+- Profile.
+- Coherence lock.
+- Slides.
+- Recipe id.
+- Elements.
+- Box.
+- Variant id.
+- Style specs.
+- Effects.
+- Theme color refs.
+- Source element mapping.
 
-## Source mapping rule
+## Source Mapping Rule
 
-모든 `StyledElement`는 원본 `ElementNode`와 연결되어야 한다.
+Every `StyledElement` must remain connected to its source `ElementNode`.
 
 ```ts
 type StyledElement = {
@@ -60,14 +60,14 @@ type StyledElement = {
 };
 ```
 
-## No-loss policy
+## No-Loss Policy
 
-- [x] title은 반드시 남긴다.
-- [x] footnote/caption은 density가 높으면 collapse 가능하되 source mapping을 유지한다.
-- [x] content collapse는 `canCollapse: true`가 있는 요소에만 허용한다.
-- [x] summarization은 기본 금지. 별도 explicit option이 있을 때만 허용한다.
+- [x] Titles must be preserved.
+- [x] Footnotes and captions may collapse under high density, but source mapping must remain.
+- [x] Content collapse is allowed only for elements with `canCollapse: true`.
+- [x] Summarization is disabled by default and requires an explicit option.
 
-## Element type catalog
+## Element Type Catalog
 
 ```text
 title
@@ -97,7 +97,7 @@ footnote
 caption
 ```
 
-## Slide intent catalog
+## Slide Intent Catalog
 
 ```text
 cover

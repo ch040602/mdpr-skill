@@ -1,0 +1,4 @@
+Wrote C:\Users\hcslab_523\Documents\mdpr-skill\artifacts\mdpr-cli-verification\build\deck.html
+Wrote C:\Users\hcslab_523\Documents\mdpr-skill\artifacts\mdpr-cli-verification\build\deck.pptx
+Wrote C:\Users\hcslab_523\Documents\mdpr-skill\artifacts\mdpr-cli-verification\build\mdpresent-manifest.json
+Wrote C:\Users\hcslab_523\Documents\mdpr-skill\artifacts\mdpr-cli-verification\build\mdpresent-design-lock.json

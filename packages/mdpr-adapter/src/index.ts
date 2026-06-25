@@ -36,6 +36,7 @@ export type MdprRunInput = {
   mdprBinary?: string;
   outDir?: string;
   hintsPath?: string;
+  packPath?: string;
   visual?: boolean;
   coherence?: boolean;
   strict?: boolean;
@@ -116,6 +117,7 @@ export function runMdprInspect(input: MdprRunInput): MdprRunResult {
 export function runMdprValidate(input: MdprRunInput): MdprRunResult {
   const args = ["validate", input.deckPath];
   if (input.hintsPath) args.push("--hints", input.hintsPath);
+  if (input.packPath) args.push("--pack", input.packPath);
   if (input.visual) args.push("--visual");
   if (input.coherence) args.push("--coherence");
   if (input.strict) args.push("--strict");
@@ -133,6 +135,7 @@ export function runMdprBuild(input: MdprRunInput): MdprRunResult {
     outDir,
   ];
   if (input.hintsPath) args.push("--hints", input.hintsPath);
+  if (input.packPath) args.push("--pack", input.packPath);
   if (input.visual) args.push("--visual");
   if (input.coherence) args.push("--coherence");
   if (input.strict) args.push("--strict");
@@ -158,6 +161,26 @@ export function collectMdprMetrics(manifest: Record<string, unknown>): {
   visualErrors: number;
   slideCount?: number;
 } {
+  const normalized = readRecord(manifest.metrics);
+  if (normalized) {
+    return {
+      overflowCount: readNumber(normalized.overflowCount),
+      coherenceWarnings: readNumber(normalized.coherenceWarningCount ?? normalized.coherenceWarnings),
+      visualErrors: readNumber(normalized.visualErrorCount ?? normalized.visualErrors),
+      slideCount: readOptionalNumber(normalized.slideCount ?? manifest.slideCount),
+    };
+  }
+
+  const validation = readRecord(manifest.validation);
+  if (validation) {
+    return {
+      overflowCount: countLayoutOverflow(readArray(validation.layoutOverflow)),
+      coherenceWarnings: countCoherenceWarnings(readRecord(validation.coherence)),
+      visualErrors: countVisualErrors(readRecord(validation.visual)),
+      slideCount: readOptionalNumber(manifest.slideCount),
+    };
+  }
+
   const diagnostics = Array.isArray(manifest.diagnostics) ? manifest.diagnostics as Array<Record<string, unknown>> : [];
   const visual = manifest.visualValidation && typeof manifest.visualValidation === "object"
     ? manifest.visualValidation as Record<string, unknown>
@@ -168,6 +191,64 @@ export function collectMdprMetrics(manifest: Record<string, unknown>): {
     visualErrors: Number(visual.errors ?? 0),
     slideCount: typeof manifest.slideCount === "number" ? manifest.slideCount : undefined,
   };
+}
+
+function readRecord(value: unknown): Record<string, unknown> | undefined {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : undefined;
+}
+
+function readArray(value: unknown): Array<Record<string, unknown>> {
+  return Array.isArray(value)
+    ? value.filter((item): item is Record<string, unknown> => Boolean(readRecord(item)))
+    : [];
+}
+
+function readNumber(value: unknown): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : 0;
+}
+
+function readOptionalNumber(value: unknown): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+function countLayoutOverflow(diagnostics: Array<Record<string, unknown>>): number {
+  return diagnostics.filter((item) => {
+    const level = String(item.level ?? item.severity ?? "").toLowerCase();
+    const code = String(item.code ?? "").toUpperCase();
+    return level === "error" || code === "TEXT_OVERFLOW";
+  }).length;
+}
+
+function countCoherenceWarnings(coherence: Record<string, unknown> | undefined): number {
+  if (!coherence) return 0;
+  const summaryKeys = [
+    "captionDetached",
+    "claimlessSlides",
+    "orphanEvidenceBlocks",
+    "sectionMotifDrift",
+    "coherenceWarnings",
+    "warningCount",
+  ];
+  const summaryTotal = summaryKeys.reduce((total, key) => total + readNumber(coherence[key]), 0);
+  if (summaryTotal > 0) return summaryTotal;
+
+  return readArray(coherence.diagnostics).filter((item) => {
+    const level = String(item.level ?? item.severity ?? "warning").toLowerCase();
+    return level !== "error";
+  }).length;
+}
+
+function countVisualErrors(visual: Record<string, unknown> | undefined): number {
+  if (!visual) return 0;
+  const explicit = readNumber(visual.errors ?? visual.errorCount ?? visual.visualErrors);
+  if (explicit > 0) return explicit;
+
+  return readArray(visual.diagnostics).filter((item) => {
+    const level = String(item.level ?? item.severity ?? "").toLowerCase();
+    return level === "error";
+  }).length;
 }
 
 function readJsonArtifact(path: string, label: string): Record<string, unknown> {

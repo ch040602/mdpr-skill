@@ -34,8 +34,6 @@ MIN_FONT_SIZE_PT = 8
 
 SOURCE_FILES = [
     "README.md",
-    "README.ko.md",
-    "CODEX_PROMPT.md",
     "docs/00-product-definition.md",
     "docs/01-architecture.md",
     "docs/02-requirements.md",
@@ -56,7 +54,6 @@ SOURCE_FILES = [
     "examples/diagram-arrangements/deck.md",
     "examples/five-methods/deck.md",
     "examples/theme-preview-en/deck.md",
-    "examples/theme-preview-ko/deck.md",
 ]
 
 
@@ -714,6 +711,11 @@ def validate_pngs(paths: list[Path]) -> list[dict[str, Any]]:
     return results
 
 
+def normalized_error_message(error: Exception) -> str:
+    message = str(error)
+    return message.replace("예외가 발생했습니다.", "PowerPoint COM exception")
+
+
 def main() -> None:
     if not MDPR.is_dir():
         raise FileNotFoundError("MDPR checkout is missing. Run npm run install:mdpr first.")
@@ -724,8 +726,17 @@ def main() -> None:
     build_mdpr_baseline()
     mdpr_baseline_validation = validate_pptx(BASELINE_PPTX)
     build_skill_deck(summaries, mdpr_baseline_validation)
-    baseline_exports = export_with_powerpoint(BASELINE_PPTX, OUT / "mdpr-baseline-export")
-    skill_exports = export_with_powerpoint(SKILL_PPTX, OUT / "skill-export")
+    export_errors: list[dict[str, str]] = []
+    try:
+        baseline_exports = export_with_powerpoint(BASELINE_PPTX, OUT / "mdpr-baseline-export")
+    except Exception as error:
+        baseline_exports = []
+        export_errors.append({"deck": str(BASELINE_PPTX.relative_to(ROOT)), "error": normalized_error_message(error)})
+    try:
+        skill_exports = export_with_powerpoint(SKILL_PPTX, OUT / "skill-export")
+    except Exception as error:
+        skill_exports = []
+        export_errors.append({"deck": str(SKILL_PPTX.relative_to(ROOT)), "error": normalized_error_message(error)})
     for index, exported in enumerate(baseline_exports[:4], 1):
         shutil.copyfile(exported, OUT / f"mdpr_baseline_preview_{index}.png")
     for index, exported in enumerate(skill_exports[:4], 1):
@@ -756,8 +767,13 @@ def main() -> None:
         },
         "mdprBaselineValidation": mdpr_baseline_validation,
         "skillValidation": validate_pptx(SKILL_PPTX),
-        "baselineRenderPreview": validate_pngs([OUT / f"mdpr_baseline_preview_{index}.png" for index in range(1, min(4, len(baseline_exports)) + 1)]),
-        "skillRenderPreview": validate_pngs([OUT / f"skill_preview_{index}.png" for index in range(1, min(4, len(skill_exports)) + 1)]),
+        "powerPointExport": {
+            "ok": not export_errors,
+            "errors": export_errors,
+            "fallback": "Existing preview PNGs are reused when PowerPoint COM export is unavailable.",
+        },
+        "baselineRenderPreview": validate_pngs([path for path in [OUT / f"mdpr_baseline_preview_{index}.png" for index in range(1, 5)] if path.is_file()]),
+        "skillRenderPreview": validate_pngs([path for path in [OUT / f"skill_preview_{index}.png" for index in range(1, 5)] if path.is_file()]),
     }
     report["ok"] = (
         report["sourceFileCount"] >= 20

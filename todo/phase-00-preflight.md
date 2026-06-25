@@ -1,23 +1,23 @@
-# Phase 00 — Preflight
+# Phase 00 - Preflight
 
 ## Goal
 
-기존 MDPR pipeline을 깨지 않고 `design-components-rule-based` pipeline을 추가할 준비를 한다.
+Prepare the `design-components-rule-based` pipeline without breaking the existing MDPR pipeline.
 
 ## Tasks
 
-- [x] 현재 `packages/cli`, `packages/core`, `packages/layout`, `packages/override`, `packages/report-html`, `packages/report-pdf`, `design_components/pptx`의 public API를 확인한다.
-- [x] 기존 `build`, `inspect`, `plan`, `validate` 명령의 입력/출력 snapshot을 저장한다.
-- [x] 신규 pipeline mode 이름 확정: `design-components-rule-based`.
-- [x] 신규 design integration root 확정: `design_components/`.
-- [x] 기존 `theme-gallery`와 신규 `style-gallery`의 책임 차이를 문서화한다.
-- [x] Design Components upstream ref를 고정한다.
-- [x] MIT license notice를 포함한다.
-- [x] `third_party/design-source/UPSTREAM.md` 생성 계획을 PR description에 포함한다.
-- [x] CI baseline을 통과시킨다.
+- [x] Review the public APIs of `packages/cli`, `packages/core`, `packages/layout`, `packages/override`, `packages/report-html`, `packages/report-pdf`, and `design_components/pptx`.
+- [x] Save input/output snapshots for existing `build`, `inspect`, `plan`, and `validate` commands.
+- [x] Confirm the new pipeline mode name: `design-components-rule-based`.
+- [x] Confirm the new design integration root: `design_components/`.
+- [x] Document the responsibility split between existing `theme-gallery` and new `style-gallery`.
+- [x] Pin the upstream Design Components reference.
+- [x] Include MIT license notice.
+- [x] Include the `third_party/design-source/UPSTREAM.md` plan in the PR description.
+- [x] Pass the CI baseline.
 
 ## Acceptance
 
-- [x] legacy build snapshot이 phase 전후 동일하다.
-- [x] 신규 pipeline은 flag/config 없이는 실행되지 않는다.
-- [x] vendor/license 정책이 리뷰 가능하다.
+- [x] Legacy build snapshots are unchanged before and after the phase.
+- [x] The new pipeline does not run unless enabled by flag or config.
+- [x] Vendor and license policy is reviewable.

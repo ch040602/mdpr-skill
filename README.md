@@ -95,6 +95,19 @@ npm run check:mdpr
 npm run check:mdpr-pandoc
 ```
 
+The repository also exposes a thin local CLI for skill-side artifacts:
+
+```bash
+node bin/mdpr-skill.js --help
+node bin/mdpr-skill.js hint --source-sha256 <64hex> --out .mdpresent/proposals/agent-hint.json
+node bin/mdpr-skill.js review --manifest dist/mdpresent-manifest.json --out .mdpresent/review/review-report.json
+node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path .cache/mdpr
+```
+
+These commands create hints, reviews, eval reports, design candidates, and
+approval records. They do not choose final coordinates, colors, z-order, or
+renderer object IDs; MDPR owns those runtime decisions.
+
 ## Usage
 
 Run MDPR directly when you only need deterministic presentation output. MDPR is
@@ -122,6 +135,17 @@ and review the generated artifacts, but should not own the final slide layout:
 - design rail review findings for unsupported PPT effects, raster risks, component drift, and diagram budgets
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
+
+Create an approval-bound split override candidate from an edit intent:
+
+```bash
+mdpr-skill edit override-candidate \
+  --source-sha256 <64hex> \
+  --slide-ref "Research Findings" \
+  --instruction "Split this section by child findings." \
+  --split-by h3 \
+  --out .mdpresent/proposals/research.override.json
+```
 
 `eval-core` can run a deterministic baseline MDPR build, rerun MDPR with a
 schema-valid `agent-hint.json`, compare quality and performance metrics, and

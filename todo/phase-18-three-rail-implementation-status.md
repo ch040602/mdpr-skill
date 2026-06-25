@@ -49,15 +49,15 @@ scope because several TODOs belong to MDPR or a future `mdpr-ppt` repository.
 | --- | --- | --- | ---: |
 | P0 hint manifest contract | Done | `packages/hints-core/src/index.ts` uses `schemaVersion: "mdpr-agent-hint-v1"`, `sourceSha256`, `generatedBy`, and `generatedAt`. | 100% |
 | P0 forbidden final-decision fields | Hardened | `FORBIDDEN_AGENT_HINT_FIELDS`, `assertNoForbiddenFields()`, and key-based review finding checks reject final-decision keys without false positives from evidence prose. | 90% |
-| P1 MDPR adapter runner | Hardened functional runner | `packages/mdpr-adapter/src/index.ts` can resolve MDPR, run build/validate/inspect, load artifacts, collect metrics, and report typed command/artifact failures; eval-core preserves those typed failures. | 85% |
-| P1 eval-core runner | Review-integrated runner | `packages/eval-core/src/index.ts` runs baseline/guided builds, validates hints, compares metrics, preserves MDPR profile metadata, runs review-core, emits reports, and has runtime/e2e tests. | 90% |
+| P1 MDPR adapter runner | Hardened functional runner | `packages/mdpr-adapter/src/index.ts` can resolve MDPR, run build/validate/inspect, forward `--pack`, load artifacts, collect metrics, and report typed command/artifact failures; eval-core preserves those typed failures. | 90% |
+| P1 eval-core runner | Pack-aware review-integrated runner | `packages/eval-core/src/index.ts` runs baseline/guided builds, validates hints, compares metrics, supports pack-only guided runs, preserves MDPR profile metadata, runs review-core, emits reports, and has runtime/e2e tests. | 95% |
 | P1 review-core coherence rules | Done for first production slice | `packages/review-core/src/index.ts` now reports detached captions, orphan evidence, claimless evidence slides, and section rhythm drift without final design fields. | 70% |
 | P1 review-core visual rules | Done for first production slice | `packages/review-core/src/index.ts` now reports raw hex leakage, mixed corner/depth scales, visual treatment budget overuse, accent overuse, and non-editable primary objects. | 70% |
 | P2 selection schemas | Schema and docs only | `schemas/mdpr-ppt-selection.schema.json`, `schemas/mdpr-selection-context.schema.json`, and `docs/mdpr-ppt-bridge.md` exist. | 35% |
 | P2 edit-intent rail | First production slice done | `packages/edit-core/src/index.ts` records safe page/layout/decoration edit proposals and rejects final-decision fields before change-request creation. | 60% |
 | P2 approval/change request flow | Helper lifecycle implemented and CLI-exported | `packages/change-core/src/index.ts` creates proposed changes, validates source hashes/change lists/approval timestamps, enforces reviewed approval transitions, blocks unapproved runtime candidates, and `packages/cli/src/commands/change.ts` exposes the lifecycle boundary. | 75% |
 | P2 PowerPoint bridge implementation | Not started | No `mdpr-ppt` add-in, Office.js capture, or selection export implementation exists here. | 0% |
-| P3 MDPR pack package | Not started in this repo | Pack concepts are documented, but MDPR-side `pack` package and commands are not implemented here. | 0% |
+| P3 MDPR pack package | Implemented in local MDPR checkout | `.cache/mdpr/packages/pack` validates/imports/previews approved packs, `mdpresent pack` exposes list/validate/import/preview, and `mdpresent build --pack` applies tokenized theme inputs. | 70% |
 | P3 renderer metadata contract | Not owned here | Shape metadata and PPTX object manifest contract must be implemented in MDPR renderer. | 0% |
 | P4 OOXML extractor fallback | Not started | No grouped shape/table deep extractor exists. | 0% |
 | P2 selection context consumed by review/hint | Done for first production slice | `hints-core` converts selection context into semantic grouping hints, and `review-core` consumes selected block evidence without copying coordinates. | 65% |
@@ -66,8 +66,9 @@ Overall:
 
 - `mdpr-skill` local scope is roughly 50-55% complete.
 - Whole-system three-rail architecture is roughly 30-35% complete.
-- The highest-risk gap is not `eval-core`; it is the missing concrete
-  `review-core` rules and the missing approval-bound `mdpr-ppt` / pack rail.
+- The highest-risk gap is now the missing approval-bound `mdpr-ppt` bridge and
+  deeper MDPR diagram/component packages, not eval-core or first-slice pack
+  import.
 
 ## Registered TODOs
 

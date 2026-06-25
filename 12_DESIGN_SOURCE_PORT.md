@@ -2,7 +2,7 @@
 
 ## Goal
 
-Design Components의 rule, token, skin, motion, component pattern 지식을 MDPR의 presentation renderer-neutral engine으로 옮긴다. 실제 적용 계층은 `design_components/`에 둔다. `third_party/design-source/`는 업스트림 출처와 라이선스 경계만 담당한다.
+Move Design Components knowledge about rules, tokens, skins, motion, and component patterns into MDPR's renderer-neutral presentation engine. The applied layer lives under `design_components/`. `third_party/design-source/` is limited to upstream provenance and license boundaries.
 
 ## Directory
 
@@ -30,7 +30,7 @@ design_components/design-source-adapter/
     vercel.json
 ```
 
-## UPSTREAM.md template
+## UPSTREAM.md Template
 
 ```md
 # Design Components Upstream
@@ -42,7 +42,7 @@ License: MIT
 Local adaptation: MDPR renderer-neutral mapping under design_components/
 ```
 
-## Import scope
+## Import Scope
 
 ### Import
 
@@ -51,16 +51,16 @@ Local adaptation: MDPR renderer-neutral mapping under design_components/
 - [x] `tokens/*`
 - [x] `motion/*`
 - [x] `skins/{toss,stripe,linear,notion,raycast,arc,vercel}`
-- [x] pattern/component metadata, not React runtime dependency
+- [x] Pattern and component metadata, not React runtime dependencies.
 
-### Do not import as runtime dependency
+### Do Not Import as Runtime Dependency
 
-- [x] React component implementation as-is
-- [x] Tailwind/shadcn-only assumptions
-- [x] Framer Motion runtime into PPTX/PDF path
-- [x] hardcoded brand color as final PPTX color
+- [x] React component implementation as-is.
+- [x] Tailwind/shadcn-only assumptions.
+- [x] Framer Motion runtime into the PPTX/PDF path.
+- [x] Hardcoded brand color as final PPTX color.
 
-## Mapping layers
+## Mapping Layers
 
 ```text
 Design Components token
@@ -70,19 +70,19 @@ Design Components token
   -> Renderer-specific object
 ```
 
-## Motion mapping
+## Motion Mapping
 
 | Design Components motion | PPTX | HTML | PDF |
 |---|---|---|---|
-| spring/silk/snap/float/pulse | static visual equivalent | CSS/motion optional | static |
-| reveal-blur | no animation; soft entrance marker optional | CSS blur-in | static |
+| spring/silk/snap/float/pulse | static visual equivalent | optional CSS/motion | static |
+| reveal-blur | no animation; optional soft entrance marker | CSS blur-in | static |
 | glow-pulse | static halo | pulse | static halo |
 | confetti-pop | editable accent shapes | particles/CSS | static shapes |
 | shimmer | static gradient bar | animated shimmer | static gradient |
 
-## Skin mapping
+## Skin Mapping
 
-Skin은 색상값을 직접 쓰는 것이 아니라 visual profile axes로 변환한다.
+Skins must not apply raw colors directly. They are converted into visual profile axes.
 
 | Skin | Profile | Axes tendency |
 |---|---|---|

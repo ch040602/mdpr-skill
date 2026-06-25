@@ -4,471 +4,419 @@
     {
       "path": "README.md",
       "title": "mdpresent",
-      "headingCount": 12,
+      "headingCount": 13,
       "headings": [
         "mdpresent",
-        "Example PPT Slides",
+        "What It Does",
+        "MDPR + mdpr-skill",
+        "How MDPR Differs",
+        "Preview Gallery",
+        "Theme Style Examples",
         "Runtime Pipeline",
-        "Core Philosophy",
-        "Pipeline",
-        "Quick Usage",
-        "Markdown Semantics",
-        "Design Presets"
+        "Quick Usage"
       ],
       "bullets": [
-        "Korean README",
-        "Chinese README",
-        "Lists: ordered and unordered lists keep numbering, nesting level, and fallback text",
-        "Cleanup: decorative empty bullet lines are removed before rendering",
-        "Emphasis: paragraph and list-item emphasis such as **bold** and *italic* is carried into HTML and editable PPTX text runs",
-        "Key messages: block quotes such as > Important sentence become separated callout regions with accent styling"
+        "**Input**: Markdown documents.",
+        "**Intermediate model**: Presentation IR and Layout IR.",
+        "**Outputs**: editable PPTX, plus HTML and PDF.",
+        "**Runtime**: rule-based parsing, splitting, layout, validation, theme selection, and rendering.",
+        "**LLM-advised quality**: use mdpr-skill when you want agent-side semantic hints, review loops, or visual-quality advice before MDP",
+        "**Agent boundary**: mdpr-skill may pass compact semantic hints through --hints, but MDPR rejects final layout/style decisions. MDP"
       ],
       "hasTable": true,
       "table": [
         [
-          "Cover / Title",
-          "Pipeline Diagram"
+          "Compared with",
+          "MDPR focus"
         ],
         [
-          "<img src=\"docs/assets/readme-slides/cover.png\" alt=\"Generated mdpresent cover slide preview\" width=\"100%\">",
-          "<img src=\"docs/assets/readme-slides/pipeline.png\" alt=\"Generated pipeline diagram slide preview\" width=\"100%\">"
+          "**Pandoc**",
+          "Pandoc is a broad document converter. MDPR is narrower: PPTX-first layout planning, editability, overflow validation, object preservation, and generated preview QA."
         ],
         [
-          "Markdown Semantics"
+          "**Marp / Slidev**",
+          "HTML/CSS slide tools are excellent for web decks. MDPR targets editable PowerPoint objects and downstream PPTX workflows."
         ],
         [
-          "<img src=\"docs/assets/readme-slides/semantics.png\" alt=\"Generated Markdown semantics slide preview\" width=\"100%\">"
+          "**LLM slide generators**",
+          "MDPR keeps deterministic ownership of parsing, splitting, layout, colors, z-order, and renderer output. mdpr-skill can suggest hints, but it cannot own final coordinates or style."
+        ],
+        [
+          "**Template-only automation**",
+          "MDPR derives slide structure from Markdown semantics, then applies reusable layout and theme grammar rather than filling a fixed master slide."
         ]
       ],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
-        "Markdown is the source document.",
-        "Splitting is driven by headings and density.",
-        "Layouts are selected from intent and item count.",
-        "Exceptions are controlled through an override manifest.",
-        "PPT templates provide only backgrounds and brand assets.",
-        "Body layout is recalculated by the CLI."
+        "Markdown",
+        "  -> optional mdpr-skill review hints",
+        "  -> MDPR deterministic parsing, splitting, layout, validation",
+        "  -> editable PPTX / HTML / PDF"
       ],
-      "charCount": 10521
-    },
-    {
-      "path": "README.ko.md",
-      "title": "mdpresent",
-      "headingCount": 10,
-      "headings": [
-        "mdpresent",
-        "한국어 테마 미리보기",
-        "핵심 철학",
-        "파이프라인",
-        "빠른 사용 예시",
-        "Markdown 구조 보존",
-        "Design Presets",
-        "구현 우선순위"
-      ],
-      "bullets": [
-        "English README",
-        "Chinese README",
-        "ordered/unordered list의 번호, 중첩 level, fallback text를 유지합니다.",
-        "빈 - 줄이나 standalone · 같은 장식성 bullet은 렌더링 전에 제거합니다.",
-        "**bold**, *italic* 같은 강조는 HTML과 editable PPTX text run에 반영합니다.",
-        "paragraph line과 sentence unit을 유지하여 slide splitting과 overflow 판단에 활용합니다."
-      ],
-      "hasTable": false,
-      "table": [],
-      "hasCode": true,
-      "codeLanguage": "text",
-      "code": [
-        "Markdown은 원본 문서다.",
-        "분할은 heading + density로 한다.",
-        "레이아웃은 intent + item count로 고른다.",
-        "예외는 override manifest로 통제한다.",
-        "PPT 템플릿은 배경과 브랜드만 제공한다.",
-        "본문 배치는 CLI가 새로 계산한다."
-      ],
-      "charCount": 3747
-    },
-    {
-      "path": "CODEX_PROMPT.md",
-      "title": "Codex 구현 프롬프트",
-      "headingCount": 5,
-      "headings": [
-        "Codex 구현 프롬프트",
-        "목표",
-        "반드시 지킬 것",
-        "구현 순서",
-        "첫 번째 완료 기준"
-      ],
-      "bullets": [
-        "schemas/*.json의 구조를 기준으로 타입과 출력물을 맞추세요.",
-        "split은 heading + density 기반으로 구현하세요.",
-        "layout은 intent + item count 기반으로 선택하세요.",
-        "override는 operation manifest를 우선 지원하세요.",
-        "slide targeting은 slideId를 최우선으로 처리하세요.",
-        "renderer는 split/layout 결정을 다시 하지 마세요."
-      ],
-      "hasTable": false,
-      "table": [],
-      "hasCode": true,
-      "codeLanguage": "bash",
-      "code": [
-        "pnpm install",
-        "pnpm cli inspect examples/basic/deck.md --json",
-        "pnpm cli plan examples/basic/deck.md --json",
-        "pnpm cli build examples/basic/deck.md --to html --out dist"
-      ],
-      "charCount": 1065
+      "charCount": 14613
     },
     {
       "path": "docs/00-product-definition.md",
-      "title": "00. 제품 정의",
+      "title": "00. Product Definition",
       "headingCount": 6,
       "headings": [
-        "00. 제품 정의",
-        "한 줄 정의",
-        "하지 않는 것",
-        "하는 것",
-        "핵심 산출물",
-        "자동화와 수동 제어의 비율"
+        "00. Product Definition",
+        "One-Line Definition",
+        "Non-Goals",
+        "Responsibilities",
+        "Core Outputs",
+        "Automation Model"
       ],
-      "bullets": [],
+      "bullets": [
+        "It is not a direct Markdown-to-PowerPoint converter.",
+        "It is not a full Marp syntax clone.",
+        "It is not a tool that embeds CSS-rendered slide screenshots into PowerPoint.",
+        "It is not an LLM runtime.",
+        "analyze Markdown headings and content blocks",
+        "split slides from headings, density, and explicit separators"
+      ],
       "hasTable": false,
       "table": [],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
-        "Markdown 파일을 단순히 PPT로 변환하는 도구가 아니다.",
-        "Marp 문법을 그대로 재구현하는 도구가 아니다.",
-        "CSS 렌더링 결과를 슬라이드 이미지로 박는 도구가 아니다."
+        "- It is not a direct Markdown-to-PowerPoint converter.",
+        "- It is not a full Marp syntax clone.",
+        "- It is not a tool that embeds CSS-rendered slide screenshots into PowerPoint.",
+        "- It is not an LLM runtime."
       ],
-      "charCount": 745
+      "charCount": 1546
     },
     {
       "path": "docs/01-architecture.md",
-      "title": "01. 아키텍처",
-      "headingCount": 9,
+      "title": "01. Architecture",
+      "headingCount": 4,
       "headings": [
-        "01. 아키텍처",
-        "전체 흐름",
-        "패키지 역할",
-        "설계 원칙",
-        "1. Core는 렌더러를 모른다",
-        "2. Layout은 좌표와 슬롯을 다룬다",
-        "3. Renderer는 포맷별 구현만 담당한다",
-        "4. Override는 마지막 예외 계층이다"
+        "01. Architecture",
+        "Flow",
+        "Package Roles",
+        "Design Principles"
       ],
-      "bullets": [],
+      "bullets": [
+        "core does not know renderers. It emits Presentation IR only.",
+        "layout owns coordinates, regions, slots, typography, and safe areas.",
+        "Renderers implement target-format output only; they must not redo split or layout decisions.",
+        "Overrides are the final exception layer after automatic planning.",
+        "PPT templates provide brand and background assets; body placement is recalculated by MDPR.",
+        "Optional agent hints may annotate coherence metadata, but deterministic MDPR rules own final output."
+      ],
       "hasTable": false,
       "table": [],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
         "Markdown",
-        "  ↓",
-        "Parser(simple Markdown or Pandoc JSON)",
-        "  ↓",
-        "Outline Builder",
-        "  ↓",
-        "Split Planner",
-        "  ↓"
+        "  -> Parser (simple Markdown or Pandoc JSON)",
+        "  -> Outline Builder",
+        "  -> Split Planner",
+        "  -> Coherence Grouping",
+        "  -> Presentation IR",
+        "  -> Pack Validation / Token Import",
+        "  -> Layout Planner (candidate scoring)"
       ],
-      "charCount": 1719
+      "charCount": 3083
     },
     {
       "path": "docs/02-requirements.md",
-      "title": "02. 요구사항",
+      "title": "02. Requirements",
       "headingCount": 12,
       "headings": [
-        "02. 요구사항",
-        "기능 요구사항",
-        "입력",
-        "분할",
-        "레이아웃",
-        "폰트와 overflow",
-        "PPTX 출력",
-        "PDF/HTML 출력"
+        "02. Requirements",
+        "Functional Requirements",
+        "Input",
+        "Splitting",
+        "Layout",
+        "Typography and Overflow",
+        "PPTX Output",
+        "HTML and PDF Output"
       ],
       "bullets": [
-        "Markdown 파일을 입력으로 받는다.",
-        "일반 Markdown heading 구조를 우선 사용한다.",
-        "전역 설정은 mdpresent.config.yaml 또는 CLI arg로 받는다.",
-        "슬라이드 전용 문법을 Markdown 본문에 강제하지 않는다.",
-        "첫 번째 #는 기본적으로 cover 후보로 사용한다.",
-        "##는 기본 slide candidate로 사용한다."
+        "Accept Markdown files as the source document.",
+        "Prefer normal Markdown heading structure.",
+        "Load global settings from mdpresent.config.yaml, JSON config files, or CLI arguments.",
+        "Avoid forcing slide-only syntax into normal Markdown prose.",
+        "Treat the first # as a cover candidate by default.",
+        "Treat ## headings as slide candidates."
       ],
       "hasTable": false,
       "table": [],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
-        "- heading 기반 split",
-        "- density 기반 autosplit",
+        "- heading-based splitting",
+        "- density-based autosplitting",
         "- intent detection",
         "- rule-based layout selection",
-        "- override manifest",
+        "- override manifests",
         "- inspect / plan / validate / build",
         "- HTML output",
-        "- PPTX output skeleton"
+        "- editable PPTX output"
       ],
-      "charCount": 2042
+      "charCount": 3070
     },
     {
       "path": "docs/03-page-splitting.md",
-      "title": "03. 페이지 분할 규칙",
-      "headingCount": 17,
+      "title": "03. Page Splitting Rules",
+      "headingCount": 16,
       "headings": [
-        "03. 페이지 분할 규칙",
-        "기본 heading 규칙",
-        "cover 또는 section",
+        "03. Page Splitting Rules",
+        "Heading Rules",
+        "cover or section",
         "slide candidate",
-        "subsection 또는 autosplit 기준",
-        "기본 절차",
-        "Density 점수",
-        "Density 기준"
+        "subsection or autosplit boundary",
+        "Procedure",
+        "Density Scores",
+        "Preserved Block Structure"
       ],
       "bullets": [
-        "Markdown 구조 생성",
-        "기본값: built-in simple parser",
-        "선택값: --parser pandoc으로 Pandoc JSON AST 생성 후 BlockIR로 정규화",
-        "heading tree 생성",
-        "h2 기준 slide candidate 생성",
-        "candidate별 density 계산"
+        "Parse CommonMark/GFM Markdown into an AST.",
+        "Convert the AST into MDPR BlockIR while preserving presentation-relevant",
+        "Normalize Pandoc JSON into BlockIR when --parser pandoc is selected.",
+        "Build the heading tree.",
+        "Create slide candidates from h2 sections.",
+        "Calculate density for each candidate."
       ],
       "hasTable": true,
       "table": [
         [
-          "요소",
-          "기본 점수"
+          "Element",
+          "Default Score"
         ],
         [
-          "짧은 문단",
+          "Short paragraph",
           "1"
         ],
         [
-          "긴 문단",
+          "Long paragraph",
           "2"
         ],
         [
-          "bullet 1개",
+          "Bullet item",
           "1"
         ],
         [
-          "nested bullet",
+          "Nested bullet",
           "1.5"
         ]
       ],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
-        "#   cover 또는 section",
-        "##  slide candidate",
-        "### subsection 또는 autosplit 기준",
-        "#### 본문 내부 heading"
+        "#     cover or section",
+        "##    slide candidate",
+        "###   subsection or autosplit boundary",
+        "####  in-body heading"
       ],
-      "charCount": 4977
+      "charCount": 5370
     },
     {
       "path": "docs/04-layout-rules.md",
-      "title": "04. 레이아웃 선택 규칙",
+      "title": "04. Layout Selection Rules",
       "headingCount": 10,
       "headings": [
-        "04. 레이아웃 선택 규칙",
-        "기본 규칙",
-        "Intent 감지",
-        "개수 기반 레이아웃",
-        "비교 구조 감지",
-        "Preset 목록",
+        "04. Layout Selection Rules",
+        "Selection Formula",
+        "Intent Detection",
+        "Count-Based Layouts",
+        "Presets",
         "Pipeline Diagram Routing",
-        "Polygon Edge Decoration"
+        "Composition Grammar",
+        "Candidate Scoring"
       ],
       "bullets": [
-        "제목에 기존/개선, Before/After, As-Is/To-Be, 장점/단점 포함",
-        "h3가 정확히 2개이고 서로 대비됨",
-        "bullet group이 2개이며 group title이 대비됨",
-        "표가 비교축 column을 가짐",
         "id: footer"
       ],
       "hasTable": true,
       "table": [
         [
-          "조건",
-          "intent"
+          "Condition",
+          "Intent"
         ],
         [
-          "기존/개선, Before/After, As-Is/To-Be, 장점/단점",
+          "Before/After, As-Is/To-Be, pros/cons, two opposed groups",
           "comparison"
         ],
         [
-          "날짜, 단계, phase, step 반복",
+          "Dates, stages, phases, repeated steps",
           "timeline"
         ],
         [
-          "큰 표 포함",
+          "Large table",
           "table"
         ],
         [
-          "이미지가 본문보다 중요",
+          "Image is more important than body text",
           "image"
         ]
       ],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
-        "SlideIntent + itemCount + blockType + density → LayoutPreset"
+        "SlideIntentScoreProfile + itemCount + blockType + density",
+        "  -> candidate LayoutPresets",
+        "  -> deterministic score",
+        "  -> selected LayoutPreset"
       ],
-      "charCount": 2641
+      "charCount": 3787
     },
     {
       "path": "docs/05-overrides-for-llm.md",
-      "title": "05. LLM/Codex 친화적 Override Manifest",
-      "headingCount": 11,
+      "title": "05. Override Manifest",
+      "headingCount": 9,
       "headings": [
-        "05. LLM/Codex 친화적 Override Manifest",
-        "목적",
-        "원칙",
-        "권장 workflow",
-        "Target 우선순위",
-        "Operation 목록",
-        "Override execution phases",
-        "setLayout 예시"
+        "05. Override Manifest",
+        "Purpose",
+        "Principles",
+        "Recommended Workflow",
+        "Target Priority",
+        "Operations",
+        "Execution Phases",
+        "Examples"
       ],
       "bullets": [
-        "YAML/JSON 모두 지원한다.",
-        "JSON Schema로 검증한다.",
-        "slideIndex보다 slideId를 우선한다.",
-        "좌표 직접 수정은 고급 기능으로 둔다.",
-        "가능한 한 setLayout, setTypography, setBackground만 사용한다.",
-        "operation마다 reason을 남길 수 있다."
-      ],
-      "hasTable": false,
-      "table": [],
-      "hasCode": true,
-      "codeLanguage": "text",
-      "code": [
-        "1. YAML/JSON 모두 지원한다.",
-        "2. JSON Schema로 검증한다.",
-        "3. slideIndex보다 slideId를 우선한다.",
-        "4. 좌표 직접 수정은 고급 기능으로 둔다.",
-        "5. 가능한 한 setLayout, setTypography, setBackground만 사용한다.",
-        "6. operation마다 reason을 남길 수 있다.",
-        "7. validate와 diff 명령으로 결과를 확인한다."
-      ],
-      "charCount": 2931
-    },
-    {
-      "path": "docs/06-cli-spec.md",
-      "title": "06. CLI 명령 설계",
-      "headingCount": 10,
-      "headings": [
-        "06. CLI 명령 설계",
-        "init",
-        "inspect",
-        "plan",
-        "build",
-        "Orchestration API boundary",
-        "validate",
-        "diff"
-      ],
-      "bullets": [
-        "resolves config sources",
-        "parses Markdown",
-        "plans Presentation IR",
-        "plans Layout IR",
-        "collects diagnostics",
-        "returns Presentation IR slides"
+        "Support YAML and JSON.",
+        "Validate manifests with JSON Schema.",
+        "Prefer slideId over slideIndex.",
+        "Treat direct coordinate edits as advanced operations.",
+        "Prefer setLayout, setTypography, and setBackground before lower-level slot edits.",
+        "Allow an optional reason on each operation."
       ],
       "hasTable": false,
       "table": [],
       "hasCode": true,
       "codeLanguage": "bash",
       "code": [
-        "mdpresent init"
+        "mdpresent inspect deck.md --json > deck.plan.json"
       ],
-      "charCount": 4146
+      "charCount": 3415
+    },
+    {
+      "path": "docs/06-cli-spec.md",
+      "title": "06. CLI Specification",
+      "headingCount": 7,
+      "headings": [
+        "06. CLI Specification",
+        "Commands",
+        "Build Example",
+        "Orchestration Boundary",
+        "Current Build Behavior",
+        "Validation",
+        "Main Options"
+      ],
+      "bullets": [
+        "resolves config sources",
+        "validates config files against schemas/config.schema.json",
+        "parses Markdown",
+        "validates optional agent hint files against schemas/agent-hint.schema.json",
+        "weakly merges accepted hints into coherence metadata",
+        "plans Presentation IR"
+      ],
+      "hasTable": false,
+      "table": [],
+      "hasCode": true,
+      "codeLanguage": "bash",
+      "code": [
+        "mdpresent init",
+        "mdpresent doctor --pdf",
+        "mdpresent inspect deck.md --json",
+        "mdpresent plan deck.md --json > layout.plan.json",
+        "mdpresent validate deck.md --override deck.override.yaml --hints deck.mdpr-hints.json --coherence",
+        "mdpresent build deck.md --to pptx,pdf,html --out dist",
+        "mdpresent diff deck.md --override deck.override.yaml"
+      ],
+      "charCount": 4187
     },
     {
       "path": "docs/07-rendering-rules.md",
-      "title": "07. Renderer 규칙",
-      "headingCount": 6,
+      "title": "07. Rendering Rules",
+      "headingCount": 11,
       "headings": [
-        "07. Renderer 규칙",
-        "공통 규칙",
+        "07. Rendering Rules",
+        "Shared Renderer Contract",
         "PPTX Renderer",
-        "HTML Renderer",
-        "PDF Renderer",
-        "PPTX가 아닐 때의 배경 처리"
+        "Decoration Styles",
+        "Color and Theme Policy",
+        "Surface Policy",
+        "Template and Master Import",
+        "HTML Renderer"
       ],
       "bullets": [
-        "consumes the normal renderable deck input: { Presentation IR, Layout IR }",
-        "uses Layout IR slide size, region x/y/w/h, theme fonts, colors, and z-order",
-        "emits editable PowerPoint text boxes for titles, paragraphs, bullets, code text, and fallback content",
-        "emits PowerPoint table objects for table blocks",
-        "emits image objects for image blocks with local paths",
-        "centers title, subtitle, and item regions according to the fixed region box"
+        "consumes { Presentation IR, Layout IR }",
+        "uses Layout IR slide size, regions, theme fonts, colors, z-order, and overflow policy",
+        "emits editable text boxes for titles, paragraphs, lists, code, and fallback text",
+        "emits native PowerPoint tables for table blocks",
+        "emits native charts or bounded proof objects for chart blocks",
+        "applies role-aware text insets so text aligns inside its own PowerPoint box"
       ],
       "hasTable": false,
       "table": [],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
-        "{ Presentation IR, Layout IR } → PPTX",
-        "{ Presentation IR, Layout IR } → HTML",
-        "{ Presentation IR, Layout IR } → PDF"
+        "{ Presentation IR, Layout IR } -> PPTX",
+        "{ Presentation IR, Layout IR } -> HTML",
+        "{ Presentation IR, Layout IR } -> PDF"
       ],
-      "charCount": 7916
+      "charCount": 6360
     },
     {
       "path": "docs/08-roadmap.md",
-      "title": "08. 구현 로드맵",
+      "title": "08. Roadmap",
       "headingCount": 10,
       "headings": [
-        "08. 구현 로드맵",
-        "Phase 1. Schema 고정",
-        "Phase 2. Core parser",
-        "Phase 3. Split planner",
-        "Phase 4. Intent detection",
-        "Phase 5. Layout planner",
-        "Phase 6. Override engine",
-        "Phase 7. HTML renderer"
+        "08. Roadmap",
+        "Phase 1. Schema Contracts",
+        "Phase 2. Core Parser",
+        "Phase 3. Split Planner",
+        "Phase 4. Intent Detection",
+        "Phase 5. Layout Planner",
+        "Phase 6. Override Engine",
+        "Phase 7. Renderers"
       ],
       "bullets": [
         "config.schema.json",
         "override.schema.json",
         "presentation-ir.schema.json",
         "layout-ir.schema.json",
-        "Markdown parse",
-        "heading tree 생성"
+        "Markdown parsing",
+        "Pandoc JSON normalization"
       ],
       "hasTable": false,
       "table": [],
       "hasCode": true,
-      "codeLanguage": "text",
+      "codeLanguage": "bash",
       "code": [
-        "Codex/LLM이 schema를 기준으로 config/override 파일을 생성할 수 있음"
+        "mdpresent inspect examples/basic/deck.md --json"
       ],
-      "charCount": 1470
+      "charCount": 3462
     },
     {
       "path": "docs/09-codex-implementation-guide.md",
-      "title": "09. Codex 구현 가이드",
-      "headingCount": 9,
+      "title": "09. Codex Implementation Guide",
+      "headingCount": 8,
       "headings": [
-        "09. Codex 구현 가이드",
-        "먼저 읽을 파일",
-        "구현 원칙",
-        "첫 번째 구현 목표",
-        "두 번째 구현 목표",
-        "세 번째 구현 목표",
-        "네 번째 구현 목표",
-        "테스트 권장사항"
+        "09. Codex Implementation Guide",
+        "Read First",
+        "Implementation Rules",
+        "Milestone Commands",
+        "Expected Inspect Fields",
+        "Expected Plan Fields",
+        "Recommended Tests",
+        "Deferred Items"
       ],
       "bullets": [
-        "schema를 먼저 지킨다.",
-        "Presentation IR과 Layout IR 타입을 안정적으로 유지한다.",
-        "renderer는 split/layout 판단을 다시 하지 않는다.",
-        "override는 operation 기반으로 정규화한다.",
-        "slideIndex보다 slideId를 우선한다.",
-        "preset enum을 임의로 늘리지 않는다. 필요하면 schema와 docs를 함께 수정한다."
+        "Respect schemas first.",
+        "Keep Presentation IR and Layout IR stable.",
+        "Do not let renderers redo split or layout decisions.",
+        "Normalize overrides as operations.",
+        "Prefer slideId over slideIndex.",
+        "Do not expand preset enums without updating schemas, docs, and tests together."
       ],
       "hasTable": false,
       "table": [],
@@ -482,25 +430,26 @@
         "docs/05-overrides-for-llm.md",
         "schemas/*.json"
       ],
-      "charCount": 1433
+      "charCount": 1595
     },
     {
       "path": "docs/10-template-and-master-policy.md",
-      "title": "10. PPT 템플릿과 Slide Master 정책",
-      "headingCount": 7,
+      "title": "10. PPT Template and Slide Master Policy",
+      "headingCount": 8,
       "headings": [
-        "10. PPT 템플릿과 Slide Master 정책",
-        "기본 원칙",
-        "PPT 템플릿에서 가져올 것",
-        "PPT 템플릿에서 그대로 쓰지 않을 것",
-        "Slide Master 고정 정책",
+        "10. PPT Template and Slide Master Policy",
+        "Principle",
+        "Import From Templates",
+        "Do Not Reuse Directly",
+        "Master-Layer Candidates",
+        "Body-Layer Candidates",
         "Safe Area",
-        "주의"
+        "Note"
       ],
       "bullets": [
         "slide size",
-        "theme color",
-        "font",
+        "theme colors",
+        "fonts",
         "master background",
         "layout background",
         "logo"
@@ -513,45 +462,45 @@
         "Template controls brand.",
         "Layout engine controls placement."
       ],
-      "charCount": 966
+      "charCount": 1248
     },
     {
       "path": "docs/11-qa-overflow.md",
-      "title": "11. QA와 Overflow 정책",
-      "headingCount": 8,
+      "title": "11. Validation and Overflow Policy",
+      "headingCount": 12,
       "headings": [
-        "11. QA와 Overflow 정책",
-        "QA 검사 항목",
-        "Overflow 처리 순서",
-        "CLI 옵션",
-        "Validation behavior",
-        "Title regions",
+        "11. Validation and Overflow Policy",
+        "Validation Checks",
+        "Overflow Resolution Order",
+        "Diagnostics",
+        "Text Normalization",
+        "Title Regions",
         "Pre-Render Text Containment Resolver",
-        "Text measurement MVP"
+        "Text Measurement"
       ],
       "bullets": [
-        "텍스트 overflow",
-        "표 overflow",
-        "이미지 누락",
-        "asset 경로 오류",
-        "page number 겹침",
-        "safe area 위반"
+        "text overflow",
+        "table overflow",
+        "missing images",
+        "invalid asset paths",
+        "overlapping page numbers",
+        "safe-area violations"
       ],
       "hasTable": false,
       "table": [],
       "hasCode": true,
       "codeLanguage": "text",
       "code": [
-        "- 텍스트 overflow",
-        "- 표 overflow",
-        "- 이미지 누락",
-        "- asset 경로 오류",
-        "- page number 겹침",
-        "- safe area 위반",
-        "- minFontSize 위반",
-        "- override target 미존재"
+        "- text overflow",
+        "- table overflow",
+        "- missing images",
+        "- invalid asset paths",
+        "- overlapping page numbers",
+        "- safe-area violations",
+        "- minimum font size violations",
+        "- missing override targets"
       ],
-      "charCount": 3335
+      "charCount": 9740
     },
     {
       "path": "docs/references.md",
@@ -559,28 +508,28 @@
       "headingCount": 8,
       "headings": [
         "References",
-        "Markdown parsing",
-        "YAML / Schema validation",
-        "PPTX rendering",
-        "HTML / PDF rendering",
+        "Markdown Parsing",
+        "YAML and Schema Validation",
+        "PPTX Rendering",
+        "HTML and PDF Rendering",
         "CLI",
         "Testing",
-        "설계 메모"
+        "Design Note"
       ],
       "bullets": [
         "unified",
         "remark",
         "remark-parse",
         "gray-matter",
-        "yaml",
-        "ajv"
+        "Pandoc JSON AST",
+        "yaml"
       ],
       "hasTable": false,
       "table": [],
       "hasCode": false,
       "codeLanguage": null,
       "code": [],
-      "charCount": 582
+      "charCount": 756
     },
     {
       "path": "docs/adr/0001-presentation-ir-schema-contract.md",
@@ -607,78 +556,78 @@
     },
     {
       "path": "examples/basic/deck.md",
-      "title": "AI 업무 자동화 제안서",
+      "title": "AI Workflow Automation Proposal",
       "headingCount": 10,
       "headings": [
-        "AI 업무 자동화 제안서",
-        "문제 정의",
-        "반복 업무 증가",
-        "검색 비용 증가",
-        "기존 방식과 개선 방식",
-        "기존 방식",
-        "개선 방식",
-        "주요 기능"
+        "AI Workflow Automation Proposal",
+        "Problem Definition",
+        "Repetitive Work Is Growing",
+        "Search Costs Are Growing",
+        "Current Approach and Improved Approach",
+        "Current Approach",
+        "Improved Approach",
+        "Key Features"
       ],
       "bullets": [
-        "회의록 정리",
-        "보고서 초안 작성",
-        "데이터 취합",
-        "자료 위치 불명확",
-        "파일명 중심 검색",
-        "버전 혼선"
+        "Meeting note cleanup",
+        "Report draft writing",
+        "Data collection",
+        "Source location is unclear",
+        "Search depends on filenames",
+        "Version confusion is common"
       ],
       "hasTable": true,
       "table": [
         [
-          "항목",
-          "현재",
-          "개선 후"
+          "Area",
+          "Current",
+          "Improved"
         ],
         [
-          "회의록 정리",
-          "수동 작성",
-          "자동 요약"
+          "Meeting notes",
+          "Manual writing",
+          "Automatic summary"
         ],
         [
-          "보고서 초안",
-          "직접 작성",
-          "자동 초안"
+          "Report drafts",
+          "Written from scratch",
+          "Automatic draft"
         ],
         [
-          "자료 검색",
-          "파일명 검색",
-          "의미 검색"
+          "Material search",
+          "Filename search",
+          "Semantic search"
         ]
       ],
       "hasCode": false,
       "codeLanguage": null,
       "code": [],
-      "charCount": 581
+      "charCount": 1255
     },
     {
       "path": "examples/comparison/deck.md",
-      "title": "비교 구조 예시",
+      "title": "Comparison Structure Example",
       "headingCount": 4,
       "headings": [
-        "비교 구조 예시",
-        "기존 방식과 개선 방식",
-        "기존 방식",
-        "개선 방식"
+        "Comparison Structure Example",
+        "Current Approach and Improved Approach",
+        "Current Approach",
+        "Improved Approach"
       ],
       "bullets": [
-        "문서 작성이 수동으로 진행됨",
-        "형식이 개인별로 다름",
-        "검색이 어려움",
-        "초안이 자동 생성됨",
-        "형식이 템플릿으로 통일됨",
-        "의미 기반 검색 가능"
+        "Documents are written manually",
+        "Format varies by person",
+        "Search is difficult",
+        "Drafts are generated automatically",
+        "Format is standardized by template",
+        "Semantic search is available"
       ],
       "hasTable": false,
       "table": [],
       "hasCode": false,
       "codeLanguage": null,
       "code": [],
-      "charCount": 137
+      "charCount": 307
     },
     {
       "path": "examples/pipeline/deck.md",
@@ -725,97 +674,84 @@
     },
     {
       "path": "examples/five-methods/deck.md",
-      "title": "5개 항목 레이아웃 예시",
+      "title": "Five-Item Layout Example",
       "headingCount": 2,
       "headings": [
-        "5개 항목 레이아웃 예시",
-        "5가지 실행 방법"
+        "Five-Item Layout Example",
+        "Five Execution Steps"
       ],
       "bullets": [
-        "파일럿 조직 선정",
-        "반복 문서 유형 분석",
-        "자동화 템플릿 설계",
-        "지식 검색 인덱스 구축",
-        "성과 지표 측정"
+        "Select a pilot team",
+        "Analyze repetitive document types",
+        "Design automation templates",
+        "Build a knowledge search index",
+        "Measure success metrics"
       ],
       "hasTable": false,
       "table": [],
       "hasCode": false,
       "codeLanguage": null,
       "code": [],
-      "charCount": 96
+      "charCount": 200
     },
     {
       "path": "examples/theme-preview-en/deck.md",
-      "title": "mdpresent",
-      "headingCount": 7,
+      "title": "MDPR Design Grammar",
+      "headingCount": 16,
       "headings": [
-        "mdpresent",
-        "Core Principle",
-        "Generation Flow",
-        "Rule-Based Engine",
-        "Markdown Semantics",
-        "Theme Selection",
-        "Quality Checks"
+        "MDPR Design Grammar",
+        "Teaser Summary",
+        "Composition Contract",
+        "Pruned Style Families",
+        "Semantic Blocks",
+        "Pipeline Diagram",
+        "Decoration Pattern Catalog",
+        "Table Coherence"
       ],
       "bullets": [
-        "NO LLM runtime: generation does not call an external model.",
-        "Rule-based layout: headings, density, list count, sentence units, and diagram signals drive placement.",
-        "Reproducible output: the same source and settings produce the same presentation structure.",
-        "Auxiliary skill ready: the standalone CLI can be wrapped as a local automation skill.",
-        "Lists: ordered items, nesting, and description lines stay structured.",
-        "Emphasis: bold and italic markers become editable text effects."
+        "Preview styles: 5 pruned decoration grammars, not palette-only swaps.",
+        "Pattern range: 36+ decoration and layout patterns selected by content role.",
+        "Object support: native tables, charts, proof objects, diagrams, images, and icon slots.",
+        "QA contract: readable text, bounded objects, aligned connectors, and editable PPTX output.",
+        "Cover signal: title scale and first-viewport identity.",
+        "Evidence rhythm: chart, table, and proof objects stay connected."
       ],
-      "hasTable": false,
-      "table": [],
+      "hasTable": true,
+      "table": [
+        [
+          "Object",
+          "Renderer expectation",
+          "QA signal"
+        ],
+        [
+          "Text box",
+          "editable, middle aligned",
+          "readable minimum size"
+        ],
+        [
+          "Table",
+          "native table object",
+          "header fill and cell padding"
+        ],
+        [
+          "Diagram",
+          "nodes and connectors",
+          "no clipped labels"
+        ],
+        [
+          "Chart",
+          "theme-colored data object",
+          "contrast and value clarity"
+        ]
+      ],
       "hasCode": true,
-      "codeLanguage": "text",
+      "codeLanguage": "chart",
       "code": [
-        "Markdown source",
-        "  → Structure parsing",
-        "  → Slide splitting",
-        "  → Presentation model",
-        "  → Layout planning",
-        "  → Quality checks",
-        "  → Rendered output"
+        "labels: Parser, Layout, PPTX",
+        "Coverage: 92, 88, 95",
+        "Defects: 3, 5, 2"
       ],
-      "charCount": 1770
-    },
-    {
-      "path": "examples/theme-preview-ko/deck.md",
-      "title": "엠디프레젠트",
-      "headingCount": 7,
-      "headings": [
-        "엠디프레젠트",
-        "핵심 원칙",
-        "생성 흐름",
-        "규칙 기반 엔진",
-        "마크다운 구조 보존",
-        "테마 선택",
-        "품질 검사"
-      ],
-      "bullets": [
-        "모델 호출 없음: 생성 과정은 외부 모델이나 외부 연결 호출 없이 동작합니다.",
-        "규칙 기반: 제목, 밀도, 목록 수, 문장 단위, 도식 신호를 기준으로 배치합니다.",
-        "재현 가능성: 같은 원고와 설정은 같은 발표 구조를 만듭니다.",
-        "보조 스킬화: 독립적인 명령행 도구이므로 로컬 자동화 스킬로 감쌀 수 있습니다.",
-        "목록: 번호, 중첩, 설명 줄을 유지합니다.",
-        "강조: 굵게와 기울임을 편집 가능한 글자 효과로 옮깁니다."
-      ],
-      "hasTable": false,
-      "table": [],
-      "hasCode": true,
-      "codeLanguage": "text",
-      "code": [
-        "마크다운 원고",
-        "  → 구조 분석",
-        "  → 슬라이드 분할",
-        "  → 발표 구조",
-        "  → 레이아웃 계획",
-        "  → 품질 검사",
-        "  → 결과 렌더링"
-      ],
-      "charCount": 907
+      "charCount": 4905
     }
   ]
 }

@@ -4,21 +4,21 @@
   "mdprBaselinePptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
   "skillPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-result.pptx",
   "skillFromActualMdprRunPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
-  "sourceFileCount": 24,
-  "sourceHeadingCount": 194,
-  "sourceCharCount": 55596,
+  "sourceFileCount": 21,
+  "sourceHeadingCount": 180,
+  "sourceCharCount": 70768,
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprCommand": "node .cache/mdpr/packages/cli/dist/index.js build artifacts/mdpr-vs-skill/mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {
-      "slides": 44,
-      "shapes": 1007,
-      "textFrames": 1006,
-      "pictures": 0,
-      "tables": 1,
+      "slides": 46,
+      "shapes": 816,
+      "textFrames": 648,
+      "pictures": 165,
+      "tables": 3,
       "charts": 0,
-      "minFontSizePt": 14.0
+      "minFontSizePt": 10.5
     },
     "skillResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
     "skillConsumes": [
@@ -28,22 +28,32 @@
     ]
   },
   "mdprBaselineValidation": {
-    "slides": 44,
-    "shapes": 1007,
-    "textFrames": 1006,
-    "pictures": 0,
-    "tables": 1,
+    "slides": 46,
+    "shapes": 816,
+    "textFrames": 648,
+    "pictures": 165,
+    "tables": 3,
     "charts": 0,
-    "minFontSizePt": 14.0
+    "minFontSizePt": 10.5
   },
   "skillValidation": {
     "slides": 10,
-    "shapes": 323,
-    "textFrames": 320,
+    "shapes": 321,
+    "textFrames": 318,
     "pictures": 0,
     "tables": 2,
     "charts": 1,
     "minFontSizePt": 8.0
+  },
+  "powerPointExport": {
+    "ok": false,
+    "errors": [
+      {
+        "deck": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
+        "error": "(-2147352567, 'PowerPoint COM exception', (0, 'Microsoft PowerPoint', 'PowerPoint could not open the file.', '', 0, -2147467259), None)"
+      }
+    ],
+    "fallback": "Existing preview PNGs are reused when PowerPoint COM export is unavailable."
   },
   "baselineRenderPreview": [
     {
@@ -94,7 +104,7 @@
         1600,
         900
       ],
-      "uniqueColors": 1125,
+      "uniqueColors": 1124,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -124,7 +134,7 @@
         1600,
         900
       ],
-      "uniqueColors": 695,
+      "uniqueColors": 697,
       "nonWhitePixels": 1440000,
       "hasContent": true
     }

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mdpr.dev/schemas/mdpr-html-design-analysis.schema.json",
+  "$id": "https://mdpresent.dev/schemas/mdpr-html-design-analysis.schema.json",
   "title": "MDPR HTML Design Analysis",
   "type": "object",
   "additionalProperties": false,

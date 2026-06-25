@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "engine": "mdpresent",
+  "source": {
+    "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-cli-verification\\deck.md",
+    "sha256": "5f84e448a01040d5fae24469381cfda4efb202113c9e8fb54ebc764f9893c50c"
+  },
+  "config": {
+    "sha256": "1f67d52d6b8dc899f5449350f42c3e588eb0c62f149ca2576edcd7346ce34717",
+    "sources": [
+      {
+        "kind": "default"
+      }
+    ]
+  },
+  "override": null,
+  "agentHints": {
+    "enabled": true,
+    "source": {
+      "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-cli-verification\\agent-hint.json"
+    },
+    "sourceSha256": "5f84e448a01040d5fae24469381cfda4efb202113c9e8fb54ebc764f9893c50c",
+    "accepted": 2,
+    "rejected": 0,
+    "ignoredBecauseStale": 0,
+    "forbiddenFieldCount": 0
+  },
+  "presentationMode": "normal",
+  "slideCount": 5,
+  "outputs": [
+    "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-cli-verification\\build\\deck.html",
+    "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-cli-verification\\build\\deck.pptx"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-cli-verification\\build\\deck.html",
+      "format": "html",
+      "exists": true,
+      "bytes": 15109,
+      "sha256": "c06de11fb96c5b3d36a86832c1e425ae95b8e4a7e55f7540e07076556c8b592b"
+    },
+    {
+      "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-cli-verification\\build\\deck.pptx",
+      "format": "pptx",
+      "exists": true,
+      "bytes": 141501,
+      "sha256": "c798537672b7780494111c3f921a4109f4391e95447753ccbf3228dd1bc1d3a5"
+    }
+  ],
+  "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-cli-verification\\build\\mdpresent-design-lock.json",
+  "diagnostics": [],
+  "validation": {
+    "layoutOverflow": [],
+    "visual": {
+      "checked": true,
+      "slideCount": 5,
+      "thresholds": {
+        "minimumTextContrastRatio": 4.5,
+        "maximumSameLayerOverlapRatio": 0.08,
+        "minimumReadableFontSize": 8,
+        "imageAspectRatioRange": [
+          0.25,
+          4
+        ],
+        "minimumDiagramConnectorSpace": {
+          "width": 2,
+          "height": 1
+        }
+      },
+      "checks": {
+        "nonBlankSlides": true,
+        "regionBounds": true,
+        "minimumTextSize": true,
+        "textContrast": true,
+        "sameLayerOverlap": true,
+        "imageAspectRatio": true,
+        "connectorClearance": true,
+        "backgroundContentOverlap": true
+      },
+      "diagnostics": []
+    },
+    "coherence": {
+      "checked": true,
+      "thresholds": {
+        "minimumMixedObjectGroupingScore": 0.75,
+        "minimumObjectCoverageRatio": 0.2
+      },
+      "orphanEvidenceBlocks": 0,
+      "captionDetached": 0,
+      "claimlessSlides": 0,
+      "sectionMotifDrift": 0,
+      "continuationTitleQuality": "ok",
+      "mixedObjectGroupingScore": 1,
+      "checks": {
+        "claimlessEvidenceSlides": true,
+        "detachedCaptions": true,
+        "orphanTables": true,
+        "lowObjectCoverage": true,
+        "sectionMotifDrift": true
+      },
+      "diagnostics": []
+    },
+    "overflowResolution": {
+      "checked": true,
+      "strategyCounts": {
+        "preSplit": 0,
+        "candidateReflow": 0,
+        "regionExpansion": 0,
+        "fontShrink": 0
+      },
+      "continuationSlides": 0,
+      "continuationGroups": 0,
+      "continuationReasons": {
+        "list": 0,
+        "table": 0,
+        "code": 0,
+        "paragraph": 0,
+        "mixed": 0,
+        "toc": 0
+      },
+      "graphOrDiagramBlocksSplit": false
+    }
+  }
+}

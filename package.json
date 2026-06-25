@@ -1,8 +1,20 @@
 {
   "name": "mdpr-skill",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Thin Codex skill companion for MDPR semantic hints, review checks, and validation artifacts.",
+  "bin": {
+    "mdpr-skill": "./bin/mdpr-skill.js"
+  },
+  "files": [
+    "bin",
+    "docs",
+    "packages",
+    "schemas",
+    "skills",
+    "README.md",
+    "CONTRIBUTING.md"
+  ],
   "scripts": {
     "check:mdpr": "python scripts/install_mdpr.py --check",
     "check:mdpr-pandoc": "python scripts/check_mdpr_pandoc_update.py",
@@ -28,6 +40,7 @@
     "test:design-cli": "tsx tests/design-cli-runtime.test.ts",
     "test:design-import-core": "tsx tests/design-import-core-runtime.test.ts",
     "test:edit-core": "tsx tests/edit-core-runtime.test.ts",
+    "test:cli-main": "tsx tests/cli-main-runtime.test.ts",
     "test:hints-core": "tsx tests/hints-core-runtime.test.ts",
     "test:mdpr-adapter": "tsx tests/mdpr-adapter-runtime.test.ts",
     "test:eval-core": "tsx tests/eval-core-runtime.test.ts",
@@ -35,7 +48,7 @@
     "test:review-core": "tsx tests/review-core-runtime.test.ts",
     "test:schema-sync": "tsx tests/validate-schema-sync-runtime.test.ts",
     "validate": "python scripts/design_source_inventory.py --source .cache/design-source --check && python scripts/render_compare_powerpoint.py && python scripts/create_pipeline_overview_asset.py && python scripts/create_infographic_seed_gallery.py && python scripts/create_design_showcase_deck.py && python scripts/check_mdpr_pandoc_update.py && python scripts/validate_pack.py",
-    "test": "npm run typecheck && npm run test:change-cli && npm run test:change-core && npm run test:design-cli && npm run test:design-import-core && npm run test:edit-core && npm run test:hints-core && npm run test:mdpr-adapter && npm run test:eval-core && npm run test:eval-core:e2e && npm run test:review-core && npm run test:schema-sync && npm run validate && python -m unittest discover tests"
+    "test": "npm run typecheck && npm run test:change-cli && npm run test:change-core && npm run test:design-cli && npm run test:design-import-core && npm run test:edit-core && npm run test:cli-main && npm run test:hints-core && npm run test:mdpr-adapter && npm run test:eval-core && npm run test:eval-core:e2e && npm run test:review-core && npm run test:schema-sync && npm run validate && python -m unittest discover tests"
   },
   "keywords": [
     "mdpr",

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MDPR Eval-core Verification</title>
+<style>
+:root {
+  --bg: #F8FAFC;
+  --text: #111827;
+  --primary: #2563EB;
+  --secondary: #DBEAFE;
+  --surface: #FFFFFF;
+  --surface-line: #E2E8F0;
+  --muted: #475569;
+  --font: "Pretendard";
+}
+body { margin: 0; background: #111; font-family: var(--font); }
+.deck { display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.slide { position: relative; width: 13.333in; height: 7.5in; background: var(--bg); color: var(--text); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); isolation: isolate; }
+.slide::before, .slide::after { content: ""; position: absolute; pointer-events: none; z-index: 0; }
+.composition-cover .title { display: flex; align-items: center; font-size: 54pt !important; line-height: 1.05 !important; max-width: 10.6in; }
+.composition-cover::after { left: 1in; bottom: 1.02in; width: 3.2in; height: .06in; background: var(--primary); opacity: .9; }
+.composition-toc .body { columns: 2; column-gap: .7in; font-size: 20pt !important; }
+.composition-chart-table .chart { justify-content: center; }
+.composition-chart-table .chart.surface { box-shadow: 0 .08in .24in color-mix(in srgb, var(--primary) 18%, transparent); }
+.composition-chart-table .table.surface { background: color-mix(in srgb, var(--surface) 98%, var(--primary) 2%); }
+.composition-pipeline .diagram { background: linear-gradient(135deg, color-mix(in srgb, var(--surface) 86%, transparent), color-mix(in srgb, var(--secondary) 12%, var(--surface))); }
+.composition-grid .item:nth-of-type(2) { transform: translateY(-.04in); }
+.composition-grid .item:nth-of-type(5) { transform: translateY(.04in); }
+.region { position: absolute; box-sizing: border-box; overflow: hidden; z-index: 2; overflow-wrap: anywhere; }
+.region > * { position: relative; z-index: 1; }
+.title { font-weight: 700; }
+.body.key-message { background: var(--surface); border-left: .08in solid var(--primary); padding: .18in .28in; }
+.body.key-message blockquote { margin: 0; font-weight: 700; color: var(--text); }
+.surface { background: color-mix(in srgb, var(--surface) 94%, transparent); border: .012in solid var(--surface-line); padding: .17in .22in; }
+.surface.rounded { border-radius: .12in; }
+.surface.two-corner-left { border-radius: .18in .035in .035in .18in; }
+.surface.two-corner-right { border-radius: .035in .18in .18in .035in; }
+.surface.flag-drop { border-radius: .06in .06in .16in .06in; }
+.surface.flag-drop::before { content: ""; position: absolute; left: .16in; top: 0; width: .26in; height: .22in; background: var(--primary); border-radius: 0 0 .06in .06in; opacity: .9; z-index: 0; }
+.surface.notched-corner { clip-path: polygon(0 0, calc(100% - .18in) 0, 100% .18in, 100% 100%, 0 100%); border-radius: .08in; }
+.surface.ticket { border-radius: .12in; background-image: radial-gradient(circle at left 50%, var(--bg) 0 .11in, transparent .115in), radial-gradient(circle at right 50%, var(--bg) 0 .11in, transparent .115in); }
+.item { line-height: 1.22; }
+.region ul, .region ol { margin: 0; padding-left: 1.2em; }
+.structured-list { list-style: none; padding-left: 0; }
+.region li.level-1 { margin-left: 1.1em; }
+.region li.level-2 { margin-left: 2.2em; }
+.region p { margin: 0 0 .45em; }
+.region img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item-number { display: inline-flex; width: .28in; height: .28in; align-items: center; justify-content: center; margin-right: .1in; border-radius: 999px; background: var(--primary); color: var(--bg); font-weight: 700; vertical-align: middle; line-height: 1; }
+.item-label { font-weight: 700; display: block; margin-bottom: .12in; color: var(--primary); }
+.item-description { display: block; margin-left: .18in; color: var(--muted); }
+strong { color: var(--primary); }
+.pipeline { position: relative; height: 100%; min-height: 3.6in; }
+.pipeline-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
+.pipeline-connector { fill: none; stroke: var(--primary); stroke-width: 1.55; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pipeline-node { position: absolute; z-index: 3; min-width: 0; border: 1px solid var(--surface-line); background: var(--surface); padding: .16in .2in; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: .12in; font-size: 15pt; font-weight: 700; line-height: 1.18; overflow: hidden; }
+.chart { width: 100%; height: 100%; display: flex; flex-direction: column; gap: .12in; justify-content: center; }
+.chart-row { display: grid; grid-template-columns: 1.1in 1fr .48in; gap: .12in; align-items: center; font-size: .15in; }
+.chart-label { color: var(--text); font-weight: 700; }
+.chart-track { height: .18in; background: color-mix(in srgb, var(--surface-line) 60%, transparent); border-radius: 999px; overflow: hidden; }
+.chart-bar { height: 100%; background: var(--primary); border-radius: 999px; }
+.chart-value { color: var(--muted); text-align: right; }
+.proof-object { height: 100%; min-height: 1.05in; display: grid; align-items: center; justify-items: center; gap: .08in; color: var(--text); }
+.proof-object + .proof-object { margin-top: .16in; }
+.proof-label { color: var(--muted); font-size: .16in; font-weight: 800; text-transform: uppercase; letter-spacing: .015in; }
+.proof-value { color: var(--primary); font-size: .38in; font-weight: 900; line-height: 1; }
+.proof-arc-ring { grid-template-columns: minmax(1.15in, 1.35in) minmax(1.6in, 1fr); justify-items: start; }
+.proof-ring { position: relative; width: 1.25in; height: 1.25in; border-radius: 999px; background: conic-gradient(var(--primary) calc(var(--value) * 1%), color-mix(in srgb, var(--surface-line) 76%, transparent) 0); display: grid; place-items: center; }
+.proof-ring::after { content: ""; width: .74in; height: .74in; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--surface-line); }
+.proof-ring-text { position: absolute; color: var(--primary); font-weight: 900; font-size: .22in; }
+.proof-gauge { align-content: center; justify-items: stretch; padding: .2in .28in; }
+.proof-gauge-track { position: relative; height: .34in; border-radius: 999px; background: color-mix(in srgb, var(--surface-line) 70%, transparent); overflow: hidden; box-shadow: inset 0 0 0 1px var(--surface-line); }
+.proof-gauge-fill { height: 100%; width: calc(var(--value) * 1%); border-radius: inherit; background: linear-gradient(90deg, var(--secondary), var(--primary)); }
+.proof-gauge-meta { display: flex; justify-content: space-between; align-items: baseline; gap: .2in; }
+.proof-connected-strip { grid-template-columns: repeat(auto-fit, minmax(1.1in, 1fr)); gap: .12in; align-items: stretch; width: 100%; }
+.proof-step { position: relative; min-height: .82in; border: 1px solid var(--surface-line); background: color-mix(in srgb, var(--surface) 88%, transparent); border-radius: .1in; padding: .12in; display: grid; align-content: center; gap: .06in; }
+.proof-step:not(:last-child)::after { content: ""; position: absolute; top: 50%; right: -.13in; width: .14in; height: .02in; background: var(--primary); }
+.proof-step-name { font-weight: 800; }
+.proof-step-value { color: var(--primary); font-weight: 900; font-size: .24in; }
+table.mdpr-table { width: 100%; height: 100%; border-collapse: collapse; table-layout: fixed; font-size: max(.145in, 12pt); line-height: 1.18; }
+.mdpr-table th, .mdpr-table td { border: 1px solid var(--surface-line); padding: .07in .08in; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; }
+.mdpr-table th { background: var(--primary); color: var(--bg); font-weight: 800; text-align: center; }
+.mdpr-table td:first-child { font-weight: 700; }
+.mdpr-table td.numeric { text-align: right; font-variant-numeric: tabular-nums; }
+.mdpr-table tr:nth-child(odd) td { background: color-mix(in srgb, var(--surface) 76%, transparent); }
+body[data-theme-style="glass"] .slide { background: radial-gradient(circle at 20% 18%, color-mix(in srgb, var(--primary) 42%, transparent) 0, transparent 34%), radial-gradient(circle at 78% 72%, color-mix(in srgb, var(--secondary) 34%, transparent) 0, transparent 30%), var(--bg); }
+body[data-theme-style="glass"] .surface { background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.055)), color-mix(in srgb, var(--surface) 46%, transparent); border-color: color-mix(in srgb, #ffffff 58%, var(--surface-line)); box-shadow: 0 .1in .28in rgba(15,23,42,.24), inset 0 1px 0 rgba(255,255,255,.36), inset 0 0 .16in rgba(255,255,255,.08); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%); }
+body[data-theme-style="glass"] .surface.flag-drop::before { background: color-mix(in srgb, var(--primary) 76%, #ffffff 24%); opacity: .78; }
+body[data-theme-style="glass"] .surface.ticket { background-image: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.04)), radial-gradient(circle at left 50%, var(--bg) 0 .11in, transparent .115in), radial-gradient(circle at right 50%, var(--bg) 0 .11in, transparent .115in); }
+body[data-theme-style="newmorphism"] .surface { border-color: color-mix(in srgb, #ffffff 65%, var(--surface-line)); box-shadow: .06in .07in .16in rgba(100,116,139,.25), -.04in -.04in .12in rgba(255,255,255,.76); }
+body[data-theme-style="minimalism"] .surface { background: transparent; border-color: var(--surface-line); box-shadow: none; }
+body[data-theme-style="data"] .slide::before { content: "DATA"; left: .66in; top: .34in; color: var(--primary); font-size: 8pt; font-weight: 800; letter-spacing: .08in; }
+body[data-theme-style="data"] .slide::after { left: .66in; right: .66in; bottom: .62in; height: .04in; background: var(--surface-line); opacity: .62; }
+</style>
+</head>
+<body data-theme-style="clean">
+<main class="deck">
+<section class="slide composition composition-cover" data-slide-id="mdpr-eval-core-verification-c029c2" data-layout="cover" data-composition="cover"><div class="region title title" style="left:1in;top:2.25in;width:11.3in;height:1.25in;z-index:10;font-size:48pt;line-height:1.2">MDPR Eval-core Verification</div></section>
+<section class="slide composition composition-toc" data-slide-id="toc-53a981" data-layout="toc" data-composition="toc"><div class="region title title" style="left:0.8in;top:0.42in;width:11.7in;height:0.9in;z-index:10;font-size:38pt;line-height:1.2">목차</div>
+<div class="region item surface rounded toc-item-1" style="left:0.9in;top:2.47in;width:11.5in;height:0.92in;z-index:10;font-size:22pt;line-height:1.2"><p>Baseline and Guided Build</p></div>
+<div class="region item surface rounded toc-item-2" style="left:0.9in;top:3.61in;width:11.5in;height:0.92in;z-index:10;font-size:22pt;line-height:1.2"><p>Evidence Table</p></div>
+<div class="region item surface rounded toc-item-3" style="left:0.9in;top:4.75in;width:11.5in;height:0.92in;z-index:10;font-size:22pt;line-height:1.2"><p>Runtime Flow</p></div></section>
+<section class="slide composition composition-vertical-list" data-slide-id="baseline-and-guided-build-981e79" data-layout="vertical-list" data-composition="vertical-list"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Baseline and Guided Build</div>
+<div class="region item surface rounded item-1" style="left:1in;top:2.04in;width:11.2in;height:1.12in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Baseline</span><span class="item-description">MDPR parses Markdown and renders editable PowerPoint.</span></li></ul></div>
+<div class="region item surface rounded item-2" style="left:1in;top:3.49in;width:11.2in;height:1.12in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Guided</span><span class="item-description">mdpr-skill provides weak semantic hints only.</span></li></ul></div>
+<div class="region item surface rounded item-3" style="left:1in;top:4.93in;width:11.2in;height:1.12in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Boundary</span><span class="item-description">hints cannot set final coordinates, colors, z-order, typography, or renderer object IDs.</span></li></ul></div></section>
+<section class="slide composition composition-chart-table" data-slide-id="evidence-table-b9b4e1" data-layout="chart-table" data-composition="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Evidence Table</div>
+<div class="region chart chart" style="left:0.82in;top:1.65in;width:5.05in;height:3.75in;z-index:10;font-size:18pt;line-height:1.2">chart</div>
+<div class="region table surface ticket table" style="left:6.1in;top:1.72in;width:6.05in;height:3.28in;z-index:10;font-size:18pt;line-height:1.2"><table class="mdpr-table"><thead><tr><th>Check</th><th>Expected</th></tr></thead><tbody><tr><td class="">Source hash</td><td class="">Matches hint manifest</td></tr><tr><td class="">Agent hints</td><td class="">Accepted without forbidden fields</td></tr><tr><td class="">Output</td><td class="">Editable PPTX and HTML</td></tr><tr><td class="">Validation</td><td class="">No overflow or coherence errors</td></tr></tbody></table></div>
+<div class="region body body" style="left:6.1in;top:5.25in;width:6.05in;height:0.9in;z-index:10;font-size:18pt;line-height:1.2"><p>The table below states the verification claim and the expected runtime evidence<br />for this MDPR build.</p></div></section>
+<section class="slide composition composition-grid" data-slide-id="runtime-flow-a882bb" data-layout="grid" data-composition="grid"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Runtime Flow</div>
+<div class="region item surface rounded item-1" style="left:0.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Markdown source enters MDPR.</li></ul></div>
+<div class="region item surface rounded item-2" style="left:6.9in;top:1.6in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">MDPR creates the plan and layout.</li></ul></div>
+<div class="region item surface rounded item-3" style="left:0.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">mdpr-skill hints may add weak semantics.</li></ul></div>
+<div class="region item surface rounded item-4" style="left:6.9in;top:4.1in;width:5.5in;height:2.1in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">MDPR renders PPTX and HTML outputs.</li></ul></div></section>
+</main>
+</body>
+</html>

@@ -1,12 +1,13 @@
 # 00. Executive Summary
 
-## 구현 목표
+## Implementation Goal
 
-MDPR에 Design Components 기반 `design-components-rule-based` pipeline을 추가한다. 이 pipeline에서 MDPR은 Markdown을 슬라이드와 요소 단위로 분할하고, Design Components가 deterministic rule에 따라 layout, 요소 크기, 배치, 컴포넌트 variant, 장식, 효과를 선택한다.
+Add a Design Components based `design-components-rule-based` pipeline around
+MDPR. MDPR splits Markdown into slides and slide elements, while the Design
+Components layer uses deterministic rules to choose layout, element sizing,
+placement, component variants, decoration, and effects.
 
-## 현재 구조에 대한 전제
-
-현재 MDPR은 대략 다음 흐름이다.
+## Current MDPR Assumption
 
 ```text
 Markdown
@@ -21,7 +22,7 @@ Markdown
   -> Renderer
 ```
 
-신규 모드는 기존 모드를 깨지 않고 다음 경로를 병렬로 추가한다.
+The new mode adds a parallel path without breaking the existing runtime:
 
 ```text
 Markdown
@@ -35,37 +36,37 @@ Markdown
   -> Renderer
 ```
 
-## 가장 중요한 설계 결정
+## Design Decisions
 
-| 항목 | 결정 |
-|---|---|
-| MDPR 책임 | element split, type/role/importance/density/group 추론 |
-| Design Components 책임 | visual profile, slide recipe, element variant, composition, decoration, effects |
-| 선택 방식 | deterministic rule-based selector |
-| agent 사용 | optional semantic hint only |
-| 색상 | PPT theme slot 기반, raw hex 기본 금지 |
-| 기존 layout | legacy/simple pipeline으로 유지하거나 Design Components 내부의 fallback utility로 축소 |
-| debug | inspect-style로 feature, 후보, reject reason, selected recipe를 노출 |
+| Area | Decision |
+| --- | --- |
+| MDPR responsibility | Element splitting, type/role/importance/density/group inference |
+| Design Components responsibility | Visual profile, slide recipe, element variant, composition, decoration, effects |
+| Selection model | Deterministic rule-based selector |
+| Agent usage | Optional semantic hints only |
+| Color | PPT theme slots by default; raw hex is blocked in final style plans |
+| Legacy layout | Kept as legacy/simple mode or reduced to fallback utility |
+| Debugging | Inspect output exposes features, candidates, reject reasons, and selected recipes |
 
-## 구현 산출물
+## Deliverables
 
 1. `packages/element-ir`
 2. `design_components/rule-engine`
 3. `design_components/composition`
 4. `design_components/decoration`
-5. renderer adapter 확장
-6. config schema 확장
-7. CLI 명령/옵션 확장
-8. style gallery
-9. coherence lint
-10. optional agent hints
+5. Renderer adapter extensions
+6. Config schema extensions
+7. CLI command and option extensions
+8. Style gallery
+9. Coherence lint
+10. Optional agent hints
 
 ## Definition of Done
 
-- 같은 `Slide Element IR`로 여러 `DeckVisualProfile` 결과를 생성할 수 있다.
-- `inspect-style`이 선택된 recipe/variant와 reject reason을 출력한다.
-- PPTX 출력에서 주요 텍스트와 도형은 editable object다.
-- `color.mode: ppt-theme`에서 raw hex가 최종 PPTX style plan에 남지 않는다.
-- high-density slide에는 expressive effect가 자동 억제된다.
-- agent hint를 꺼도 동일 입력은 동일 결과를 낸다.
-- rulebook 변경 없이 agent가 recipe/variant를 바꾸지 못한다.
+- One `Slide Element IR` can produce multiple `DeckVisualProfile` outputs.
+- `inspect-style` prints selected recipes, variants, and reject reasons.
+- PPTX output keeps primary text and shapes editable.
+- In `color.mode: ppt-theme`, raw hex does not remain in final PPTX style plans.
+- High-density slides automatically suppress expressive effects.
+- With agent hints disabled, identical input produces identical output.
+- Agents cannot change recipes or variants without rulebook support.

@@ -61,6 +61,78 @@ test("runMdprSkillEval builds a tiny deck through the actual MDPR CLI", { skip: 
   }
 });
 
+test("runMdprSkillEval builds a guided approved pack run through the actual MDPR CLI", { skip: !existsSync(mdprCli) }, () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-e2e-pack-"));
+  try {
+    const deckPath = join(workDir, "deck.md");
+    writeFileSync(deckPath, [
+      "# Pack Eval Deck",
+      "",
+      "A concise claim should keep the pack comparison readable.",
+      "",
+      "- Baseline remains deterministic.",
+      "- Guided pack changes tokenized colors only.",
+      "",
+    ].join("\n"), "utf-8");
+    const packPath = join(workDir, "mdpr.pack.json");
+    writeFileSync(packPath, JSON.stringify({
+      schemaVersion: "mdpr-pack-v1",
+      kind: "theme-component-pack",
+      source: {
+        kind: "design-md",
+        sourceSha256: createHash("sha256").update("approved pack e2e").digest("hex"),
+        generatedBy: "mdpr-skill",
+        approved: true,
+      },
+      themeTokens: {
+        colors: {
+          background: "#111827",
+          text: "#F9FAFB",
+          accent: "#F97316",
+          rule: "#374151",
+        },
+      },
+      componentTokens: {},
+      diagramTokens: {},
+      components: [],
+      pptEffectMappings: [],
+      constraints: {
+        editablePrimaryContent: true,
+        allowRasterBackgroundOnly: true,
+        maxAccentRatio: 0.18,
+      },
+    }, null, 2), "utf-8");
+
+    const report = runMdprSkillEval({
+      deckPath,
+      mdprPath: mdprRoot,
+      outDir: join(workDir, "eval"),
+      formats: ["html"],
+      guidedPackPath: packPath,
+      reportPath: join(workDir, "eval-report.json"),
+      thresholds: { maxBuildMsMultiplier: 100 },
+    });
+
+    assert.equal(report.schemaVersion, "mdpr-skill-eval-v1");
+    assert.equal(report.guidedPackPath, packPath);
+    assert.equal(report.gates.schemaSync.status, "pass");
+    assert.equal(report.gates.boundary.status, "pass");
+    assert.equal(report.gates.regression.status, "pass");
+    assert.equal(report.summary.overallStatus, "pass");
+
+    const guidedManifest = JSON.parse(readFileSync(report.skillGuided.manifestPath, "utf-8"));
+    assert.equal(guidedManifest.pack.validation.valid, true);
+    assert.equal(guidedManifest.pack.source.path, packPath);
+
+    const guidedHtml = readFileSync(join(workDir, "eval", "guided", "deck.html"), "utf-8");
+    assert.match(guidedHtml, /--bg: #111827;/);
+    assert.match(guidedHtml, /--text: #F9FAFB;/);
+    assert.match(guidedHtml, /--primary: #F97316;/);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
 test("runMdprSkillEval distinguishes a review regression from a successful MDPR CLI run", { skip: !existsSync(mdprCli) }, () => {
   const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-e2e-review-"));
   try {

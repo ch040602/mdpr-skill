@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MDPR Launch Dashboard</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16211f;
+      --muted: #5b6864;
+      --line: #dce6e1;
+      --bg: #f7faf8;
+      --panel: #ffffff;
+      --accent: #0f766e;
+      --accent-2: #8a4fff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 32px 20px 56px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: 0;
+    }
+    p { margin: 0 0 12px; color: var(--muted); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    h2 {
+      font-size: 19px;
+      margin: 0 0 6px;
+    }
+    .meta {
+      min-height: 46px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+    button, a.button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 7px;
+      padding: 9px 11px;
+      font-weight: 650;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+    .secondary {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+    }
+    textarea {
+      width: 100%;
+      height: 190px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 10px;
+      font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #263330;
+      background: #fbfdfc;
+    }
+    .status {
+      min-height: 22px;
+      font-size: 13px;
+      color: var(--accent);
+    }
+    .checklist {
+      margin-top: 22px;
+    }
+    li { margin: 6px 0; color: var(--muted); }
+    code { color: var(--ink); }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>MDPR Launch Dashboard</h1>
+    <p>Use this page to copy the right draft and open the submission screen. Final posting still requires your logged-in account and the final Submit/Post click.</p>
+    <p><strong>Primary link:</strong> <a href="https://github.com/ch040602/MdPr">https://github.com/ch040602/MdPr</a></p>
+  </header>
+
+  <div class="grid">
+    <section>
+      <h2>Show HN</h2>
+      <p class="meta">Best first international technical launch. HN requires a logged-in account and the title must begin with Show HN.</p>
+      <div class="actions">
+        <button class="primary" onclick="openShowHN()">Open prefilled HN</button>
+        <button onclick="copyText('hnComment', 'hnStatus')">Copy first comment</button>
+      </div>
+      <p id="hnStatus" class="status"></p>
+      <textarea id="hnComment">I built MDPR because I wanted Markdown-generated slides that remain editable in PowerPoint instead of becoming screenshots or HTML-only decks.
+
+The runtime is deterministic: Markdown is parsed into Presentation IR, planned into Layout IR, validated for overflow/coherence, and rendered to editable PPTX first. HTML/PDF/PNG previews are downstream outputs.
+
+The optional mdpr-skill companion can suggest semantic hints or review notes, but MDPR still owns final slide splitting, coordinates, theme colors, z-order, and renderer output.
+
+I am especially looking for Markdown edge cases: tables, diagrams, chart/table pairs, mixed-language text, and docs that usually break when converted into PowerPoint.</textarea>
+    </section>
+
+    <section>
+      <h2>Reddit r/SideProject</h2>
+      <p class="meta">Use as a follow-up or repost only if the existing thread needs a cleaner pitch. Text post is less spammy than a link drop.</p>
+      <div class="actions">
+        <button class="primary" onclick="openRedditSideProject()">Open prefilled Reddit</button>
+        <button onclick="copyText('sideBody', 'sideStatus')">Copy body</button>
+      </div>
+      <p id="sideStatus" class="status"></p>
+      <textarea id="sideBody">I built MDPR because Markdown-to-slide workflows usually end in one of two places: HTML slides, or PPTX files that still need a lot of manual cleanup.
+
+MDPR is a deterministic Markdown-to-presentation runtime focused on editable PowerPoint output:
+
+https://github.com/ch040602/MdPr
+
+The goal is not broad document conversion. The focus is Markdown -> varied PPTX layouts with deterministic slide splitting, tables/charts/diagrams/proof objects, icon slots, theme/color rules, overflow checks, and generated visual previews.
+
+There is also an optional mdpr-skill companion for LLM-side hints and review, but MDPR owns the final layout, coordinates, colors, z-order, and renderer output. I built that boundary to reduce the coherence problems I kept seeing in LLM-generated slide decks.
+
+Preview gallery:
+https://ch040602.github.io/MdPr/theme-preview/
+
+If anyone has a Markdown file that usually breaks when converted into slides, I would be interested in seeing the smallest reproducible snippet.</textarea>
+    </section>
+
+    <section>
+      <h2>DEV / Hashnode</h2>
+      <p class="meta">Use this as an article starter. Paste it into DEV/Hashnode and add screenshots from the preview gallery.</p>
+      <div class="actions">
+        <a class="button primary" href="https://dev.to/new" target="_blank" rel="noreferrer">Open DEV editor</a>
+        <button onclick="copyText('devBody', 'devStatus')">Copy article draft</button>
+      </div>
+      <p id="devStatus" class="status"></p>
+      <textarea id="devBody"># Generating editable PowerPoint decks from Markdown without an LLM runtime
+
+I built MDPR because I wanted Markdown-generated slides that remain editable in PowerPoint instead of becoming screenshots or HTML-only decks.
+
+Most Markdown slide tools are strong at web presentations or broad document conversion. MDPR is narrower: it focuses on editable PPTX layout quality.
+
+The pipeline is:
+
+Markdown -> Presentation IR -> Layout IR -> validation -> editable PPTX -> HTML/PDF/PNG previews
+
+The runtime is deterministic. It does not need an API key or an LLM call for normal builds. The optional mdpr-skill companion can suggest semantic hints or review notes, but MDPR still owns final slide splitting, coordinates, theme colors, z-order, and renderer output.
+
+I am especially looking for Markdown edge cases: tables, diagrams, chart/table pairs, mixed-language text, and docs that usually break when converted into PowerPoint.
+
+Repo: https://github.com/ch040602/MdPr
+Preview gallery: https://ch040602.github.io/MdPr/theme-preview/
+Issues: https://github.com/ch040602/MdPr/issues/new/choose</textarea>
+    </section>
+
+    <section>
+      <h2>Product Hunt</h2>
+      <p class="meta">Use after the README/demo is clear. Product Hunt has a multi-step flow, so copy these fields first.</p>
+      <div class="actions">
+        <a class="button primary" href="https://www.producthunt.com/posts/new" target="_blank" rel="noreferrer">Open Product Hunt</a>
+        <button onclick="copyText('phBody', 'phStatus')">Copy fields</button>
+      </div>
+      <p id="phStatus" class="status"></p>
+      <textarea id="phBody">Name:
+MDPR
+
+Tagline:
+Editable, visually checked PowerPoint decks from Markdown
+
+URL:
+https://github.com/ch040602/MdPr
+
+Description:
+MDPR is a deterministic Markdown-to-presentation runtime. It converts Markdown into editable PPTX with layout planning, theme/color rules, table/chart/diagram support, overflow validation, and generated HTML/PDF/PNG previews. Optional mdpr-skill hints can help review content, but MDPR owns final rendering.</textarea>
+    </section>
+
+    <section>
+      <h2>GitHub Issue CTA</h2>
+      <p class="meta">Use this link when replying to comments. The goal is to turn interest into reproducible issues.</p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/ch040602/MdPr/issues/new/choose" target="_blank" rel="noreferrer">Open issue chooser</a>
+        <button onclick="copyText('issueReply', 'issueStatus')">Copy reply</button>
+      </div>
+      <p id="issueStatus" class="status"></p>
+      <textarea id="issueReply">If you have a Markdown file that usually breaks when converted into slides, the most useful feedback would be a minimal snippet here:
+
+https://github.com/ch040602/MdPr/issues/new/choose
+
+I am especially interested in tables, diagrams, mixed-language text, chart/table pairs, and PPTX editability issues.</textarea>
+    </section>
+
+    <section>
+      <h2>Short Social Post</h2>
+      <p class="meta">Use for X, Mastodon, Bluesky, or LinkedIn. Keep the preview gallery link visible.</p>
+      <div class="actions">
+        <button class="primary" onclick="copyText('socialPost', 'socialStatus')">Copy post</button>
+        <a class="button secondary" href="https://ch040602.github.io/MdPr/theme-preview/" target="_blank" rel="noreferrer">Open gallery</a>
+      </div>
+      <p id="socialStatus" class="status"></p>
+      <textarea id="socialPost">I built MDPR: a deterministic Markdown-to-editable-PPTX runtime.
+
+It parses Markdown into Presentation/Layout IR, validates overflow/coherence, and renders editable PowerPoint slides first. No LLM/API key needed at runtime.
+
+Repo: https://github.com/ch040602/MdPr
+Preview: https://ch040602.github.io/MdPr/theme-preview/</textarea>
+    </section>
+  </div>
+
+  <section class="checklist">
+    <h2>Posting Checklist</h2>
+    <ul>
+      <li>Do not ask friends to upvote.</li>
+      <li>Do not cross-post the same text to many communities.</li>
+      <li>Reply to the Pandoc comparison with: Pandoc is broader; MDPR is PPTX-first, editable, layout-validated, and deterministic.</li>
+      <li>Turn every useful comment into a GitHub issue or documentation update.</li>
+      <li>Use preview gallery screenshots when the platform supports images.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+  const projectUrl = "https://github.com/ch040602/MdPr";
+  const hnTitle = "Show HN: MDPR - Markdown to editable PowerPoint without an LLM runtime";
+  const sideTitle = "I built a Markdown-to-editable-PowerPoint generator focused on editable PPTX layouts";
+
+  function openShowHN() {
+    const url = "https://news.ycombinator.com/submitlink?u=" +
+      encodeURIComponent(projectUrl) + "&t=" + encodeURIComponent(hnTitle);
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function openRedditSideProject() {
+    const body = document.getElementById("sideBody").value;
+    const url = "https://www.reddit.com/r/SideProject/submit?type=TEXT&title=" +
+      encodeURIComponent(sideTitle) + "&text=" + encodeURIComponent(body) +
+      "&selftext=" + encodeURIComponent(body);
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  async function copyText(id, statusId) {
+    const value = document.getElementById(id).value;
+    const status = document.getElementById(statusId);
+    try {
+      await navigator.clipboard.writeText(value);
+      status.textContent = "Copied.";
+    } catch (error) {
+      const area = document.getElementById(id);
+      area.focus();
+      area.select();
+      document.execCommand("copy");
+      status.textContent = "Selected/copied. If blocked, press Ctrl+C.";
+    }
+  }
+</script>
+</body>
+</html>

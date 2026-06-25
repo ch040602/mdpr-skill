@@ -1,25 +1,25 @@
-# Phase 03 — Rule Engine Foundation
+# Phase 03 - Rule Engine Foundation
 
 ## Goal
 
-Recipe/variant 선택을 수행하는 deterministic rule engine 골격을 만든다.
+Create the deterministic rule engine foundation for recipe and variant selection.
 
 ## Tasks
 
-- [x] `design_components/rule-engine` 생성.
-- [x] `RuleCondition` 타입 정의.
-- [x] condition evaluator 구현: eq, in, gt, gte, lt, lte, min/max, all/any/not.
-- [x] hard filter 단계 구현.
-- [x] scoring 단계 구현.
-- [x] priority/tie-breaker 구현.
-- [x] `SelectionTrace` 타입 정의.
-- [x] reject reason 수집.
-- [x] score breakdown 수집.
-- [x] stable sort helper 작성.
-- [x] no-random lint/test 추가.
+- [x] Create `design_components/rule-engine`.
+- [x] Define `RuleCondition`.
+- [x] Implement condition evaluator: `eq`, `in`, `gt`, `gte`, `lt`, `lte`, `min/max`, `all`, `any`, and `not`.
+- [x] Implement hard filter stage.
+- [x] Implement scoring stage.
+- [x] Implement priority and tie-breaker.
+- [x] Define `SelectionTrace`.
+- [x] Collect reject reasons.
+- [x] Collect score breakdown.
+- [x] Add stable sort helper.
+- [x] Add no-random lint/test.
 
 ## Acceptance
 
-- [x] 같은 입력/룰북은 항상 같은 결과다.
-- [x] reject reason과 score breakdown이 inspect 가능하다.
-- [x] rulebook이 비어 있으면 명시적 error가 난다.
+- [x] The same input and rulebook always produce the same result.
+- [x] Reject reasons and score breakdown are inspectable.
+- [x] Empty rulebooks produce explicit errors.

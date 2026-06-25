@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-pptx-object-map.schema.json",
+  "title": "MDPR PPTX Object Map",
+  "type": "object",
+  "required": ["schemaVersion", "objects"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "mdpr-pptx-object-map-v1"
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slideId", "layoutSlideId", "regionId", "blockIds", "shapeName", "objectKind", "role", "editable"],
+        "additionalProperties": false,
+        "properties": {
+          "slideId": { "type": "string", "minLength": 1 },
+          "layoutSlideId": { "type": "string", "minLength": 1 },
+          "regionId": { "type": "string", "minLength": 1 },
+          "blockIds": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "shapeName": {
+            "type": "string",
+            "pattern": "^mdpr:"
+          },
+          "objectKind": {
+            "enum": ["native-text", "native-table", "native-chart", "native-diagram", "native-image"]
+          },
+          "role": { "type": "string", "minLength": 1 },
+          "editable": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

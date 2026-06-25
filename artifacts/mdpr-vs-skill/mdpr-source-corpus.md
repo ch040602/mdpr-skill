@@ -13,30 +13,27 @@ This deck is generated from Markdown files inside the local MDPR checkout.
 
 ## Source manifest
 
-- README.md: mdpresent (12 headings, 10521 chars)
-- README.ko.md: mdpresent (10 headings, 3747 chars)
-- CODEX_PROMPT.md: Codex 구현 프롬프트 (5 headings, 1065 chars)
-- docs/00-product-definition.md: 00. 제품 정의 (6 headings, 745 chars)
-- docs/01-architecture.md: 01. 아키텍처 (9 headings, 1719 chars)
-- docs/02-requirements.md: 02. 요구사항 (12 headings, 2042 chars)
-- docs/03-page-splitting.md: 03. 페이지 분할 규칙 (17 headings, 4977 chars)
-- docs/04-layout-rules.md: 04. 레이아웃 선택 규칙 (10 headings, 2641 chars)
-- docs/05-overrides-for-llm.md: 05. LLM/Codex 친화적 Override Manifest (11 headings, 2931 chars)
-- docs/06-cli-spec.md: 06. CLI 명령 설계 (10 headings, 4146 chars)
-- docs/07-rendering-rules.md: 07. Renderer 규칙 (6 headings, 7916 chars)
-- docs/08-roadmap.md: 08. 구현 로드맵 (10 headings, 1470 chars)
-- docs/09-codex-implementation-guide.md: 09. Codex 구현 가이드 (9 headings, 1433 chars)
-- docs/10-template-and-master-policy.md: 10. PPT 템플릿과 Slide Master 정책 (7 headings, 966 chars)
-- docs/11-qa-overflow.md: 11. QA와 Overflow 정책 (8 headings, 3335 chars)
-- docs/references.md: References (8 headings, 582 chars)
+- README.md: mdpresent (13 headings, 14613 chars)
+- docs/00-product-definition.md: 00. Product Definition (6 headings, 1546 chars)
+- docs/01-architecture.md: 01. Architecture (4 headings, 3083 chars)
+- docs/02-requirements.md: 02. Requirements (12 headings, 3070 chars)
+- docs/03-page-splitting.md: 03. Page Splitting Rules (16 headings, 5370 chars)
+- docs/04-layout-rules.md: 04. Layout Selection Rules (10 headings, 3787 chars)
+- docs/05-overrides-for-llm.md: 05. Override Manifest (9 headings, 3415 chars)
+- docs/06-cli-spec.md: 06. CLI Specification (7 headings, 4187 chars)
+- docs/07-rendering-rules.md: 07. Rendering Rules (11 headings, 6360 chars)
+- docs/08-roadmap.md: 08. Roadmap (10 headings, 3462 chars)
+- docs/09-codex-implementation-guide.md: 09. Codex Implementation Guide (8 headings, 1595 chars)
+- docs/10-template-and-master-policy.md: 10. PPT Template and Slide Master Policy (8 headings, 1248 chars)
+- docs/11-qa-overflow.md: 11. Validation and Overflow Policy (12 headings, 9740 chars)
+- docs/references.md: References (8 headings, 756 chars)
 - docs/adr/0001-presentation-ir-schema-contract.md: ADR 0001: Presentation IR Schema Contract (5 headings, 1226 chars)
-- examples/basic/deck.md: AI 업무 자동화 제안서 (10 headings, 581 chars)
-- examples/comparison/deck.md: 비교 구조 예시 (4 headings, 137 chars)
+- examples/basic/deck.md: AI Workflow Automation Proposal (10 headings, 1255 chars)
+- examples/comparison/deck.md: Comparison Structure Example (4 headings, 307 chars)
 - examples/pipeline/deck.md: Pipeline Example (3 headings, 186 chars)
 - examples/diagram-arrangements/deck.md: Diagram Arrangement Examples (6 headings, 457 chars)
-- examples/five-methods/deck.md: 5개 항목 레이아웃 예시 (2 headings, 96 chars)
-- examples/theme-preview-en/deck.md: mdpresent (7 headings, 1770 chars)
-- examples/theme-preview-ko/deck.md: 엠디프레젠트 (7 headings, 907 chars)
+- examples/five-methods/deck.md: Five-Item Layout Example (2 headings, 200 chars)
+- examples/theme-preview-en/deck.md: MDPR Design Grammar (16 headings, 4905 chars)
 
 ## Pipeline boundary
 
@@ -46,109 +43,112 @@ Presentation IR => Slide Element IR => Feature Extractor => Design Components Ru
 
 ## Parser and splitting topics
 
-## 01. 아키텍처
+## 01. Architecture
 
-- 01. 아키텍처
-- 전체 흐름
-- 패키지 역할
-- 설계 원칙
-- 1. Core는 렌더러를 모른다
+- 01. Architecture
+- Flow
+- Package Roles
+- Design Principles
+- core does not know renderers. It emits Presentation IR only.
+- layout owns coordinates, regions, slots, typography, and safe areas.
+- Renderers implement target-format output only; they must not redo split or layout decisions.
+- Overrides are the final exception layer after automatic planning.
 
 ```text
 Markdown
-  ↓
-Parser(simple Markdown or Pandoc JSON)
-  ↓
-Outline Builder
-  ↓
+  -> Parser (simple Markdown or Pandoc JSON)
+  -> Outline Builder
+  -> Split Planner
+  -> Coherence Grouping
+  -> Presentation IR
 ```
 
-## 03. 페이지 분할 규칙
+## 03. Page Splitting Rules
 
-- 03. 페이지 분할 규칙
-- 기본 heading 규칙
-- cover 또는 section
+- 03. Page Splitting Rules
+- Heading Rules
+- cover or section
 - slide candidate
-- subsection 또는 autosplit 기준
-- Markdown 구조 생성
-- 기본값: built-in simple parser
-- 선택값: --parser pandoc으로 Pandoc JSON AST 생성 후 BlockIR로 정규화
-- heading tree 생성
+- subsection or autosplit boundary
+- Parse CommonMark/GFM Markdown into an AST.
+- Convert the AST into MDPR BlockIR while preserving presentation-relevant
+- Normalize Pandoc JSON into BlockIR when --parser pandoc is selected.
+- Build the heading tree.
 
 | Field | Value |
 |---|---|
-| 요소 | 기본 점수 |
-| 짧은 문단 | 1 |
-| 긴 문단 | 2 |
-| bullet 1개 | 1 |
+| Element | Default Score |
+| Short paragraph | 1 |
+| Long paragraph | 2 |
+| Bullet item | 1 |
 
 ```text
-#   cover 또는 section
-##  slide candidate
-### subsection 또는 autosplit 기준
-#### 본문 내부 heading
+#     cover or section
+##    slide candidate
+###   subsection or autosplit boundary
+####  in-body heading
 ```
 
-## 04. 레이아웃 선택 규칙
+## 04. Layout Selection Rules
 
-- 04. 레이아웃 선택 규칙
-- 기본 규칙
-- Intent 감지
-- 개수 기반 레이아웃
-- 비교 구조 감지
-- 제목에 기존/개선, Before/After, As-Is/To-Be, 장점/단점 포함
-- h3가 정확히 2개이고 서로 대비됨
-- bullet group이 2개이며 group title이 대비됨
-- 표가 비교축 column을 가짐
+- 04. Layout Selection Rules
+- Selection Formula
+- Intent Detection
+- Count-Based Layouts
+- Presets
+- id: footer
 
 | Field | Value |
 |---|---|
-| 조건 | intent |
-| 기존/개선, Before/After, As-Is/To-Be, 장점/단점 | comparison |
-| 날짜, 단계, phase, step 반복 | timeline |
-| 큰 표 포함 | table |
+| Condition | Intent |
+| Before/After, As-Is/To-Be, pros/cons, two opposed groups | comparison |
+| Dates, stages, phases, repeated steps | timeline |
+| Large table | table |
 
 ```text
-SlideIntent + itemCount + blockType + density → LayoutPreset
+SlideIntentScoreProfile + itemCount + blockType + density
+  -> candidate LayoutPresets
+  -> deterministic score
+  -> selected LayoutPreset
 ```
 
-## 07. Renderer 규칙
+## 07. Rendering Rules
 
-- 07. Renderer 규칙
-- 공통 규칙
+- 07. Rendering Rules
+- Shared Renderer Contract
 - PPTX Renderer
-- HTML Renderer
-- PDF Renderer
-- consumes the normal renderable deck input: { Presentation IR, Layout IR }
-- uses Layout IR slide size, region x/y/w/h, theme fonts, colors, and z-order
-- emits editable PowerPoint text boxes for titles, paragraphs, bullets, code text, and fallback content
-- emits PowerPoint table objects for table blocks
+- Decoration Styles
+- Color and Theme Policy
+- consumes { Presentation IR, Layout IR }
+- uses Layout IR slide size, regions, theme fonts, colors, z-order, and overflow policy
+- emits editable text boxes for titles, paragraphs, lists, code, and fallback text
+- emits native PowerPoint tables for table blocks
 
 ```text
-{ Presentation IR, Layout IR } → PPTX
-{ Presentation IR, Layout IR } → HTML
-{ Presentation IR, Layout IR } → PDF
+{ Presentation IR, Layout IR } -> PPTX
+{ Presentation IR, Layout IR } -> HTML
+{ Presentation IR, Layout IR } -> PDF
 ```
 
-## 11. QA와 Overflow 정책
+## 11. Validation and Overflow Policy
 
-- 11. QA와 Overflow 정책
-- QA 검사 항목
-- Overflow 처리 순서
-- CLI 옵션
-- Validation behavior
-- 텍스트 overflow
-- 표 overflow
-- 이미지 누락
-- asset 경로 오류
+- 11. Validation and Overflow Policy
+- Validation Checks
+- Overflow Resolution Order
+- Diagnostics
+- Text Normalization
+- text overflow
+- table overflow
+- missing images
+- invalid asset paths
 
 ```text
-- 텍스트 overflow
-- 표 overflow
-- 이미지 누락
-- asset 경로 오류
-- page number 겹침
-- safe area 위반
+- text overflow
+- table overflow
+- missing images
+- invalid asset paths
+- overlapping page numbers
+- safe-area violations
 ```
 
 ## Example decks from MDPR
@@ -161,27 +161,27 @@ SlideIntent + itemCount + blockType + density → LayoutPreset
 
 ## Example: examples/basic/deck.md
 
-- AI 업무 자동화 제안서
-- 문제 정의
-- 반복 업무 증가
-- 검색 비용 증가
-- 기존 방식과 개선 방식
-- 기존 방식
-- 회의록 정리
-- 보고서 초안 작성
-- 데이터 취합
-- 자료 위치 불명확
+- AI Workflow Automation Proposal
+- Problem Definition
+- Repetitive Work Is Growing
+- Search Costs Are Growing
+- Current Approach and Improved Approach
+- Current Approach
+- Meeting note cleanup
+- Report draft writing
+- Data collection
+- Source location is unclear
 
 ## Example: examples/comparison/deck.md
 
-- 비교 구조 예시
-- 기존 방식과 개선 방식
-- 기존 방식
-- 개선 방식
-- 문서 작성이 수동으로 진행됨
-- 형식이 개인별로 다름
-- 검색이 어려움
-- 초안이 자동 생성됨
+- Comparison Structure Example
+- Current Approach and Improved Approach
+- Current Approach
+- Improved Approach
+- Documents are written manually
+- Format varies by person
+- Search is difficult
+- Drafts are generated automatically
 
 ## Example: examples/pipeline/deck.md
 
@@ -204,38 +204,25 @@ SlideIntent + itemCount + blockType + density → LayoutPreset
 
 ## Example: examples/five-methods/deck.md
 
-- 5개 항목 레이아웃 예시
-- 5가지 실행 방법
-- 파일럿 조직 선정
-- 반복 문서 유형 분석
-- 자동화 템플릿 설계
-- 지식 검색 인덱스 구축
+- Five-Item Layout Example
+- Five Execution Steps
+- Select a pilot team
+- Analyze repetitive document types
+- Design automation templates
+- Build a knowledge search index
 
 ## Example: examples/theme-preview-en/deck.md
 
-- mdpresent
-- Core Principle
-- Generation Flow
-- Rule-Based Engine
-- Markdown Semantics
-- Theme Selection
-- NO LLM runtime: generation does not call an external model.
-- Rule-based layout: headings, density, list count, sentence units, and diagram signals drive placement.
-- Reproducible output: the same source and settings produce the same presentation structure.
-- Auxiliary skill ready: the standalone CLI can be wrapped as a local automation skill.
-
-## Example: examples/theme-preview-ko/deck.md
-
-- 엠디프레젠트
-- 핵심 원칙
-- 생성 흐름
-- 규칙 기반 엔진
-- 마크다운 구조 보존
-- 테마 선택
-- 모델 호출 없음: 생성 과정은 외부 모델이나 외부 연결 호출 없이 동작합니다.
-- 규칙 기반: 제목, 밀도, 목록 수, 문장 단위, 도식 신호를 기준으로 배치합니다.
-- 재현 가능성: 같은 원고와 설정은 같은 발표 구조를 만듭니다.
-- 보조 스킬화: 독립적인 명령행 도구이므로 로컬 자동화 스킬로 감쌀 수 있습니다.
+- MDPR Design Grammar
+- Teaser Summary
+- Composition Contract
+- Pruned Style Families
+- Semantic Blocks
+- Pipeline Diagram
+- Preview styles: 5 pruned decoration grammars, not palette-only swaps.
+- Pattern range: 36+ decoration and layout patterns selected by content role.
+- Object support: native tables, charts, proof objects, diagrams, images, and icon slots.
+- QA contract: readable text, bounded objects, aligned connectors, and editable PPTX output.
 
 ## Current skill output expectations
 

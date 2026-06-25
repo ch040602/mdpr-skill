@@ -29,7 +29,16 @@
         "decorationFamily": { "enum": ["numbered-rail", "callout", "proof-point", "minimal", "glass", "data", "icon-aside"] },
         "groupingRole": { "enum": ["claim", "evidence-pack", "workflow", "summary", "comparison"] },
         "iconKeywordCandidates": { "type": "array", "items": { "type": "string", "minLength": 1 } },
-        "preserveContent": { "type": "boolean" }
+        "preserveContent": { "type": "boolean" },
+        "splitPreference": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "forceSingleSlide": { "type": "boolean" },
+            "splitBy": { "enum": ["h2", "h3", "h4", "block-group", "list-chunk", "none"] },
+            "maxDensity": { "type": "number", "minimum": 1 }
+          }
+        }
       }
     },
     "boundary": {

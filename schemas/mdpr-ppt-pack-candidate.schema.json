@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-ppt-pack-candidate.schema.json",
+  "title": "MDPR PowerPoint Pack Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "source", "kind", "tokens", "requiresApproval"],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-ppt-pack-candidate-v1" },
+    "kind": { "enum": ["style-pack", "component-pack", "theme-component-pack"] },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "selectionRef", "userApproved"],
+      "properties": {
+        "tool": { "const": "mdpr-ppt" },
+        "selectionRef": { "type": "string", "minLength": 1 },
+        "userApproved": { "const": true },
+        "pptxSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "tokens": { "type": "object" },
+    "components": { "type": "array" },
+    "requiresApproval": { "const": true },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "noRawUseInAgentHints": { "const": true },
+        "requiresDesignLockUpdate": { "const": true }
+      }
+    }
+  }
+}

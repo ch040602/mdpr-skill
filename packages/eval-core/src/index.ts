@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import {
   assertMdprRunSucceeded,
@@ -43,6 +43,90 @@ export type EvalGateResult = {
   metrics?: Record<string, number | string | boolean | undefined>;
 };
 
+export type EvidenceCorpusEntry = {
+  id:
+    | "mdpr-manifest"
+    | "presentation-ir"
+    | "layout-ir"
+    | "pptx-object-map"
+    | "rendered-artifact"
+    | "selection-context"
+    | "design-analysis"
+    | "diagram-metrics";
+  description: string;
+};
+
+export type ReviewEvidenceRoute = {
+  findingType: string;
+  severity: ReviewFinding["severity"];
+  slideId?: string;
+  candidateCorpusIds: EvidenceCorpusEntry["id"][];
+  coveredEvidenceKeys: string[];
+  missingFacts: string[];
+  feedbackQueries: ReviewEvidenceFeedbackQuery[];
+  artifactAttempts: ReviewEvidenceArtifactAttempt[];
+  status: "covered" | "missing";
+};
+
+export type ReviewEvidenceFeedbackQuery = {
+  query: string;
+  targetCorpusIds: EvidenceCorpusEntry["id"][];
+  reason: string;
+};
+
+export type ReviewEvidenceArtifactAttempt = {
+  query: string;
+  targetCorpusId: EvidenceCorpusEntry["id"];
+  candidatePaths: string[];
+  foundPaths: string[];
+  status: "found" | "missing";
+};
+
+export type ReviewEvidenceRetrievalPlan = {
+  corpusCatalog: EvidenceCorpusEntry[];
+  routes: ReviewEvidenceRoute[];
+};
+
+export type EvidenceArtifactRetryOptions = {
+  artifactRoot?: string;
+  exists?: (path: string) => boolean;
+};
+
+export const REVIEW_EVIDENCE_CORPUS_CATALOG: EvidenceCorpusEntry[] = [
+  {
+    id: "mdpr-manifest",
+    description: "Build manifest, validation summaries, visual metrics, accent usage, and renderer metadata.",
+  },
+  {
+    id: "presentation-ir",
+    description: "Parsed Markdown semantics, source slide ids, block ids, headings, and source block roles.",
+  },
+  {
+    id: "layout-ir",
+    description: "Layout slide ids, regions, role assignments, and block-to-region placement.",
+  },
+  {
+    id: "pptx-object-map",
+    description: "PowerPoint object map entries, object kinds, editability, roles, and renderer shape mapping.",
+  },
+  {
+    id: "rendered-artifact",
+    description: "Rendered screenshots, PNG exports, contact sheets, and visual evidence files.",
+  },
+  {
+    id: "selection-context",
+    description: "Weak mdpr-ppt or preview selection context passed to review and hint rails.",
+  },
+  {
+    id: "design-analysis",
+    description: "DESIGN.md or HTML design analysis tokens, CSS declarations, and PPT effect feasibility evidence.",
+  },
+  {
+    id: "diagram-metrics",
+    description: "Diagram grammar metrics such as node count, edge count, accent count, and diagram id.",
+  },
+];
+
 export type EvalRegressionThresholds = {
   maxBuildMsMultiplier: number;
   maxSlideCountDelta: number;
@@ -83,12 +167,14 @@ export type ReviewRunSummary = {
   findings: ReviewFinding[];
 };
 
-export type MdprSkillEvalInput = Omit<MdprRunInput, "outDir" | "hintsPath"> & {
+export type MdprSkillEvalInput = Omit<MdprRunInput, "outDir" | "hintsPath" | "packPath"> & {
   outDir: string;
   baselineOutDir?: string;
   guidedOutDir?: string;
   hintsPath?: string;
   hintManifest?: AgentHintManifest;
+  baselinePackPath?: string;
+  guidedPackPath?: string;
   reportPath?: string;
   thresholds?: Partial<EvalRegressionThresholds>;
 };
@@ -103,18 +189,25 @@ export type MdprSkillEvalReport = {
     guidedManifestPath: string;
   };
   baseline: EvalRunArtifacts;
-  skillGuided: EvalRunArtifacts & { hintsPath: string };
+  skillGuided: EvalRunArtifacts & { hintsPath?: string };
   gates: {
     schemaSync: EvalGateResult;
     boundary: EvalGateResult;
     regression: EvalGateResult;
     review: EvalGateResult;
+    sufficientContext: EvalGateResult;
   };
   reviews: {
     baseline: ReviewRunSummary;
     skillGuided: ReviewRunSummary;
   };
+  evidenceRetrieval: {
+    baseline: ReviewEvidenceRetrievalPlan;
+    skillGuided: ReviewEvidenceRetrievalPlan;
+  };
   hintsPath?: string;
+  baselinePackPath?: string;
+  guidedPackPath?: string;
   regressions: string[];
   thresholds: EvalRegressionThresholds;
 };
@@ -126,6 +219,7 @@ type EvalDeps = {
   readText?: (path: string) => string;
   writeText?: (path: string, value: string) => void;
   mkdirp?: (path: string) => void;
+  exists?: (path: string) => boolean;
   now?: () => number;
 };
 
@@ -187,19 +281,21 @@ export function runBaseline(input: MdprSkillEvalInput, deps: EvalDeps = {}): Eva
   return runEvalBuild({
     ...input,
     outDir: input.baselineOutDir ?? join(input.outDir, "baseline"),
+    packPath: input.baselinePackPath,
   }, deps);
 }
 
 export function runSkillGuided(
   input: MdprSkillEvalInput & { sourceSha256: string },
   deps: EvalDeps = {},
-): EvalRunArtifacts & { hintsPath: string; hintGates: { schemaSync: EvalGateResult; boundary: EvalGateResult } } {
+): EvalRunArtifacts & { hintsPath?: string; hintGates: { schemaSync: EvalGateResult; boundary: EvalGateResult } } {
   const outDir = input.guidedOutDir ?? join(input.outDir, "guided");
   const preparedHints = prepareEvalHints(input, outDir, deps);
   const artifact = runEvalBuild({
     ...input,
     outDir,
     hintsPath: preparedHints.hintsPath,
+    packPath: input.guidedPackPath,
   }, deps);
   return { ...artifact, hintsPath: preparedHints.hintsPath, hintGates: preparedHints.gates };
 }
@@ -210,7 +306,16 @@ export function runMdprSkillEval(input: MdprSkillEvalInput, deps: EvalDeps = {})
   const thresholds = { ...DEFAULT_REGRESSION_THRESHOLDS, ...input.thresholds };
   const comparison = compareMdprRuns(baseline.metrics, skillGuided.metrics, thresholds);
   const reviewGate = buildReviewRegressionGate(baseline.review, skillGuided.review);
-  const overallStatus = [skillGuided.hintGates.schemaSync, skillGuided.hintGates.boundary, comparison.regressionGate, reviewGate]
+  const sufficientContextGate = buildSufficientContextGate(skillGuided.review);
+  const baselineEvidenceRetrieval = buildReviewEvidenceRetrievalPlan(baseline.review, {
+    artifactRoot: baseline.outDir,
+    exists: deps.exists,
+  });
+  const guidedEvidenceRetrieval = buildReviewEvidenceRetrievalPlan(skillGuided.review, {
+    artifactRoot: skillGuided.outDir,
+    exists: deps.exists,
+  });
+  const overallStatus = [skillGuided.hintGates.schemaSync, skillGuided.hintGates.boundary, comparison.regressionGate, reviewGate, sufficientContextGate]
     .every((gate) => gate.status === "pass") ? "pass" : "fail";
   const report: MdprSkillEvalReport = {
     schemaVersion: "mdpr-skill-eval-v1",
@@ -228,12 +333,19 @@ export function runMdprSkillEval(input: MdprSkillEvalInput, deps: EvalDeps = {})
       boundary: skillGuided.hintGates.boundary,
       regression: comparison.regressionGate,
       review: reviewGate,
+      sufficientContext: sufficientContextGate,
     },
     reviews: {
       baseline: baseline.review,
       skillGuided: skillGuided.review,
     },
+    evidenceRetrieval: {
+      baseline: baselineEvidenceRetrieval,
+      skillGuided: guidedEvidenceRetrieval,
+    },
     hintsPath: skillGuided.hintsPath,
+    baselinePackPath: input.baselinePackPath,
+    guidedPackPath: input.guidedPackPath,
     regressions: comparison.regressions,
     thresholds,
   };
@@ -310,6 +422,30 @@ export function buildReviewRegressionGate(baseline: ReviewRunSummary, skillGuide
   };
 }
 
+export function buildSufficientContextGate(review: ReviewRunSummary): EvalGateResult {
+  const materialFindings = review.findings.filter((finding) => finding.severity === "warning" || finding.severity === "error");
+  const missing = materialFindings.filter((finding) => !hasSufficientReviewEvidence(finding));
+  return {
+    status: missing.length === 0 ? "pass" : "fail",
+    findings: missing.map((finding) => `insufficient review evidence: ${finding.type} on ${finding.slideId ?? "deck"}`),
+    metrics: {
+      reviewFindingsChecked: materialFindings.length,
+      coveredReviewFindings: materialFindings.length - missing.length,
+      missingReviewEvidence: missing.length,
+    },
+  };
+}
+
+export function buildReviewEvidenceRetrievalPlan(
+  review: ReviewRunSummary,
+  options: EvidenceArtifactRetryOptions = {},
+): ReviewEvidenceRetrievalPlan {
+  return {
+    corpusCatalog: REVIEW_EVIDENCE_CORPUS_CATALOG,
+    routes: review.findings.map((finding) => routeReviewFindingEvidence(finding, options)),
+  };
+}
+
 function summarizeReviewFindings(findings: ReviewFinding[]): ReviewRunSummary {
   return {
     findingCount: findings.length,
@@ -321,27 +457,241 @@ function summarizeReviewFindings(findings: ReviewFinding[]): ReviewRunSummary {
   };
 }
 
+function routeReviewFindingEvidence(
+  finding: ReviewFinding,
+  options: EvidenceArtifactRetryOptions,
+): ReviewEvidenceRoute {
+  const evidence = asRecord(finding.evidence);
+  const route = new Set<EvidenceCorpusEntry["id"]>();
+  const coveredKeys: string[] = [];
+  if (evidence) {
+    if (hasAnyEvidenceKey(evidence, ["sourceSlideId", "blockIds", "evidenceBlockIds", "supportBlockIds", "captionBlockId", "evidenceBlockId"])) {
+      route.add("presentation-ir");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["sourceSlideId", "blockIds", "evidenceBlockIds", "supportBlockIds", "captionBlockId", "evidenceBlockId"]));
+    }
+    if (hasAnyEvidenceKey(evidence, ["layoutSlideIds", "regionIds", "evidenceLayoutSlideId", "captionLayoutSlideId"])) {
+      route.add("layout-ir");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["layoutSlideIds", "regionIds", "evidenceLayoutSlideId", "captionLayoutSlideId"]));
+    }
+    if (hasAnyEvidenceKey(evidence, ["objectKind", "role"])) {
+      route.add("pptx-object-map");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["objectKind", "role"]));
+    }
+    if (hasAnyEvidenceKey(evidence, ["screenshotPath"])) {
+      route.add("rendered-artifact");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["screenshotPath"]));
+    }
+    if (hasAnyEvidenceKey(evidence, ["selectionPath", "userInstruction"])) {
+      route.add("selection-context");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["selectionPath", "userInstruction"]));
+    }
+    if (hasAnyEvidenceKey(evidence, ["cssDeclaration", "feasibility", "riskLevel"])) {
+      route.add("design-analysis");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["cssDeclaration", "feasibility", "riskLevel"]));
+    }
+    if (hasAnyEvidenceKey(evidence, ["diagramId", "nodeCount", "edgeCount", "accentCount"])) {
+      route.add("diagram-metrics");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["diagramId", "nodeCount", "edgeCount", "accentCount"]));
+    }
+    if (hasAnyEvidenceKey(evidence, ["accentedObjects", "totalObjects", "pathCount", "distinctCount", "visualTreatmentCount", "ratio", "budget"])) {
+      route.add("mdpr-manifest");
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["accentedObjects", "totalObjects", "pathCount", "distinctCount", "visualTreatmentCount", "ratio", "budget"]));
+    }
+  }
+  const candidateCorpusIds = [...route];
+  const missingFacts = candidateCorpusIds.length > 0
+    ? []
+    : [evidence ? "no routed evidence corpus" : "missing evidence object"];
+  const status = missingFacts.length === 0 ? "covered" : "missing";
+  const feedbackQueries = status === "missing" ? followUpQueriesForFinding(finding, evidence) : [];
+  return {
+    findingType: finding.type,
+    severity: finding.severity,
+    ...(finding.slideId ? { slideId: finding.slideId } : {}),
+    candidateCorpusIds,
+    coveredEvidenceKeys: [...new Set(coveredKeys)].sort(),
+    missingFacts,
+    feedbackQueries,
+    artifactAttempts: buildArtifactAttempts(feedbackQueries, options),
+    status,
+  };
+}
+
+function buildArtifactAttempts(
+  feedbackQueries: ReviewEvidenceFeedbackQuery[],
+  options: EvidenceArtifactRetryOptions,
+): ReviewEvidenceArtifactAttempt[] {
+  if (!options.artifactRoot || feedbackQueries.length === 0) return [];
+  const exists = options.exists ?? existsSync;
+  const attempts: ReviewEvidenceArtifactAttempt[] = [];
+  for (const feedbackQuery of feedbackQueries) {
+    for (const targetCorpusId of feedbackQuery.targetCorpusIds) {
+      const candidatePaths = candidatePathsForEvidenceCorpus(options.artifactRoot, targetCorpusId);
+      const foundPaths = candidatePaths.filter((path) => exists(path));
+      attempts.push({
+        query: feedbackQuery.query,
+        targetCorpusId,
+        candidatePaths,
+        foundPaths,
+        status: foundPaths.length > 0 ? "found" : "missing",
+      });
+    }
+  }
+  return attempts;
+}
+
+function candidatePathsForEvidenceCorpus(
+  artifactRoot: string,
+  corpusId: EvidenceCorpusEntry["id"],
+): string[] {
+  const relativePaths: Record<EvidenceCorpusEntry["id"], string[]> = {
+    "mdpr-manifest": ["mdpresent-manifest.json", "manifest.json"],
+    "presentation-ir": ["presentation-ir.json", "presentation.json"],
+    "layout-ir": ["layout-ir.json", "layout.json"],
+    "pptx-object-map": ["mdpr-pptx-object-map.json", "pptx-object-map.json", "mdpresent-manifest.json"],
+    "rendered-artifact": ["contact-sheet.png", "deck.png", "slides/slide-1.png", "png/slide-1.png"],
+    "selection-context": ["selection-context.json", "review/selection-context.json"],
+    "design-analysis": ["html-design-analysis.json", "theme-candidate.json", "design-analysis.json"],
+    "diagram-metrics": ["diagram-metrics.json", "mdpresent-manifest.json"],
+  };
+  return relativePaths[corpusId].map((relativePath) => normalizeReportPath(join(artifactRoot, relativePath)));
+}
+
+function normalizeReportPath(path: string): string {
+  return path.replace(/\\/g, "/");
+}
+
+function followUpQueriesForFinding(
+  finding: ReviewFinding,
+  evidence: Record<string, unknown> | undefined,
+): ReviewEvidenceFeedbackQuery[] {
+  const slide = finding.slideId ?? "deck";
+  const type = finding.type.toUpperCase();
+  if (/CAPTION|ORPHAN|CLAIMLESS|SECTION|RHYTHM|GROUPING/.test(type)) {
+    return [{
+      query: `Collect source block ids, layout slide ids, and region assignments for ${finding.type} on ${slide}.`,
+      targetCorpusIds: ["presentation-ir", "layout-ir"],
+      reason: evidence ? "The finding evidence does not identify the source/layout objects needed for coherence review." : "The finding has no evidence object.",
+    }];
+  }
+  if (/NON_EDITABLE|OBJECT|RASTER/.test(type)) {
+    return [{
+      query: `Inspect PPTX object-map entries and renderer metadata for ${finding.type} on ${slide}.`,
+      targetCorpusIds: ["pptx-object-map", "mdpr-manifest"],
+      reason: evidence ? "The finding evidence does not identify the rendered object contract." : "The finding has no evidence object.",
+    }];
+  }
+  if (/PPT_EFFECT|DESIGN|CSS|TOKEN|HEX|RADIUS|SHADOW|EFFECT|ACCENT/.test(type)) {
+    return [{
+      query: `Collect design-analysis declarations and manifest metrics for ${finding.type} on ${slide}.`,
+      targetCorpusIds: ["design-analysis", "mdpr-manifest"],
+      reason: evidence ? "The finding evidence does not identify the design token or manifest metric source." : "The finding has no evidence object.",
+    }];
+  }
+  if (/DIAGRAM/.test(type)) {
+    return [{
+      query: `Collect diagram metrics and layout placement evidence for ${finding.type} on ${slide}.`,
+      targetCorpusIds: ["diagram-metrics", "layout-ir"],
+      reason: evidence ? "The finding evidence does not identify diagram metrics or layout placement." : "The finding has no evidence object.",
+    }];
+  }
+  return [{
+    query: `Collect source slide, block, layout, object-map, or rendered artifact evidence for ${finding.type} on ${slide}.`,
+    targetCorpusIds: ["presentation-ir", "layout-ir", "pptx-object-map", "rendered-artifact"],
+    reason: evidence ? "The finding has no routed evidence corpus yet." : "The finding has no evidence object.",
+  }];
+}
+
+function hasSufficientReviewEvidence(finding: ReviewFinding): boolean {
+  const evidence = asRecord(finding.evidence);
+  if (!evidence || Object.keys(evidence).length === 0) return false;
+  return hasNonEmptyArray(evidence, "blockIds")
+    || hasNonEmptyArray(evidence, "evidenceBlockIds")
+    || hasNonEmptyArray(evidence, "supportBlockIds")
+    || hasNonEmptyArray(evidence, "layoutSlideIds")
+    || hasNonEmptyArray(evidence, "regionIds")
+    || hasNonEmptyArray(evidence, "sampleLocations")
+    || hasString(evidence, "sourceSlideId")
+    || hasString(evidence, "evidenceBlockId")
+    || hasString(evidence, "captionBlockId")
+    || hasString(evidence, "screenshotPath")
+    || hasString(evidence, "selectionPath")
+    || hasString(evidence, "cssDeclaration")
+    || hasString(evidence, "diagramId")
+    || hasString(evidence, "objectKind")
+    || hasManifestMetricEvidence(evidence);
+}
+
+function hasManifestMetricEvidence(evidence: Record<string, unknown>): boolean {
+  return [
+    "accentedObjects",
+    "totalObjects",
+    "pathCount",
+    "distinctCount",
+    "visualTreatmentCount",
+    "nodeCount",
+    "edgeCount",
+    "accentCount",
+    "riskLevel",
+    "feasibility",
+  ].some((key) => evidence[key] !== undefined);
+}
+
+function hasNonEmptyArray(record: Record<string, unknown>, key: string): boolean {
+  return Array.isArray(record[key]) && (record[key] as unknown[]).length > 0;
+}
+
+function hasString(record: Record<string, unknown>, key: string): boolean {
+  return typeof record[key] === "string" && record[key].length > 0;
+}
+
+function hasAnyEvidenceKey(record: Record<string, unknown>, keys: string[]): boolean {
+  return keys.some((key) => {
+    const value = record[key];
+    return Array.isArray(value) ? value.length > 0 : value !== undefined && value !== "";
+  });
+}
+
+function presentEvidenceKeys(record: Record<string, unknown>, keys: string[]): string[] {
+  return keys.filter((key) => {
+    const value = record[key];
+    return Array.isArray(value) ? value.length > 0 : value !== undefined && value !== "";
+  });
+}
+
 function prepareEvalHints(
   input: MdprSkillEvalInput & { sourceSha256: string },
   guidedOutDir: string,
   deps: EvalDeps,
-): { hintsPath: string; gates: { schemaSync: EvalGateResult; boundary: EvalGateResult } } {
+): { hintsPath?: string; gates: { schemaSync: EvalGateResult; boundary: EvalGateResult } } {
   if (input.hintsPath) {
     const manifest = JSON.parse((deps.readText ?? ((path: string) => readFileSync(path, "utf-8")))(input.hintsPath));
     const gates = validateEvalHints(manifest, input.sourceSha256);
     assertHintGatesPass(gates);
     return { hintsPath: input.hintsPath, gates };
   }
-  if (!input.hintManifest) {
-    throw new Error("runSkillGuided requires hintsPath or hintManifest");
+  if (!input.hintManifest && (input.baselinePackPath || input.guidedPackPath)) {
+    return {
+      gates: {
+        schemaSync: { status: "pass", findings: [], metrics: { hintRail: "not-applicable" } },
+        boundary: { status: "pass", findings: [] },
+      },
+    };
   }
-  const gates = validateEvalHints(input.hintManifest, input.sourceSha256);
+  const manifest = input.hintManifest ?? {
+    schemaVersion: "mdpr-agent-hint-v1" as const,
+    sourceSha256: input.sourceSha256,
+    generatedBy: "mdpr-skill" as const,
+    generatedAt: new Date(0).toISOString(),
+    hints: [],
+  };
+  const gates = validateEvalHints(manifest, input.sourceSha256);
   assertHintGatesPass(gates);
   const mkdirp = deps.mkdirp ?? ((dir: string) => mkdirSync(dir, { recursive: true }));
   const writeText = deps.writeText ?? ((target: string, value: string) => writeFileSync(target, value, "utf-8"));
   const hintsPath = join(guidedOutDir, "agent-hint.json");
   mkdirp(dirname(hintsPath));
-  writeText(hintsPath, JSON.stringify(input.hintManifest, null, 2) + "\n");
+  writeText(hintsPath, JSON.stringify(manifest, null, 2) + "\n");
   return { hintsPath, gates };
 }
 

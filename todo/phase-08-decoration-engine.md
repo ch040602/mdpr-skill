@@ -1,28 +1,28 @@
-# Phase 08 — Decoration Engine
+# Phase 08 - Decoration Engine
 
 ## Goal
 
-CoherenceLock과 variant policy에 따라 typography/surface/accent/effect를 적용한다.
+Apply typography, surface, accent, and effect decisions according to `CoherenceLock` and variant policy.
 
 ## Tasks
 
-- [x] `design_components/decoration` 생성.
-- [x] typography spec builder 작성.
-- [x] surface spec builder 작성.
-- [x] border spec builder 작성.
-- [x] radius spec builder 작성.
-- [x] shadow spec builder 작성.
-- [x] accent spec builder 작성.
-- [x] element effect builder 작성.
-- [x] chart style spec builder 작성.
-- [x] table style spec builder 작성.
-- [x] code style spec builder 작성.
-- [x] KPI number/unit 2:1 ratio policy 구현.
-- [x] effect budget 적용.
-- [x] dense slide effect downshift 구현.
+- [x] Create `design_components/decoration`.
+- [x] Add typography spec builder.
+- [x] Add surface spec builder.
+- [x] Add border spec builder.
+- [x] Add radius spec builder.
+- [x] Add shadow spec builder.
+- [x] Add accent spec builder.
+- [x] Add element effect builder.
+- [x] Add chart style spec builder.
+- [x] Add table style spec builder.
+- [x] Add code style spec builder.
+- [x] Implement KPI number/unit 2:1 ratio policy.
+- [x] Apply effect budget.
+- [x] Implement dense slide effect downshift.
 
 ## Acceptance
 
-- [x] profile axes가 decoration 결과에 반영된다.
-- [x] radius/shadow/spacing/type scale이 deck 단위로 일관된다.
-- [x] effect budget 초과가 발생하지 않는다.
+- [x] Profile axes affect decoration output.
+- [x] Radius, shadow, spacing, and type scale are consistent at deck level.
+- [x] Effect budget is not exceeded.

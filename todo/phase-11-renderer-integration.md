@@ -1,38 +1,38 @@
-# Phase 11 — Renderer Integration
+# Phase 11 - Renderer Integration
 
 ## Goal
 
-StyledDeckIR을 PPTX/HTML/PDF로 렌더링한다.
+Render `StyledDeckIR` to PPTX, HTML, and PDF.
 
 ## Tasks
 
 ### PPTX
 
-- [x] `renderStyledDeckToPptx()` entrypoint 추가.
-- [x] `StyledElement -> editable text/shape/table/chart` mapping.
-- [x] surfaces as shapes.
-- [x] shadows/radius/borders mapping.
-- [x] chart/table/KPI rendering.
-- [x] source mapping metadata optional debug output.
-- [x] primary text flattening 금지.
+- [x] Add `renderStyledDeckToPptx()` entry point.
+- [x] Map `StyledElement` to editable text, shape, table, and chart objects.
+- [x] Render surfaces as shapes.
+- [x] Map shadows, radius, and borders.
+- [x] Render charts, tables, and KPI objects.
+- [x] Add optional source mapping metadata debug output.
+- [x] Do not flatten primary text.
 
 ### HTML
 
-- [x] `renderStyledDeckReportHtml()` entrypoint 추가.
-- [x] CSS variables 생성.
-- [x] profile/recipe/variant data attributes 생성.
-- [x] optional motion classes 생성.
-- [x] reduced motion 대응.
+- [x] Add `renderStyledDeckReportHtml()` entry point.
+- [x] Generate CSS variables.
+- [x] Generate profile/recipe/variant data attributes.
+- [x] Generate optional motion classes.
+- [x] Respect reduced motion.
 
 ### PDF
 
-- [x] styled HTML print path 연결.
-- [x] static fallback 확인.
-- [x] print CSS 확인.
+- [x] Connect styled HTML print path.
+- [x] Verify static fallback.
+- [x] Verify print CSS.
 
 ## Acceptance
 
-- [x] 동일 StyledDeckIR가 세 포맷으로 렌더링된다.
-- [x] PPTX 주요 텍스트/도형이 editable이다.
-- [x] HTML은 semantic structure와 CSS variables를 가진다.
-- [x] PDF는 static effects만 사용한다.
+- [x] The same `StyledDeckIR` renders to all three formats.
+- [x] Primary PPTX text and shapes are editable.
+- [x] HTML has semantic structure and CSS variables.
+- [x] PDF uses static effects only.

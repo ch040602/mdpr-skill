@@ -14,6 +14,11 @@ export type EditIntentPreferences = {
   groupingRole?: "claim" | "evidence-pack" | "workflow" | "summary" | "comparison";
   iconKeywordCandidates?: string[];
   preserveContent?: boolean;
+  splitPreference?: {
+    forceSingleSlide?: boolean;
+    splitBy?: "h2" | "h3" | "h4" | "block-group" | "list-chunk" | "none";
+    maxDensity?: number;
+  };
 };
 
 export type EditIntent = {
@@ -79,6 +84,30 @@ export function editIntentToChangeRequest(input: EditIntentChangeRequestInput): 
   });
 }
 
+export type MdprOverrideCandidate = {
+  version: "1.0";
+  operations: Array<{
+    op: "setSplit";
+    target: { slideId?: string; title?: string };
+    value: NonNullable<EditIntentPreferences["splitPreference"]>;
+    reason?: string;
+  }>;
+};
+
+export function editIntentToOverrideCandidate(intent: EditIntent): MdprOverrideCandidate {
+  const splitPreference = intent.preferences?.splitPreference;
+  if (!splitPreference) throw new Error("splitPreference is required to create a setSplit override candidate");
+  return {
+    version: "1.0",
+    operations: [{
+      op: "setSplit",
+      target: targetFromSlideRef(intent.target.slideRef),
+      value: splitPreference,
+      reason: intent.instruction,
+    }],
+  };
+}
+
 function validateSourceSha256(value: string): void {
   if (!/^[a-f0-9]{64}$/.test(value)) {
     throw new Error("sourceSha256 must be a 64-character lowercase hex string");
@@ -89,3 +118,7 @@ function uniqueNonEmpty(values: string[]): string[] {
   return [...new Set(values.map((value) => value.trim()).filter(Boolean))];
 }
 
+function targetFromSlideRef(slideRef: string): { slideId?: string; title?: string } {
+  const trimmed = slideRef.trim();
+  return trimmed.startsWith("slide-") ? { slideId: trimmed } : { title: trimmed };
+}

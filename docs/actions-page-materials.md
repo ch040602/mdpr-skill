@@ -8,10 +8,10 @@ This document lists the stable images that can be shown in GitHub Actions summar
 | --- | --- | --- |
 | `docs/assets/theme-style-cover-contact-sheet.png` | Compact cover-slide preview across theme style and color combinations | `artifacts/theme-style-color-matrix/theme-style-color-cover-contact-sheet.png` |
 | `docs/assets/theme-style-proof-contact-sheet.png` | Main README and Actions proof preview for theme/object coherence | `artifacts/theme-style-color-matrix/theme-style-color-proof-contact-sheet.png` |
-| `docs/assets/theme-decoration-review-matrix.png` | Object-shape grammar and structural diversity review preview | `artifacts/theme-decoration-review/png/슬라이드3.PNG` |
-| `docs/assets/theme-glass-proof.png` | Focus preview for glass-style PPT-native effects | `artifacts/theme-style-color-matrix/glass-violet-split/png/슬라이드6.PNG` |
-| `docs/assets/theme-newmorphism-proof.png` | Focus preview for soft paired-shadow newmorphism surfaces | `artifacts/theme-style-color-matrix/newmorphism-slate-analogous/png/슬라이드6.PNG` |
-| `docs/assets/theme-minimalism-proof.png` | Focus preview for whitespace-first minimalism surfaces | `artifacts/theme-style-color-matrix/minimalism-ink-mono/png/슬라이드6.PNG` |
+| `docs/assets/theme-decoration-review-matrix.png` | Object-shape grammar and structural diversity review preview | Generated decoration review PNG page 3 |
+| `docs/assets/theme-glass-proof.png` | Focus preview for glass-style PPT-native effects | Generated glass proof slide PNG |
+| `docs/assets/theme-newmorphism-proof.png` | Focus preview for soft paired-shadow newmorphism surfaces | Generated newmorphism proof slide PNG |
+| `docs/assets/theme-minimalism-proof.png` | Focus preview for whitespace-first minimalism surfaces | Generated minimalism proof slide PNG |
 
 ## Recommended Actions Summary
 

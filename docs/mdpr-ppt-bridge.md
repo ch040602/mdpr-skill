@@ -63,7 +63,19 @@ Forbidden bridge responsibilities:
   colors
 - applying pack or override candidates without explicit user approval
 
+Edit intents may express semantic split preferences such as preserving a dense
+slide as one generated slide. `mdpr-skill` can convert that preference into a
+`setSplit` override candidate, but the candidate remains in the approved
+override rail and must pass user approval before MDPR runtime use.
+The CLI path is `mdpr-skill edit override-candidate ...`; it emits an MDPR
+override manifest candidate and still avoids raw coordinates, colors, recipes,
+variants, and renderer object IDs.
+
 ## Schemas
+
+MDPR owns the source-of-truth contracts for bridge and design proposal schemas.
+`mdpr-skill` keeps synced copies only so its gates can validate companion
+artifacts before handing them to MDPR.
 
 `schemas/mdpr-ppt-selection.schema.json` defines `mdpr-ppt-selection-v1`.
 It may contain PowerPoint point units, raw shape snapshots, and style evidence
@@ -72,6 +84,17 @@ because it is a user-selected evidence rail.
 `schemas/mdpr-selection-context.schema.json` defines `mdpr-selection-context-v1`.
 It is the reduced context that review and hint code may consume. Coordinates
 remain evidence only; they are not final layout instructions.
+
+`schemas/mdpr-ppt-pack-candidate.schema.json` and
+`schemas/mdpr-user-override-candidate.schema.json` define approved bridge rail
+candidates. They may carry selected PowerPoint style or override evidence only
+after explicit user approval.
+
+`schemas/mdpr-theme-candidate.schema.json` and
+`schemas/mdpr-html-design-analysis.schema.json` define design proposal rail
+artifacts. They can contain tokens and PPT effect feasibility evidence, but
+they are not agent hints and must pass approval and MDPR pack import gates
+before runtime use.
 
 `schemas/mdpr-change-request.schema.json` defines `mdpr-change-request-v1`.
 It records proposal stages:
@@ -110,7 +133,12 @@ MDPR owns:
 - safe edit-intent proposal generation
 - review findings
 - baseline/guided evaluation
-- schema sync and boundary gates
+- schema sync and boundary gates, including synced MDPR bridge/design schemas:
+  `mdpr-pptx-object-map.schema.json`, `mdpr-selection-context.schema.json`,
+  `mdpr-ppt-selection.schema.json`, `mdpr-ppt-pack-candidate.schema.json`,
+  `mdpr-user-override-candidate.schema.json`,
+  `mdpr-theme-candidate.schema.json`, and
+  `mdpr-html-design-analysis.schema.json`
 - proposal reports and evidence paths
 
 `mdpr-ppt` owns:

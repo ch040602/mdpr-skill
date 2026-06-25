@@ -1,89 +1,65 @@
 # 01. Target Architecture
 
-## Target pipeline
+## Target Pipeline
 
 ```text
-┌────────────────────────┐
-│ Markdown / Input       │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ MDPR Parser / Splitter │
-│ - parse markdown       │
-│ - outline              │
-│ - slide split          │
-│ - element split        │
-│ - semantic tags        │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ Slide Element IR       │
-│ no visual fields       │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ Feature Extractor      │
-│ - density              │
-│ - count                │
-│ - element mix          │
-│ - size risk            │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ Design Components Rule Engine  │
-│ - profile selection    │
-│ - recipe selection     │
-│ - variant selection    │
-│ - conflict resolve     │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ Composition Engine     │
-│ - regions              │
-│ - boxes                │
-│ - fit                  │
-│ - safe area            │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ Decoration Engine      │
-│ - typography           │
-│ - surface              │
-│ - border/radius/shadow │
-│ - accent/effects       │
-│ - theme color binding  │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ Styled Deck IR         │
-└───────────┬────────────┘
-            ↓
-┌────────────────────────┐
-│ Renderer               │
-│ PPTX / HTML / PDF      │
-└────────────────────────┘
+Markdown / Input
+  -> MDPR Parser / Splitter
+      - parse Markdown
+      - build outline
+      - split slides
+      - split elements
+      - infer semantic tags
+  -> Slide Element IR
+      - no visual fields
+  -> Feature Extractor
+      - density
+      - counts
+      - element mix
+      - size risk
+  -> Design Components Rule Engine
+      - profile selection
+      - recipe selection
+      - variant selection
+      - conflict resolution
+  -> Composition Engine
+      - regions
+      - boxes
+      - fit
+      - safe area
+  -> Decoration Engine
+      - typography
+      - surface
+      - border/radius/shadow
+      - accent/effects
+      - theme color binding
+  -> Styled Deck IR
+  -> Renderer
+      - PPTX
+      - HTML
+      - PDF
 ```
 
-## Ownership table
+## Ownership Table
 
 | Concern | Owner | Notes |
-|---|---|---|
-| Markdown parsing | MDPR core | existing parser 유지 |
-| Heading-based split | MDPR core | existing split policy 재사용 |
-| Element extraction | MDPR core / element-ir | 신규 contract |
-| Element type inference | MDPR core | rule-first, agent hint optional |
-| Slide intent | MDPR core | deterministic first, optional agent hint validated |
-| Layout decision | Design Components composition | recipe 기반 |
-| Element box size | Design Components composition | region rule + fit policy |
-| Component variant | Design Components rule engine | deterministic selector |
-| Decoration | Design Components decoration | profile axes + variant policy |
-| Effects | Design Components decoration | effect budget + renderer capability |
-| PPT theme colors | Design Components decoration + design_components/pptx | ColorRef -> scheme color |
-| Editable object rendering | design_components/pptx | no text flattening |
-| HTML report motion | report-html | reduced motion respect |
-| PDF static report output | report-pdf | HTML print/static |
+| --- | --- | --- |
+| Markdown parsing | MDPR core | Keep the existing parser path |
+| Heading-based splitting | MDPR core | Reuse the existing split policy |
+| Element extraction | MDPR core / element-ir | New contract |
+| Element type inference | MDPR core | Rule-first, optional agent hint |
+| Slide intent | MDPR core | Deterministic first, validated optional agent hint |
+| Layout decision | Design Components composition | Recipe based |
+| Element box size | Design Components composition | Region rules plus fit policy |
+| Component variant | Design Components rule engine | Deterministic selector |
+| Decoration | Design Components decoration | Profile axes plus variant policy |
+| Effects | Design Components decoration | Effect budget plus renderer capability |
+| PPT theme colors | Design Components decoration + design_components/pptx | `ColorRef` to scheme color |
+| Editable object rendering | design_components/pptx | No text flattening |
+| HTML report motion | report-html | Respect reduced motion |
+| PDF static report output | report-pdf | HTML print/static output |
 
-## New packages
+## New Packages
 
 ```text
 packages/element-ir
@@ -93,7 +69,7 @@ design_components/decoration
 design_components/design-source-adapter
 ```
 
-## Existing packages affected
+## Existing Packages Affected
 
 ```text
 packages/core
@@ -106,9 +82,10 @@ examples/
 tests/
 ```
 
-## Legacy compatibility
+## Legacy Compatibility
 
-기존 `layout.engine: rule` 경로는 유지한다. 신규 경로는 아래 config로만 활성화한다.
+The existing `layout.engine: rule` path remains available. The new path is only
+enabled by explicit config:
 
 ```yaml
 pipeline:
@@ -119,7 +96,7 @@ designComponents:
     mode: rule-based
 ```
 
-또는 CLI:
+or by CLI:
 
 ```bash
 mdpresent build deck.md --style-engine design-components --style-select rule-based
