@@ -147,6 +147,21 @@ mdpr-skill edit override-candidate \
   --out .mdpresent/proposals/research.override.json
 ```
 
+Create a proposal from a PowerPoint selection captured with `mdpr-ppt`:
+
+```bash
+mdpr-skill ppt propose \
+  --selection-context .mdpresent/review/selection-context.json \
+  --hints-out .mdpresent/proposals/agent-hint.json \
+  --out .mdpresent/proposals/ppt-selection.change-request.json
+```
+
+Use this after selecting an object in PowerPoint, opening the `MDPR` tab, and
+copying `Copy Selection Context` from the `Inspect Selection` task pane. The
+command emits weak semantic hints and an approval-bound edit-intent change
+request. It does not emit coordinates, colors, z-order, recipes, or renderer
+object IDs; MDPR still owns final layout and rendering.
+
 `eval-core` can run a deterministic baseline MDPR build, rerun MDPR with a
 schema-valid `agent-hint.json`, compare quality and performance metrics, and
 emit an `mdpr-skill-eval-v1` report. The comparison gate tracks overflow,

@@ -2,10 +2,10 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { buildAgentHintManifest } from "../../hints-core/src/index";
+import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index";
 import { buildReviewReport, reviewCoherence, reviewDesignPolicy, reviewVisualPolicy } from "../../review-core/src/index";
 import { runMdprSkillEval } from "../../eval-core/src/index";
-import { transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index";
+import { createChangeRequest, transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index";
 import { buildEditIntent, editIntentToOverrideCandidate, type EditIntentPreferences } from "../../edit-core/src/index";
 import { analyzeHtmlDesign, buildThemeCandidateFromDesignMd } from "./commands/design";
 import { runValidateSchemaSync } from "./commands/validateSchemaSync";
@@ -36,6 +36,7 @@ export function runCli(argv: string[], io: CliIo = defaultIo): number {
     if (command === "review") return runReviewCommand(args, io);
     if (command === "eval") return runEvalCommand(args, io);
     if (command === "edit") return runEditCommand(args, io);
+    if (command === "ppt") return runPptCommand(args, io);
     if (command === "design") return runDesignCommand(args, io);
     if (command === "change") return runChangeCommand(args, io);
 
@@ -57,6 +58,7 @@ function helpText(): string {
     "  review --manifest <manifest.json> [--presentation <presentation-ir.json>] [--layout <layout-ir.json>] --out <review-report.json>",
     "  eval <deck.md> --out <dir> [--mdpr-path <MdPr>] [--hints <agent-hint.json>]",
     "  edit override-candidate --source-sha256 <64hex> --slide-ref <slide> --instruction <text> --split-by <h3|none> --out <override.json>",
+    "  ppt propose --selection-context <selection-context.json> --out <change-request.json> [--hints-out <agent-hint.json>]",
     "  design import <DESIGN.md> --out <theme-candidate.json>",
     "  design analyze-html <file.html> --out <html-design-analysis.json>",
     "  gate validate-schema-sync --mdpr-path <MdPr> [--shared-schema <name[,name]>]",
@@ -75,6 +77,69 @@ function runSchemaSyncCommand(args: string[], io: CliIo): number {
   });
   io.stdout(JSON.stringify(result, null, 2));
   return result.status === "pass" ? 0 : 1;
+}
+
+function runPptCommand(args: string[], io: CliIo): number {
+  const subcommand = args.shift();
+  if (subcommand !== "propose") throw new Error("ppt requires propose");
+  const options = parseOptions(args);
+  const selectionContextPath = requireOption(options, "selection-context");
+  const context = readJson(selectionContextPath) as SelectionContext;
+  validateSelectionContext(context);
+  const hint = hintFromSelectionContext(context);
+  const hintManifest = buildAgentHintManifest(context.source.sourceSha256, [hint], {
+    generatedAt: options["generated-at"],
+    mdprVersion: options["mdpr-version"],
+  });
+  const instruction = options.instruction ?? context.userInstruction ?? "Use the selected PowerPoint object context to preserve related content while MDPR owns final layout.";
+  const intent = buildEditIntent({
+    id: options.id ? `${options.id}-intent` : `ppt-selection-${context.slideId}-intent`,
+    sourceSha256: context.source.sourceSha256,
+    instruction,
+    target: {
+      slideRef: context.slideId,
+      blockHints: context.overlappedBlocks ?? [],
+      regionHints: context.overlappedRegions ?? [],
+    },
+    preferences: {
+      preserveContent: true,
+      groupingRole: (context.overlappedBlocks?.length ?? 0) >= 2 ? "evidence-pack" : "summary",
+    },
+  });
+  const changeRequest = createChangeRequest({
+    id: options.id ?? `ppt-selection-${context.slideId}`,
+    createdBy: "mdpr-skill",
+    sourceSha256: context.source.sourceSha256,
+    selectionRef: context.selectionPath ?? selectionContextPath,
+    changes: [
+      { kind: "agent-hint", hintManifest },
+      { kind: "edit-intent", intent },
+    ],
+  });
+  if (options["hints-out"]) writeJson(options["hints-out"], hintManifest);
+  const outPath = requireOption(options, "out");
+  writeJson(outPath, changeRequest);
+  io.stdout(JSON.stringify({
+    status: "pass",
+    out: outPath,
+    hintsOut: options["hints-out"],
+    hints: hintManifest.hints.length,
+    stage: changeRequest.stage,
+  }, null, 2));
+  return 0;
+}
+
+function validateSelectionContext(context: SelectionContext): void {
+  if (context.schemaVersion !== "mdpr-selection-context-v1") {
+    throw new Error("selection context must use schemaVersion mdpr-selection-context-v1");
+  }
+  if (!context.source || (context.source.kind !== "mdpr-ppt" && context.source.kind !== "mdpr-preview")) {
+    throw new Error("selection context source.kind must be mdpr-ppt or mdpr-preview");
+  }
+  if (!/^[a-f0-9]{64}$/.test(context.source.sourceSha256)) {
+    throw new Error("selection context source.sourceSha256 must be a 64-character lowercase hex digest");
+  }
+  if (!context.slideId?.trim()) throw new Error("selection context slideId is required");
 }
 
 function runEditCommand(args: string[], io: CliIo): number {

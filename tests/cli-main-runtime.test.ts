@@ -86,6 +86,58 @@ test("runCli writes an edit-intent setSplit override candidate", () => {
   }
 });
 
+test("runCli converts a PowerPoint selection context into hint and change proposal", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-ppt-"));
+  try {
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const hintsPath = join(workDir, "agent-hint.json");
+    const changePath = join(workDir, "change-request.json");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-ppt",
+        sourceSha256: "c".repeat(64),
+      },
+      slideId: "slide-4",
+      overlappedBlocks: ["b12", "b13"],
+      overlappedRegions: ["region-main"],
+      selectionPath: ".mdpresent/ppt/selection.json",
+      userInstruction: "Keep this selected table and caption together.",
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "ppt",
+      "propose",
+      "--selection-context",
+      selectionContextPath,
+      "--out",
+      changePath,
+      "--hints-out",
+      hintsPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const hints = JSON.parse(readFileSync(hintsPath, "utf-8"));
+    const change = JSON.parse(readFileSync(changePath, "utf-8"));
+    assert.equal(hints.schemaVersion, "mdpr-agent-hint-v1");
+    assert.deepEqual(hints.hints[0].groupCandidates[0].elementIds, ["b12", "b13"]);
+    assert.equal(change.schemaVersion, "mdpr-change-request-v1");
+    assert.equal(change.stage, "proposed");
+    assert.equal(change.source.selectionRef, ".mdpresent/ppt/selection.json");
+    assert.equal(change.changes[0].kind, "agent-hint");
+    assert.equal(change.changes[1].kind, "edit-intent");
+    assert.deepEqual(change.changes[1].intent.target.blockHints, ["b12", "b13"]);
+    assert.deepEqual(change.changes[1].intent.target.regionHints, ["region-main"]);
+    assert.equal(JSON.stringify(change).includes('"x"'), false);
+    assert.equal(JSON.stringify(change).includes('"color"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
 test("runCli validates schema sync through semantic comparison", () => {
   const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-schema-"));
   try {
