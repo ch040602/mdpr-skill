@@ -3,7 +3,7 @@ import { dirname } from "node:path";
 import { mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index";
-import { buildReviewReport, reviewCoherence, reviewDesignPolicy, reviewVisualPolicy } from "../../review-core/src/index";
+import { buildReviewReport, buildSourceSlideEvidenceLedger, reviewAccessibilityContent, reviewCitationProvenance, reviewCoherence, reviewDesignPolicy, reviewNarrativeSpine, reviewRenderedPreviewCritique, reviewSpeakerNotes, reviewTemplateLayoutIntent, reviewVisualPolicy, type CitationSource, type MdprEvidenceRef, type RenderedPreviewImage } from "../../review-core/src/index";
 import { runMdprSkillEval } from "../../eval-core/src/index";
 import { createChangeRequest, transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index";
 import { buildEditIntent, editIntentToOverrideCandidate, type EditIntentPreferences } from "../../edit-core/src/index";
@@ -34,6 +34,13 @@ export function runCli(argv: string[], io: CliIo = defaultIo): number {
     }
     if (command === "hint") return runHintCommand(args, io);
     if (command === "review") return runReviewCommand(args, io);
+    if (command === "narrative") return runNarrativeCommand(args, io);
+    if (command === "layout-intent") return runLayoutIntentCommand(args, io);
+    if (command === "speaker-notes") return runSpeakerNotesCommand(args, io);
+    if (command === "citations") return runCitationsCommand(args, io);
+    if (command === "rendered-preview") return runRenderedPreviewCommand(args, io);
+    if (command === "accessibility") return runAccessibilityCommand(args, io);
+    if (command === "evidence-ledger") return runEvidenceLedgerCommand(args, io);
     if (command === "eval") return runEvalCommand(args, io);
     if (command === "edit") return runEditCommand(args, io);
     if (command === "ppt") return runPptCommand(args, io);
@@ -56,6 +63,13 @@ function helpText(): string {
     "Commands:",
     "  hint --source-sha256 <64hex> --out <agent-hint.json>",
     "  review --manifest <manifest.json> [--presentation <presentation-ir.json>] [--layout <layout-ir.json>] --out <review-report.json>",
+    "  narrative --markdown <deck.md> [--manifest <manifest.json>] [--source-notes <notes.md>] --out <narrative-review.json>",
+    "  layout-intent --layout-catalog <catalog.json> --out <layout-intent.json>",
+    "  speaker-notes --markdown <deck.md> [--source-notes <notes.md>] --out <speaker-notes.json>",
+    "  citations --markdown <deck.md> [--sources <sources.json>] [--as-of <YYYY-MM-DD>] --out <citation-review.json>",
+    "  rendered-preview --images <images.json> --out <rendered-preview-review.json>",
+    "  accessibility --markdown <deck.md> [--audience <audience>] --out <accessibility-review.json>",
+    "  evidence-ledger --markdown <deck.md> [--sources <sources.json>] [--mdpr-evidence <evidence.json>] --out <evidence-ledger.json>",
     "  eval <deck.md> --out <dir> [--mdpr-path <MdPr>] [--hints <agent-hint.json>]",
     "  edit override-candidate --source-sha256 <64hex> --slide-ref <slide> --instruction <text> --split-by <h3|none> --out <override.json>",
     "  ppt propose --selection-context <selection-context.json> --out <change-request.json> [--hints-out <agent-hint.json>]",
@@ -203,6 +217,126 @@ function runReviewCommand(args: string[], io: CliIo): number {
   return 0;
 }
 
+function runNarrativeCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const markdownPath = requireOption(options, "markdown");
+  const suggestions = reviewNarrativeSpine({
+    markdown: readFileSync(markdownPath, "utf-8"),
+    manifest: options.manifest ? readJson(options.manifest) : undefined,
+    sourceNotes: options["source-notes"] ? readFileSync(options["source-notes"], "utf-8") : undefined,
+    sourcePath: markdownPath,
+  });
+  const report = {
+    schemaVersion: "mdpr-narrative-review-v1",
+    generatedBy: "mdpr-skill",
+    suggestions,
+  };
+  writeJson(requireOption(options, "out"), report);
+  io.stdout(JSON.stringify({ status: "pass", suggestions: suggestions.length, out: options.out }, null, 2));
+  return 0;
+}
+
+function runLayoutIntentCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const catalogPath = requireOption(options, "layout-catalog");
+  const hints = reviewTemplateLayoutIntent({
+    layoutCatalog: readJson(catalogPath),
+    sourcePath: catalogPath,
+  });
+  const report = {
+    schemaVersion: "mdpr-layout-intent-review-v1",
+    generatedBy: "mdpr-skill",
+    hints,
+  };
+  writeJson(requireOption(options, "out"), report);
+  io.stdout(JSON.stringify({ status: "pass", hints: hints.length, out: options.out }, null, 2));
+  return 0;
+}
+
+function runSpeakerNotesCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const markdownPath = requireOption(options, "markdown");
+  const suggestions = reviewSpeakerNotes({
+    markdown: readFileSync(markdownPath, "utf-8"),
+    sourceNotes: options["source-notes"] ? readFileSync(options["source-notes"], "utf-8") : undefined,
+    sourcePath: markdownPath,
+  });
+  const report = {
+    schemaVersion: "mdpr-speaker-notes-review-v1",
+    generatedBy: "mdpr-skill",
+    suggestions,
+  };
+  writeJson(requireOption(options, "out"), report);
+  io.stdout(JSON.stringify({ status: "pass", suggestions: suggestions.length, out: options.out }, null, 2));
+  return 0;
+}
+
+function runCitationsCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const markdownPath = requireOption(options, "markdown");
+  const findings = reviewCitationProvenance({
+    markdown: readFileSync(markdownPath, "utf-8"),
+    sources: options.sources ? readSources(options.sources) : undefined,
+    asOfDate: options["as-of"],
+    sourcePath: markdownPath,
+  });
+  const report = {
+    schemaVersion: "mdpr-citation-review-v1",
+    generatedBy: "mdpr-skill",
+    findings,
+  };
+  writeJson(requireOption(options, "out"), report);
+  io.stdout(JSON.stringify({ status: "pass", findings: findings.length, out: options.out }, null, 2));
+  return 0;
+}
+
+function runRenderedPreviewCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const notes = reviewRenderedPreviewCritique({
+    renderedImages: readRenderedImages(requireOption(options, "images")),
+  });
+  const report = {
+    schemaVersion: "mdpr-rendered-preview-review-v1",
+    generatedBy: "mdpr-skill",
+    notes,
+  };
+  writeJson(requireOption(options, "out"), report);
+  io.stdout(JSON.stringify({ status: "pass", notes: notes.length, out: options.out }, null, 2));
+  return 0;
+}
+
+function runAccessibilityCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const markdownPath = requireOption(options, "markdown");
+  const suggestions = reviewAccessibilityContent({
+    markdown: readFileSync(markdownPath, "utf-8"),
+    audience: options.audience,
+    sourcePath: markdownPath,
+  });
+  const report = {
+    schemaVersion: "mdpr-accessibility-content-review-v1",
+    generatedBy: "mdpr-skill",
+    suggestions,
+  };
+  writeJson(requireOption(options, "out"), report);
+  io.stdout(JSON.stringify({ status: "pass", suggestions: suggestions.length, out: options.out }, null, 2));
+  return 0;
+}
+
+function runEvidenceLedgerCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const markdownPath = requireOption(options, "markdown");
+  const ledger = buildSourceSlideEvidenceLedger({
+    markdown: readFileSync(markdownPath, "utf-8"),
+    sources: options.sources ? readSources(options.sources) : undefined,
+    mdprEvidence: options["mdpr-evidence"] ? readMdprEvidence(options["mdpr-evidence"]) : undefined,
+    sourcePath: markdownPath,
+  });
+  writeJson(requireOption(options, "out"), ledger);
+  io.stdout(JSON.stringify({ status: "pass", entries: ledger.entries.length, out: options.out }, null, 2));
+  return 0;
+}
+
 function runEvalCommand(args: string[], io: CliIo): number {
   const deckPath = args.shift();
   if (!deckPath || deckPath.startsWith("--")) throw new Error("eval requires <deck.md>");
@@ -297,6 +431,24 @@ function requireOption(options: Record<string, string>, key: string): string {
 
 function readJson(path: string): Record<string, unknown> {
   return JSON.parse(readFileSync(path, "utf-8")) as Record<string, unknown>;
+}
+
+function readSources(path: string): CitationSource[] {
+  const value = readJson(path);
+  const sources = Array.isArray(value.sources) ? value.sources : Array.isArray(value) ? value : [];
+  return sources.map((source) => source && typeof source === "object" ? source as CitationSource : {});
+}
+
+function readRenderedImages(path: string): RenderedPreviewImage[] {
+  const value = readJson(path);
+  const images = Array.isArray(value.images) ? value.images : Array.isArray(value) ? value : [];
+  return images.map((image) => image && typeof image === "object" ? image as RenderedPreviewImage : { imagePath: "" });
+}
+
+function readMdprEvidence(path: string): MdprEvidenceRef[] {
+  const value = readJson(path);
+  const evidence = Array.isArray(value.evidence) ? value.evidence : Array.isArray(value) ? value : [];
+  return evidence.map((item) => item && typeof item === "object" ? item as MdprEvidenceRef : { evidenceId: "" });
 }
 
 function writeJson(path: string, value: unknown): void {

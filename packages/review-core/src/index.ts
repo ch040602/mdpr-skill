@@ -42,6 +42,194 @@ export type ScreenshotEvidenceInput = {
   blockIds?: string[];
 };
 
+export type NarrativeSpineInput = {
+  markdown: string;
+  manifest?: Record<string, unknown>;
+  sourceNotes?: string;
+  sourcePath?: string;
+};
+
+export type NarrativeSpineSuggestion = {
+  type: "NARRATIVE_CLAIM_TITLE_WEAK" | "NARRATIVE_SECTION_FLOW_GAP";
+  kind: "claim-title" | "section-flow";
+  generatedBy: "mdpr-skill";
+  evidence: {
+    sourcePath: string;
+    markdownHeading: string;
+    manifestSlideCount?: number;
+    sourceNotesExcerpt?: string;
+  };
+  suggestion: {
+    action: "rewrite-title-as-claim" | "add-section-transition";
+    text: string;
+  };
+};
+
+export type TemplateLayoutIntentInput = {
+  layoutCatalog?: Record<string, unknown>;
+  templateSummary?: Record<string, unknown>;
+  sourcePath?: string;
+};
+
+export type TemplateLayoutIntentHint = {
+  type: "TEMPLATE_LAYOUT_INTENT";
+  kind: "semantic-layout-intent";
+  generatedBy: "mdpr-skill";
+  intent: "comparison" | "chart-focus" | "evidence" | "section-divider";
+  evidence: {
+    sourcePath: string;
+    layoutLabel: string;
+    placeholderRoles: string[];
+  };
+  hint: {
+    suitableFor: string[];
+    rationale: string;
+  };
+};
+
+export type SpeakerNotesInput = {
+  markdown: string;
+  sourceNotes?: string;
+  sourcePath?: string;
+};
+
+export type SpeakerNoteSuggestion = {
+  type: "SPEAKER_NOTE_DRAFT" | "REVIEW_COMMENT_DRAFT";
+  kind: "speaker-note" | "review-comment";
+  generatedBy: "mdpr-skill";
+  evidence: {
+    sourcePath: string;
+    markdownHeading: string;
+    sourceExcerpt?: string;
+    sourceNotesExcerpt?: string;
+  };
+  suggestion: {
+    text: string;
+  };
+};
+
+export type CitationSource = {
+  id?: string;
+  title?: string;
+  date?: string;
+  path?: string;
+  url?: string;
+};
+
+export type CitationProvenanceInput = {
+  markdown: string;
+  sources?: CitationSource[];
+  asOfDate?: string;
+  sourcePath?: string;
+};
+
+export type CitationProvenanceFinding = {
+  type: "CITATION_MISSING" | "CLAIM_UNSUPPORTED" | "SOURCE_STALE";
+  kind: "missing-citation" | "unsupported-claim" | "stale-source";
+  generatedBy: "mdpr-skill";
+  evidence: {
+    sourcePath: string;
+    markdownExcerpt?: string;
+    sourceId?: string;
+    sourceDate?: string;
+    sourcePathOrUrl?: string;
+  };
+  suggestion: {
+    text: string;
+  };
+};
+
+export type RenderedPreviewImage = {
+  slideId?: string;
+  imagePath: string;
+  contactSheetPath?: string;
+  mdprFindingId?: string;
+  mdprFindingType?: string;
+};
+
+export type RenderedPreviewCritiqueInput = {
+  renderedImages: RenderedPreviewImage[];
+};
+
+export type RenderedPreviewCritiqueNote = {
+  type: "RENDERED_PREVIEW_CONCERN_NOTE";
+  kind: "visual-concern-note";
+  generatedBy: "mdpr-skill";
+  evidence: {
+    slideId?: string;
+    renderedImagePath: string;
+    contactSheetPath?: string;
+    mdprFindingId?: string;
+    mdprFindingType?: string;
+  };
+  note: {
+    text: string;
+  };
+  boundary: {
+    mdprValidationAuthority: true;
+    llmMayOverrideMdprGate: false;
+  };
+};
+
+export type AccessibilityContentInput = {
+  markdown: string;
+  audience?: string;
+  sourcePath?: string;
+};
+
+export type AccessibilityContentSuggestion = {
+  type: "ALT_TEXT_DRAFT" | "PLAIN_LANGUAGE_CHECK" | "ACRONYM_EXPANSION" | "AUDIENCE_FIT_NOTE";
+  kind: "alt-text-draft" | "plain-language" | "acronym-expansion" | "audience-fit";
+  generatedBy: "mdpr-skill";
+  evidence: {
+    sourcePath: string;
+    markdownExcerpt?: string;
+    imagePath?: string;
+    acronym?: string;
+    audience?: string;
+  };
+  suggestion: {
+    text: string;
+  };
+  boundary: {
+    mdprVisualAccessibilityAuthority: true;
+  };
+};
+
+export type MdprEvidenceRef = {
+  evidenceId: string;
+  slideId?: string;
+  kind?: "text" | "table" | "chart" | "image" | "code" | "diagram" | string;
+  path?: string;
+};
+
+export type SourceSlideEvidenceLedgerInput = {
+  markdown: string;
+  sources?: CitationSource[];
+  mdprEvidence?: MdprEvidenceRef[];
+  sourcePath?: string;
+};
+
+export type SourceSlideEvidenceLedger = {
+  schemaVersion: "mdpr-source-slide-evidence-ledger-v1";
+  generatedBy: "mdpr-skill";
+  entries: SourceSlideEvidenceLedgerEntry[];
+};
+
+export type SourceSlideEvidenceLedgerEntry = {
+  slideRef: string;
+  sourcePath: string;
+  claimExcerpt: string;
+  sources: Array<{
+    sourceId?: string;
+    title?: string;
+    date?: string;
+    path?: string;
+    url?: string;
+  }>;
+  mdprEvidenceRefs: MdprEvidenceRef[];
+};
+
 type BlockLike = {
   id: string;
   type: string;
@@ -144,6 +332,292 @@ export function reviewSelectionContext(input: ReviewCoreInput): ReviewFinding[] 
       value: 0.1,
     },
   }];
+}
+
+export function reviewNarrativeSpine(input: NarrativeSpineInput): NarrativeSpineSuggestion[] {
+  const sections = parseMarkdownSections(input.markdown);
+  const evidence = narrativeEvidenceBase(input);
+  const suggestions: NarrativeSpineSuggestion[] = [];
+  const weakClaimSection = sections.find((section) => headingNeedsClaim(section) && sectionHasEvidence(section));
+
+  if (weakClaimSection) {
+    suggestions.push({
+      type: "NARRATIVE_CLAIM_TITLE_WEAK",
+      kind: "claim-title",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        ...evidence,
+        markdownHeading: weakClaimSection.heading,
+      },
+      suggestion: {
+        action: "rewrite-title-as-claim",
+        text: `Rewrite "${weakClaimSection.heading}" as a claim title that states the takeaway before the evidence.`,
+      },
+    });
+  }
+
+  if (sections.length >= 2 && !sections.some((section) => /why|so what|implication|transition/i.test(section.heading))) {
+    suggestions.push({
+      type: "NARRATIVE_SECTION_FLOW_GAP",
+      kind: "section-flow",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        ...evidence,
+        markdownHeading: sections.map((section) => section.heading).join(" -> "),
+      },
+      suggestion: {
+        action: "add-section-transition",
+        text: "Add a short transition or implication section so the deck explains why the evidence leads to the recommended action.",
+      },
+    });
+  }
+
+  return suggestions;
+}
+
+export function reviewTemplateLayoutIntent(input: TemplateLayoutIntentInput): TemplateLayoutIntentHint[] {
+  const layouts = normalizeTemplateLayouts(input.layoutCatalog ?? input.templateSummary);
+  return layouts.map((layout) => {
+    const intent = inferTemplateIntent(layout.label, layout.roles);
+    return {
+      type: "TEMPLATE_LAYOUT_INTENT",
+      kind: "semantic-layout-intent",
+      generatedBy: "mdpr-skill",
+      intent,
+      evidence: {
+        sourcePath: input.sourcePath ?? "template-layout-catalog",
+        layoutLabel: layout.label,
+        placeholderRoles: layout.roles,
+      },
+      hint: {
+        suitableFor: suitableContentForIntent(intent),
+        rationale: layoutIntentRationale(intent, layout.roles),
+      },
+    };
+  });
+}
+
+export function reviewSpeakerNotes(input: SpeakerNotesInput): SpeakerNoteSuggestion[] {
+  const sections = parseMarkdownSections(input.markdown);
+  const sourcePath = input.sourcePath ?? "markdown";
+  const noteSection = sections.find((section) => section.body.join("\n").trim().length > 0);
+  const suggestions: SpeakerNoteSuggestion[] = [];
+  if (noteSection) {
+    const excerpt = firstMeaningfulLine(noteSection.body) ?? noteSection.heading;
+    suggestions.push({
+      type: "SPEAKER_NOTE_DRAFT",
+      kind: "speaker-note",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        sourcePath,
+        markdownHeading: noteSection.heading,
+        sourceExcerpt: excerpt,
+      },
+      suggestion: {
+        text: `Presenter note for "${noteSection.heading}": state the takeaway, cite the visible evidence, then close with the decision or implication.`,
+      },
+    });
+  }
+  if (input.sourceNotes?.trim()) {
+    const target = sections[sections.length - 1]?.heading ?? "deck";
+    suggestions.push({
+      type: "REVIEW_COMMENT_DRAFT",
+      kind: "review-comment",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        sourcePath,
+        markdownHeading: target,
+        sourceNotesExcerpt: input.sourceNotes.trim().slice(0, 160),
+      },
+      suggestion: {
+        text: "Reviewer comment: tighten the talk track around the audience need, the main risk, and the decision requested.",
+      },
+    });
+  }
+  return suggestions;
+}
+
+export function reviewCitationProvenance(input: CitationProvenanceInput): CitationProvenanceFinding[] {
+  const sourcePath = input.sourcePath ?? "markdown";
+  const findings: CitationProvenanceFinding[] = [];
+  const lines = input.markdown.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const claimLine = lines.find((line) => hasQuantitativeClaim(line) && !hasCitationMarker(line));
+  if (claimLine) {
+    findings.push({
+      type: "CITATION_MISSING",
+      kind: "missing-citation",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        sourcePath,
+        markdownExcerpt: claimLine.slice(0, 180),
+      },
+      suggestion: {
+        text: "Add a citation or source note for the quantitative claim before using it in a slide.",
+      },
+    });
+  }
+
+  const unsupported = lines.find((line) => hasStrongClaim(line) && !hasCitationMarker(line));
+  if (unsupported) {
+    findings.push({
+      type: "CLAIM_UNSUPPORTED",
+      kind: "unsupported-claim",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        sourcePath,
+        markdownExcerpt: unsupported.slice(0, 180),
+      },
+      suggestion: {
+        text: "Attach explicit source evidence or soften the unsupported claim.",
+      },
+    });
+  }
+
+  const asOf = input.asOfDate ? Date.parse(input.asOfDate) : undefined;
+  if (asOf !== undefined && Number.isFinite(asOf)) {
+    for (const source of input.sources ?? []) {
+      const sourceTime = source.date ? Date.parse(source.date) : undefined;
+      if (sourceTime === undefined || !Number.isFinite(sourceTime)) continue;
+      const ageDays = Math.floor((asOf - sourceTime) / 86_400_000);
+      if (ageDays < 365 * 3) continue;
+      findings.push({
+        type: "SOURCE_STALE",
+        kind: "stale-source",
+        generatedBy: "mdpr-skill",
+        evidence: {
+          sourcePath,
+          sourceId: source.id ?? source.title ?? "source",
+          sourceDate: source.date,
+          sourcePathOrUrl: source.path ?? source.url,
+        },
+        suggestion: {
+          text: "Refresh or qualify this source because it is older than three years.",
+        },
+      });
+    }
+  }
+
+  return dedupeCitationFindings(findings);
+}
+
+export function reviewRenderedPreviewCritique(input: RenderedPreviewCritiqueInput): RenderedPreviewCritiqueNote[] {
+  return input.renderedImages
+    .filter((image) => image.imagePath.trim().length > 0)
+    .map((image) => ({
+      type: "RENDERED_PREVIEW_CONCERN_NOTE",
+      kind: "visual-concern-note",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        ...(image.slideId ? { slideId: image.slideId } : {}),
+        renderedImagePath: image.imagePath,
+        ...(image.contactSheetPath ? { contactSheetPath: image.contactSheetPath } : {}),
+        ...(image.mdprFindingId ? { mdprFindingId: image.mdprFindingId } : {}),
+        ...(image.mdprFindingType ? { mdprFindingType: image.mdprFindingType } : {}),
+      },
+      note: {
+        text: "Review the rendered preview for visual concerns and keep MDPR rule findings as the validation authority.",
+      },
+      boundary: {
+        mdprValidationAuthority: true,
+        llmMayOverrideMdprGate: false,
+      },
+    }));
+}
+
+export function reviewAccessibilityContent(input: AccessibilityContentInput): AccessibilityContentSuggestion[] {
+  const sourcePath = input.sourcePath ?? "markdown";
+  const suggestions: AccessibilityContentSuggestion[] = [];
+  const imageWithoutAlt = [...input.markdown.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)]
+    .find((match) => !match[1]?.trim() && match[2]?.trim());
+  if (imageWithoutAlt) {
+    const imagePath = imageWithoutAlt[2]!.trim();
+    suggestions.push({
+      type: "ALT_TEXT_DRAFT",
+      kind: "alt-text-draft",
+      generatedBy: "mdpr-skill",
+      evidence: { sourcePath, imagePath, markdownExcerpt: imageWithoutAlt[0] },
+      suggestion: {
+        text: `Draft concise alt text for ${imagePath} that states the chart or image takeaway without describing layout.`,
+      },
+      boundary: { mdprVisualAccessibilityAuthority: true },
+    });
+  }
+
+  const longLine = input.markdown.split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => line.length > 150);
+  if (longLine) {
+    suggestions.push({
+      type: "PLAIN_LANGUAGE_CHECK",
+      kind: "plain-language",
+      generatedBy: "mdpr-skill",
+      evidence: { sourcePath, markdownExcerpt: longLine.slice(0, 180) },
+      suggestion: {
+        text: "Rewrite this sentence into shorter, audience-readable language before converting it into slide content.",
+      },
+      boundary: { mdprVisualAccessibilityAuthority: true },
+    });
+  }
+
+  const acronym = firstUnexpandedAcronym(input.markdown);
+  if (acronym) {
+    suggestions.push({
+      type: "ACRONYM_EXPANSION",
+      kind: "acronym-expansion",
+      generatedBy: "mdpr-skill",
+      evidence: { sourcePath, acronym },
+      suggestion: {
+        text: `Expand ${acronym} on first use or add a short speaker note for audiences that may not know it.`,
+      },
+      boundary: { mdprVisualAccessibilityAuthority: true },
+    });
+  }
+
+  const audienceLine = input.markdown.split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => /\b(obviously|everyone|always|single best|clearly)\b/i.test(line));
+  if (audienceLine) {
+    suggestions.push({
+      type: "AUDIENCE_FIT_NOTE",
+      kind: "audience-fit",
+      generatedBy: "mdpr-skill",
+      evidence: {
+        sourcePath,
+        audience: input.audience,
+        markdownExcerpt: audienceLine.slice(0, 180),
+      },
+      suggestion: {
+        text: `Adjust the claim for ${input.audience ?? "the target audience"} by stating the assumption and decision relevance explicitly.`,
+      },
+      boundary: { mdprVisualAccessibilityAuthority: true },
+    });
+  }
+
+  return suggestions;
+}
+
+export function buildSourceSlideEvidenceLedger(input: SourceSlideEvidenceLedgerInput): SourceSlideEvidenceLedger {
+  const sourcePath = input.sourcePath ?? "markdown";
+  const sections = parseMarkdownSections(input.markdown);
+  const entries = sections
+    .map((section) => {
+      const claimExcerpt = firstClaimLine(section);
+      if (!claimExcerpt) return undefined;
+      return {
+        slideRef: section.heading,
+        sourcePath,
+        claimExcerpt,
+        sources: sourcesForClaim(claimExcerpt, input.sources ?? []),
+        mdprEvidenceRefs: (input.mdprEvidence ?? []).filter((evidence) => evidence.slideId === section.heading),
+      } satisfies SourceSlideEvidenceLedgerEntry;
+    })
+    .filter((entry): entry is SourceSlideEvidenceLedgerEntry => Boolean(entry));
+
+  return {
+    schemaVersion: "mdpr-source-slide-evidence-ledger-v1",
+    generatedBy: "mdpr-skill",
+    entries,
+  };
 }
 
 export function detachedCaptionFindings(model: ReviewModel | ReviewCoreInput): ReviewFinding[] {
@@ -606,6 +1080,170 @@ function normalizeLayoutSlides(value: unknown): LayoutSlideLike[] {
       }),
     };
   });
+}
+
+type MarkdownSection = {
+  level: number;
+  heading: string;
+  body: string[];
+};
+
+function parseMarkdownSections(markdown: string): MarkdownSection[] {
+  const sections: MarkdownSection[] = [];
+  for (const line of markdown.split(/\r?\n/)) {
+    const heading = /^(#{2,6})\s+(.+?)\s*$/.exec(line);
+    if (heading) {
+      sections.push({ level: heading[1]!.length, heading: heading[2]!.trim(), body: [] });
+      continue;
+    }
+    if (sections.length) sections[sections.length - 1]!.body.push(line);
+  }
+  return sections;
+}
+
+function headingNeedsClaim(section: MarkdownSection): boolean {
+  const words = section.heading.split(/\s+/).filter(Boolean);
+  if (words.length <= 2) return true;
+  return !/\b(is|are|was|were|drives|drops|rises|falls|needs|shows|proves|requires|wins|loses)\b/i.test(section.heading);
+}
+
+function sectionHasEvidence(section: MarkdownSection): boolean {
+  const body = section.body.join("\n");
+  return /^\s*\|.+\|\s*$/m.test(body) || /\b(chart|table|figure|source|metric|rate|revenue|cost|conversion|activation|retention)\b|%/.test(body);
+}
+
+function firstMeaningfulLine(lines: string[]): string | undefined {
+  return lines.map((line) => line.trim()).find((line) => line.length > 0 && !/^[-*]\s*$/.test(line))?.slice(0, 160);
+}
+
+function firstClaimLine(section: MarkdownSection): string | undefined {
+  return section.body
+    .map((line) => line.trim())
+    .find((line) => !line.startsWith("!") && (hasQuantitativeClaim(line) || hasStrongClaim(line)))
+    ?.slice(0, 220);
+}
+
+function sourcesForClaim(claimExcerpt: string, sources: CitationSource[]): SourceSlideEvidenceLedgerEntry["sources"] {
+  const numericCitation = /\[\^?(\d+)\]/.exec(claimExcerpt);
+  if (numericCitation) {
+    const source = sources[Number(numericCitation[1]) - 1];
+    return source ? [sourceToLedgerSource(source)] : [];
+  }
+  const namedSource = sources.find((source) => {
+    const title = source.title?.toLowerCase();
+    const sourceId = source.id?.toLowerCase();
+    const claim = claimExcerpt.toLowerCase();
+    return Boolean(title && claim.includes(title)) || Boolean(sourceId && claim.includes(sourceId));
+  });
+  return namedSource ? [sourceToLedgerSource(namedSource)] : [];
+}
+
+function sourceToLedgerSource(source: CitationSource): SourceSlideEvidenceLedgerEntry["sources"][number] {
+  return {
+    ...(source.id ? { sourceId: source.id } : {}),
+    ...(source.title ? { title: source.title } : {}),
+    ...(source.date ? { date: source.date } : {}),
+    ...(source.path ? { path: source.path } : {}),
+    ...(source.url ? { url: source.url } : {}),
+  };
+}
+
+function hasCitationMarker(line: string): boolean {
+  return /\[\^?\w+\]|\(\s*https?:\/\/|source:/i.test(line);
+}
+
+function hasQuantitativeClaim(line: string): boolean {
+  return /\b\d+(?:\.\d+)?\s*(?:%|percent\b|x\b|k\b|m\b|b\b|ms\b|s\b|days?\b|weeks?\b|months?\b|years?\b)/i.test(line);
+}
+
+function hasStrongClaim(line: string): boolean {
+  return /\b(proves?|shows?|confirms?|demonstrates?|reduces?|increases?|drives?|causes?)\b/i.test(line);
+}
+
+function firstUnexpandedAcronym(markdown: string): string | undefined {
+  const matches = markdown.match(/\b[A-Z]{2,}\b/g) ?? [];
+  return matches.find((acronym) => !new RegExp(`\\(${escapeRegExp(acronym)}\\)`).test(markdown));
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function dedupeCitationFindings(findings: CitationProvenanceFinding[]): CitationProvenanceFinding[] {
+  const seen = new Set<string>();
+  return findings.filter((finding) => {
+    const key = `${finding.kind}:${finding.evidence.markdownExcerpt ?? finding.evidence.sourceId ?? ""}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function narrativeEvidenceBase(input: NarrativeSpineInput): Omit<NarrativeSpineSuggestion["evidence"], "markdownHeading"> {
+  const metrics = asRecord(input.manifest?.metrics);
+  const manifestSlideCount = numberValue(metrics?.slideCount) ?? numberValue(input.manifest?.slideCount);
+  return {
+    sourcePath: input.sourcePath ?? "markdown",
+    ...(manifestSlideCount !== undefined ? { manifestSlideCount } : {}),
+    ...(input.sourceNotes ? { sourceNotesExcerpt: input.sourceNotes.trim().slice(0, 160) } : {}),
+  };
+}
+
+type TemplateLayoutLike = {
+  label: string;
+  roles: string[];
+};
+
+function normalizeTemplateLayouts(value: unknown): TemplateLayoutLike[] {
+  const record = asRecord(value);
+  const layouts = asArray(record?.layouts ?? record?.slideLayouts ?? record?.masters);
+  return layouts.map((layoutValue, index) => {
+    const layout = asRecord(layoutValue) ?? {};
+    const placeholders = asArray(layout.placeholders ?? layout.shapes ?? layout.slots).map((placeholder) => asRecord(placeholder) ?? {});
+    return {
+      label: stringValue(layout.name) ?? stringValue(layout.title) ?? stringValue(layout.label) ?? `layout-${index + 1}`,
+      roles: [...new Set(placeholders.map((placeholder) => normalizedPlaceholderRole(placeholder)).filter(Boolean))],
+    };
+  }).filter((layout) => layout.roles.length > 0);
+}
+
+function normalizedPlaceholderRole(placeholder: Record<string, unknown>): string {
+  const raw = stringValue(placeholder.role)
+    ?? stringValue(placeholder.kind)
+    ?? stringValue(placeholder.type)
+    ?? stringValue(placeholder.placeholderType)
+    ?? "";
+  const normalized = raw.toLowerCase();
+  if (/chart|graph|plot/.test(normalized)) return "chart";
+  if (/table|grid/.test(normalized)) return "table";
+  if (/image|picture|media/.test(normalized)) return "image";
+  if (/title|heading/.test(normalized)) return "title";
+  if (/subtitle|caption|note/.test(normalized)) return "support";
+  if (/body|content|text/.test(normalized)) return "body";
+  return normalized.replace(/[^a-z0-9-]+/g, "-");
+}
+
+function inferTemplateIntent(label: string, roles: string[]): TemplateLayoutIntentHint["intent"] {
+  const haystack = `${label} ${roles.join(" ")}`.toLowerCase();
+  const bodyLikeCount = roles.filter((role) => role === "body" || role === "table" || role === "image").length;
+  if (/compare|versus|vs|two column|before after/.test(haystack) || bodyLikeCount >= 2 && roles.includes("body")) return "comparison";
+  if (roles.includes("chart")) return "chart-focus";
+  if (roles.includes("table") || roles.includes("image")) return "evidence";
+  return "section-divider";
+}
+
+function suitableContentForIntent(intent: TemplateLayoutIntentHint["intent"]): string[] {
+  if (intent === "comparison") return ["tradeoff", "before-after", "option-comparison"];
+  if (intent === "chart-focus") return ["metric-trend", "chart-with-commentary", "quantitative-evidence"];
+  if (intent === "evidence") return ["table-evidence", "image-evidence", "artifact-summary"];
+  return ["section-break", "agenda-transition", "chapter-title"];
+}
+
+function layoutIntentRationale(intent: TemplateLayoutIntentHint["intent"], roles: string[]): string {
+  if (intent === "comparison") return `Multiple comparable content roles suggest a comparison layout intent. Roles: ${roles.join(", ")}.`;
+  if (intent === "chart-focus") return `Chart placeholders suggest a quantitative evidence layout intent. Roles: ${roles.join(", ")}.`;
+  if (intent === "evidence") return `Evidence placeholders suggest a source artifact or data display intent. Roles: ${roles.join(", ")}.`;
+  return `Title-oriented placeholders suggest a section transition intent. Roles: ${roles.join(", ")}.`;
 }
 
 function isReviewModel(value: ReviewModel | ReviewCoreInput): value is ReviewModel {

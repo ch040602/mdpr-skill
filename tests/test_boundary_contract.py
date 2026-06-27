@@ -43,8 +43,7 @@ class BoundaryContractTest(unittest.TestCase):
 
     def test_skill_docs_forbid_final_decision_fields(self):
         docs = [
-            ROOT / "skills" / "mdpr-design-components" / "SKILL.md",
-            ROOT / "skills" / "mdpr-design-review" / "SKILL.md",
+            ROOT / "skills" / "mdpr-skill" / "SKILL.md",
             ROOT / "docs" / "agent-hint-guide.md",
         ]
         required = ["coordinates", "colors", "typography", "z-order", "renderer"]
@@ -52,6 +51,66 @@ class BoundaryContractTest(unittest.TestCase):
             text = path.read_text(encoding="utf-8").lower()
             missing = [term for term in required if not re.search(rf"\b{re.escape(term)}\b", text)]
             self.assertEqual(missing, [], f"{path.relative_to(ROOT)} misses boundary terms")
+
+    def test_unified_skill_covers_semantic_hints_and_design_review(self):
+        text = (ROOT / "skills" / "mdpr-skill" / "SKILL.md").read_text(encoding="utf-8").lower()
+
+        semantic_terms = [
+            "semantic hints",
+            "intent",
+            "grouping",
+            "importance",
+            "icon-search keywords",
+            "agent-hint.json",
+        ]
+        review_terms = [
+            "design coherence audit",
+            "raw hex",
+            "mixed radius family",
+            "mixed shadow family",
+            "mixed spacing scale",
+            "mixed type scale",
+            "non-editable",
+        ]
+
+        missing_semantic = [term for term in semantic_terms if term not in text]
+        missing_review = [term for term in review_terms if term not in text]
+
+        self.assertEqual(missing_semantic, [], "unified skill misses semantic hint responsibilities")
+        self.assertEqual(missing_review, [], "unified skill misses design review responsibilities")
+
+    def test_unified_skill_forbids_llm_replacement_of_mdpr_validation(self):
+        text = (ROOT / "skills" / "mdpr-skill" / "SKILL.md").read_text(encoding="utf-8").lower()
+
+        required_boundary_terms = [
+            "overflow",
+            "text clipping",
+            "overline",
+            "coherence",
+            "mdpr validation",
+            "llm judgment",
+            "must not override",
+        ]
+        missing = [term for term in required_boundary_terms if term not in text]
+
+        self.assertEqual(missing, [], "unified skill must not let LLM review replace MDPR validation gates")
+
+    def test_generator_comparison_doc_is_not_runtime_fallback_policy(self):
+        path = ROOT / "docs" / "generator-comparison.md"
+        self.assertTrue(path.exists(), "generator comparison doc must exist")
+        text = path.read_text(encoding="utf-8").lower()
+
+        required_terms = [
+            "pptxgenjs",
+            "python-pptx",
+            "comparison points only",
+            "not dependencies",
+            "not fallback renderers",
+            "mdpr remains the deterministic runtime",
+        ]
+        missing = [term for term in required_terms if term not in text]
+
+        self.assertEqual(missing, [], "generator comparison doc must keep external generators out of runtime policy")
 
 
 if __name__ == "__main__":

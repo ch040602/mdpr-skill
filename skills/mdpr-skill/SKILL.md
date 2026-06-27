@@ -17,6 +17,18 @@ Use this skill as the optional Codex companion for MDPR. MDPR remains the determ
 - Preserve the ability to build the same deck with all agent hints disabled.
 - Do not mutate source Markdown unless the user explicitly asks for a cleaned source draft.
 
+## LLM-Assisted PPTX Review Boundary
+
+Use LLM judgment only for semantic, narrative, evidence, and review-note
+assistance. It must not override MDPR validation or replace deterministic
+overflow, text clipping, overline, coherence, spacing, type, radius, shadow,
+raw-hex, editability, or renderer gates.
+
+When an LLM review mentions these issues, ground the note in an MDPR report
+finding, rendered evidence path, manifest field, or explicit source excerpt.
+Treat the LLM note as triage or explanation only; MDPR validation remains the
+source of truth for pass/fail status and release gating.
+
 ## Main Workflows
 
 ### Semantic Hints
@@ -48,6 +60,81 @@ Useful local command:
 ```bash
 node bin/mdpr-skill.js review --manifest dist/mdpresent-manifest.json --out .mdpresent/review/review-report.json
 ```
+
+### Narrative Spine Review
+
+Use when source Markdown needs content-level review before MDPR renders or
+rebuilds a deck.
+
+- Read Markdown, optional MDPR manifest summaries, and optional source notes.
+- Emit claim-title and section-flow suggestions only.
+- Include provenance such as source path, manifest slide count, heading text,
+  or source-note excerpt.
+- Do not emit layout IDs, placeholder IDs, coordinates, colors, typography,
+  renderer object IDs, or pass/fail validation decisions.
+
+Useful local command:
+
+```bash
+node bin/mdpr-skill.js narrative --markdown deck.md --manifest dist/mdpresent-manifest.json --source-notes notes.md --out .mdpresent/review/narrative-review.json
+```
+
+### Template Layout Intent Review
+
+Use when a PPTX template has been summarized as a layout catalog and the deck
+needs semantic layout-intent hints before MDPR chooses any actual layout.
+
+- Read layout names and placeholder roles from a layout catalog or template
+  summary.
+- Emit semantic intents such as comparison, chart-focus, evidence, or
+  section-divider.
+- Include provenance through the catalog path, layout label, and placeholder
+  roles.
+- Do not emit placeholder coordinates, placeholder IDs, layout IDs, layout
+  selection decisions, colors, typography, or renderer object IDs.
+
+Useful local command:
+
+```bash
+node bin/mdpr-skill.js layout-intent --layout-catalog template-layout-catalog.json --out .mdpresent/review/layout-intent.json
+```
+
+### LLM-Assisted Content Review Helpers
+
+Use when the source needs semantic or editorial review before MDPR renders, or
+when MDPR-rendered evidence needs a human-readable review artifact.
+
+- `speaker-notes`: draft presenter notes and reviewer comments from Markdown
+  and optional source notes.
+- `citations`: flag missing citations, stale sources, and unsupported claims
+  from source metadata.
+- `rendered-preview`: consume MDPR-generated PNG/contact-sheet paths and emit
+  visual concern notes only.
+- `accessibility`: draft alt text, plain-language, acronym expansion, and
+  audience-fit suggestions.
+- `evidence-ledger`: map slide claims to source metadata and MDPR evidence IDs.
+
+These helpers may cite source paths, headings, rendered image paths, MDPR
+finding IDs, source IDs, and evidence IDs. They must not emit coordinates,
+colors, typography, z-order, geometry, renderer object IDs, or pass/fail
+validation decisions.
+
+Useful local commands:
+
+```bash
+node bin/mdpr-skill.js speaker-notes --markdown deck.md --source-notes notes.md --out .mdpresent/review/speaker-notes.json
+node bin/mdpr-skill.js citations --markdown deck.md --sources sources.json --as-of 2026-06-27 --out .mdpresent/review/citation-review.json
+node bin/mdpr-skill.js rendered-preview --images rendered-images.json --out .mdpresent/review/rendered-preview-review.json
+node bin/mdpr-skill.js accessibility --markdown deck.md --audience "executive review" --out .mdpresent/review/accessibility-review.json
+node bin/mdpr-skill.js evidence-ledger --markdown deck.md --sources sources.json --mdpr-evidence mdpr-evidence.json --out .mdpresent/review/evidence-ledger.json
+```
+
+### Generator Comparison Boundary
+
+PptxGenJS, python-pptx, and other PPTX generators are comparison points only.
+Use them to describe capability vocabulary or benchmark context; do not add
+them as dependencies, fallback renderers, or alternate runtimes. MDPR remains
+the deterministic runtime.
 
 ### Design Components Boundary
 

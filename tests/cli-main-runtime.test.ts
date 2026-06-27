@@ -16,6 +16,13 @@ test("runCli exposes help and command groups", () => {
   assert.match(output.join("\n"), /mdpr-skill/);
   assert.match(output.join("\n"), /hint/);
   assert.match(output.join("\n"), /review/);
+  assert.match(output.join("\n"), /narrative/);
+  assert.match(output.join("\n"), /layout-intent/);
+  assert.match(output.join("\n"), /speaker-notes/);
+  assert.match(output.join("\n"), /citations/);
+  assert.match(output.join("\n"), /rendered-preview/);
+  assert.match(output.join("\n"), /accessibility/);
+  assert.match(output.join("\n"), /evidence-ledger/);
   assert.match(output.join("\n"), /eval/);
   assert.match(output.join("\n"), /design/);
   assert.match(output.join("\n"), /edit/);
@@ -192,6 +199,330 @@ test("runCli validates schema sync through semantic comparison", () => {
 
     assert.equal(exitCode, 0);
     assert.equal(JSON.parse(output.join("\n")).status, "pass");
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes narrative-spine suggestions from Markdown without final design fields", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-narrative-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const manifestPath = join(workDir, "mdpresent-manifest.json");
+    const notesPath = join(workDir, "notes.md");
+    const outPath = join(workDir, "narrative-review.json");
+    writeFileSync(markdownPath, [
+      "# Growth Review",
+      "## Activation",
+      "### Data",
+      "| step | rate |",
+      "| --- | --- |",
+      "| Trial | 42% |",
+      "### Action",
+      "- Fix onboarding friction before adding acquisition spend.",
+    ].join("\n"), "utf-8");
+    writeFileSync(manifestPath, JSON.stringify({
+      metrics: { slideCount: 2 },
+      source: { sha256: "d".repeat(64) },
+    }), "utf-8");
+    writeFileSync(notesPath, "Audience: executive review. Lead with claims.", "utf-8");
+
+    const exitCode = runCli([
+      "narrative",
+      "--markdown",
+      markdownPath,
+      "--manifest",
+      manifestPath,
+      "--source-notes",
+      notesPath,
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(report.schemaVersion, "mdpr-narrative-review-v1");
+    assert.equal(report.generatedBy, "mdpr-skill");
+    assert.deepEqual(report.suggestions.map((suggestion: { kind: string }) => suggestion.kind).sort(), [
+      "claim-title",
+      "section-flow",
+    ]);
+    assert.equal(report.suggestions.every((suggestion: { evidence: { sourcePath: string } }) => suggestion.evidence.sourcePath === markdownPath), true);
+    assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+    assert.equal(JSON.stringify(report).includes('"layoutId"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes semantic layout-intent hints from a layout catalog", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-layout-intent-"));
+  try {
+    const catalogPath = join(workDir, "layout-catalog.json");
+    const outPath = join(workDir, "layout-intent.json");
+    writeFileSync(catalogPath, JSON.stringify({
+      layouts: [
+        {
+          layoutId: "tpl-compare-01",
+          name: "Two Column Comparison",
+          placeholders: [
+            { id: "title", role: "title", x: 0.2, y: 0.1 },
+            { id: "left", role: "body", x: 0.5, y: 1.2 },
+            { id: "right", role: "body", x: 6.8, y: 1.2 },
+          ],
+        },
+      ],
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "layout-intent",
+      "--layout-catalog",
+      catalogPath,
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(report.schemaVersion, "mdpr-layout-intent-review-v1");
+    assert.equal(report.generatedBy, "mdpr-skill");
+    assert.equal(report.hints[0].intent, "comparison");
+    assert.equal(report.hints[0].evidence.sourcePath, catalogPath);
+    assert.equal(JSON.stringify(report).includes("layoutId"), false);
+    assert.equal(JSON.stringify(report).includes('"x"'), false);
+    assert.equal(JSON.stringify(report).includes('"id"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes speaker notes and comments from Markdown without final design fields", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-speaker-notes-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const notesPath = join(workDir, "notes.md");
+    const outPath = join(workDir, "speaker-notes.json");
+    writeFileSync(markdownPath, [
+      "# Launch Readout",
+      "## Activation",
+      "Activation rose to 42% after onboarding fixes.",
+      "## Next Decision",
+      "- Shift budget from acquisition into retention experiments.",
+    ].join("\n"), "utf-8");
+    writeFileSync(notesPath, "Reviewer asks for a sharper executive talk track and one risk callout.", "utf-8");
+
+    const exitCode = runCli([
+      "speaker-notes",
+      "--markdown",
+      markdownPath,
+      "--source-notes",
+      notesPath,
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(report.schemaVersion, "mdpr-speaker-notes-review-v1");
+    assert.equal(report.generatedBy, "mdpr-skill");
+    assert.deepEqual(report.suggestions.map((suggestion: { kind: string }) => suggestion.kind).sort(), ["review-comment", "speaker-note"]);
+    assert.equal(report.suggestions.every((suggestion: { evidence: { sourcePath: string } }) => suggestion.evidence.sourcePath === markdownPath), true);
+    assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+    assert.equal(JSON.stringify(report).includes('"layoutId"'), false);
+    assert.equal(JSON.stringify(report).includes('"x"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes citation provenance findings from Markdown and source metadata", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-citations-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const sourcesPath = join(workDir, "sources.json");
+    const outPath = join(workDir, "citations.json");
+    writeFileSync(markdownPath, [
+      "# Retention Research",
+      "## Churn",
+      "Activation rose by 42% after onboarding changes.",
+      "This proves the retention program reduces churn for enterprise users.",
+      "According to the market benchmark, teams need faster reporting.[^1]",
+      "[^1]: Vendor benchmark, 2022-01-10.",
+    ].join("\n"), "utf-8");
+    writeFileSync(sourcesPath, JSON.stringify({
+      sources: [{ id: "vendor-benchmark", title: "Vendor benchmark", date: "2022-01-10", path: "sources/vendor.md" }],
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "citations",
+      "--markdown",
+      markdownPath,
+      "--sources",
+      sourcesPath,
+      "--as-of",
+      "2026-06-27",
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(report.schemaVersion, "mdpr-citation-review-v1");
+    assert.equal(report.generatedBy, "mdpr-skill");
+    assert.deepEqual(report.findings.map((finding: { kind: string }) => finding.kind).sort(), [
+      "missing-citation",
+      "stale-source",
+      "unsupported-claim",
+    ]);
+    assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+    assert.equal(JSON.stringify(report).includes('"layoutId"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes rendered preview critique notes from image evidence", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-rendered-preview-"));
+  try {
+    const imagesPath = join(workDir, "images.json");
+    const outPath = join(workDir, "rendered-preview.json");
+    writeFileSync(imagesPath, JSON.stringify({
+      images: [
+        { slideId: "slide-1", imagePath: "png/slide-01.png", contactSheetPath: "contact-sheet.png" },
+        { slideId: "slide-2", imagePath: "png/slide-02.png", mdprFindingId: "overflow-2", mdprFindingType: "TEXT_OVERFLOW" },
+      ],
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "rendered-preview",
+      "--images",
+      imagesPath,
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(report.schemaVersion, "mdpr-rendered-preview-review-v1");
+    assert.equal(report.generatedBy, "mdpr-skill");
+    assert.equal(report.notes.length, 2);
+    assert.equal(report.notes.every((note: { kind: string }) => note.kind === "visual-concern-note"), true);
+    assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+    assert.equal(JSON.stringify(report).includes('"verdict"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes accessibility content suggestions from Markdown", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-accessibility-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const outPath = join(workDir, "accessibility.json");
+    writeFileSync(markdownPath, [
+      "# Operator Review",
+      "## ARR",
+      "![](charts/arr-growth.png)",
+      "ARR is obviously the single best metric because this extremely long operating sentence compresses multiple assumptions about sales motion onboarding maturity finance timing and executive ownership into one breathless claim that should be rewritten for readers.",
+    ].join("\n"), "utf-8");
+
+    const exitCode = runCli([
+      "accessibility",
+      "--markdown",
+      markdownPath,
+      "--audience",
+      "executive operators",
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(report.schemaVersion, "mdpr-accessibility-content-review-v1");
+    assert.equal(report.generatedBy, "mdpr-skill");
+    assert.deepEqual(report.suggestions.map((suggestion: { kind: string }) => suggestion.kind).sort(), [
+      "acronym-expansion",
+      "alt-text-draft",
+      "audience-fit",
+      "plain-language",
+    ]);
+    assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+    assert.equal(JSON.stringify(report).includes('"fontSize"'), false);
+    assert.equal(JSON.stringify(report).includes('"verdict"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes source-to-slide evidence ledger", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-evidence-ledger-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const sourcesPath = join(workDir, "sources.json");
+    const evidencePath = join(workDir, "mdpr-evidence.json");
+    const outPath = join(workDir, "evidence-ledger.json");
+    writeFileSync(markdownPath, [
+      "# Pipeline Review",
+      "## Activation",
+      "Activation rose by 42% after onboarding changes.[^1]",
+      "![Activation chart](charts/activation.png)",
+      "## Retention",
+      "The cohort table shows enterprise retention improved.[^2]",
+    ].join("\n"), "utf-8");
+    writeFileSync(sourcesPath, JSON.stringify({
+      sources: [
+        { id: "growth-study", title: "Growth study", date: "2026-01-10", path: "sources/growth.md" },
+        { id: "cohort-table", title: "Cohort table", date: "2026-02-10", path: "sources/cohort.csv" },
+      ],
+    }), "utf-8");
+    writeFileSync(evidencePath, JSON.stringify({
+      evidence: [
+        { evidenceId: "chart-activation", slideId: "Activation", kind: "chart", path: "charts/activation.png" },
+        { evidenceId: "table-retention", slideId: "Retention", kind: "table", path: "tables/retention.csv" },
+      ],
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "evidence-ledger",
+      "--markdown",
+      markdownPath,
+      "--sources",
+      sourcesPath,
+      "--mdpr-evidence",
+      evidencePath,
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(report.schemaVersion, "mdpr-source-slide-evidence-ledger-v1");
+    assert.equal(report.generatedBy, "mdpr-skill");
+    assert.deepEqual(report.entries.map((entry: { slideRef: string }) => entry.slideRef), ["Activation", "Retention"]);
+    assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+    assert.equal(JSON.stringify(report).includes('"layoutId"'), false);
+    assert.equal(JSON.stringify(report).includes('"verdict"'), false);
   } finally {
     rmSync(workDir, { recursive: true, force: true });
   }

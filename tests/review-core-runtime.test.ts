@@ -2,9 +2,16 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   reviewCoherence,
+  reviewCitationProvenance,
+  reviewAccessibilityContent,
   reviewDesignPolicy,
   reviewVisualPolicy,
   reviewFindingHasFinalDecisionField,
+  reviewNarrativeSpine,
+  reviewRenderedPreviewCritique,
+  reviewSpeakerNotes,
+  buildSourceSlideEvidenceLedger,
+  reviewTemplateLayoutIntent,
   screenshotEvidence,
   reviewSelectionContext,
 } from "../packages/review-core/src/index";
@@ -303,4 +310,207 @@ test("reviewDesignPolicy reports design rail risks without final design fields",
   ].sort());
   assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
   assert.equal(findings.every((finding) => finding.suggestion), true);
+});
+
+test("reviewNarrativeSpine emits claim-title and section-flow suggestions only", () => {
+  const suggestions = reviewNarrativeSpine({
+    markdown: [
+      "# Growth Review",
+      "## Activation",
+      "### Data",
+      "| step | rate |",
+      "| --- | --- |",
+      "| Trial | 42% |",
+      "### Action",
+      "- Fix onboarding friction before adding acquisition spend.",
+    ].join("\n"),
+    manifest: {
+      metrics: { slideCount: 2 },
+      source: { sha256: "d".repeat(64) },
+    },
+    sourceNotes: "Audience: executive review. The deck needs explicit claims before evidence.",
+    sourcePath: "growth-review.md",
+  });
+
+  assert.deepEqual(suggestions.map((suggestion) => suggestion.kind).sort(), [
+    "claim-title",
+    "section-flow",
+  ]);
+  assert.equal(suggestions.every((suggestion) => suggestion.generatedBy === "mdpr-skill"), true);
+  assert.equal(suggestions.every((suggestion) => suggestion.evidence.sourcePath === "growth-review.md"), true);
+  assert.equal(suggestions.every((suggestion) => suggestion.evidence.manifestSlideCount === 2), true);
+  assert.equal(suggestions.every((suggestion) => typeof suggestion.suggestion.text === "string"), true);
+  assert.equal(JSON.stringify(suggestions).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(suggestions).includes('"layoutId"'), false);
+  assert.equal(suggestions.some((suggestion) => suggestion.evidence.sourceNotesExcerpt), true);
+  assert.equal(suggestions.some((suggestion) => suggestion.type === "NARRATIVE_CLAIM_TITLE_WEAK"), true);
+  assert.equal(suggestions.some((suggestion) => suggestion.type === "NARRATIVE_SECTION_FLOW_GAP"), true);
+});
+
+test("reviewTemplateLayoutIntent emits semantic layout hints without placeholder coordinates or layout ids", () => {
+  const hints = reviewTemplateLayoutIntent({
+    layoutCatalog: {
+      layouts: [
+        {
+          layoutId: "tpl-compare-01",
+          name: "Two Column Comparison",
+          placeholders: [
+            { id: "ph-title", role: "title", x: 0.4, y: 0.3, w: 12, h: 0.8 },
+            { id: "ph-left", role: "body", x: 0.6, y: 1.4, w: 5.4, h: 4.8 },
+            { id: "ph-right", role: "body", x: 6.5, y: 1.4, w: 5.4, h: 4.8 },
+          ],
+        },
+        {
+          layoutId: "tpl-chart-02",
+          name: "Chart With Commentary",
+          placeholders: [
+            { id: "chart-main", role: "chart", coordinates: { x: 0.5, y: 1, w: 7, h: 4 } },
+            { id: "commentary", role: "body", coordinates: { x: 8, y: 1, w: 4, h: 4 } },
+          ],
+        },
+      ],
+    },
+    sourcePath: "template-layout-catalog.json",
+  });
+
+  assert.deepEqual(hints.map((hint) => hint.kind), ["semantic-layout-intent", "semantic-layout-intent"]);
+  assert.deepEqual(hints.map((hint) => hint.intent).sort(), ["chart-focus", "comparison"]);
+  assert.equal(hints.every((hint) => hint.generatedBy === "mdpr-skill"), true);
+  assert.equal(hints.every((hint) => hint.evidence.sourcePath === "template-layout-catalog.json"), true);
+  assert.equal(hints.some((hint) => hint.evidence.placeholderRoles.includes("chart")), true);
+  assert.equal(JSON.stringify(hints).includes("layoutId"), false);
+  assert.equal(JSON.stringify(hints).includes('"x"'), false);
+  assert.equal(JSON.stringify(hints).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(hints).includes('"id"'), false);
+});
+
+test("reviewSpeakerNotes proposes presenter notes and review comments without geometry", () => {
+  const suggestions = reviewSpeakerNotes({
+    markdown: [
+      "# Launch Readout",
+      "## Activation",
+      "Activation rose to 42% after onboarding fixes.",
+      "## Next Decision",
+      "- Shift budget from acquisition into retention experiments.",
+    ].join("\n"),
+    sourceNotes: "Reviewer asks for a sharper executive talk track and one risk callout.",
+    sourcePath: "launch-readout.md",
+  });
+
+  assert.deepEqual(suggestions.map((suggestion) => suggestion.kind).sort(), ["review-comment", "speaker-note"]);
+  assert.equal(suggestions.every((suggestion) => suggestion.generatedBy === "mdpr-skill"), true);
+  assert.equal(suggestions.every((suggestion) => suggestion.evidence.sourcePath === "launch-readout.md"), true);
+  assert.equal(suggestions.some((suggestion) => suggestion.evidence.sourceNotesExcerpt), true);
+  assert.equal(JSON.stringify(suggestions).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(suggestions).includes('"layoutId"'), false);
+  assert.equal(JSON.stringify(suggestions).includes('"x"'), false);
+});
+
+test("reviewCitationProvenance reports missing citations stale sources and unsupported claims", () => {
+  const findings = reviewCitationProvenance({
+    markdown: [
+      "# Retention Research",
+      "## Churn",
+      "Activation rose by 42% after onboarding changes.",
+      "This proves the retention program reduces churn for enterprise users.",
+      "According to the market benchmark, teams need faster reporting.[^1]",
+      "[^1]: Vendor benchmark, 2022-01-10.",
+    ].join("\n"),
+    sources: [
+      { id: "vendor-benchmark", title: "Vendor benchmark", date: "2022-01-10", path: "sources/vendor.md" },
+    ],
+    asOfDate: "2026-06-27",
+    sourcePath: "retention.md",
+  });
+
+  assert.deepEqual(findings.map((finding) => finding.kind).sort(), [
+    "missing-citation",
+    "stale-source",
+    "unsupported-claim",
+  ]);
+  assert.equal(findings.every((finding) => finding.generatedBy === "mdpr-skill"), true);
+  assert.equal(findings.every((finding) => finding.evidence.sourcePath === "retention.md"), true);
+  assert.equal(findings.some((finding) => finding.evidence.sourceId === "vendor-benchmark"), true);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(findings).includes('"layoutId"'), false);
+});
+
+test("reviewRenderedPreviewCritique returns visual concern notes with image evidence only", () => {
+  const notes = reviewRenderedPreviewCritique({
+    renderedImages: [
+      { slideId: "slide-1", imagePath: "png/slide-01.png", contactSheetPath: "contact-sheet.png" },
+      { slideId: "slide-2", imagePath: "png/slide-02.png", mdprFindingId: "overflow-2", mdprFindingType: "TEXT_OVERFLOW" },
+    ],
+  });
+
+  assert.equal(notes.length, 2);
+  assert.equal(notes.every((note) => note.kind === "visual-concern-note"), true);
+  assert.equal(notes.every((note) => note.generatedBy === "mdpr-skill"), true);
+  assert.equal(notes.every((note) => note.evidence.renderedImagePath.startsWith("png/")), true);
+  assert.equal(notes.some((note) => note.evidence.mdprFindingId === "overflow-2"), true);
+  assert.equal(notes.every((note) => note.boundary.mdprValidationAuthority === true), true);
+  assert.equal(notes.every((note) => note.boundary.llmMayOverrideMdprGate === false), true);
+  assert.equal(JSON.stringify(notes).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(notes).includes('"verdict"'), false);
+});
+
+test("reviewAccessibilityContent emits content-only accessibility suggestions", () => {
+  const suggestions = reviewAccessibilityContent({
+    markdown: [
+      "# Operator Review",
+      "## ARR",
+      "![](charts/arr-growth.png)",
+      "ARR is obviously the single best metric because this extremely long operating sentence compresses multiple assumptions about sales motion onboarding maturity finance timing and executive ownership into one breathless claim that should be rewritten for readers.",
+    ].join("\n"),
+    audience: "executive operators",
+    sourcePath: "operator-review.md",
+  });
+
+  assert.deepEqual(suggestions.map((suggestion) => suggestion.kind).sort(), [
+    "acronym-expansion",
+    "alt-text-draft",
+    "audience-fit",
+    "plain-language",
+  ]);
+  assert.equal(suggestions.every((suggestion) => suggestion.generatedBy === "mdpr-skill"), true);
+  assert.equal(suggestions.every((suggestion) => suggestion.evidence.sourcePath === "operator-review.md"), true);
+  assert.equal(suggestions.every((suggestion) => suggestion.boundary.mdprVisualAccessibilityAuthority === true), true);
+  assert.equal(JSON.stringify(suggestions).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(suggestions).includes('"fontSize"'), false);
+  assert.equal(JSON.stringify(suggestions).includes('"verdict"'), false);
+});
+
+test("buildSourceSlideEvidenceLedger maps slide claims to source and MDPR evidence refs", () => {
+  const ledger = buildSourceSlideEvidenceLedger({
+    markdown: [
+      "# Pipeline Review",
+      "## Activation",
+      "Activation rose by 42% after onboarding changes.[^1]",
+      "![Activation chart](charts/activation.png)",
+      "## Retention",
+      "The cohort table shows enterprise retention improved.[^2]",
+      "| segment | retention |",
+      "| --- | --- |",
+      "| enterprise | 91% |",
+    ].join("\n"),
+    sources: [
+      { id: "growth-study", title: "Growth study", date: "2026-01-10", path: "sources/growth.md" },
+      { id: "cohort-table", title: "Cohort table", date: "2026-02-10", path: "sources/cohort.csv" },
+    ],
+    mdprEvidence: [
+      { evidenceId: "chart-activation", slideId: "Activation", kind: "chart", path: "charts/activation.png" },
+      { evidenceId: "table-retention", slideId: "Retention", kind: "table", path: "tables/retention.csv" },
+    ],
+    sourcePath: "pipeline-review.md",
+  });
+
+  assert.equal(ledger.schemaVersion, "mdpr-source-slide-evidence-ledger-v1");
+  assert.equal(ledger.generatedBy, "mdpr-skill");
+  assert.deepEqual(ledger.entries.map((entry) => entry.slideRef), ["Activation", "Retention"]);
+  assert.equal(ledger.entries.every((entry) => entry.sourcePath === "pipeline-review.md"), true);
+  assert.equal(ledger.entries.some((entry) => entry.sources.some((source) => source.sourceId === "growth-study")), true);
+  assert.equal(ledger.entries.some((entry) => entry.mdprEvidenceRefs.some((evidence) => evidence.evidenceId === "table-retention")), true);
+  assert.equal(JSON.stringify(ledger).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(ledger).includes('"layoutId"'), false);
+  assert.equal(JSON.stringify(ledger).includes('"verdict"'), false);
 });

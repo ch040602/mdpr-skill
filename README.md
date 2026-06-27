@@ -75,6 +75,15 @@ cd mdpr-skill
 npm install
 ```
 
+Install the Codex skill from this checkout into your local Codex skills
+directory, then invoke it as `$mdpr-skill`:
+
+```powershell
+$codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
+New-Item -ItemType Directory -Force (Join-Path $codexHome "skills") | Out-Null
+Copy-Item -Recurse -Force skills\mdpr-skill (Join-Path $codexHome "skills\mdpr-skill")
+```
+
 For skill development and validation, prepare or refresh a local MDPR source
 checkout:
 
@@ -101,6 +110,13 @@ The repository also exposes a thin local CLI for skill-side artifacts:
 node bin/mdpr-skill.js --help
 node bin/mdpr-skill.js hint --source-sha256 <64hex> --out .mdpresent/proposals/agent-hint.json
 node bin/mdpr-skill.js review --manifest dist/mdpresent-manifest.json --out .mdpresent/review/review-report.json
+node bin/mdpr-skill.js narrative --markdown deck.md --manifest dist/mdpresent-manifest.json --source-notes notes.md --out .mdpresent/review/narrative-review.json
+node bin/mdpr-skill.js layout-intent --layout-catalog template-layout-catalog.json --out .mdpresent/review/layout-intent.json
+node bin/mdpr-skill.js speaker-notes --markdown deck.md --source-notes notes.md --out .mdpresent/review/speaker-notes.json
+node bin/mdpr-skill.js citations --markdown deck.md --sources sources.json --as-of 2026-06-27 --out .mdpresent/review/citation-review.json
+node bin/mdpr-skill.js rendered-preview --images rendered-images.json --out .mdpresent/review/rendered-preview-review.json
+node bin/mdpr-skill.js accessibility --markdown deck.md --audience "executive review" --out .mdpresent/review/accessibility-review.json
+node bin/mdpr-skill.js evidence-ledger --markdown deck.md --sources sources.json --mdpr-evidence mdpr-evidence.json --out .mdpresent/review/evidence-ledger.json
 node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path .cache/mdpr
 ```
 
@@ -178,7 +194,13 @@ Allowed skill outputs:
 - semantic intent tags
 - grouping and importance hints
 - icon-search keyword ideas
+- claim-title and section-flow suggestions
+- semantic layout-intent hints from template layout catalogs
 - visual concern notes with evidence paths
+- speaker-note and reviewer-comment drafts
+- citation/provenance findings
+- accessibility and plain-language content suggestions
+- source-to-slide evidence ledgers
 - Markdown cleanup suggestions
 
 Forbidden skill outputs:
@@ -265,6 +287,7 @@ reference corpus.
 - [MDPR vs skill results](docs/mdpr-vs-skill-results.md)
 - [Structural pattern taxonomy](docs/structural-pattern-taxonomy.md)
 - [Actions page materials](docs/actions-page-materials.md)
+- [Generator comparison boundary](docs/generator-comparison.md)
 
 MDPR runtime documentation lives in the MDPR repository:
 
