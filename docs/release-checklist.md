@@ -24,6 +24,13 @@
   publishing and cannot be committed to the repository.
 - [x] Release publication path is documented: publish by creating a GitHub
   Release from a `v*` tag after CI passes.
+- [x] npm publish failure mode is documented: if the release job prints
+  `Signed provenance statement` and then fails with `E404 Not Found - PUT`,
+  CI/CD and OIDC reached npm successfully, but npm registry package ownership
+  or initial-publication permission is still unresolved. Confirm the `mdpr-skill`
+  package can be created or is owned by the publishing npm account, then
+  configure the package-level Trusted Publisher and rerun the Release workflow.
 
 Manual gate before first npm publish: confirm the npm Trusted Publisher entry
-exists for this repository and workflow in the npm package settings.
+exists for this repository and workflow in the npm package settings, and confirm
+package ownership or initial-publication permission for `mdpr-skill` on npm.

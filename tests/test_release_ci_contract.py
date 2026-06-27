@@ -74,6 +74,9 @@ class ReleaseCiContractTest(unittest.TestCase):
         self.assertIn("release.yml", text)
         self.assertIn("npm run test:ci", text)
         self.assertIn("npm run pack:dry-run", text)
+        self.assertIn("E404", text)
+        self.assertIn("Signed provenance statement", text)
+        self.assertIn("package ownership", text)
 
 
 if __name__ == "__main__":
