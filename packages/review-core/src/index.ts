@@ -230,6 +230,21 @@ export type SourceSlideEvidenceLedgerEntry = {
   mdprEvidenceRefs: MdprEvidenceRef[];
 };
 
+export type ReadmeTeaserMetric = {
+  label: string;
+  value: string;
+};
+
+export type ReadmeTeaserSpec = {
+  title: string;
+  subtitle?: string;
+  chips?: string[];
+  metrics?: ReadmeTeaserMetric[];
+  pipeline?: string[];
+  accent?: string;
+  footer?: string;
+};
+
 type BlockLike = {
   id: string;
   type: string;
@@ -618,6 +633,186 @@ export function buildSourceSlideEvidenceLedger(input: SourceSlideEvidenceLedgerI
     generatedBy: "mdpr-skill",
     entries,
   };
+}
+
+export function renderReadmeTeaserSvg(input: ReadmeTeaserSpec): string {
+  const title = cleanDisplayText(input.title);
+  if (!title) throw new Error("README teaser spec requires a non-empty title");
+
+  const subtitle = cleanDisplayText(input.subtitle ?? "");
+  const chips = normalizeDisplayList(input.chips, 5);
+  const metrics = normalizeTeaserMetrics(input.metrics, 4);
+  const pipeline = normalizeDisplayList(input.pipeline, 8);
+  const accent = normalizeAccent(input.accent);
+  const footer = cleanDisplayText(input.footer ?? "Generated with mdpr-skill teaser pipeline");
+
+  const pipelineNodes = pipeline.length ? renderPipelineNodes(pipeline, accent) : "";
+  const metricCards = metrics.map((metric, index) => renderMetricCard(metric, index, accent)).join("\n");
+  const chipBadges = chips.map((chip, index) => renderChip(chip, index, accent)).join("\n");
+
+  return [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">`,
+    `  <title id="title">${escapeXml(title)}</title>`,
+    `  <desc id="desc">${escapeXml(subtitle || `${title} README teaser`)}</desc>`,
+    `  <defs>`,
+    `    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">`,
+    `      <stop offset="0" stop-color="#fbfcfe"/>`,
+    `      <stop offset="1" stop-color="#eef3f7"/>`,
+    `    </linearGradient>`,
+    `    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">`,
+    `      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.12"/>`,
+    `    </filter>`,
+    `  </defs>`,
+    `  <style>`,
+    `    .title{font:700 54px Arial,Helvetica,sans-serif;fill:#111827}`,
+    `    .subtitle{font:400 25px Arial,Helvetica,sans-serif;fill:#334155}`,
+    `    .chip{font:700 17px Arial,Helvetica,sans-serif;fill:${accent}}`,
+    `    .metric-value{font:700 36px Arial,Helvetica,sans-serif;fill:#111827}`,
+    `    .metric-label{font:600 15px Arial,Helvetica,sans-serif;fill:#64748b;text-transform:uppercase}`,
+    `    .pipeline-label{font:700 16px Arial,Helvetica,sans-serif;fill:#1f2937}`,
+    `    .footer{font:600 15px Arial,Helvetica,sans-serif;fill:#64748b}`,
+    `  </style>`,
+    `  <rect width="1200" height="630" rx="0" fill="url(#bg)"/>`,
+    `  <rect x="52" y="52" width="1096" height="526" rx="22" fill="#ffffff" stroke="#d8e1ea" filter="url(#shadow)"/>`,
+    `  <rect x="52" y="52" width="10" height="526" fill="${accent}"/>`,
+    `  <g transform="translate(92 98)">`,
+    ...renderWrappedText(title, 0, 0, 920, 58, "title", 2),
+    ...renderWrappedText(subtitle, 0, title.length > 34 ? 132 : 74, 980, 32, "subtitle", 2),
+    `  </g>`,
+    `  <g class="teaser-chips">${chipBadges}</g>`,
+    `  <g class="teaser-metrics">${metricCards}</g>`,
+    `  <g class="teaser-pipeline" aria-label="Pipeline">${pipelineNodes}</g>`,
+    `  <text x="92" y="548" class="footer">${escapeXml(footer)}</text>`,
+    `</svg>`,
+    "",
+  ].join("\n");
+}
+
+function renderMetricCard(metric: ReadmeTeaserMetric, index: number, accent: string): string {
+  const x = 92 + index * 264;
+  const y = 308;
+  return [
+    `    <g class="metric-card" transform="translate(${x} ${y})">`,
+    `      <rect width="238" height="96" rx="14" fill="#f8fafc" stroke="#d8e1ea"/>`,
+    `      <rect width="5" height="96" rx="2.5" fill="${accent}"/>`,
+    `      <text x="22" y="42" class="metric-value">${escapeXml(truncateText(metric.value, 14))}</text>`,
+    `      <text x="22" y="70" class="metric-label">${escapeXml(truncateText(metric.label, 24))}</text>`,
+    `    </g>`,
+  ].join("\n");
+}
+
+function renderChip(chip: string, index: number, accent: string): string {
+  const widths = [0, 150, 320, 490, 660];
+  const x = 92 + (widths[index] ?? index * 170);
+  const y = 248;
+  return [
+    `    <g class="chip-badge" transform="translate(${x} ${y})">`,
+    `      <rect width="140" height="34" rx="17" fill="${accent}" opacity="0.1"/>`,
+    `      <text x="18" y="23" class="chip">${escapeXml(truncateText(chip, 16))}</text>`,
+    `    </g>`,
+  ].join("\n");
+}
+
+function renderPipelineNodes(pipeline: string[], accent: string): string {
+  const x = 92;
+  const y = 446;
+  const width = 1016;
+  const nodeGap = 18;
+  const nodeWidth = Math.floor((width - nodeGap * (pipeline.length - 1)) / pipeline.length);
+  const nodeHeight = 62;
+  const nodes: string[] = [];
+
+  for (let index = 0; index < pipeline.length; index += 1) {
+    const nodeX = x + index * (nodeWidth + nodeGap);
+    if (index > 0) {
+      const lineX1 = nodeX - nodeGap + 2;
+      const lineX2 = nodeX - 4;
+      const lineY = y + nodeHeight / 2;
+      nodes.push(`    <path class="pipeline-connector" d="M ${lineX1} ${lineY} L ${lineX2} ${lineY}" stroke="${accent}" stroke-width="3" stroke-linecap="round"/>`);
+      nodes.push(`    <path class="pipeline-connector-arrow" d="M ${lineX2 - 7} ${lineY - 5} L ${lineX2} ${lineY} L ${lineX2 - 7} ${lineY + 5}" fill="none" stroke="${accent}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`);
+    }
+    const labelLines = splitLabel(pipeline[index]!, Math.max(7, Math.floor(nodeWidth / 9)));
+    nodes.push(`    <g class="pipeline-node" transform="translate(${nodeX} ${y})">`);
+    nodes.push(`      <rect width="${nodeWidth}" height="${nodeHeight}" rx="13" fill="#ffffff" stroke="${accent}" stroke-width="2"/>`);
+    nodes.push(`      <circle cx="18" cy="18" r="5" fill="${accent}"/>`);
+    for (let lineIndex = 0; lineIndex < labelLines.length; lineIndex += 1) {
+      const textY = labelLines.length === 1 ? 39 : 31 + lineIndex * 18;
+      nodes.push(`      <text x="${nodeWidth / 2}" y="${textY}" text-anchor="middle" class="pipeline-label">${escapeXml(labelLines[lineIndex]!)}</text>`);
+    }
+    nodes.push(`    </g>`);
+  }
+
+  return nodes.join("\n");
+}
+
+function renderWrappedText(text: string, x: number, y: number, maxWidth: number, lineHeight: number, className: string, maxLines: number): string[] {
+  if (!text) return [];
+  const maxChars = Math.max(18, Math.floor(maxWidth / (className === "title" ? 29 : 13)));
+  const lines = wrapWords(text, maxChars, maxLines);
+  return lines.map((line, index) => `  <text x="${x}" y="${y + index * lineHeight}" class="${className}">${escapeXml(line)}</text>`);
+}
+
+function normalizeTeaserMetrics(metrics: ReadmeTeaserMetric[] | undefined, maxItems: number): ReadmeTeaserMetric[] {
+  return (metrics ?? [])
+    .map((metric) => ({
+      label: cleanDisplayText(metric?.label ?? ""),
+      value: cleanDisplayText(metric?.value ?? ""),
+    }))
+    .filter((metric) => metric.label && metric.value)
+    .slice(0, maxItems);
+}
+
+function normalizeDisplayList(values: string[] | undefined, maxItems: number): string[] {
+  return (values ?? [])
+    .map((value) => cleanDisplayText(value))
+    .filter(Boolean)
+    .slice(0, maxItems);
+}
+
+function normalizeAccent(value: string | undefined): string {
+  const accent = cleanDisplayText(value ?? "");
+  return /^#[0-9a-f]{6}$/i.test(accent) ? accent : "#2563eb";
+}
+
+function cleanDisplayText(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function wrapWords(text: string, maxChars: number, maxLines: number): string[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  for (const word of words) {
+    const current = lines[lines.length - 1];
+    if (!current || current.length + word.length + 1 > maxChars) {
+      if (lines.length >= maxLines) {
+        lines[lines.length - 1] = truncateText(`${lines[lines.length - 1]} ${word}`, maxChars);
+      } else {
+        lines.push(truncateText(word, maxChars));
+      }
+      continue;
+    }
+    lines[lines.length - 1] = `${current} ${word}`;
+  }
+  return lines.slice(0, maxLines);
+}
+
+function splitLabel(label: string, maxChars: number): string[] {
+  const lines = wrapWords(label, maxChars, 2);
+  return lines.length ? lines : [truncateText(label, maxChars)];
+}
+
+function truncateText(value: string, maxChars: number): string {
+  if (value.length <= maxChars) return value;
+  if (maxChars <= 1) return value.slice(0, maxChars);
+  return `${value.slice(0, maxChars - 1)}...`;
+}
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 export function detachedCaptionFindings(model: ReviewModel | ReviewCoreInput): ReviewFinding[] {

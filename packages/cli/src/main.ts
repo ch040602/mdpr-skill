@@ -3,7 +3,7 @@ import { dirname } from "node:path";
 import { mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index";
-import { buildReviewReport, buildSourceSlideEvidenceLedger, reviewAccessibilityContent, reviewCitationProvenance, reviewCoherence, reviewDesignPolicy, reviewNarrativeSpine, reviewRenderedPreviewCritique, reviewSpeakerNotes, reviewTemplateLayoutIntent, reviewVisualPolicy, type CitationSource, type MdprEvidenceRef, type RenderedPreviewImage } from "../../review-core/src/index";
+import { buildReviewReport, buildSourceSlideEvidenceLedger, renderReadmeTeaserSvg, reviewAccessibilityContent, reviewCitationProvenance, reviewCoherence, reviewDesignPolicy, reviewNarrativeSpine, reviewRenderedPreviewCritique, reviewSpeakerNotes, reviewTemplateLayoutIntent, reviewVisualPolicy, type CitationSource, type MdprEvidenceRef, type ReadmeTeaserSpec, type RenderedPreviewImage } from "../../review-core/src/index";
 import { runMdprSkillEval } from "../../eval-core/src/index";
 import { createChangeRequest, transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index";
 import { buildEditIntent, editIntentToOverrideCandidate, type EditIntentPreferences } from "../../edit-core/src/index";
@@ -45,6 +45,7 @@ export function runCli(argv: string[], io: CliIo = defaultIo): number {
     if (command === "edit") return runEditCommand(args, io);
     if (command === "ppt") return runPptCommand(args, io);
     if (command === "design") return runDesignCommand(args, io);
+    if (command === "teaser") return runTeaserCommand(args, io);
     if (command === "change") return runChangeCommand(args, io);
 
     io.stderr(`Unknown command: ${command}`);
@@ -75,6 +76,7 @@ function helpText(): string {
     "  ppt propose --selection-context <selection-context.json> --out <change-request.json> [--hints-out <agent-hint.json>]",
     "  design import <DESIGN.md> --out <theme-candidate.json>",
     "  design analyze-html <file.html> --out <html-design-analysis.json>",
+    "  teaser --spec <readme-teaser.json> --out <readme-teaser.svg>",
     "  gate validate-schema-sync --mdpr-path <MdPr> [--shared-schema <name[,name]>]",
     "  change approve|reject <change-request.json> --out <change-request.json>",
   ].join("\n");
@@ -382,6 +384,23 @@ function runDesignCommand(args: string[], io: CliIo): number {
     return 0;
   }
   throw new Error(`Unknown design subcommand: ${subcommand}`);
+}
+
+function runTeaserCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const specPath = requireOption(options, "spec");
+  const outPath = requireOption(options, "out");
+  const spec = readJson(specPath) as ReadmeTeaserSpec;
+  const svg = renderReadmeTeaserSvg(spec);
+  mkdirSync(dirname(outPath), { recursive: true });
+  writeFileSync(outPath, svg, "utf-8");
+  io.stdout(JSON.stringify({
+    status: "pass",
+    out: outPath,
+    pipelineNodes: Array.isArray(spec.pipeline) ? spec.pipeline.length : 0,
+    metrics: Array.isArray(spec.metrics) ? spec.metrics.length : 0,
+  }, null, 2));
+  return 0;
 }
 
 function runChangeCommand(args: string[], io: CliIo): number {

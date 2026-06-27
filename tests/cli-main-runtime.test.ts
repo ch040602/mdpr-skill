@@ -26,8 +26,50 @@ test("runCli exposes help and command groups", () => {
   assert.match(output.join("\n"), /eval/);
   assert.match(output.join("\n"), /design/);
   assert.match(output.join("\n"), /edit/);
+  assert.match(output.join("\n"), /teaser/);
   assert.match(output.join("\n"), /gate/);
   assert.match(output.join("\n"), /change/);
+});
+
+test("runCli writes README teaser SVG with visual pipeline nodes", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-teaser-"));
+  try {
+    const specPath = join(workDir, "readme-teaser.json");
+    const outPath = join(workDir, "readme-teaser.svg");
+    writeFileSync(specPath, JSON.stringify({
+      title: "Agentic RAG",
+      subtitle: "Iterative retrieval with sufficiency checks.",
+      chips: ["RAG", "citations"],
+      metrics: [
+        { label: "One-shot fetch", value: "0.5" },
+        { label: "Iterative fetch", value: "1.0" },
+      ],
+      pipeline: ["plan", "route", "retrieve", "judge"],
+      accent: "#0f766e",
+    }), "utf-8");
+
+    const output: string[] = [];
+    const exitCode = runCli([
+      "teaser",
+      "--spec",
+      specPath,
+      "--out",
+      outPath,
+    ], {
+      stdout: (value) => output.push(value),
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    assert.equal(JSON.parse(output.join("\n")).status, "pass");
+    const svg = readFileSync(outPath, "utf-8");
+    assert.match(svg, /class="pipeline-node"/);
+    assert.match(svg, /class="pipeline-connector"/);
+    assert.match(svg, />retrieve</);
+    assert.equal(svg.includes("plan -> route"), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
 });
 
 test("runCli writes an agent hint manifest without final design fields", () => {

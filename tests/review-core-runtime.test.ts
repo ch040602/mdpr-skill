@@ -14,6 +14,7 @@ import {
   reviewTemplateLayoutIntent,
   screenshotEvidence,
   reviewSelectionContext,
+  renderReadmeTeaserSvg,
 } from "../packages/review-core/src/index";
 
 const presentation = {
@@ -513,4 +514,25 @@ test("buildSourceSlideEvidenceLedger maps slide claims to source and MDPR eviden
   assert.equal(JSON.stringify(ledger).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(ledger).includes('"layoutId"'), false);
   assert.equal(JSON.stringify(ledger).includes('"verdict"'), false);
+});
+
+test("renderReadmeTeaserSvg renders pipeline as nodes and connectors", () => {
+  const svg = renderReadmeTeaserSvg({
+    title: "Save-The-Token",
+    subtitle: "Context slimming with sufficiency gates.",
+    chips: ["MCP", "token budget"],
+    metrics: [
+      { label: "Token cut", value: "69.3%" },
+      { label: "Recall", value: "100%" },
+    ],
+    pipeline: ["scan", "measure", "route", "digest"],
+    accent: "#1f6feb",
+  });
+
+  assert.match(svg, /class="pipeline-node"/);
+  assert.match(svg, /class="pipeline-connector"/);
+  assert.match(svg, />scan</);
+  assert.match(svg, />measure</);
+  assert.equal(svg.includes("scan -> measure"), false);
+  assert.match(svg, /<svg[^>]+role="img"/);
 });
