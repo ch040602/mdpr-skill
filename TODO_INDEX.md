@@ -19,6 +19,10 @@ Recommended execution order:
 15. [Phase 14 - Style Gallery](todo/phase-14-style-gallery.md)
 16. [Phase 15 - Agent Hints](todo/phase-15-agent-hints.md)
 17. [Phase 16 - Regression / Docs / Release](todo/phase-16-regression-docs-release.md)
+18. [Phase 17 - LLM-Advised Quality Handoff](todo/phase-17-llm-advised-quality-handoff.md)
+19. [Phase 18 - Three-Rail Implementation Status](todo/phase-18-three-rail-implementation-status.md)
+20. [Phase 19 - Design Grammar and Import Roadmap](todo/phase-19-design-grammar-and-import-roadmap.md)
+21. [Phase 20 - Unified Skill Follow-ups](todo/phase-20-unified-skill-followups.md)
 
 ## Parallelization
 

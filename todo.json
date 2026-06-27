@@ -213,6 +213,19 @@
         "skill review outputs only semantic hints and critique notes",
         "README/docs clearly separate MDPR deterministic validation from skill-side visual QA"
       ]
+    },
+    {
+      "id": "P20",
+      "name": "Unified Skill Follow-ups",
+      "dependsOn": [
+        "P17"
+      ],
+      "doneWhen": [
+        "boundary tests point at skills/mdpr-skill",
+        "README or install docs mention $mdpr-skill as the single Codex skill",
+        "quick_validate.py passes for skills/mdpr-skill",
+        "old mdpr-design skill names are either removed or marked as migration history"
+      ]
     }
   ]
 }
