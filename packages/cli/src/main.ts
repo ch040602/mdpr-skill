@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
+import { dirname, isAbsolute, resolve } from "node:path";
 import { mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index";
@@ -388,8 +388,8 @@ function runDesignCommand(args: string[], io: CliIo): number {
 
 function runTeaserCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
-  const specPath = requireOption(options, "spec");
-  const outPath = requireOption(options, "out");
+  const specPath = resolveInvocationPath(requireOption(options, "spec"));
+  const outPath = resolveInvocationPath(requireOption(options, "out"));
   const spec = readJson(specPath) as ReadmeTeaserSpec;
   const svg = renderReadmeTeaserSvg(spec);
   mkdirSync(dirname(outPath), { recursive: true });
@@ -401,6 +401,11 @@ function runTeaserCommand(args: string[], io: CliIo): number {
     metrics: Array.isArray(spec.metrics) ? spec.metrics.length : 0,
   }, null, 2));
   return 0;
+}
+
+function resolveInvocationPath(path: string): string {
+  if (isAbsolute(path)) return path;
+  return resolve(process.env.MDPR_SKILL_INVOKE_CWD ?? process.cwd(), path);
 }
 
 function runChangeCommand(args: string[], io: CliIo): number {

@@ -33,6 +33,7 @@ test("runCli exposes help and command groups", () => {
 
 test("runCli writes README teaser SVG with visual pipeline nodes", () => {
   const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-teaser-"));
+  const previousInvokeCwd = process.env.MDPR_SKILL_INVOKE_CWD;
   try {
     const specPath = join(workDir, "readme-teaser.json");
     const outPath = join(workDir, "readme-teaser.svg");
@@ -48,13 +49,14 @@ test("runCli writes README teaser SVG with visual pipeline nodes", () => {
       accent: "#0f766e",
     }), "utf-8");
 
+    process.env.MDPR_SKILL_INVOKE_CWD = workDir;
     const output: string[] = [];
     const exitCode = runCli([
       "teaser",
       "--spec",
-      specPath,
+      "readme-teaser.json",
       "--out",
-      outPath,
+      "readme-teaser.svg",
     ], {
       stdout: (value) => output.push(value),
       stderr: () => undefined,
@@ -68,6 +70,11 @@ test("runCli writes README teaser SVG with visual pipeline nodes", () => {
     assert.match(svg, />retrieve</);
     assert.equal(svg.includes("plan -> route"), false);
   } finally {
+    if (previousInvokeCwd === undefined) {
+      delete process.env.MDPR_SKILL_INVOKE_CWD;
+    } else {
+      process.env.MDPR_SKILL_INVOKE_CWD = previousInvokeCwd;
+    }
     rmSync(workDir, { recursive: true, force: true });
   }
 });

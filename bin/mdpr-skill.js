@@ -7,6 +7,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const entry = resolve(root, "packages", "cli", "src", "main.ts");
 const result = spawnSync(process.execPath, ["--import", "tsx", entry, ...process.argv.slice(2)], {
   cwd: root,
+  env: { ...process.env, MDPR_SKILL_INVOKE_CWD: process.cwd() },
   stdio: "inherit",
 });
 
