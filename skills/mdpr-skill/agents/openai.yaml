@@ -1,0 +1,4 @@
+interface:
+  display_name: "MDPR Skill"
+  short_description: "Review and hint MDPR presentation workflows"
+  default_prompt: "Use $mdpr-skill to review an MDPR deck or propose safe semantic hints without taking over deterministic rendering."
