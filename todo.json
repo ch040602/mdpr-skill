@@ -226,6 +226,19 @@
         "quick_validate.py passes for skills/mdpr-skill",
         "old mdpr-design skill names are either removed or marked as migration history"
       ]
+    },
+    {
+      "id": "P21",
+      "name": "LLM PPTX Skill Research",
+      "dependsOn": [
+        "P20"
+      ],
+      "doneWhen": [
+        "LLM PPTX improvement candidates are documented with sources",
+        "all candidates preserve MDPR rule-based validation ownership",
+        "allowed LLM outputs are limited to semantic hints, narrative suggestions, notes, comments, provenance, and review notes",
+        "forbidden replacements for coherence, overflow, clipping, and final rendering decisions are explicitly documented"
+      ]
     }
   ]
 }

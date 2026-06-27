@@ -23,6 +23,7 @@ Recommended execution order:
 19. [Phase 18 - Three-Rail Implementation Status](todo/phase-18-three-rail-implementation-status.md)
 20. [Phase 19 - Design Grammar and Import Roadmap](todo/phase-19-design-grammar-and-import-roadmap.md)
 21. [Phase 20 - Unified Skill Follow-ups](todo/phase-20-unified-skill-followups.md)
+22. [Phase 21 - LLM PPTX Skill Research](todo/phase-21-llm-pptx-skill-research.md)
 
 ## Parallelization
 
