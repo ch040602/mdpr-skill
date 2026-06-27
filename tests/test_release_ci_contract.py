@@ -45,6 +45,17 @@ class ReleaseCiContractTest(unittest.TestCase):
         self.assertIn("npm publish --provenance --access public", release_text)
         self.assertNotIn("NPM_TOKEN", release_text)
 
+    def test_ci_installs_python_test_dependencies(self):
+        requirements = ROOT / "requirements-ci.txt"
+        ci_text = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        release_text = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+
+        self.assertTrue(requirements.exists(), "CI Python test requirements must be explicit")
+        requirements_text = requirements.read_text(encoding="utf-8")
+        self.assertIn("Pillow", requirements_text)
+        self.assertIn("python -m pip install -r requirements-ci.txt", ci_text)
+        self.assertIn("python -m pip install -r requirements-ci.txt", release_text)
+
     def test_release_checklist_records_external_trusted_publisher_step(self):
         text = (ROOT / "docs" / "release-checklist.md").read_text(encoding="utf-8")
 
