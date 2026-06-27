@@ -12,7 +12,7 @@
   },
   "homepage": "https://github.com/ch040602/mdpr-skill#readme",
   "bin": {
-    "mdpr-skill": "./bin/mdpr-skill.js"
+    "mdpr-skill": "bin/mdpr-skill.js"
   },
   "files": [
     "bin",
@@ -67,7 +67,8 @@
     "reasoning-companion"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
   "devDependencies": {

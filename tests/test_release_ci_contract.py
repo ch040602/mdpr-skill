@@ -19,8 +19,19 @@ class ReleaseCiContractTest(unittest.TestCase):
         self.assertEqual(package_json["bugs"]["url"], "https://github.com/ch040602/mdpr-skill/issues")
         self.assertEqual(package_json["homepage"], "https://github.com/ch040602/mdpr-skill#readme")
         self.assertEqual(package_json["publishConfig"]["access"], "public")
+        self.assertEqual(package_json["publishConfig"]["registry"], "https://registry.npmjs.org/")
         self.assertIn("test:ci", package_json["scripts"])
         self.assertIn("pack:dry-run", package_json["scripts"])
+
+    def test_package_exposes_cli_bin_for_npm_install(self):
+        package_json = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
+        bin_path = package_json["bin"]["mdpr-skill"]
+        bin_file = ROOT / bin_path
+
+        self.assertEqual(bin_path, "bin/mdpr-skill.js")
+        self.assertTrue(bin_file.exists(), "CLI bin target must be included in the package")
+        self.assertTrue(bin_file.read_text(encoding="utf-8").startswith("#!/usr/bin/env node"))
+        self.assertIn("bin", package_json["files"])
 
     def test_ci_and_release_workflows_exist_with_least_privilege_publish(self):
         ci = ROOT / ".github" / "workflows" / "ci.yml"
