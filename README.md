@@ -40,16 +40,18 @@ the main MDPR repository:
 
 ## Applied Comparison
 
-The practical value of this repository is visible when a reviewer asks for
-agent judgment but the deck still needs deterministic MDPR output. In the
-tracked icon/image fallback example, the source asks what to do when an icon
-would need to be too large or the metaphor is ambiguous.
+The practical value of this repository is visible when development needs agent
+judgment but the deck still needs deterministic MDPR output. The tracked
+comparison now ties three modes together: a simple Codex skill response, MDPR
+alone, and `mdpr-skill + MDPR`.
 
-| Workflow | Result before mdpr-skill bridge | Result with mdpr-skill |
-| --- | --- | --- |
-| Simple Codex skill | Produces useful prose advice, but no schema-valid artifact that MDPR can consume or replay. | Still useful for human review, but not sufficient as an MDPR runtime contract by itself. |
-| MDPR only | Builds the deck deterministically from Markdown with `agentHints.enabled: false`, `accepted: 0`, and `slideCount: 3`. | Remains the final renderer and validator. With accepted hints, it still owns parsing, layout, theme, asset acceptance, and PPTX objects. |
-| mdpr-skill + MDPR | Previously emitted only a general selection hint; there was no generated-image fallback signal. | Emits a bounded `visualAssetCandidates[0]` entry with `kind: "generated-image"` and `trigger: "large-or-ambiguous-icon"`, rejects stale selection contexts with `--markdown`, and reports `sourceVerified: true` in CLI summaries. |
+### Applied Development Mode Comparison
+
+| Mode | What happens before | What improves after applying the flow | Evidence |
+| --- | --- | --- | --- |
+| `simple-codex-skill` | Produces useful prose advice, but no schema-valid artifact that MDPR can consume or replay. | Remains advisory only; the comparison makes clear that prose must be bridged before it becomes runtime input. | `simple-codex-skill-output.json` |
+| `mdpr-only` | Builds deterministic Markdown-to-PPTX output and owns parsing, splitting, layout, theme, assets, and validation. | Establishes the baseline: the icon fallback case records `agentHints.enabled: false`, `accepted: 0`, and `slideCount: 3`; the broader run produces a 46-slide MDPR corpus deck. | `mdpr-build/mdpresent-manifest.json`, `mdpr-vs-skill-report.json` |
+| `mdpr-skill-plus-mdpr` | Previously emitted only a general selection hint; there was no generated-image fallback signal. | Emits a bounded `visualAssetCandidates[0]` entry with `kind: "generated-image"` and `trigger: "large-or-ambiguous-icon"`, rejects stale selection contexts with `--markdown`, and keeps MDPR as final renderer. The broader evidence deck is a 10-slide mdpr-skill evidence deck with 2 tables and 1 chart. | `mdpr-skill-agent-hint.json`, `mdpr-skill-change-request.json`, `mdpr-vs-skill-report.json` |
 
 The current guided MDPR build records `agentHints.enabled: true`, `accepted: 1`,
 `rejected: 0`, `ignoredBecauseStale: 0`, and `forbiddenFieldCount: 0`. See the
@@ -57,6 +59,11 @@ full reproduction notes in
 [docs/icon-image-fallback-comparison.md](docs/icon-image-fallback-comparison.md)
 and the generated artifacts under
 `artifacts/icon-image-fallback-comparison/`.
+The broader machine-readable comparison is committed as
+`artifacts/applied-development-comparison/development-mode-comparison.json`,
+with a human-readable companion at
+`artifacts/applied-development-comparison/development-mode-comparison.md`; both
+use `mdpr-development-mode-comparison-v1`.
 
 For a broader format and completion check against FigureLabs' public scientific
 illustration workflow, run:
@@ -360,6 +367,8 @@ Generated review artifacts include:
 - `artifacts/icon-image-fallback-comparison/mdpr-build/deck.pptx`
 - `artifacts/icon-image-fallback-comparison/mdpr-guided-build/deck.pptx`
 - `artifacts/icon-image-fallback-comparison/mdpr-skill-agent-hint.json`
+- `artifacts/applied-development-comparison/development-mode-comparison.json`
+- `artifacts/applied-development-comparison/development-mode-comparison.md`
 - `artifacts/figurelabs-format-comparison/format-capabilities.json`
 - `artifacts/figurelabs-format-comparison/format-capabilities.md`
 - `artifacts/figurelabs-format-comparison/format-capabilities.html`

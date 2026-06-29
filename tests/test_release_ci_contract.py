@@ -535,6 +535,50 @@ class ReleaseCiContractTest(unittest.TestCase):
         self.assertIn("sourceReviewedDate", comparison_text)
         self.assertIn("Source reviewed: 2026-06-30", comparison_text)
 
+    def test_applied_development_mode_comparison_is_documented(self):
+        schema_path = ROOT / "schemas" / "mdpr-development-mode-comparison.schema.json"
+        artifact_path = ROOT / "artifacts" / "applied-development-comparison" / "development-mode-comparison.json"
+        markdown_path = ROOT / "artifacts" / "applied-development-comparison" / "development-mode-comparison.md"
+        readme_text = (ROOT / "README.md").read_text(encoding="utf-8")
+        mdpr_vs_skill_report = json.loads((ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-vs-skill-report.json").read_text(encoding="utf-8"))
+
+        self.assertTrue(schema_path.exists(), "applied development comparison needs a committed JSON Schema")
+        self.assertTrue(artifact_path.exists(), "applied development comparison should be committed as JSON")
+        self.assertTrue(markdown_path.exists(), "applied development comparison should be committed as Markdown")
+
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+        markdown = markdown_path.read_text(encoding="utf-8")
+
+        self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
+        self.assertEqual(schema["properties"]["schemaVersion"]["const"], "mdpr-development-mode-comparison-v1")
+        self.assertEqual(artifact["schemaVersion"], "mdpr-development-mode-comparison-v1")
+        self.assertEqual(artifact["generatedBy"], "mdpr-skill")
+
+        modes = {mode["id"]: mode for mode in artifact["modes"]}
+        self.assertEqual(set(modes), {"simple-codex-skill", "mdpr-only", "mdpr-skill-plus-mdpr"})
+        self.assertFalse(modes["simple-codex-skill"]["mdprConsumable"])
+        self.assertEqual(modes["mdpr-only"]["actualMdprCorpus"]["slides"], mdpr_vs_skill_report["mdprBaselineValidation"]["slides"])
+        self.assertEqual(modes["mdpr-skill-plus-mdpr"]["actualMdprCorpus"]["slides"], mdpr_vs_skill_report["skillValidation"]["slides"])
+        self.assertEqual(modes["mdpr-skill-plus-mdpr"]["actualMdprCorpus"]["charts"], 1)
+        self.assertEqual(modes["mdpr-skill-plus-mdpr"]["guidedHintAcceptance"]["accepted"], 1)
+
+        for evidence_ref in artifact["evidenceArtifacts"]:
+            self.assertTrue((ROOT / evidence_ref).exists(), f"missing evidence artifact: {evidence_ref}")
+
+        for expected in (
+            "Applied Development Mode Comparison",
+            "simple-codex-skill",
+            "mdpr-only",
+            "mdpr-skill-plus-mdpr",
+            "46-slide MDPR corpus",
+            "10-slide mdpr-skill evidence deck",
+            "development-mode-comparison.json",
+            "development-mode-comparison.md",
+        ):
+            self.assertIn(expected, readme_text)
+            self.assertIn(expected, markdown)
+
     def test_release_checklist_records_external_trusted_publisher_step(self):
         text = (ROOT / "docs" / "release-checklist.md").read_text(encoding="utf-8")
 
