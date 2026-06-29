@@ -19,8 +19,8 @@ same source and selection context are stored under
   `artifacts/icon-image-fallback-comparison/mdpr-guided-build/deck.pptx`
 - MDPR guided manifest:
   `artifacts/icon-image-fallback-comparison/mdpr-guided-build/mdpresent-manifest.json`
-- Simple Codex skill comparison artifact:
-  `artifacts/icon-image-fallback-comparison/simple-codex-skill-output.json`
+- Advice baseline artifact:
+  `artifacts/icon-image-fallback-comparison/advice-baseline-output.json`
 - Previous mdpr-skill behavior snapshot:
   `artifacts/icon-image-fallback-comparison/mdpr-skill-before-agent-hint.json`
 - Current mdpr-skill hint:
@@ -79,7 +79,7 @@ node .cache/mdpr/packages/cli/dist/index.js build \
 
 | Mode | Before applying the new fallback | After applying the new fallback | Evidence |
 | --- | --- | --- | --- |
-| Simple Codex skill | Produces unstructured advice such as "use a large icon or generate an image." It is not an MDPR-consumable contract. | Still unstructured if used alone; it can describe intent but cannot safely carry it into MDPR without a schema bridge. | `simple-codex-skill-output.json` |
+| Unstructured advice | Produces prose such as "use a large icon or generate an image." It is not an MDPR-consumable contract. | Still unstructured if used alone; it can describe intent but cannot safely carry it into MDPR without a schema bridge. | `advice-baseline-output.json` |
 | MDPR | Builds the deck deterministically from Markdown. The generated manifest records `agentHints.enabled: false`, `accepted: 0`, and `slideCount: 3`. | With the mdpr-skill hint supplied, MDPR records `agentHints.enabled: true`, `accepted: 1`, `rejected: 0`, `ignoredBecauseStale: 0`, and `forbiddenFieldCount: 0`. MDPR still owns parsing, layout, asset acceptance, and final PPTX objects. | `mdpr-build/mdpresent-manifest.json`, `mdpr-guided-build/mdpresent-manifest.json` |
 | mdpr-skill | Same selection context produced only a general selection hint with confidence `0.62`; no generated-image fallback signal existed. | `hint --selection-context --markdown` now emits a schema-valid `visualAssetCandidates[0]` with `kind: "generated-image"`, `trigger: "large-or-ambiguous-icon"`, and a semantic prompt, while rejecting stale selection contexts before MDPR silently ignores them. `ppt propose --markdown` applies the same stale-source guard before wrapping the hint in an approval-bound change request. Both guarded commands report `sourceVerified: true` in their CLI summaries. | `mdpr-skill-before-agent-hint.json`, `mdpr-skill-agent-hint.json`, `mdpr-skill-change-request.json` |
 
@@ -100,7 +100,7 @@ metadata:
 
 That gives the downstream MDPR/runtime side a clear handoff point:
 
-- simple Codex skill can notice the issue but has no deterministic contract;
+- unstructured advice can notice the issue but has no deterministic contract;
 - MDPR can render the deck without hints, and accepts the mdpr-skill hint when
   it is supplied;
 - mdpr-skill bridges the two by emitting a bounded candidate through the direct

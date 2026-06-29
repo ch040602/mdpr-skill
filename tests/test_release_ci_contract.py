@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import subprocess
 import unittest
 
 
@@ -438,146 +439,51 @@ class ReleaseCiContractTest(unittest.TestCase):
         self.assertIn("docs/github-labels.md", checklist_text)
         self.assertIn("docs/github-labels.md", contributing_text)
 
-    def test_figurelabs_comparison_artifact_has_schema_contract(self):
-        package_json = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
-        schema_path = ROOT / "schemas" / "mdpr-format-capabilities.schema.json"
-        artifact_path = ROOT / "artifacts" / "figurelabs-format-comparison" / "format-capabilities.json"
-        markdown_artifact_path = ROOT / "artifacts" / "figurelabs-format-comparison" / "format-capabilities.md"
-        html_artifact_path = ROOT / "artifacts" / "figurelabs-format-comparison" / "format-capabilities.html"
-        readme_text = (ROOT / "README.md").read_text(encoding="utf-8")
-        comparison_text = (ROOT / "docs" / "figurelabs-comparison.md").read_text(encoding="utf-8")
+    def test_public_tree_hides_private_benchmark_and_internal_sequence(self):
+        blocked_terms = [
+            "figure" + "labs",
+            "figure" + " " + "labs",
+            "applied" + "-development" + "-comparison",
+            "development" + "-mode" + "-comparison",
+            "simple" + "-codex" + "-skill",
+            "mdpr" + "-only",
+            "mdpr" + "-skill" + "-plus" + "-mdpr",
+            "46" + "-slide MDPR corpus",
+            "10" + "-slide mdpr-skill evidence deck",
+        ]
+        tracked_output = subprocess.run(
+            ["git", "ls-files", "-z"],
+            cwd=ROOT,
+            capture_output=True,
+            check=True,
+        ).stdout
+        tracked_files = [
+            item.decode("utf-8", errors="surrogateescape")
+            for item in tracked_output.split(b"\0")
+            if item
+        ]
+        visible_hits = []
 
-        self.assertTrue(schema_path.exists(), "format comparison artifacts need a committed JSON Schema")
-        self.assertTrue(artifact_path.exists(), "FigureLabs comparison artifact should be reproducible and committed")
-        self.assertTrue(markdown_artifact_path.exists(), "FigureLabs comparison should have a human-readable Markdown export")
-        self.assertTrue(html_artifact_path.exists(), "FigureLabs comparison should have a human-readable HTML export")
-        self.assertIn("schemas", package_json["files"])
+        for relative_path in tracked_files:
+            path = ROOT / relative_path
+            if not path.exists():
+                continue
+            normalized_path = relative_path.lower()
+            for term in blocked_terms:
+                if term.lower() in normalized_path:
+                    visible_hits.append(f"{relative_path}: path contains {term}")
+            if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".pdf", ".pptx"}:
+                continue
+            try:
+                text = path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                continue
+            normalized = text.lower()
+            for term in blocked_terms:
+                if term.lower() in normalized:
+                    visible_hits.append(f"{relative_path}: {term}")
 
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
-        artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
-
-        self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
-        self.assertEqual(schema["$id"], "https://mdpresent.dev/schemas/mdpr-format-capabilities.schema.json")
-        self.assertEqual(schema["properties"]["schemaVersion"]["const"], "mdpr-skill-format-capabilities-v1")
-        self.assertEqual(artifact["schemaVersion"], "mdpr-skill-format-capabilities-v1")
-
-        for key in ("comparisonTarget", "mdprSkill", "coverage", "advantageClaim"):
-            self.assertIn(key, schema["required"])
-            self.assertIn(key, artifact)
-
-        self.assertIn("publicWorkflowStages", schema["properties"]["comparisonTarget"]["required"])
-        self.assertIn("publicAssuranceArtifacts", schema["properties"]["comparisonTarget"]["required"])
-        self.assertIn("sourceEvidence", schema["properties"]["comparisonTarget"]["required"])
-        self.assertIn("sourceReviewedDate", schema["properties"]["comparisonTarget"]["required"])
-        self.assertIn("sourceReviewTimezone", schema["properties"]["comparisonTarget"]["required"])
-        self.assertIn("sourceReviewScope", schema["properties"]["comparisonTarget"]["required"])
-        self.assertIn("workflowStages", schema["properties"]["mdprSkill"]["required"])
-        self.assertIn("assuranceArtifacts", schema["properties"]["mdprSkill"]["required"])
-        self.assertIn("figureLabsGapClosures", schema["properties"]["mdprSkill"]["required"])
-        self.assertIn("comparisonReportFormats", schema["properties"]["mdprSkill"]["required"])
-
-        self.assertEqual(
-            artifact["coverage"]["figureLabs"]["publicWorkflowStages"],
-            len(artifact["comparisonTarget"]["publicWorkflowStages"]),
-        )
-        self.assertEqual(
-            artifact["coverage"]["figureLabs"]["publicAssuranceArtifacts"],
-            len(artifact["comparisonTarget"]["publicAssuranceArtifacts"]),
-        )
-        self.assertEqual(
-            artifact["coverage"]["figureLabs"]["publicEvidenceClaims"],
-            len(artifact["comparisonTarget"]["sourceEvidence"]),
-        )
-        self.assertEqual(artifact["comparisonTarget"]["sourceReviewedDate"], "2026-06-30")
-        self.assertEqual(artifact["comparisonTarget"]["sourceReviewTimezone"], "Asia/Seoul")
-        self.assertIn("public FigureLabs pages", artifact["comparisonTarget"]["sourceReviewScope"])
-        for item in artifact["comparisonTarget"]["sourceEvidence"]:
-            self.assertIn("claimId", item)
-            self.assertIn("claim", item)
-            self.assertIn("sourceRefs", item)
-            self.assertGreater(len(item["sourceRefs"]), 0)
-            for source_ref in item["sourceRefs"]:
-                self.assertIn(source_ref, artifact["comparisonTarget"]["sourceRefs"])
-        self.assertEqual(
-            artifact["coverage"]["mdprSkill"]["workflowCompletenessSignals"],
-            len(artifact["mdprSkill"]["completenessSignals"]),
-        )
-        self.assertEqual(
-            artifact["coverage"]["mdprSkill"]["assuranceArtifacts"],
-            len(artifact["mdprSkill"]["assuranceArtifacts"]),
-        )
-        self.assertEqual(
-            artifact["coverage"]["mdprSkill"]["comparisonReportFormats"],
-            len(artifact["mdprSkill"]["comparisonReportFormats"]),
-        )
-        self.assertEqual(artifact["mdprSkill"]["comparisonReportFormats"], ["json", "markdown", "html"])
-        self.assertGreater(
-            artifact["coverage"]["mdprSkill"]["workflowCompletenessSignals"],
-            artifact["coverage"]["figureLabs"]["publicWorkflowStages"],
-        )
-        self.assertGreater(
-            artifact["coverage"]["mdprSkill"]["assuranceArtifacts"],
-            artifact["coverage"]["figureLabs"]["publicAssuranceArtifacts"],
-        )
-
-        self.assertIn("mdpr-format-capabilities.schema.json", readme_text)
-        self.assertIn("mdpr-format-capabilities.schema.json", comparison_text)
-        self.assertIn("--format markdown", readme_text)
-        self.assertIn("--format html", readme_text)
-        self.assertIn("--format markdown", comparison_text)
-        self.assertIn("--format html", comparison_text)
-        self.assertIn("format-capabilities.md", comparison_text)
-        self.assertIn("format-capabilities.html", comparison_text)
-        self.assertIn("sourceEvidence", comparison_text)
-        self.assertIn("Source Evidence", comparison_text)
-        self.assertIn("comparisonReportFormats", comparison_text)
-        self.assertIn("JSON, Markdown, HTML", comparison_text)
-        self.assertIn("sourceReviewedDate", comparison_text)
-        self.assertIn("Source reviewed: 2026-06-30", comparison_text)
-
-    def test_applied_development_mode_comparison_is_documented(self):
-        schema_path = ROOT / "schemas" / "mdpr-development-mode-comparison.schema.json"
-        artifact_path = ROOT / "artifacts" / "applied-development-comparison" / "development-mode-comparison.json"
-        markdown_path = ROOT / "artifacts" / "applied-development-comparison" / "development-mode-comparison.md"
-        readme_text = (ROOT / "README.md").read_text(encoding="utf-8")
-        mdpr_vs_skill_report = json.loads((ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-vs-skill-report.json").read_text(encoding="utf-8"))
-
-        self.assertTrue(schema_path.exists(), "applied development comparison needs a committed JSON Schema")
-        self.assertTrue(artifact_path.exists(), "applied development comparison should be committed as JSON")
-        self.assertTrue(markdown_path.exists(), "applied development comparison should be committed as Markdown")
-
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
-        artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
-        markdown = markdown_path.read_text(encoding="utf-8")
-
-        self.assertEqual(schema["$schema"], "https://json-schema.org/draft/2020-12/schema")
-        self.assertEqual(schema["properties"]["schemaVersion"]["const"], "mdpr-development-mode-comparison-v1")
-        self.assertEqual(artifact["schemaVersion"], "mdpr-development-mode-comparison-v1")
-        self.assertEqual(artifact["generatedBy"], "mdpr-skill")
-
-        modes = {mode["id"]: mode for mode in artifact["modes"]}
-        self.assertEqual(set(modes), {"simple-codex-skill", "mdpr-only", "mdpr-skill-plus-mdpr"})
-        self.assertFalse(modes["simple-codex-skill"]["mdprConsumable"])
-        self.assertEqual(modes["mdpr-only"]["actualMdprCorpus"]["slides"], mdpr_vs_skill_report["mdprBaselineValidation"]["slides"])
-        self.assertEqual(modes["mdpr-skill-plus-mdpr"]["actualMdprCorpus"]["slides"], mdpr_vs_skill_report["skillValidation"]["slides"])
-        self.assertEqual(modes["mdpr-skill-plus-mdpr"]["actualMdprCorpus"]["charts"], 1)
-        self.assertEqual(modes["mdpr-skill-plus-mdpr"]["guidedHintAcceptance"]["accepted"], 1)
-
-        for evidence_ref in artifact["evidenceArtifacts"]:
-            self.assertTrue((ROOT / evidence_ref).exists(), f"missing evidence artifact: {evidence_ref}")
-
-        for expected in (
-            "Applied Development Mode Comparison",
-            "simple-codex-skill",
-            "mdpr-only",
-            "mdpr-skill-plus-mdpr",
-            "46-slide MDPR corpus",
-            "10-slide mdpr-skill evidence deck",
-            "development-mode-comparison.json",
-            "development-mode-comparison.md",
-        ):
-            self.assertIn(expected, readme_text)
-            self.assertIn(expected, markdown)
+        self.assertEqual(visible_hits, [])
 
     def test_release_checklist_records_external_trusted_publisher_step(self):
         text = (ROOT / "docs" / "release-checklist.md").read_text(encoding="utf-8")

@@ -1,5 +1,5 @@
 {
-  "mode": "simple-codex-skill",
+  "mode": "advice-baseline",
   "input": "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘.",
   "outputKind": "unstructured-advice",
   "before": {
