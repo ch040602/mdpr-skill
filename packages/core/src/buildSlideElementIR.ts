@@ -1,6 +1,6 @@
-import type { SlideElementIR, SlideNode } from '../../element-ir/src/types';
-import { computeContentMetrics } from './computeContentMetrics';
-import { inferElementType, inferGroups, inferImportance, inferRole, inferSlideIntent } from './inference';
+import type { SlideElementIR, SlideNode } from '../../element-ir/src/types.js';
+import { computeContentMetrics } from './computeContentMetrics.js';
+import { inferElementType, inferGroups, inferImportance, inferRole, inferSlideIntent } from './inference.js';
 
 export interface PresentationIR {
   id?: string;

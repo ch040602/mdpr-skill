@@ -19,7 +19,7 @@ SOURCE_MD = SOURCE_DIR / "theme-style-color-matrix.md"
 COMBOS: list[dict[str, str]] = [
     {
         "id": "simple-blue-analogous",
-        "style": "simple",
+        "style": "clean",
         "color": "#2563EB",
         "harmony": "analogous",
         "role": "Minimal blue system for clean operational slides",
@@ -46,8 +46,8 @@ COMBOS: list[dict[str, str]] = [
         "role": "Translucent proof surfaces with contrast accents",
     },
     {
-        "id": "grid-red-complementary",
-        "style": "grid",
+        "id": "clean-red-complementary",
+        "style": "clean",
         "color": "#DC2626",
         "harmony": "complementary",
         "role": "Swiss modular grid with restrained red accent",
@@ -60,8 +60,8 @@ COMBOS: list[dict[str, str]] = [
         "role": "Dark data-journalism page with dense proof rails",
     },
     {
-        "id": "magazine-rust-triadic",
-        "style": "magazine",
+        "id": "technical-rust-triadic",
+        "style": "technical",
         "color": "#C2410C",
         "harmony": "triadic",
         "role": "Editorial magazine cover/page rhythm",
@@ -81,8 +81,8 @@ COMBOS: list[dict[str, str]] = [
         "role": "Engineering/validation tone with brightness steps",
     },
     {
-        "id": "dark-rose-complementary",
-        "style": "dark",
+        "id": "executive-rose-complementary",
+        "style": "executive",
         "color": "#E11D48",
         "harmony": "complementary",
         "role": "Dark proof deck with high-contrast emphasis",

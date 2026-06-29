@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "engine": "mdpresent",
-  "decorationStyle": "simple",
+  "decorationStyle": "clean",
   "colorSeed": "#2563EB",
   "colorCombination": "analogous",
   "paletteSeed": {
@@ -36,14 +36,14 @@
   "surfacePolicy": {
     "shapeSource": "svg",
     "cornerScale": "fixed",
-    "shadow": "none",
+    "shadow": "soft",
     "opacity": 1
   },
   "themeColors": {
     "dark1": "111827",
-    "light1": "FFFFFF",
-    "dark2": "4B5563",
-    "light2": "FFFFFF",
+    "light1": "F8FAFC",
+    "dark2": "475569",
+    "light2": "FBFCFD",
     "accent1": "2563EB",
     "accent2": "25CAF0",
     "accent3": "431BEF",

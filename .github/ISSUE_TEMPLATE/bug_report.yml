@@ -1,0 +1,75 @@
+name: Bug Report
+description: Report a reproducible mdpr-skill problem.
+title: "[Bug]: "
+labels: ["type: bug", "triage"]
+type: bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for reproducible mdpr-skill problems. Do not report security vulnerabilities here; follow SECURITY.md instead.
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      options:
+        - CLI
+        - hint schema
+        - review schema
+        - npm package
+        - MDPR handoff
+        - generated artifacts
+        - documentation
+        - other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Include the npm version, git SHA, or branch you tested.
+      placeholder: "0.1.0, main@<sha>, or local checkout"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Provide the smallest command, Markdown source, or fixture needed to reproduce the issue.
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe the behavior or artifact you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include error output, screenshots, generated JSON, or artifact paths when useful.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation already run
+      description: List commands already run and whether they passed or failed.
+      placeholder: |
+        npm run test:ci
+        npm run test:npm-install-smoke
+    validations:
+      required: false
+  - type: checkboxes
+    id: code-of-conduct
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct.
+          required: true

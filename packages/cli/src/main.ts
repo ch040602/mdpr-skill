@@ -2,13 +2,13 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, resolve } from "node:path";
 import { mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index";
-import { buildReviewReport, buildSourceSlideEvidenceLedger, renderReadmeTeaserSvg, reviewAccessibilityContent, reviewCitationProvenance, reviewCoherence, reviewDesignPolicy, reviewNarrativeSpine, reviewRenderedPreviewCritique, reviewSpeakerNotes, reviewTemplateLayoutIntent, reviewVisualPolicy, type CitationSource, type MdprEvidenceRef, type ReadmeTeaserSpec, type RenderedPreviewImage } from "../../review-core/src/index";
-import { runMdprSkillEval } from "../../eval-core/src/index";
-import { createChangeRequest, transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index";
-import { buildEditIntent, editIntentToOverrideCandidate, type EditIntentPreferences } from "../../edit-core/src/index";
-import { analyzeHtmlDesign, buildThemeCandidateFromDesignMd } from "./commands/design";
-import { runValidateSchemaSync } from "./commands/validateSchemaSync";
+import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index.js";
+import { buildReviewReport, buildSourceSlideEvidenceLedger, renderReadmeTeaserSvg, reviewAccessibilityContent, reviewCitationProvenance, reviewCoherence, reviewDesignPolicy, reviewNarrativeSpine, reviewRenderedPreviewCritique, reviewSpeakerNotes, reviewTemplateLayoutIntent, reviewVisualPolicy, type CitationSource, type MdprEvidenceRef, type ReadmeTeaserSpec, type RenderedPreviewImage } from "../../review-core/src/index.js";
+import { runMdprSkillEval } from "../../eval-core/src/index.js";
+import { createChangeRequest, transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index.js";
+import { buildEditIntent, editIntentToOverrideCandidate, type EditIntentPreferences } from "../../edit-core/src/index.js";
+import { analyzeHtmlDesign, buildThemeCandidateFromDesignMd } from "./commands/design.js";
+import { runValidateSchemaSync } from "./commands/validateSchemaSync.js";
 
 export type CliIo = {
   stdout: (value: string) => void;
@@ -87,8 +87,8 @@ function runSchemaSyncCommand(args: string[], io: CliIo): number {
   if (command !== "validate-schema-sync") throw new Error("Only gate validate-schema-sync is supported");
   const options = parseOptions(args);
   const result = runValidateSchemaSync({
-    mdprPath: options["mdpr-path"],
-    localSchemaPath: options["local-schema"],
+    mdprPath: options["mdpr-path"] ? resolveInvocationPath(options["mdpr-path"]) : undefined,
+    localSchemaPath: options["local-schema"] ? resolveInvocationPath(options["local-schema"]) : undefined,
     sharedSchemaNames: options["shared-schema"] ? splitCsvOption(options["shared-schema"]) : undefined,
   });
   io.stdout(JSON.stringify(result, null, 2));
@@ -223,9 +223,9 @@ function runNarrativeCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
   const markdownPath = requireOption(options, "markdown");
   const suggestions = reviewNarrativeSpine({
-    markdown: readFileSync(markdownPath, "utf-8"),
+    markdown: readText(markdownPath),
     manifest: options.manifest ? readJson(options.manifest) : undefined,
-    sourceNotes: options["source-notes"] ? readFileSync(options["source-notes"], "utf-8") : undefined,
+    sourceNotes: options["source-notes"] ? readText(options["source-notes"]) : undefined,
     sourcePath: markdownPath,
   });
   const report = {
@@ -259,8 +259,8 @@ function runSpeakerNotesCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
   const markdownPath = requireOption(options, "markdown");
   const suggestions = reviewSpeakerNotes({
-    markdown: readFileSync(markdownPath, "utf-8"),
-    sourceNotes: options["source-notes"] ? readFileSync(options["source-notes"], "utf-8") : undefined,
+    markdown: readText(markdownPath),
+    sourceNotes: options["source-notes"] ? readText(options["source-notes"]) : undefined,
     sourcePath: markdownPath,
   });
   const report = {
@@ -277,7 +277,7 @@ function runCitationsCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
   const markdownPath = requireOption(options, "markdown");
   const findings = reviewCitationProvenance({
-    markdown: readFileSync(markdownPath, "utf-8"),
+    markdown: readText(markdownPath),
     sources: options.sources ? readSources(options.sources) : undefined,
     asOfDate: options["as-of"],
     sourcePath: markdownPath,
@@ -311,7 +311,7 @@ function runAccessibilityCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
   const markdownPath = requireOption(options, "markdown");
   const suggestions = reviewAccessibilityContent({
-    markdown: readFileSync(markdownPath, "utf-8"),
+    markdown: readText(markdownPath),
     audience: options.audience,
     sourcePath: markdownPath,
   });
@@ -329,7 +329,7 @@ function runEvidenceLedgerCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
   const markdownPath = requireOption(options, "markdown");
   const ledger = buildSourceSlideEvidenceLedger({
-    markdown: readFileSync(markdownPath, "utf-8"),
+    markdown: readText(markdownPath),
     sources: options.sources ? readSources(options.sources) : undefined,
     mdprEvidence: options["mdpr-evidence"] ? readMdprEvidence(options["mdpr-evidence"]) : undefined,
     sourcePath: markdownPath,
@@ -345,10 +345,10 @@ function runEvalCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
   const outDir = requireOption(options, "out");
   const report = runMdprSkillEval({
-    deckPath,
-    outDir,
-    mdprPath: options["mdpr-path"],
-    hintsPath: options.hints,
+    deckPath: resolveInvocationPath(deckPath),
+    outDir: resolveInvocationPath(outDir),
+    mdprPath: options["mdpr-path"] ? resolveInvocationPath(options["mdpr-path"]) : undefined,
+    hintsPath: options.hints ? resolveInvocationPath(options.hints) : undefined,
     visual: options.visual === "true",
     coherence: options.coherence === "true",
     strict: options.strict === "true",
@@ -371,14 +371,14 @@ function runDesignCommand(args: string[], io: CliIo): number {
   if (subcommand === "import") {
     const candidate = buildThemeCandidateFromDesignMd({
       path: sourcePath,
-      content: readFileSync(sourcePath, "utf-8"),
+      content: readText(sourcePath),
     });
     writeJson(outPath, candidate);
     io.stdout(JSON.stringify({ status: "pass", out: outPath }, null, 2));
     return 0;
   }
   if (subcommand === "analyze-html") {
-    const analysis = analyzeHtmlDesign({ html: readFileSync(sourcePath, "utf-8") });
+    const analysis = analyzeHtmlDesign({ html: readText(sourcePath) });
     writeJson(outPath, analysis);
     io.stdout(JSON.stringify({ status: "pass", out: outPath }, null, 2));
     return 0;
@@ -454,7 +454,11 @@ function requireOption(options: Record<string, string>, key: string): string {
 }
 
 function readJson(path: string): Record<string, unknown> {
-  return JSON.parse(readFileSync(path, "utf-8")) as Record<string, unknown>;
+  return JSON.parse(readText(path)) as Record<string, unknown>;
+}
+
+function readText(path: string): string {
+  return readFileSync(resolveInvocationPath(path), "utf-8");
 }
 
 function readSources(path: string): CitationSource[] {
@@ -476,8 +480,9 @@ function readMdprEvidence(path: string): MdprEvidenceRef[] {
 }
 
 function writeJson(path: string, value: unknown): void {
-  mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, JSON.stringify(value, null, 2) + "\n", "utf-8");
+  const targetPath = resolveInvocationPath(path);
+  mkdirSync(dirname(targetPath), { recursive: true });
+  writeFileSync(targetPath, JSON.stringify(value, null, 2) + "\n", "utf-8");
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

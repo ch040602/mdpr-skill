@@ -25,7 +25,7 @@ the main MDPR repository:
 - Preview gallery: https://ch040602.github.io/MdPr/theme-preview/
 - New issue: https://github.com/ch040602/MdPr/issues/new/choose
 
-![MDPR theme style proof contact sheet](docs/assets/theme-style-proof-contact-sheet.png)
+![MDPR theme style proof contact sheet](https://raw.githubusercontent.com/ch040602/mdpr-skill/main/docs/assets/theme-style-proof-contact-sheet.png)
 
 ## Difference from MDPR
 
@@ -57,6 +57,18 @@ local MDPR checkout for development and validation; that local checkout is an
 install artifact, not the mdpr-skill repository structure. See
 [docs/mdpr-installation.md](docs/mdpr-installation.md).
 
+## Security
+
+Do not report vulnerabilities through public GitHub issues. Use the private
+reporting path in [SECURITY.md](SECURITY.md).
+
+## Community and Releases
+
+Participation standards are in [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+User-visible release notes are tracked in [CHANGELOG.md](CHANGELOG.md).
+Support routing for MDPR runtime issues, mdpr-skill bugs, feature requests, and
+security reports is in [SUPPORT.md](SUPPORT.md).
+
 ## Installation
 
 Install MDPR for normal Markdown-to-PPTX usage:
@@ -64,6 +76,15 @@ Install MDPR for normal Markdown-to-PPTX usage:
 ```bash
 npm install -g @mdpresent/cli
 mdpresent build deck.md --to pptx,html --out dist
+```
+
+After the package is published to npm, install or try the optional
+`mdpr-skill` CLI without cloning this repository:
+
+```bash
+npm install -g mdpr-skill
+mdpr-skill --help
+npx mdpr-skill --help
 ```
 
 Install this optional skill repository when you want Codex-assisted review,
@@ -74,6 +95,9 @@ git clone https://github.com/ch040602/mdpr-skill.git
 cd mdpr-skill
 npm install
 ```
+
+Use Node.js 22+ for this repository and its thin local CLI. CI validates Node
+22 and Node 24, and the npm package declares the same supported runtime range.
 
 Install the Codex skill from this checkout into your local Codex skills
 directory, then invoke it as `$mdpr-skill`:

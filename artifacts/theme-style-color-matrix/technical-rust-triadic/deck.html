@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MDPR Theme Style and Color Matrix</title>
+<style>
+:root {
+  --bg: #F9FAFB;
+  --text: #111827;
+  --primary: #C2410C;
+  --secondary: #0ABA3D;
+  --surface: #FCFCFD;
+  --surface-line: #D0EBD4;
+  --muted: #374151;
+  --font: "Pretendard";
+}
+body { margin: 0; background: #111; font-family: var(--font); }
+.deck { display: flex; flex-direction: column; gap: 24px; padding: 24px; }
+.slide { position: relative; width: 13.333in; height: 7.5in; background: var(--bg); color: var(--text); overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.3); isolation: isolate; }
+.slide::before, .slide::after { content: ""; position: absolute; pointer-events: none; z-index: 0; }
+.composition-cover .title { display: flex; align-items: center; font-size: 54pt !important; line-height: 1.05 !important; max-width: 10.6in; }
+.composition-cover::after { left: 1in; bottom: 1.02in; width: 3.2in; height: .06in; background: var(--primary); opacity: .9; }
+.composition-toc .body { columns: 2; column-gap: .7in; font-size: 20pt !important; }
+.composition-chart-table .chart { justify-content: center; }
+.composition-chart-table .chart.surface { box-shadow: 0 .08in .24in color-mix(in srgb, var(--primary) 18%, transparent); }
+.composition-chart-table .table.surface { background: color-mix(in srgb, var(--surface) 98%, var(--primary) 2%); }
+.composition-pipeline .diagram { background: linear-gradient(135deg, color-mix(in srgb, var(--surface) 86%, transparent), color-mix(in srgb, var(--secondary) 12%, var(--surface))); }
+.composition-grid .item:nth-of-type(2) { transform: translateY(-.04in); }
+.composition-grid .item:nth-of-type(5) { transform: translateY(.04in); }
+.region { position: absolute; box-sizing: border-box; overflow: hidden; z-index: 2; overflow-wrap: anywhere; }
+.region > * { position: relative; z-index: 1; }
+.title { font-weight: 700; }
+.body.key-message { background: var(--surface); border-left: .08in solid var(--primary); padding: .18in .28in; }
+.body.key-message blockquote { margin: 0; font-weight: 700; color: var(--text); }
+.surface { background: color-mix(in srgb, var(--surface) 94%, transparent); border: .012in solid var(--surface-line); padding: .17in .22in; }
+.surface.rounded { border-radius: .12in; }
+.surface.two-corner-left { border-radius: .18in .035in .035in .18in; }
+.surface.two-corner-right { border-radius: .035in .18in .18in .035in; }
+.surface.flag-drop { border-radius: .06in .06in .16in .06in; }
+.surface.flag-drop::before { content: ""; position: absolute; left: .16in; top: 0; width: .26in; height: .22in; background: var(--primary); border-radius: 0 0 .06in .06in; opacity: .9; z-index: 0; }
+.surface.notched-corner { clip-path: polygon(0 0, calc(100% - .18in) 0, 100% .18in, 100% 100%, 0 100%); border-radius: .08in; }
+.surface.ticket { border-radius: .12in; background-image: radial-gradient(circle at left 50%, var(--bg) 0 .11in, transparent .115in), radial-gradient(circle at right 50%, var(--bg) 0 .11in, transparent .115in); }
+.item { line-height: 1.22; }
+.region ul, .region ol { margin: 0; padding-left: 1.2em; }
+.structured-list { list-style: none; padding-left: 0; }
+.region li.level-1 { margin-left: 1.1em; }
+.region li.level-2 { margin-left: 2.2em; }
+.region p { margin: 0 0 .45em; }
+.region img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.item-number { display: inline-flex; width: .28in; height: .28in; align-items: center; justify-content: center; margin-right: .1in; border-radius: 999px; background: var(--primary); color: var(--bg); font-weight: 700; vertical-align: middle; line-height: 1; }
+.item-label { font-weight: 700; display: block; margin-bottom: .12in; color: var(--primary); }
+.item-description { display: block; margin-left: .18in; color: var(--muted); }
+strong { color: var(--primary); }
+.pipeline { position: relative; height: 100%; min-height: 3.6in; }
+.pipeline-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 1; }
+.pipeline-connector { fill: none; stroke: var(--primary); stroke-width: 1.55; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.pipeline-node { position: absolute; z-index: 3; min-width: 0; border: 1px solid var(--surface-line); background: var(--surface); padding: .16in .2in; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border-radius: .12in; font-size: 15pt; font-weight: 700; line-height: 1.18; overflow: hidden; }
+.chart { width: 100%; height: 100%; display: flex; flex-direction: column; gap: .12in; justify-content: center; }
+.chart-row { display: grid; grid-template-columns: 1.1in 1fr .48in; gap: .12in; align-items: center; font-size: .15in; }
+.chart-label { color: var(--text); font-weight: 700; }
+.chart-track { height: .18in; background: color-mix(in srgb, var(--surface-line) 60%, transparent); border-radius: 999px; overflow: hidden; }
+.chart-bar { height: 100%; background: var(--primary); border-radius: 999px; }
+.chart-value { color: var(--muted); text-align: right; }
+.proof-object { height: 100%; min-height: 1.05in; display: grid; align-items: center; justify-items: center; gap: .08in; color: var(--text); }
+.proof-object + .proof-object { margin-top: .16in; }
+.proof-label { color: var(--muted); font-size: .16in; font-weight: 800; text-transform: uppercase; letter-spacing: .015in; }
+.proof-value { color: var(--primary); font-size: .38in; font-weight: 900; line-height: 1; }
+.proof-arc-ring { grid-template-columns: minmax(1.15in, 1.35in) minmax(1.6in, 1fr); justify-items: start; }
+.proof-ring { position: relative; width: 1.25in; height: 1.25in; border-radius: 999px; background: conic-gradient(var(--primary) calc(var(--value) * 1%), color-mix(in srgb, var(--surface-line) 76%, transparent) 0); display: grid; place-items: center; }
+.proof-ring::after { content: ""; width: .74in; height: .74in; border-radius: 999px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--surface-line); }
+.proof-ring-text { position: absolute; color: var(--primary); font-weight: 900; font-size: .22in; }
+.proof-gauge { align-content: center; justify-items: stretch; padding: .2in .28in; }
+.proof-gauge-track { position: relative; height: .34in; border-radius: 999px; background: color-mix(in srgb, var(--surface-line) 70%, transparent); overflow: hidden; box-shadow: inset 0 0 0 1px var(--surface-line); }
+.proof-gauge-fill { height: 100%; width: calc(var(--value) * 1%); border-radius: inherit; background: linear-gradient(90deg, var(--secondary), var(--primary)); }
+.proof-gauge-meta { display: flex; justify-content: space-between; align-items: baseline; gap: .2in; }
+.proof-connected-strip { grid-template-columns: repeat(auto-fit, minmax(1.1in, 1fr)); gap: .12in; align-items: stretch; width: 100%; }
+.proof-step { position: relative; min-height: .82in; border: 1px solid var(--surface-line); background: color-mix(in srgb, var(--surface) 88%, transparent); border-radius: .1in; padding: .12in; display: grid; align-content: center; gap: .06in; }
+.proof-step:not(:last-child)::after { content: ""; position: absolute; top: 50%; right: -.13in; width: .14in; height: .02in; background: var(--primary); }
+.proof-step-name { font-weight: 800; }
+.proof-step-value { color: var(--primary); font-weight: 900; font-size: .24in; }
+table.mdpr-table { width: 100%; height: 100%; border-collapse: collapse; table-layout: fixed; font-size: max(.145in, 12pt); line-height: 1.18; }
+.mdpr-table th, .mdpr-table td { border: 1px solid var(--surface-line); padding: .07in .08in; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; }
+.mdpr-table th { background: var(--primary); color: var(--bg); font-weight: 800; text-align: center; }
+.mdpr-table td:first-child { font-weight: 700; }
+.mdpr-table td.numeric { text-align: right; font-variant-numeric: tabular-nums; }
+.mdpr-table tr:nth-child(odd) td { background: color-mix(in srgb, var(--surface) 76%, transparent); }
+body[data-theme-style="glass"] .slide { background: radial-gradient(circle at 20% 18%, color-mix(in srgb, var(--primary) 42%, transparent) 0, transparent 34%), radial-gradient(circle at 78% 72%, color-mix(in srgb, var(--secondary) 34%, transparent) 0, transparent 30%), var(--bg); }
+body[data-theme-style="glass"] .surface { background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.055)), color-mix(in srgb, var(--surface) 46%, transparent); border-color: color-mix(in srgb, #ffffff 58%, var(--surface-line)); box-shadow: 0 .1in .28in rgba(15,23,42,.24), inset 0 1px 0 rgba(255,255,255,.36), inset 0 0 .16in rgba(255,255,255,.08); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%); }
+body[data-theme-style="glass"] .surface.flag-drop::before { background: color-mix(in srgb, var(--primary) 76%, #ffffff 24%); opacity: .78; }
+body[data-theme-style="glass"] .surface.ticket { background-image: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.04)), radial-gradient(circle at left 50%, var(--bg) 0 .11in, transparent .115in), radial-gradient(circle at right 50%, var(--bg) 0 .11in, transparent .115in); }
+body[data-theme-style="newmorphism"] .surface { border-color: color-mix(in srgb, #ffffff 65%, var(--surface-line)); box-shadow: .06in .07in .16in rgba(100,116,139,.25), -.04in -.04in .12in rgba(255,255,255,.76); }
+body[data-theme-style="minimalism"] .surface { background: transparent; border-color: var(--surface-line); box-shadow: none; }
+body[data-theme-style="data"] .slide::before { content: "DATA"; left: .66in; top: .34in; color: var(--primary); font-size: 8pt; font-weight: 800; letter-spacing: .08in; }
+body[data-theme-style="data"] .slide::after { left: .66in; right: .66in; bottom: .62in; height: .04in; background: var(--surface-line); opacity: .62; }
+</style>
+</head>
+<body data-theme-style="technical">
+<main class="deck">
+<section class="slide composition composition-cover" data-slide-id="mdpr-theme-style-and-color-matrix-797102" data-layout="cover" data-composition="cover"><div class="region title title" style="left:1in;top:2.25in;width:11.3in;height:1.25in;z-index:10;font-size:48pt;line-height:1.2">MDPR Theme Style and Color Matrix</div></section>
+<section class="slide composition composition-toc" data-slide-id="toc-53a981" data-layout="toc" data-composition="toc"><div class="region title title" style="left:0.8in;top:0.42in;width:11.7in;height:0.9in;z-index:10;font-size:38pt;line-height:1.2">Agenda</div>
+<div class="region item surface two-corner-right toc-item-1" style="left:0.9in;top:1.9in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Theme Contract</p></div>
+<div class="region item surface two-corner-right toc-item-2" style="left:0.9in;top:3.04in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Pipeline and Object Routing</p></div>
+<div class="region item surface two-corner-right toc-item-3" style="left:0.9in;top:4.18in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Numeric Proof Objects</p></div>
+<div class="region item surface two-corner-right toc-item-4" style="left:0.9in;top:5.32in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Arc Ring Proof</p></div>
+<div class="region item surface two-corner-right toc-item-5" style="left:6.86in;top:1.9in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Table and Text Coherence</p></div>
+<div class="region item surface two-corner-right toc-item-6" style="left:6.86in;top:3.04in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Decoration Selection Inputs</p></div>
+<div class="region item surface two-corner-right toc-item-7" style="left:6.86in;top:4.18in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Theme Matrix</p></div>
+<div class="region item surface two-corner-right toc-item-8" style="left:6.86in;top:5.32in;width:5.54in;height:0.92in;z-index:10;font-size:18pt;line-height:1.2"><p>Final Checks</p></div></section>
+<section class="slide composition composition-key-message" data-slide-id="theme-contract-c377f2" data-layout="key-message" data-composition="key-message"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Theme Contract</div>
+<div class="region body surface two-corner-left key-message" style="left:1in;top:1.55in;width:11.2in;height:1.45in;z-index:10;font-size:30pt;line-height:1.2"><blockquote>Decoration style and color seed are separate deterministic choices.</blockquote></div>
+<div class="region body body" style="left:1in;top:3.35in;width:11.2in;height:2.95in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Decoration style</span><span class="item-description">Controls surface grammar, shadow, density, and object treatment.</span></li><li class="level-0"><span class="item-label">Color seed</span><span class="item-description">Provides the main color; harmony rules derive chart, accent, and PowerPoint theme colors.</span></li><li class="level-0"><span class="item-label">Visual validation</span><span class="item-description">The build manifest records overflow, font floor, region count, and resolved design tokens.</span></li></ul></div></section>
+<section class="slide composition composition-pipeline" data-slide-id="pipeline-and-object-routing-fb82d5" data-layout="pipeline" data-composition="pipeline"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Pipeline and Object Routing</div>
+<div class="region diagram diagram" style="left:0.7in;top:1.32in;width:11.95in;height:5.75in;z-index:10;font-size:22pt;line-height:1.2"><div class="pipeline pipeline-u" data-arrangement="u">
+<svg class="pipeline-connectors" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+<defs><marker id="pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--primary)" /></marker></defs>
+<polyline class="pipeline-connector" data-edge="1" points="30.40,39.40 35.20,39.40" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="2" points="64.80,39.40 69.60,39.40" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="3" points="84.40,47.60 84.40,52.40" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="4" points="69.60,60.60 64.80,60.60" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" /><polyline class="pipeline-connector" data-edge="5" points="35.20,60.60 30.40,60.60" marker-end="url(#pipeline-arrow-node-1-node-2-node-3-node-4-node-5-node-6)" />
+</svg>
+<div class="pipeline-node" data-node="1" style="left:0.00%;top:30.40%;width:31.20%;height:18.00%">Markdown Source</div><div class="pipeline-node" data-node="2" style="left:34.40%;top:30.40%;width:31.20%;height:18.00%">Semantic IR</div><div class="pipeline-node" data-node="3" style="left:68.80%;top:30.40%;width:31.20%;height:18.00%">Rule Engine</div><div class="pipeline-node" data-node="4" style="left:68.80%;top:51.60%;width:31.20%;height:18.00%">Styled Deck IR</div><div class="pipeline-node" data-node="5" style="left:34.40%;top:51.60%;width:31.20%;height:18.00%">PPTX Output</div><div class="pipeline-node" data-node="6" style="left:0.00%;top:51.60%;width:31.20%;height:18.00%">Visual Check</div>
+</div></div></section>
+<section class="slide composition composition-chart-table" data-slide-id="numeric-proof-objects-cacd50" data-layout="chart-table" data-composition="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Numeric Proof Objects</div>
+<div class="region body body" style="left:0.92in;top:1.66in;width:4.18in;height:4.62in;z-index:10;font-size:22pt;line-height:1.2"><p>The chart keeps one evidence object as the main proof while labels and theme colors remain coherent.</p></div>
+<div class="region chart surface flag-drop chart" style="left:5.42in;top:1.56in;width:6.78in;height:4.82in;z-index:10;font-size:18pt;line-height:1.2"><div class="chart" aria-label="Coverage"><div class="chart-row"><span class="chart-label">Parser</span><span class="chart-track"><span class="chart-bar" style="width:96.8%"></span></span><span class="chart-value">91</span></div><div class="chart-row"><span class="chart-label">Layout</span><span class="chart-track"><span class="chart-bar" style="width:93.6%"></span></span><span class="chart-value">88</span></div><div class="chart-row"><span class="chart-label">PPTX</span><span class="chart-track"><span class="chart-bar" style="width:100.0%"></span></span><span class="chart-value">94</span></div><div class="chart-row"><span class="chart-label">Visual QA</span><span class="chart-track"><span class="chart-bar" style="width:91.5%"></span></span><span class="chart-value">86</span></div></div></div></section>
+<section class="slide composition composition-chart-table" data-slide-id="arc-ring-proof-5379f8" data-layout="chart-table" data-composition="chart-table"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Arc Ring Proof</div>
+<div class="region body body" style="left:0.92in;top:1.66in;width:4.18in;height:4.62in;z-index:10;font-size:22pt;line-height:1.2"><p>Editable arc geometry uses theme accents.</p></div>
+<div class="region chart surface flag-drop chart" style="left:5.42in;top:1.56in;width:6.78in;height:4.82in;z-index:10;font-size:18pt;line-height:1.2"><div class="proof-object proof-arc-ring" data-proof-kind="arc-ring"><div class="proof-ring" style="--value:78.0"><span class="proof-ring-text">78%</span></div><div><div class="proof-label">Validated</div><div class="proof-value">78%</div></div></div></div></section>
+<section class="slide composition composition-table-focus" data-slide-id="table-and-text-coherence-6ef8a2" data-layout="table-focus" data-composition="table-focus"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Table and Text Coherence</div>
+<div class="region table surface ticket table" style="left:1in;top:1.55in;width:11.2in;height:4.95in;z-index:10;font-size:18pt;line-height:1.2"><table class="mdpr-table"><thead><tr><th>Requirement</th><th>Rule</th><th>Visual Check</th></tr></thead><tbody><tr><td class="">Shape text</td><td class="">Middle anchor plus readable insets</td><td class="">No text touches a border</td></tr><tr><td class="">Table text</td><td class="">Header emphasis and row labels</td><td class="">Cells keep row grammar</td></tr><tr><td class="">Bullet markers</td><td class="">Marker and text share a centerline</td><td class="">No low or drifting glyphs</td></tr><tr><td class="">Color usage</td><td class="">Harmony palette only</td><td class="">Accent color marks real contrast</td></tr></tbody></table></div></section>
+<section class="slide composition composition-comparison" data-slide-id="1-2-5eab8f" data-layout="comparison" data-composition="comparison"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Decoration Selection Inputs</div>
+<div class="region body left" style="left:0.9in;top:1.7in;width:5.4in;height:4.8in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Constraint</span><span class="item-description">Long text should use plain-safe or rail layouts instead of decorative cards.</span></li></ul></div>
+<div class="region body right" style="left:7in;top:1.7in;width:5.4in;height:4.8in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Evidence</span><span class="item-description">Important proof points may receive a contrast chip, but sibling objects keep one grammar.</span></li></ul></div></section>
+<section class="slide composition composition-comparison" data-slide-id="2-2-db6c82" data-layout="comparison" data-composition="comparison"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Decoration Selection Inputs (Cont. 2/2)</div>
+<div class="region body left" style="left:0.9in;top:1.7in;width:5.4in;height:4.8in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Image need</span><span class="item-description">Image sidecars are reserved only when the source contains or requires an image.</span></li></ul></div>
+<div class="region body right" style="left:7in;top:1.7in;width:5.4in;height:4.8in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0"><span class="item-label">Density</span><span class="item-description">Dense tables and code blocks reduce decoration before shrinking below the readable font floor.</span></li></ul></div></section>
+<section class="slide composition composition-table-focus" data-slide-id="1-2-20250a" data-layout="table-focus" data-composition="table-focus"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Theme Matrix</div>
+<div class="region table surface ticket table" style="left:1in;top:1.55in;width:11.2in;height:4.95in;z-index:10;font-size:18pt;line-height:1.2"><table class="mdpr-table"><thead><tr><th>Style</th><th>Main Color</th><th>Harmony</th><th>Intended Role</th></tr></thead><tbody><tr><td class="">clean</td><td class="">#2563EB</td><td class="">analogous</td><td class="">Minimal blue system for clean operational slides</td></tr><tr><td class="">minimalism</td><td class="">#111827</td><td class="">monochromatic</td><td class="">Whitespace-first slides with thin rules and restrained emphasis</td></tr><tr><td class="">newmorphism</td><td class="">#4F6F8F</td><td class="">analogous</td><td class="">Soft UI surfaces using same-tone panels and paired shadows</td></tr><tr><td class="">glass</td><td class="">#8A4FFF</td><td class="">split-complementary</td><td class="">Translucent proof surfaces with contrast accents</td></tr><tr><td class="">clean</td><td class="">#DC2626</td><td class="">complementary</td><td class="">Swiss modular grid with restrained red accent</td></tr><tr><td class="">data</td><td class="">#F59E0B</td><td class="">monochromatic</td><td class="">Dark data-journalism page with dense proof rails</td></tr></tbody></table></div></section>
+<section class="slide composition composition-table-focus" data-slide-id="2-2-3dcbe2" data-layout="table-focus" data-composition="table-focus"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Theme Matrix (Cont. 2/2)</div>
+<div class="region table surface ticket table" style="left:1in;top:1.55in;width:11.2in;height:4.95in;z-index:10;font-size:18pt;line-height:1.2"><table class="mdpr-table"><thead><tr><th>Style</th><th>Main Color</th><th>Harmony</th><th>Intended Role</th></tr></thead><tbody><tr><td class="">technical</td><td class="">#C2410C</td><td class="">triadic</td><td class="">Editorial magazine cover/page rhythm</td></tr><tr><td class="">executive</td><td class="">#0F766E</td><td class="">complementary</td><td class="">Business deck rhythm with a warm opposing accent</td></tr><tr><td class="">technical</td><td class="">#16A34A</td><td class="">monochromatic</td><td class="">Engineering/validation tone with brightness steps</td></tr><tr><td class="">executive</td><td class="">#E11D48</td><td class="">complementary</td><td class="">Dark proof deck with high-contrast emphasis</td></tr></tbody></table></div></section>
+<section class="slide composition composition-vertical-list" data-slide-id="final-checks-4f0459" data-layout="vertical-list" data-composition="vertical-list"><div class="region title title" style="left:0.8in;top:0.5in;width:11.7in;height:0.8in;z-index:10;font-size:34pt;line-height:1.2">Final Checks</div>
+<div class="region item surface two-corner-right item-1" style="left:1in;top:2.04in;width:11.2in;height:1.12in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Build writes a design lock for the resolved style/color contract.</li></ul></div>
+<div class="region item surface two-corner-right item-2" style="left:1in;top:3.49in;width:11.2in;height:1.12in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Build writes a manifest with source hash, output list, diagnostics, and optional visual summary.</li></ul></div>
+<div class="region item surface two-corner-right item-3" style="left:1in;top:4.93in;width:11.2in;height:1.12in;z-index:10;font-size:22pt;line-height:1.2"><ul class="structured-list"><li class="level-0">Generated PPTX files are exported through PowerPoint to PNG previews for visual comparison.</li></ul></div></section>
+</main>
+</body>
+</html>

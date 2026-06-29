@@ -3,6 +3,16 @@
   "version": "0.1.0",
   "private": false,
   "description": "Thin Codex skill companion for MDPR semantic hints, review checks, and validation artifacts.",
+  "type": "module",
+  "main": "./dist/packages/cli/src/index.js",
+  "types": "./dist/packages/cli/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/packages/cli/src/index.d.ts",
+      "default": "./dist/packages/cli/src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ch040602/mdpr-skill.git"
@@ -16,12 +26,18 @@
   },
   "files": [
     "bin",
-    "docs",
-    "packages",
+    "dist",
+    "docs/**/*.md",
+    "docs/**/*.json",
+    "!docs/assets/**",
     "schemas",
     "skills",
     "README.md",
-    "CONTRIBUTING.md"
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "SUPPORT.md",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md"
   ],
   "scripts": {
     "check:mdpr": "python scripts/install_mdpr.py --check",
@@ -55,10 +71,16 @@
     "test:eval-core:e2e": "tsx tests/eval-core-mdpresent-e2e.test.ts",
     "test:review-core": "tsx tests/review-core-runtime.test.ts",
     "test:schema-sync": "tsx tests/validate-schema-sync-runtime.test.ts",
-    "test:ci": "npm run typecheck && npm run test:change-cli && npm run test:change-core && npm run test:design-cli && npm run test:design-import-core && npm run test:edit-core && npm run test:cli-main && npm run test:hints-core && npm run test:mdpr-adapter && npm run test:eval-core && npm run test:review-core && npm run test:schema-sync && python -m unittest tests.test_boundary_contract tests.test_release_ci_contract tests.test_external_markdown_visual_eval",
+    "test:npm-install-smoke": "tsx tests/npm-install-smoke.test.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "audit:security": "npm audit --audit-level=moderate",
+    "release:preflight": "npm run test:ci && npm run audit:security && npm run pack:dry-run",
+    "prepublishOnly": "npm run release:preflight",
+    "test:ci": "npm run typecheck && npm run test:change-cli && npm run test:change-core && npm run test:design-cli && npm run test:design-import-core && npm run test:edit-core && npm run test:cli-main && npm run test:hints-core && npm run test:mdpr-adapter && npm run test:eval-core && npm run test:review-core && npm run test:schema-sync && npm run test:npm-install-smoke && python -m unittest tests.test_boundary_contract tests.test_release_ci_contract tests.test_external_markdown_visual_eval",
     "pack:dry-run": "npm pack --dry-run",
     "validate": "python scripts/design_source_inventory.py --source .cache/design-source --check && python scripts/render_compare_powerpoint.py && python scripts/create_pipeline_overview_asset.py && python scripts/create_infographic_seed_gallery.py && python scripts/create_design_showcase_deck.py && python scripts/check_mdpr_pandoc_update.py && python scripts/validate_pack.py",
-    "test": "npm run typecheck && npm run test:change-cli && npm run test:change-core && npm run test:design-cli && npm run test:design-import-core && npm run test:edit-core && npm run test:cli-main && npm run test:hints-core && npm run test:mdpr-adapter && npm run test:eval-core && npm run test:eval-core:e2e && npm run test:review-core && npm run test:schema-sync && npm run validate && python -m unittest discover tests"
+    "test": "npm run typecheck && npm run test:change-cli && npm run test:change-core && npm run test:design-cli && npm run test:design-import-core && npm run test:edit-core && npm run test:cli-main && npm run test:hints-core && npm run test:mdpr-adapter && npm run test:eval-core && npm run test:eval-core:e2e && npm run test:review-core && npm run test:schema-sync && npm run test:npm-install-smoke && npm run validate && python -m unittest discover tests"
   },
   "keywords": [
     "mdpr",
@@ -71,6 +93,21 @@
     "registry": "https://registry.npmjs.org/"
   },
   "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": ">=10",
+      "onFail": "error"
+    }
+  },
   "devDependencies": {
     "@types/node": "^26.0.0",
     "tsx": "^4.22.4",

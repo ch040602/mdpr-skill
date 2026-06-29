@@ -239,6 +239,19 @@
         "allowed LLM outputs are limited to semantic hints, narrative suggestions, notes, comments, provenance, and review notes",
         "forbidden replacements for coherence, overflow, clipping, and final rendering decisions are explicitly documented"
       ]
+    },
+    {
+      "id": "P22",
+      "name": "AI PPT Human Refinement Loops",
+      "dependsOn": [
+        "P21"
+      ],
+      "doneWhen": [
+        "video-derived AI PPT refinement checks are documented with source provenance",
+        "human-in-the-loop workflow, font, emphasis, layout, highlight, cover, chart-detail, before-after, and final-check refinement TODOs are registered",
+        "all LLM-assisted outputs remain semantic review notes, source-grounded prompts, or approval-bound proposals",
+        "MDPR remains the source of truth for final rendering, layout, typography, color, clipping, overflow, and coherence gates"
+      ]
     }
   ]
 }

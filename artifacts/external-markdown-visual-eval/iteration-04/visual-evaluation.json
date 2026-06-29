@@ -6,43 +6,228 @@
   "manifest": "artifacts\\external-markdown-visual-eval\\iteration-04\\build\\mdpresent-manifest.json",
   "designLock": {
     "path": "artifacts\\external-markdown-visual-eval\\iteration-04\\build\\mdpresent-design-lock.json",
-    "decorationStyle": "magazine",
+    "decorationStyle": "technical",
     "colorSeed": "#0F766E",
     "colorCombination": "split-complementary"
   },
-  "slideCount": 38,
+  "slideCount": 41,
   "diagnostics": [],
   "manifestValidation": {
     "layoutOverflow": [],
     "visual": {
       "checked": true,
-      "slideCount": 38,
+      "slideCount": 41,
+      "thresholds": {
+        "minimumTextContrastRatio": 4.5,
+        "maximumSameLayerOverlapRatio": 0.08,
+        "minimumReadableFontSize": 8,
+        "imageAspectRatioRange": [
+          0.25,
+          4
+        ],
+        "minimumDiagramConnectorSpace": {
+          "width": 2,
+          "height": 1
+        }
+      },
       "checks": {
         "nonBlankSlides": true,
         "regionBounds": true,
         "minimumTextSize": true,
+        "textContrast": true,
+        "sameLayerOverlap": true,
+        "imageAspectRatio": true,
+        "connectorClearance": true,
         "backgroundContentOverlap": true
       },
       "diagnostics": []
+    },
+    "coherence": {
+      "checked": true,
+      "thresholds": {
+        "minimumMixedObjectGroupingScore": 0.75,
+        "minimumObjectCoverageRatio": 0.2
+      },
+      "orphanEvidenceBlocks": 5,
+      "captionDetached": 0,
+      "claimlessSlides": 16,
+      "sectionMotifDrift": 0,
+      "continuationTitleQuality": "ok",
+      "mixedObjectGroupingScore": 0.6,
+      "checks": {
+        "claimlessEvidenceSlides": false,
+        "detachedCaptions": true,
+        "orphanTables": false,
+        "lowObjectCoverage": true,
+        "sectionMotifDrift": true
+      },
+      "diagnostics": [
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "unified-pipeline-c90f83",
+          "message": "Slide \"Unified Pipeline\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "teaser-rubric-6df303",
+          "message": "Slide \"Teaser Rubric\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "teaser-rubric-6df303",
+          "message": "Slide \"Teaser Rubric\" starts with a table that is not attached to an explanatory paragraph."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "evidence-mix-73439a",
+          "message": "Slide \"Evidence Mix\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "project-pipeline-source-16042d",
+          "message": "Slide \"Project Pipeline Source\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "02-vite-05c8f4",
+          "message": "Slide \"02. Vite\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "04-svelte-c9b5bb",
+          "message": "Slide \"04. Svelte\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "05-typescript-9966fc",
+          "message": "Slide \"05. TypeScript\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "05-typescript-9966fc",
+          "message": "Slide \"05. TypeScript\" starts with a table that is not attached to an explanatory paragraph."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "08-fastapi-57d33a",
+          "message": "Slide \"08. FastAPI\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "10-langchain-0b84d0",
+          "message": "Slide \"10. LangChain\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "11-playwright-1b89b9",
+          "message": "Slide \"11. Playwright\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "11-playwright-1b89b9",
+          "message": "Slide \"11. Playwright\" starts with a table that is not attached to an explanatory paragraph."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "14-rust-6ee7ef",
+          "message": "Slide \"14. Rust\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "16-tensorflow-defe30",
+          "message": "Slide \"16. TensorFlow\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "17-pandas-a-powerful-python-data-analysis-toolki-240d76",
+          "message": "Slide \"17. pandas: A Powerful Python Data Analysis Toolkit\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "17-pandas-a-powerful-python-data-analysis-toolki-240d76",
+          "message": "Slide \"17. pandas: A Powerful Python Data Analysis Toolkit\" starts with a table that is not attached to an explanatory paragraph."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "20-d3-data-driven-documents-2860cc",
+          "message": "Slide \"20. D3: Data-Driven Documents\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "22-plotly-py-adbd2e",
+          "message": "Slide \"22. Plotly.py\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "23-the-system-design-primer-8b55bb",
+          "message": "Slide \"23. The System Design Primer\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "23-the-system-design-primer-8b55bb",
+          "message": "Slide \"23. The System Design Primer\" starts with a table that is not attached to an explanatory paragraph."
+        }
+      ]
+    },
+    "overflowResolution": {
+      "checked": true,
+      "strategyCounts": {
+        "preSplit": 4,
+        "candidateReflow": 0,
+        "regionExpansion": 0,
+        "fontShrink": 0
+      },
+      "continuationSlides": 10,
+      "continuationGroups": 4,
+      "continuationReasons": {
+        "list": 4,
+        "table": 0,
+        "code": 0,
+        "paragraph": 0,
+        "mixed": 0,
+        "toc": 0
+      },
+      "graphOrDiagramBlocksSplit": false
     }
   },
   "pptxInspection": {
-    "slideCount": 38,
-    "textRuns": 329,
-    "minFontSizePt": 8.0,
-    "fontSizeCount": 329,
+    "slideCount": 41,
+    "textRuns": 294,
+    "minFontSizePt": 15.0,
+    "fontSizeCount": 294,
     "boundsViolationCount": 0,
     "boundsViolations": [],
     "chartPartCount": 5,
     "tableShapeMentions": 5,
-    "diagramMentions": 3
+    "diagramMentions": 7
   },
   "pngInspection": {
-    "pngCount": 38,
+    "pngCount": 41,
     "blankSlides": [],
     "lowContrastSlides": [],
-    "minUniqueColors": 57,
-    "meanUniqueColors": 213.8421052631579,
+    "minUniqueColors": 35,
+    "meanUniqueColors": 135.0,
     "contentBoxes": [
       {
         "slide": "slide-01.png",
@@ -210,20 +395,19 @@
   "compositionInspection": {
     "ok": true,
     "issues": [],
-    "slideCount": 38,
-    "contentSlideCount": 34,
+    "slideCount": 41,
+    "contentSlideCount": 37,
     "layoutPresetCounts": {
       "vertical-list": 3,
       "pipeline": 6,
       "table-focus": 5,
       "chart-table": 5,
-      "grid": 5,
-      "key-message": 4,
-      "comparison": 6
+      "comparison": 14,
+      "key-message": 4
     },
-    "layoutFamilyCount": 7,
-    "cardHeavyPresetCount": 8,
-    "cardHeavyRatio": 0.235,
+    "layoutFamilyCount": 6,
+    "cardHeavyPresetCount": 3,
+    "cardHeavyRatio": 0.081,
     "maxCardHeavyRun": 2,
     "minimumTitleFontPt": 34.0,
     "scaleHierarchyViolations": []
@@ -231,10 +415,10 @@
   "contactSheet": {
     "ok": true,
     "file": "artifacts\\external-markdown-visual-eval\\iteration-04\\contact-sheet.png",
-    "slidesShown": 38,
+    "slidesShown": 41,
     "size": [
       1500,
-      1680
+      1890
     ]
   },
   "teaserComparisonRubric": {

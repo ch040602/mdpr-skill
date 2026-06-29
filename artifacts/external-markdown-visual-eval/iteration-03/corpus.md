@@ -195,7 +195,7 @@ $ pip install "fastapi[standard]"
 - **Source**
   `openai-python` from `https://raw.githubusercontent.com/openai/openai-python/main/README.md`
 - **Structure**
-  48 headings, 10 table-like lines, 42 fenced code blocks.
+  50 headings, 10 table-like lines, 45 fenced code blocks.
 - Serializing back into JSON, model.to_json()
 - Converting to a dictionary, model.to_dict()
 - Additional advanced functionality

@@ -13,19 +13,19 @@ This deck is generated from Markdown files inside the local MDPR checkout.
 
 ## Source manifest
 
-- README.md: mdpresent (13 headings, 14613 chars)
+- README.md: mdpresent (13 headings, 15017 chars)
 - docs/00-product-definition.md: 00. Product Definition (6 headings, 1546 chars)
-- docs/01-architecture.md: 01. Architecture (4 headings, 3083 chars)
+- docs/01-architecture.md: 01. Architecture (4 headings, 3366 chars)
 - docs/02-requirements.md: 02. Requirements (12 headings, 3070 chars)
 - docs/03-page-splitting.md: 03. Page Splitting Rules (16 headings, 5370 chars)
 - docs/04-layout-rules.md: 04. Layout Selection Rules (10 headings, 3787 chars)
-- docs/05-overrides-for-llm.md: 05. Override Manifest (9 headings, 3415 chars)
+- docs/05-overrides-for-llm.md: 05. Override Manifest (9 headings, 4030 chars)
 - docs/06-cli-spec.md: 06. CLI Specification (7 headings, 4187 chars)
 - docs/07-rendering-rules.md: 07. Rendering Rules (11 headings, 6360 chars)
 - docs/08-roadmap.md: 08. Roadmap (10 headings, 3462 chars)
 - docs/09-codex-implementation-guide.md: 09. Codex Implementation Guide (8 headings, 1595 chars)
 - docs/10-template-and-master-policy.md: 10. PPT Template and Slide Master Policy (8 headings, 1248 chars)
-- docs/11-qa-overflow.md: 11. Validation and Overflow Policy (12 headings, 9740 chars)
+- docs/11-qa-overflow.md: 11. Validation and Overflow Policy (12 headings, 10704 chars)
 - docs/references.md: References (8 headings, 756 chars)
 - docs/adr/0001-presentation-ir-schema-contract.md: ADR 0001: Presentation IR Schema Contract (5 headings, 1226 chars)
 - examples/basic/deck.md: AI Workflow Automation Proposal (10 headings, 1255 chars)

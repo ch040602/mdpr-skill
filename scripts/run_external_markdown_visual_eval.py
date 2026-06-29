@@ -436,7 +436,7 @@ def build_deck(deck_md: Path, build_dir: Path) -> None:
         "--out",
         str(build_dir.resolve()),
         "--theme-style",
-        "magazine",
+        "technical",
         "--theme-color",
         "#0F766E",
         "--theme-harmony",

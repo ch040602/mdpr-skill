@@ -24,6 +24,7 @@ Recommended execution order:
 20. [Phase 19 - Design Grammar and Import Roadmap](todo/phase-19-design-grammar-and-import-roadmap.md)
 21. [Phase 20 - Unified Skill Follow-ups](todo/phase-20-unified-skill-followups.md)
 22. [Phase 21 - LLM PPTX Skill Research](todo/phase-21-llm-pptx-skill-research.md)
+23. [Phase 22 - AI PPT Human Refinement Loops](todo/phase-22-ai-ppt-human-refinement.md)
 
 ## Parallelization
 

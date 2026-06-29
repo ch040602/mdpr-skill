@@ -4,15 +4,6 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: "Run release validation without publishing to npm"
-        required: true
-        default: "true"
-        type: choice
-        options:
-          - "true"
-          - "false"
 
 permissions:
   contents: read
@@ -51,12 +42,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run release validation
-        run: npm run test:ci
+      - name: Validate release tag matches package version
+        if: ${{ github.event_name == 'release' }}
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          node - <<'NODE'
+          const { readFileSync } = require("node:fs");
+          const pkg = JSON.parse(readFileSync("package.json", "utf8"));
+          const expected = `v${pkg.version}`;
+          const actual = process.env.RELEASE_TAG;
+          if (actual !== expected) {
+            console.error(`Release tag ${actual} does not match package version ${expected}.`);
+            process.exit(1);
+          }
+          console.log(`Release tag ${actual} matches package version ${pkg.version}.`);
+          NODE
 
-      - name: Verify npm package contents
-        run: npm run pack:dry-run
+      - name: Run release preflight
+        run: npm run release:preflight
 
       - name: Publish to npm
-        if: ${{ github.event_name == 'release' || inputs.dry_run == 'false' }}
+        if: ${{ github.event_name == 'release' }}
         run: npm publish --provenance --access public

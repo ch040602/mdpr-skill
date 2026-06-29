@@ -54,7 +54,7 @@
         "  -> MDPR deterministic parsing, splitting, layout, validation",
         "  -> editable PPTX / HTML / PDF"
       ],
-      "charCount": 14613
+      "charCount": 15017
     },
     {
       "path": "docs/00-product-definition.md",
@@ -120,7 +120,7 @@
         "  -> Pack Validation / Token Import",
         "  -> Layout Planner (candidate scoring)"
       ],
-      "charCount": 3083
+      "charCount": 3366
     },
     {
       "path": "docs/02-requirements.md",
@@ -294,7 +294,7 @@
       "code": [
         "mdpresent inspect deck.md --json > deck.plan.json"
       ],
-      "charCount": 3415
+      "charCount": 4030
     },
     {
       "path": "docs/06-cli-spec.md",
@@ -500,7 +500,7 @@
         "- minimum font size violations",
         "- missing override targets"
       ],
-      "charCount": 9740
+      "charCount": 10704
     },
     {
       "path": "docs/references.md",

@@ -28,6 +28,25 @@ mdpresent build deck.md --to pptx,html --out dist
 
 ## Skill Repository Install
 
+After the package is published to npm, install or try the optional
+`mdpr-skill` CLI without cloning this repository:
+
+```bash
+npm install -g mdpr-skill
+mdpr-skill --help
+npx mdpr-skill --help
+```
+
+Use a source checkout when you want to install the Codex skill folder, run
+development checks, or generate local validation artifacts.
+
+Clone the optional skill repository:
+
+```bash
+git clone https://github.com/ch040602/mdpr-skill.git
+cd mdpr-skill
+```
+
 ```bash
 npm install
 ```
@@ -35,6 +54,15 @@ npm install
 This installs the mdpr-skill package only. It does not clone or update the MDPR
 source checkout as a side effect, and it does not replace the npm-installed
 MDPR CLI.
+
+Install the Codex skill from this checkout and invoke the installed skill as
+`$mdpr-skill`:
+
+```powershell
+$codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
+New-Item -ItemType Directory -Force (Join-Path $codexHome "skills") | Out-Null
+Copy-Item -Recurse -Force skills\mdpr-skill (Join-Path $codexHome "skills\mdpr-skill")
+```
 
 Prepare the local MDPR runtime explicitly when you want to run validation or
 generate comparison artifacts:

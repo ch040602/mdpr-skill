@@ -4,7 +4,7 @@ export {
   mapCssDeclarationToPptEffect,
   parseDesignMd,
   themeCandidateGate,
-} from "../../../design-import-core/src/index";
+} from "../../../design-import-core/src/index.js";
 export type {
   AnalyzeHtmlDesignInput,
   BuildThemeCandidateInput,
@@ -14,4 +14,4 @@ export type {
   MdprThemeCandidate,
   PptEffectFeasibility,
   ThemeCandidateGateResult,
-} from "../../../design-import-core/src/index";
+} from "../../../design-import-core/src/index.js";

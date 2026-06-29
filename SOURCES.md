@@ -12,3 +12,13 @@
 - Design Components documented concepts: brand-agnostic design engine, visual rules, components, named motion system, skins, skills.
 
 This TODO pack is an implementation planning artifact. If Design Components content is copied or adapted, keep upstream metadata and license notice under `third_party/design-source/`, and keep project-owned adaptations under `design_components/`.
+
+## Additional source checked on 2026-06-29
+
+- YouTube video: "AI로 만든 PPT 그냥 쓰지 마세요" by `피프`.
+- URL: https://www.youtube.com/watch?v=GX0Fn-5YqKE&t=464s
+- Upload date from extracted metadata: 2026-06-28.
+- Duration from extracted metadata: 10:23.
+- Chapter metadata observed: Intro, Changing Fonts, Setting the Layout, Creating Highlight Pages, Creating the Cover, Refining Details, Comparing Before and After, Wrapping Up.
+- The requested timestamp, 464 seconds, lands at the transition from cover creation to detail refinement.
+- Local analysis artifacts were generated under ignored cache paths `.cache/youtube/GX0Fn-5YqKE.info.json`, `.cache/youtube/GX0Fn-5YqKE.ko.vtt`, and `.cache/youtube/GX0Fn-5YqKE-json3.ko.json3`.

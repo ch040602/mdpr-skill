@@ -1,5 +1,5 @@
-import { createChangeRequest, type ChangeRequest } from "../../change-core/src/index";
-import { assertNoForbiddenFields } from "../../hints-core/src/index";
+import { createChangeRequest, type ChangeRequest } from "../../change-core/src/index.js";
+import { assertNoForbiddenFields } from "../../hints-core/src/index.js";
 
 export type EditIntentTarget = {
   slideRef: string;

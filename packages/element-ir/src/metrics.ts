@@ -1,4 +1,4 @@
-import type { SlideNode } from './types';
+import type { SlideNode } from './types.js';
 
 export function summarizeSlideMetrics(slide: SlideNode) {
   return {

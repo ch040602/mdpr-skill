@@ -1,1 +1,1 @@
-export { buildReviewReport } from "../../../review-core/src/index";
+export { buildReviewReport } from "../../../review-core/src/index.js";

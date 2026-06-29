@@ -21,24 +21,24 @@ Finish the repository cleanup after consolidating `mdpr-design-components` and
 
 ## TODO
 
-- [ ] `UNIFIED-SKILL-P0-001`: Update `tests/test_boundary_contract.py` to read
+- [x] `UNIFIED-SKILL-P0-001`: Update `tests/test_boundary_contract.py` to read
   `skills/mdpr-skill/SKILL.md` and assert that the unified skill still forbids
   final-decision fields such as coordinates, colors, typography, z-order, and
   renderer ownership.
-- [ ] `UNIFIED-SKILL-P0-002`: Add or adjust a boundary test that ensures the
+- [x] `UNIFIED-SKILL-P0-002`: Add or adjust a boundary test that ensures the
   unified skill covers both Design Components semantic-hint guidance and Styled
   Deck IR design coherence review responsibilities.
-- [ ] `UNIFIED-SKILL-P1-003`: Update README or installation docs to state that
+- [x] `UNIFIED-SKILL-P1-003`: Update README or installation docs to state that
   Codex users should install/invoke `$mdpr-skill`, not the removed
   `$mdpr-design-components` or `$mdpr-design-review` names.
-- [ ] `UNIFIED-SKILL-P1-004`: Add a small install/sync helper or documented
+- [x] `UNIFIED-SKILL-P1-004`: Add a small install/sync helper or documented
   command for copying `skills/mdpr-skill` into `$CODEX_HOME/skills/mdpr-skill`
   so the source skill and local Codex-installed skill do not drift.
-- [ ] `UNIFIED-SKILL-P2-005`: Decide whether to keep short migration notes for
+- [x] `UNIFIED-SKILL-P2-005`: Decide whether to keep short migration notes for
   old explicit invocations of `$mdpr-design-components` and
   `$mdpr-design-review`, or intentionally require users to switch to
   `$mdpr-skill`.
-- [ ] `UNIFIED-SKILL-P2-006`: Add a release checklist item that verifies
+- [x] `UNIFIED-SKILL-P2-006`: Add a release checklist item that verifies
   `quick_validate.py skills/mdpr-skill` and the focused boundary tests pass
   before publishing or reinstalling the skill.
 
@@ -50,3 +50,34 @@ Finish the repository cleanup after consolidating `mdpr-design-components` and
   returns only intentional migration/history references.
 - The local Codex install instructions point to one skill name:
   `$mdpr-skill`.
+
+## Progress
+
+- 2026-06-27: Completed `UNIFIED-SKILL-P0-001` and
+  `UNIFIED-SKILL-P0-002`. `tests/test_boundary_contract.py` now reads the
+  unified `skills/mdpr-skill/SKILL.md`, verifies final-renderer authority
+  remains forbidden, and checks that semantic hint plus design coherence audit
+  responsibilities are both present.
+- Validation passed:
+  `python -m unittest tests.test_boundary_contract -v`,
+  `python C:\Users\hcslab_523\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\mdpr-skill`,
+  and
+  `rg "mdpr-design-components|mdpr-design-review" README.md docs tests todo package.json skills`
+  with only this migration TODO document retaining intentional references.
+- 2026-06-27: Completed `UNIFIED-SKILL-P1-003` and
+  `UNIFIED-SKILL-P1-004`. `README.md` and `docs/mdpr-installation.md` now show
+  the local Codex install/sync command for copying `skills/mdpr-skill` into
+  `$CODEX_HOME/skills/mdpr-skill`, and they instruct users to invoke the skill
+  as `$mdpr-skill`.
+- Validation passed again:
+  `python -m unittest tests.test_boundary_contract -v`,
+  `python C:\Users\hcslab_523\.codex\skills\.system\skill-creator\scripts\quick_validate.py skills\mdpr-skill`,
+  and
+  `rg "mdpr-design-components|mdpr-design-review" README.md docs tests todo package.json skills`
+  with only this migration TODO document retaining intentional references.
+- 2026-06-27: Completed `UNIFIED-SKILL-P2-005` and
+  `UNIFIED-SKILL-P2-006`. The migration decision is to require users to switch
+  to `$mdpr-skill` instead of keeping public alias notes in README/install
+  docs. `docs/release-checklist.md` now includes `quick_validate.py
+  skills/mdpr-skill` and `python -m unittest tests.test_boundary_contract -v`
+  as release validation gates.

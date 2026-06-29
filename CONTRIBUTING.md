@@ -16,6 +16,11 @@ This repository is the optional Codex skill companion for
 ## Before You Start
 
 - Open an issue or draft PR for broad behavior changes.
+- Use the GitHub issue forms for reproducible bugs and user-visible feature
+  proposals so triage starts with version, reproduction, boundary, and
+  validation evidence.
+- Maintainers should keep labels used by issue forms and generated release
+  notes aligned with `docs/github-labels.md`.
 - Keep changes scoped to one purpose.
 - Prefer improving MDPR itself when the change affects deterministic rendering,
   layout, theme rules, object selection, overflow handling, or PPTX generation.

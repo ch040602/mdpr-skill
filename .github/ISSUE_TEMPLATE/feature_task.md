@@ -13,14 +13,14 @@ labels: ["type: feature"]
 
 ## TODO
 
-- [x]
+- [ ]
 
 ## Acceptance criteria
 
-- [x]
+- [ ]
 
 ## Tests
 
-- [x]
+- [ ]
 
 ## Notes

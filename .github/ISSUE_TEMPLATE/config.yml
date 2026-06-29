@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/ch040602/mdpr-skill/security/policy
+    about: Do not open a public issue for vulnerabilities. Follow SECURITY.md instead.
+  - name: MDPR runtime issue
+    url: https://github.com/ch040602/MdPr/issues/new/choose
+    about: Use the upstream MDPR repository for parser, renderer, layout, and PPTX runtime problems.

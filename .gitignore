@@ -1,6 +1,7 @@
 .cache/
 .codex/
 node_modules/
+dist/
 __pycache__/
 *.pyc
 ~$*.pptx

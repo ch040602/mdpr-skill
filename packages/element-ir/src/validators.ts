@@ -1,4 +1,4 @@
-import type { SlideElementIR } from './types';
+import type { SlideElementIR } from './types.js';
 
 const FORBIDDEN_VISUAL_FIELDS = new Set(['x', 'y', 'w', 'h', 'color', 'radius', 'shadow', 'variantId', 'effect']);
 

@@ -6,43 +6,126 @@
   "manifest": "artifacts\\external-markdown-visual-eval\\iteration-03\\build\\mdpresent-manifest.json",
   "designLock": {
     "path": "artifacts\\external-markdown-visual-eval\\iteration-03\\build\\mdpresent-design-lock.json",
-    "decorationStyle": "magazine",
+    "decorationStyle": "technical",
     "colorSeed": "#0F766E",
     "colorCombination": "split-complementary"
   },
-  "slideCount": 28,
+  "slideCount": 68,
   "diagnostics": [],
   "manifestValidation": {
     "layoutOverflow": [],
     "visual": {
       "checked": true,
-      "slideCount": 28,
+      "slideCount": 68,
+      "thresholds": {
+        "minimumTextContrastRatio": 4.5,
+        "maximumSameLayerOverlapRatio": 0.08,
+        "minimumReadableFontSize": 8,
+        "imageAspectRatioRange": [
+          0.25,
+          4
+        ],
+        "minimumDiagramConnectorSpace": {
+          "width": 2,
+          "height": 1
+        }
+      },
       "checks": {
         "nonBlankSlides": true,
         "regionBounds": true,
         "minimumTextSize": true,
+        "textContrast": true,
+        "sameLayerOverlap": true,
+        "imageAspectRatio": true,
+        "connectorClearance": true,
         "backgroundContentOverlap": true
       },
       "diagnostics": []
+    },
+    "coherence": {
+      "checked": true,
+      "thresholds": {
+        "minimumMixedObjectGroupingScore": 0.75,
+        "minimumObjectCoverageRatio": 0.2
+      },
+      "orphanEvidenceBlocks": 1,
+      "captionDetached": 0,
+      "claimlessSlides": 3,
+      "sectionMotifDrift": 0,
+      "continuationTitleQuality": "ok",
+      "mixedObjectGroupingScore": 0.17,
+      "checks": {
+        "claimlessEvidenceSlides": false,
+        "detachedCaptions": true,
+        "orphanTables": false,
+        "lowObjectCoverage": true,
+        "sectionMotifDrift": true
+      },
+      "diagnostics": [
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "unified-pipeline-c90f83",
+          "message": "Slide \"Unified Pipeline\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "teaser-rubric-6df303",
+          "message": "Slide \"Teaser Rubric\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "teaser-rubric-6df303",
+          "message": "Slide \"Teaser Rubric\" starts with a table that is not attached to an explanatory paragraph."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "evidence-mix-73439a",
+          "message": "Slide \"Evidence Mix\" contains evidence objects without a claim-like explanatory block."
+        }
+      ]
+    },
+    "overflowResolution": {
+      "checked": true,
+      "strategyCounts": {
+        "preSplit": 20,
+        "candidateReflow": 0,
+        "regionExpansion": 0,
+        "fontShrink": 0
+      },
+      "continuationSlides": 57,
+      "continuationGroups": 20,
+      "continuationReasons": {
+        "list": 20,
+        "table": 0,
+        "code": 0,
+        "paragraph": 0,
+        "mixed": 0,
+        "toc": 0
+      },
+      "graphOrDiagramBlocksSplit": false
     }
   },
   "pptxInspection": {
-    "slideCount": 28,
-    "textRuns": 217,
-    "minFontSizePt": 8.0,
-    "fontSizeCount": 217,
+    "slideCount": 68,
+    "textRuns": 340,
+    "minFontSizePt": 15.0,
+    "fontSizeCount": 340,
     "boundsViolationCount": 0,
     "boundsViolations": [],
     "chartPartCount": 1,
     "tableShapeMentions": 1,
-    "diagramMentions": 1
+    "diagramMentions": 3
   },
   "pngInspection": {
-    "pngCount": 28,
+    "pngCount": 68,
     "blankSlides": [],
     "lowContrastSlides": [],
-    "minUniqueColors": 57,
-    "meanUniqueColors": 206.75,
+    "minUniqueColors": 35,
+    "meanUniqueColors": 76.22058823529412,
     "contentBoxes": [
       {
         "slide": "slide-01.png",
@@ -210,19 +293,18 @@
   "compositionInspection": {
     "ok": true,
     "issues": [],
-    "slideCount": 28,
-    "contentSlideCount": 25,
+    "slideCount": 68,
+    "contentSlideCount": 65,
     "layoutPresetCounts": {
-      "vertical-list": 5,
+      "vertical-list": 8,
       "pipeline": 1,
       "table-focus": 1,
       "chart-table": 1,
-      "grid": 8,
-      "comparison": 9
+      "comparison": 54
     },
-    "layoutFamilyCount": 6,
-    "cardHeavyPresetCount": 13,
-    "cardHeavyRatio": 0.52,
+    "layoutFamilyCount": 5,
+    "cardHeavyPresetCount": 8,
+    "cardHeavyRatio": 0.123,
     "maxCardHeavyRun": 2,
     "minimumTitleFontPt": 34.0,
     "scaleHierarchyViolations": []
@@ -230,10 +312,10 @@
   "contactSheet": {
     "ok": true,
     "file": "artifacts\\external-markdown-visual-eval\\iteration-03\\contact-sheet.png",
-    "slidesShown": 28,
+    "slidesShown": 68,
     "size": [
       1500,
-      1260
+      2940
     ]
   },
   "teaserComparisonRubric": {
@@ -251,14 +333,16 @@
     ]
   },
   "quality": {
-    "score": 100,
-    "ok": true,
-    "issues": [],
+    "score": 88,
+    "ok": false,
+    "issues": [
+      "rendered slides look too sparse: mean unique colors 76.2"
+    ],
     "acceptedImprovementTargets": [
       "If slides are text-heavy, add rule support for stronger summary/table/chart composition.",
       "If teaser focal hierarchy is weak, improve cover/key-message scale and contrast rules.",
       "If pipeline slides fail, route them through MDPR diagram blocks only."
     ]
   },
-  "ok": true
+  "ok": false
 }

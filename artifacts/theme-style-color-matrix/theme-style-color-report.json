@@ -4,7 +4,7 @@
   "combinations": [
     {
       "id": "simple-blue-analogous",
-      "style": "simple",
+      "style": "clean",
       "color": "#2563EB",
       "harmony": "analogous",
       "role": "Minimal blue system for clean operational slides",
@@ -25,7 +25,7 @@
       },
       "pngPreview": "artifacts\\theme-style-color-matrix\\simple-blue-analogous\\png\\슬라이드1.PNG",
       "pngProofPreview": "artifacts\\theme-style-color-matrix\\simple-blue-analogous\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngSlideCount": 12
     },
     {
       "id": "minimalism-ink-mono",
@@ -50,7 +50,7 @@
       },
       "pngPreview": "artifacts\\theme-style-color-matrix\\minimalism-ink-mono\\png\\슬라이드1.PNG",
       "pngProofPreview": "artifacts\\theme-style-color-matrix\\minimalism-ink-mono\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngSlideCount": 12
     },
     {
       "id": "newmorphism-slate-analogous",
@@ -75,7 +75,7 @@
       },
       "pngPreview": "artifacts\\theme-style-color-matrix\\newmorphism-slate-analogous\\png\\슬라이드1.PNG",
       "pngProofPreview": "artifacts\\theme-style-color-matrix\\newmorphism-slate-analogous\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngSlideCount": 12
     },
     {
       "id": "glass-violet-split",
@@ -100,22 +100,22 @@
       },
       "pngPreview": "artifacts\\theme-style-color-matrix\\glass-violet-split\\png\\슬라이드1.PNG",
       "pngProofPreview": "artifacts\\theme-style-color-matrix\\glass-violet-split\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngSlideCount": 12
     },
     {
-      "id": "grid-red-complementary",
-      "style": "grid",
+      "id": "clean-red-complementary",
+      "style": "clean",
       "color": "#DC2626",
       "harmony": "complementary",
       "role": "Swiss modular grid with restrained red accent",
-      "dir": "artifacts\\theme-style-color-matrix\\grid-red-complementary",
-      "pptx": "artifacts\\theme-style-color-matrix\\grid-red-complementary\\deck.pptx",
-      "html": "artifacts\\theme-style-color-matrix\\grid-red-complementary\\deck.html",
-      "designLock": "artifacts\\theme-style-color-matrix\\grid-red-complementary\\mdpresent-design-lock.json",
-      "manifest": "artifacts\\theme-style-color-matrix\\grid-red-complementary\\mdpresent-manifest.json",
+      "dir": "artifacts\\theme-style-color-matrix\\clean-red-complementary",
+      "pptx": "artifacts\\theme-style-color-matrix\\clean-red-complementary\\deck.pptx",
+      "html": "artifacts\\theme-style-color-matrix\\clean-red-complementary\\deck.html",
+      "designLock": "artifacts\\theme-style-color-matrix\\clean-red-complementary\\mdpresent-design-lock.json",
+      "manifest": "artifacts\\theme-style-color-matrix\\clean-red-complementary\\mdpresent-manifest.json",
       "boundsValidation": {
         "ok": true,
-        "checkedPptx": "artifacts\\theme-style-color-matrix\\grid-red-complementary\\deck.pptx",
+        "checkedPptx": "artifacts\\theme-style-color-matrix\\clean-red-complementary\\deck.pptx",
         "slideSizeEmu": {
           "width": 12191695,
           "height": 6858000
@@ -123,9 +123,9 @@
         "violations": [],
         "violationCount": 0
       },
-      "pngPreview": "artifacts\\theme-style-color-matrix\\grid-red-complementary\\png\\슬라이드1.PNG",
-      "pngProofPreview": "artifacts\\theme-style-color-matrix\\grid-red-complementary\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngPreview": "artifacts\\theme-style-color-matrix\\clean-red-complementary\\png\\슬라이드1.PNG",
+      "pngProofPreview": "artifacts\\theme-style-color-matrix\\clean-red-complementary\\png\\슬라이드6.PNG",
+      "pngSlideCount": 12
     },
     {
       "id": "data-amber-mono",
@@ -150,22 +150,22 @@
       },
       "pngPreview": "artifacts\\theme-style-color-matrix\\data-amber-mono\\png\\슬라이드1.PNG",
       "pngProofPreview": "artifacts\\theme-style-color-matrix\\data-amber-mono\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngSlideCount": 12
     },
     {
-      "id": "magazine-rust-triadic",
-      "style": "magazine",
+      "id": "technical-rust-triadic",
+      "style": "technical",
       "color": "#C2410C",
       "harmony": "triadic",
       "role": "Editorial magazine cover/page rhythm",
-      "dir": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic",
-      "pptx": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic\\deck.pptx",
-      "html": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic\\deck.html",
-      "designLock": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic\\mdpresent-design-lock.json",
-      "manifest": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic\\mdpresent-manifest.json",
+      "dir": "artifacts\\theme-style-color-matrix\\technical-rust-triadic",
+      "pptx": "artifacts\\theme-style-color-matrix\\technical-rust-triadic\\deck.pptx",
+      "html": "artifacts\\theme-style-color-matrix\\technical-rust-triadic\\deck.html",
+      "designLock": "artifacts\\theme-style-color-matrix\\technical-rust-triadic\\mdpresent-design-lock.json",
+      "manifest": "artifacts\\theme-style-color-matrix\\technical-rust-triadic\\mdpresent-manifest.json",
       "boundsValidation": {
         "ok": true,
-        "checkedPptx": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic\\deck.pptx",
+        "checkedPptx": "artifacts\\theme-style-color-matrix\\technical-rust-triadic\\deck.pptx",
         "slideSizeEmu": {
           "width": 12191695,
           "height": 6858000
@@ -173,9 +173,9 @@
         "violations": [],
         "violationCount": 0
       },
-      "pngPreview": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic\\png\\슬라이드1.PNG",
-      "pngProofPreview": "artifacts\\theme-style-color-matrix\\magazine-rust-triadic\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngPreview": "artifacts\\theme-style-color-matrix\\technical-rust-triadic\\png\\슬라이드1.PNG",
+      "pngProofPreview": "artifacts\\theme-style-color-matrix\\technical-rust-triadic\\png\\슬라이드6.PNG",
+      "pngSlideCount": 12
     },
     {
       "id": "executive-teal-complementary",
@@ -200,7 +200,7 @@
       },
       "pngPreview": "artifacts\\theme-style-color-matrix\\executive-teal-complementary\\png\\슬라이드1.PNG",
       "pngProofPreview": "artifacts\\theme-style-color-matrix\\executive-teal-complementary\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngSlideCount": 12
     },
     {
       "id": "technical-green-mono",
@@ -225,22 +225,22 @@
       },
       "pngPreview": "artifacts\\theme-style-color-matrix\\technical-green-mono\\png\\슬라이드1.PNG",
       "pngProofPreview": "artifacts\\theme-style-color-matrix\\technical-green-mono\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngSlideCount": 12
     },
     {
-      "id": "dark-rose-complementary",
-      "style": "dark",
+      "id": "executive-rose-complementary",
+      "style": "executive",
       "color": "#E11D48",
       "harmony": "complementary",
       "role": "Dark proof deck with high-contrast emphasis",
-      "dir": "artifacts\\theme-style-color-matrix\\dark-rose-complementary",
-      "pptx": "artifacts\\theme-style-color-matrix\\dark-rose-complementary\\deck.pptx",
-      "html": "artifacts\\theme-style-color-matrix\\dark-rose-complementary\\deck.html",
-      "designLock": "artifacts\\theme-style-color-matrix\\dark-rose-complementary\\mdpresent-design-lock.json",
-      "manifest": "artifacts\\theme-style-color-matrix\\dark-rose-complementary\\mdpresent-manifest.json",
+      "dir": "artifacts\\theme-style-color-matrix\\executive-rose-complementary",
+      "pptx": "artifacts\\theme-style-color-matrix\\executive-rose-complementary\\deck.pptx",
+      "html": "artifacts\\theme-style-color-matrix\\executive-rose-complementary\\deck.html",
+      "designLock": "artifacts\\theme-style-color-matrix\\executive-rose-complementary\\mdpresent-design-lock.json",
+      "manifest": "artifacts\\theme-style-color-matrix\\executive-rose-complementary\\mdpresent-manifest.json",
       "boundsValidation": {
         "ok": true,
-        "checkedPptx": "artifacts\\theme-style-color-matrix\\dark-rose-complementary\\deck.pptx",
+        "checkedPptx": "artifacts\\theme-style-color-matrix\\executive-rose-complementary\\deck.pptx",
         "slideSizeEmu": {
           "width": 12191695,
           "height": 6858000
@@ -248,9 +248,9 @@
         "violations": [],
         "violationCount": 0
       },
-      "pngPreview": "artifacts\\theme-style-color-matrix\\dark-rose-complementary\\png\\슬라이드1.PNG",
-      "pngProofPreview": "artifacts\\theme-style-color-matrix\\dark-rose-complementary\\png\\슬라이드6.PNG",
-      "pngSlideCount": 10
+      "pngPreview": "artifacts\\theme-style-color-matrix\\executive-rose-complementary\\png\\슬라이드1.PNG",
+      "pngProofPreview": "artifacts\\theme-style-color-matrix\\executive-rose-complementary\\png\\슬라이드6.PNG",
+      "pngSlideCount": 12
     }
   ],
   "coverContactSheet": {

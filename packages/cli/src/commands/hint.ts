@@ -1,1 +1,1 @@
-export { buildAgentHintManifest, assertNoForbiddenFields } from "../../../hints-core/src/index";
+export { buildAgentHintManifest, assertNoForbiddenFields } from "../../../hints-core/src/index.js";

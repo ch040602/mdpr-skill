@@ -1,4 +1,4 @@
-import type { SlideElementIR } from './types';
+import type { SlideElementIR } from './types.js';
 
 export function normalizeSlideElementIR(deck: SlideElementIR): SlideElementIR {
   return {

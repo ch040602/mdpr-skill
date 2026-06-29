@@ -62,16 +62,16 @@ Editable arc geometry uses theme accents.
 
 | Style | Main Color | Harmony | Intended Role |
 | --- | --- | --- | --- |
-| simple | `#2563EB` | analogous | Minimal blue system for clean operational slides |
+| clean | `#2563EB` | analogous | Minimal blue system for clean operational slides |
 | minimalism | `#111827` | monochromatic | Whitespace-first slides with thin rules and restrained emphasis |
 | newmorphism | `#4F6F8F` | analogous | Soft UI surfaces using same-tone panels and paired shadows |
 | glass | `#8A4FFF` | split-complementary | Translucent proof surfaces with contrast accents |
-| grid | `#DC2626` | complementary | Swiss modular grid with restrained red accent |
+| clean | `#DC2626` | complementary | Swiss modular grid with restrained red accent |
 | data | `#F59E0B` | monochromatic | Dark data-journalism page with dense proof rails |
-| magazine | `#C2410C` | triadic | Editorial magazine cover/page rhythm |
+| technical | `#C2410C` | triadic | Editorial magazine cover/page rhythm |
 | executive | `#0F766E` | complementary | Business deck rhythm with a warm opposing accent |
 | technical | `#16A34A` | monochromatic | Engineering/validation tone with brightness steps |
-| dark | `#E11D48` | complementary | Dark proof deck with high-contrast emphasis |
+| executive | `#E11D48` | complementary | Dark proof deck with high-contrast emphasis |
 
 ## Final Checks
 

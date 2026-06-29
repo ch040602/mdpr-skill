@@ -57,7 +57,7 @@
       "slug": "openai-python",
       "title": "OpenAI Python API library",
       "url": "https://raw.githubusercontent.com/openai/openai-python/main/README.md",
-      "chars": 30700
+      "chars": 32500
     },
     {
       "slug": "langchain",
@@ -149,25 +149,33 @@
       "iteration": 1,
       "pptx": "artifacts\\external-markdown-visual-eval\\iteration-01\\build\\deck.pptx",
       "contactSheet": "artifacts\\external-markdown-visual-eval\\iteration-01\\contact-sheet.png",
-      "score": 100,
-      "ok": true,
-      "issues": []
+      "score": 76,
+      "ok": false,
+      "issues": [
+        "rendered slides look too sparse: mean unique colors 96.6",
+        "layout family diversity too low: 4"
+      ]
     },
     {
       "iteration": 2,
       "pptx": "artifacts\\external-markdown-visual-eval\\iteration-02\\build\\deck.pptx",
       "contactSheet": "artifacts\\external-markdown-visual-eval\\iteration-02\\contact-sheet.png",
-      "score": 100,
-      "ok": true,
-      "issues": []
+      "score": 76,
+      "ok": false,
+      "issues": [
+        "rendered slides look too sparse: mean unique colors 73.0",
+        "layout family diversity too low: 4"
+      ]
     },
     {
       "iteration": 3,
       "pptx": "artifacts\\external-markdown-visual-eval\\iteration-03\\build\\deck.pptx",
       "contactSheet": "artifacts\\external-markdown-visual-eval\\iteration-03\\contact-sheet.png",
-      "score": 100,
-      "ok": true,
-      "issues": []
+      "score": 88,
+      "ok": false,
+      "issues": [
+        "rendered slides look too sparse: mean unique colors 76.2"
+      ]
     },
     {
       "iteration": 4,

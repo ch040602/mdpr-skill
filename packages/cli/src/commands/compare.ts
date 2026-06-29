@@ -1,1 +1,1 @@
-export { compareMdprRuns, runMdprSkillEval } from "../../../eval-core/src/index";
+export { compareMdprRuns, runMdprSkillEval } from "../../../eval-core/src/index.js";

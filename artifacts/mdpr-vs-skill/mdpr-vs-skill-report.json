@@ -6,7 +6,7 @@
   "skillFromActualMdprRunPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
   "sourceFileCount": 21,
   "sourceHeadingCount": 180,
-  "sourceCharCount": 70768,
+  "sourceCharCount": 73034,
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprCommand": "node .cache/mdpr/packages/cli/dist/index.js build artifacts/mdpr-vs-skill/mdpr-source-corpus.md --to pptx --design clean",
@@ -134,7 +134,7 @@
         1600,
         900
       ],
-      "uniqueColors": 697,
+      "uniqueColors": 696,
       "nonWhitePixels": 1440000,
       "hasContent": true
     }

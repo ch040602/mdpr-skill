@@ -8,14 +8,14 @@ import {
   type MdprContext,
   type MdprRunInput,
   type MdprRunResult,
-} from "../../mdpr-adapter/src/index";
-import { assertNoForbiddenFields, type AgentHintManifest } from "../../hints-core/src/index";
+} from "../../mdpr-adapter/src/index.js";
+import { assertNoForbiddenFields, type AgentHintManifest } from "../../hints-core/src/index.js";
 import {
   reviewCoherence,
   reviewFindingHasFinalDecisionField,
   reviewVisualPolicy,
   type ReviewFinding,
-} from "../../review-core/src/index";
+} from "../../review-core/src/index.js";
 
 export type MdprRunMetrics = {
   overflowCount: number;

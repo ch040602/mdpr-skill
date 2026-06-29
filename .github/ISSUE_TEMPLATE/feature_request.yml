@@ -1,0 +1,60 @@
+name: Feature Request
+description: Propose a user-visible mdpr-skill improvement.
+title: "[Feature]: "
+labels: ["type: feature", "triage"]
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for mdpr-skill changes. MDPR runtime rendering, layout, parser, and PPTX feature requests should usually go to the MDPR repository first.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user workflow is blocked or harder than it should be?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the behavior, command, schema, or document change you want.
+    validations:
+      required: true
+  - type: dropdown
+    id: boundary
+    attributes:
+      label: Boundary
+      description: Which side should own the final behavior?
+      options:
+        - mdpr-skill agent hint/review/proposal only
+        - MDPR deterministic runtime
+        - both, with an explicit handoff contract
+        - unsure
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Note any workaround, related MDPR issue, or simpler approach.
+    validations:
+      required: false
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation plan
+      description: What test, artifact, or documentation evidence should prove the feature works?
+      placeholder: |
+        npm run test:ci
+        before/after PPTX or PNG evidence
+    validations:
+      required: true
+  - type: checkboxes
+    id: code-of-conduct
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct.
+          required: true
