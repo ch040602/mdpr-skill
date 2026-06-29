@@ -193,11 +193,18 @@ class ReleaseCiContractTest(unittest.TestCase):
 
         self.assertTrue(scorecard.exists(), "public repositories should run OpenSSF Scorecard")
         scorecard_text = scorecard.read_text(encoding="utf-8")
-        self.assertIn("ossf/scorecard-action@v2.4.1", scorecard_text)
+        workflow_permissions = scorecard_text.split("jobs:", 1)[0]
+        self.assertRegex(scorecard_text, r"ossf/scorecard-action@v\d+\.\d+\.\d+")
         self.assertIn("github/codeql-action/upload-sarif@v4", scorecard_text)
+        self.assertIn("permissions: read-all", workflow_permissions)
+        self.assertNotIn("security-events: write", workflow_permissions)
+        self.assertNotIn("id-token: write", workflow_permissions)
+        self.assertIn("contents: read", scorecard_text)
+        self.assertIn("actions: read", scorecard_text)
         self.assertIn("security-events: write", scorecard_text)
         self.assertIn("id-token: write", scorecard_text)
         self.assertIn("results_format: sarif", scorecard_text)
+        self.assertIn("publish_results: true", scorecard_text)
 
         self.assertIn("SECURITY.md", checklist_text)
         self.assertIn("Dependabot", checklist_text)
