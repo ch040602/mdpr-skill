@@ -1,0 +1,215 @@
+{
+  "$schema": "https://mdpresent.dev/schemas/mdpr-format-capabilities.schema.json",
+  "schemaVersion": "mdpr-skill-format-capabilities-v1",
+  "generatedBy": "mdpr-skill",
+  "comparisonTarget": {
+    "name": "FigureLabs",
+    "focus": "AI scientific illustration generation and editing",
+    "sourceReviewedDate": "2026-06-30",
+    "sourceReviewTimezone": "Asia/Seoul",
+    "sourceReviewScope": "public FigureLabs pages accessible without authentication",
+    "publicInputModes": [
+      "text-to-figure",
+      "reference-to-figure",
+      "sketch-or-image-to-figure",
+      "pdf-or-reference-upload",
+      "research-flowchart-generation"
+    ],
+    "publicReferenceInputs": [
+      "text-prompt-or-abstract",
+      "pdf-reference",
+      "word-document-reference",
+      "sketch-or-photo",
+      "reference-image"
+    ],
+    "publicWorkflowStages": [
+      "generate",
+      "edit",
+      "vectorize",
+      "export",
+      "publication-authorization"
+    ],
+    "publicOutputFormats": [
+      "pptx",
+      "svg",
+      "png",
+      "jpg",
+      "pdf"
+    ],
+    "publicAssuranceArtifacts": [
+      "publication-authorization-pdf"
+    ],
+    "sourceRefs": [
+      "https://www.figurelabs.ai/",
+      "https://www.figurelabs.ai/help-center",
+      "https://www.figurelabs.ai/pricing",
+      "https://www.figurelabs.ai/about",
+      "https://www.figurelabs.ai/flowchart"
+    ],
+    "sourceEvidence": [
+      {
+        "claimId": "input-text-pdf-reference",
+        "claim": "FigureLabs publicly positions text prompts, PDFs, and reference inputs as scientific figure generation sources.",
+        "sourceRefs": [
+          "https://www.figurelabs.ai/",
+          "https://www.figurelabs.ai/help-center"
+        ]
+      },
+      {
+        "claimId": "input-sketch-photo-reference",
+        "claim": "FigureLabs publicly describes sketch, photo, and reference-image driven figure generation.",
+        "sourceRefs": [
+          "https://www.figurelabs.ai/",
+          "https://www.figurelabs.ai/help-center"
+        ]
+      },
+      {
+        "claimId": "output-format-exports",
+        "claim": "FigureLabs publicly documents editable PPTX/SVG and PNG/JPG/PDF export formats.",
+        "sourceRefs": [
+          "https://www.figurelabs.ai/",
+          "https://www.figurelabs.ai/help-center",
+          "https://www.figurelabs.ai/pricing"
+        ]
+      },
+      {
+        "claimId": "workflow-generate-edit-vectorize-export",
+        "claim": "FigureLabs publicly emphasizes generate, edit, vectorize, and export workflow stages.",
+        "sourceRefs": [
+          "https://www.figurelabs.ai/",
+          "https://www.figurelabs.ai/help-center",
+          "https://www.figurelabs.ai/pricing"
+        ]
+      },
+      {
+        "claimId": "flowchart-svg",
+        "claim": "FigureLabs publicly lists flowchart support and SVG-oriented vector export.",
+        "sourceRefs": [
+          "https://www.figurelabs.ai/pricing",
+          "https://www.figurelabs.ai/flowchart"
+        ]
+      },
+      {
+        "claimId": "publication-authorization",
+        "claim": "FigureLabs publicly lists publication authorization as an available assurance artifact.",
+        "sourceRefs": [
+          "https://www.figurelabs.ai/pricing"
+        ]
+      }
+    ]
+  },
+  "mdprSkill": {
+    "focus": "MDPR companion for deterministic presentation generation, review, validation, and proposal artifacts",
+    "inputFormats": [
+      "markdown",
+      "selection-context-json",
+      "agent-hint-json",
+      "mdpr-manifest-json",
+      "presentation-ir-json",
+      "layout-ir-json",
+      "rendered-preview-json",
+      "source-metadata-json",
+      "design-md",
+      "html",
+      "layout-catalog-json"
+    ],
+    "outputFormats": [
+      "pptx",
+      "html",
+      "pdf",
+      "svg",
+      "json",
+      "markdown"
+    ],
+    "comparisonReportFormats": [
+      "json",
+      "markdown",
+      "html"
+    ],
+    "artifactContracts": [
+      "agent-hint-json",
+      "change-request-json",
+      "review-report-json",
+      "narrative-review-json",
+      "layout-intent-json",
+      "speaker-notes-json",
+      "citation-review-json",
+      "rendered-preview-review-json",
+      "accessibility-review-json",
+      "evidence-ledger-json",
+      "theme-candidate-json",
+      "html-design-analysis-json",
+      "eval-report-json"
+    ],
+    "editableOutputs": [
+      "pptx"
+    ],
+    "deterministicRuntime": "MDPR",
+    "workflowStages": [
+      "source-grounded-hinting",
+      "markdown-bound-selection-verification",
+      "semantic-review",
+      "approval-bound-change-control",
+      "deterministic-mdpr-rendering",
+      "rendered-preview-critique",
+      "source-to-slide-evidence-ledger",
+      "schema-sync-validation",
+      "release-preflight",
+      "consumer-install-smoke"
+    ],
+    "assuranceArtifacts": [
+      "source-sha256-evidence",
+      "schema-sync-report",
+      "review-report-json",
+      "change-request-approval-state",
+      "mdpr-manifest-evidence",
+      "eval-regression-report",
+      "source-to-slide-evidence-ledger",
+      "release-preflight-log",
+      "npm-install-smoke-result",
+      "npm-audit-result"
+    ],
+    "figureLabsGapClosures": [
+      "generated-image-request-candidates-for-large-or-ambiguous-icon-slots",
+      "markdown-source-hash-checks-before-hint-or-proposal-generation",
+      "approval-bound-change-requests-before-runtime-application",
+      "machine-readable-review-and-evidence-artifacts",
+      "release-preflight-and-consumer-install-gates"
+    ],
+    "completenessSignals": [
+      "source-sha256-guard",
+      "schema-valid-agent-hints",
+      "forbidden-final-field-gate",
+      "markdown-bound-selection-verification",
+      "approval-bound-change-requests",
+      "mdpr-guided-build-manifest",
+      "rendered-preview-critique",
+      "source-to-slide-evidence-ledger",
+      "release-preflight",
+      "npm-install-smoke"
+    ],
+    "boundaries": [
+      "MDPR owns final parsing, layout, theme, assets, renderer objects, and PPTX output.",
+      "mdpr-skill emits weak semantic hints, review findings, and approval-bound proposals."
+    ]
+  },
+  "coverage": {
+    "figureLabs": {
+      "publicFormatFamilies": 5,
+      "publiclyDocumentedOutputFormats": 5,
+      "publicWorkflowStages": 5,
+      "publicAssuranceArtifacts": 1,
+      "publicEvidenceClaims": 6
+    },
+    "mdprSkill": {
+      "formatFamilies": 27,
+      "inputFormatFamilies": 11,
+      "outputFormatFamilies": 6,
+      "comparisonReportFormats": 3,
+      "artifactContracts": 13,
+      "workflowCompletenessSignals": 10,
+      "assuranceArtifacts": 10
+    }
+  },
+  "advantageClaim": "mdpr-skill+MDPR covers more repository-verifiable presentation workflow inputs, outputs, and machine-readable contracts; FigureLabs remains specialized for direct scientific illustration generation."
+}

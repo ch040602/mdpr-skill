@@ -81,6 +81,7 @@ test("packed npm package installs into a consumer project and exposes mdpr-skill
     assert.match(help, /mdpr-skill/);
     assert.match(help, /hint/);
     assert.match(help, /review/);
+    assert.match(help, /formats/);
 
     const hintOut = join("artifacts", "agent-hint.json");
     const hintStdout = run([
@@ -100,6 +101,85 @@ test("packed npm package installs into a consumer project and exposes mdpr-skill
     assert.equal(hint.generatedBy, "mdpr-skill");
     assert.equal(hint.sourceSha256, "a".repeat(64));
     assert.deepEqual(hint.hints, []);
+
+    const formatOut = join("artifacts", "figurelabs-format-comparison", "format-capabilities.json");
+    const compareStdout = run([
+      "exec",
+      "--",
+      "mdpr-skill",
+      "formats",
+      "--compare",
+      "figurelabs",
+      "--out",
+      formatOut,
+    ], consumerDir);
+    const comparison = JSON.parse(compareStdout);
+    assert.equal(comparison.schemaVersion, "mdpr-skill-format-capabilities-v1");
+    assert.equal(comparison.comparisonTarget.name, "FigureLabs");
+    assert.equal(comparison.comparisonTarget.sourceReviewedDate, "2026-06-30");
+    assert.equal(comparison.comparisonTarget.sourceReviewTimezone, "Asia/Seoul");
+    assert.ok(comparison.comparisonTarget.sourceEvidence.some((item: { claimId: string }) => item.claimId === "output-format-exports"));
+    assert.equal(comparison.coverage.figureLabs.publicEvidenceClaims, comparison.comparisonTarget.sourceEvidence.length);
+    assert.deepEqual(comparison.mdprSkill.comparisonReportFormats, ["json", "markdown", "html"]);
+    assert.equal(comparison.coverage.mdprSkill.comparisonReportFormats, comparison.mdprSkill.comparisonReportFormats.length);
+    assert.equal(existsSync(join(consumerDir, formatOut)), true);
+    assert.ok(
+      comparison.coverage.mdprSkill.formatFamilies > comparison.coverage.figureLabs.publicFormatFamilies,
+      "mdpr-skill should expose broader format-family coverage than the public FigureLabs baseline",
+    );
+
+    const validateStdout = run(["exec", "--", "mdpr-skill", "formats", "--validate", formatOut], consumerDir);
+    const validation = JSON.parse(validateStdout);
+    assert.equal(validation.status, "pass");
+    assert.ok(validation.checks.includes("source-evidence"));
+    assert.ok(validation.checks.includes("mdpr-skill-superiority"));
+
+    const markdownOut = join("artifacts", "figurelabs-format-comparison", "format-capabilities.md");
+    const markdownStdout = run([
+      "exec",
+      "--",
+      "mdpr-skill",
+      "formats",
+      "--compare",
+      "figurelabs",
+      "--format",
+      "markdown",
+      "--out",
+      markdownOut,
+    ], consumerDir);
+    assert.match(markdownStdout, /^# FigureLabs Format Capability Comparison/);
+    assert.match(markdownStdout, /PPTX, HTML, PDF, SVG, JSON, Markdown/);
+    assert.match(markdownStdout, /JSON, Markdown, HTML/);
+    assert.match(markdownStdout, /Source reviewed: 2026-06-30 \(Asia\/Seoul\)/);
+    assert.equal(existsSync(join(consumerDir, markdownOut)), true);
+
+    const htmlOut = join("artifacts", "figurelabs-format-comparison", "format-capabilities.html");
+    const htmlStdout = run([
+      "exec",
+      "--",
+      "mdpr-skill",
+      "formats",
+      "--compare",
+      "figurelabs",
+      "--format",
+      "html",
+      "--out",
+      htmlOut,
+    ], consumerDir);
+    assert.match(htmlStdout, /^<!doctype html>/);
+    assert.match(htmlStdout, /<title>FigureLabs Format Capability Comparison<\/title>/);
+    assert.match(htmlStdout, /JSON, Markdown, HTML/);
+    assert.match(htmlStdout, /Source reviewed: 2026-06-30 \(Asia\/Seoul\)/);
+    assert.equal(existsSync(join(consumerDir, htmlOut)), true);
+
+    assert.equal(
+      existsSync(join(consumerDir, "node_modules", "mdpr-skill", "schemas", "mdpr-format-capabilities.schema.json")),
+      true,
+    );
+    assert.equal(
+      existsSync(join(consumerDir, "node_modules", "mdpr-skill", "docs", "figurelabs-comparison.md")),
+      true,
+    );
   } finally {
     rmSync(tempRoot, { recursive: true, force: true });
   }

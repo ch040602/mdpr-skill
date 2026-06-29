@@ -58,6 +58,38 @@ full reproduction notes in
 and the generated artifacts under
 `artifacts/icon-image-fallback-comparison/`.
 
+For a broader format and completion check against FigureLabs' public scientific
+illustration workflow, run:
+
+```bash
+mdpr-skill formats --compare figurelabs --out artifacts/figurelabs-format-comparison/format-capabilities.json
+mdpr-skill formats --validate artifacts/figurelabs-format-comparison/format-capabilities.json
+mdpr-skill formats --compare figurelabs --format markdown --out artifacts/figurelabs-format-comparison/format-capabilities.md
+mdpr-skill formats --compare figurelabs --format html --out artifacts/figurelabs-format-comparison/format-capabilities.html
+```
+
+FigureLabs publicly focuses on text/reference/sketch-to-figure and flowchart
+generation with editable PPTX/SVG, raster/PDF exports, and a publication
+authorization PDF. `mdpr-skill` plus MDPR is broader for presentation
+development workflows: Markdown, selection-context JSON, manifests, IR,
+rendered evidence, source metadata, DESIGN.md, HTML, and layout catalogs in;
+PPTX, HTML, PDF, SVG, JSON, and Markdown artifacts out; JSON, Markdown, and HTML
+comparison reports; 13 machine-readable artifact contracts; 10 workflow
+completion signals; and 10 assurance artifacts covering schema, approval,
+source-hash, forbidden-field, release-preflight, consumer-install, and audit
+gates. See
+[docs/figurelabs-comparison.md](docs/figurelabs-comparison.md).
+The generated report is governed by
+[`schemas/mdpr-format-capabilities.schema.json`](schemas/mdpr-format-capabilities.schema.json).
+The same comparison can be exported as JSON, Markdown, or self-contained HTML
+for machine gates, code review, and stakeholder-readable handoff. Its JSON
+contract includes `mdprSkill.comparisonReportFormats`,
+`coverage.mdprSkill.comparisonReportFormats`, and
+`comparisonTarget.sourceReviewedDate`/`sourceReviewTimezone`/`sourceReviewScope`,
+plus `comparisonTarget.sourceEvidence`, so report format support is counted and
+each public FigureLabs capability claim is tied to dated source-review
+metadata and the source URLs used by the comparison.
+
 ## Repository Structure
 
 ```text
@@ -161,6 +193,10 @@ node bin/mdpr-skill.js citations --markdown deck.md --sources sources.json --as-
 node bin/mdpr-skill.js rendered-preview --images rendered-images.json --out .mdpresent/review/rendered-preview-review.json
 node bin/mdpr-skill.js accessibility --markdown deck.md --audience "executive review" --out .mdpresent/review/accessibility-review.json
 node bin/mdpr-skill.js evidence-ledger --markdown deck.md --sources sources.json --mdpr-evidence mdpr-evidence.json --out .mdpresent/review/evidence-ledger.json
+node bin/mdpr-skill.js formats --compare figurelabs --out artifacts/figurelabs-format-comparison/format-capabilities.json
+node bin/mdpr-skill.js formats --validate artifacts/figurelabs-format-comparison/format-capabilities.json
+node bin/mdpr-skill.js formats --compare figurelabs --format markdown --out artifacts/figurelabs-format-comparison/format-capabilities.md
+node bin/mdpr-skill.js formats --compare figurelabs --format html --out artifacts/figurelabs-format-comparison/format-capabilities.html
 node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path .cache/mdpr
 ```
 
@@ -324,6 +360,9 @@ Generated review artifacts include:
 - `artifacts/icon-image-fallback-comparison/mdpr-build/deck.pptx`
 - `artifacts/icon-image-fallback-comparison/mdpr-guided-build/deck.pptx`
 - `artifacts/icon-image-fallback-comparison/mdpr-skill-agent-hint.json`
+- `artifacts/figurelabs-format-comparison/format-capabilities.json`
+- `artifacts/figurelabs-format-comparison/format-capabilities.md`
+- `artifacts/figurelabs-format-comparison/format-capabilities.html`
 
 The public repository stores aggregate reference metrics and derived structural
 grammar only. It does not store source URLs, downloaded reference PPT files,
@@ -339,6 +378,7 @@ reference corpus.
 - [MDPR PowerPoint bridge boundary](docs/mdpr-ppt-bridge.md)
 - [MDPR vs skill results](docs/mdpr-vs-skill-results.md)
 - [Icon image fallback comparison](docs/icon-image-fallback-comparison.md)
+- [FigureLabs comparison](docs/figurelabs-comparison.md)
 - [Structural pattern taxonomy](docs/structural-pattern-taxonomy.md)
 - [Actions page materials](docs/actions-page-materials.md)
 - [Generator comparison boundary](docs/generator-comparison.md)
