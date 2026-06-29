@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "mdpr-agent-hint-v1",
+  "sourceSha256": "b7c16ec3ab0049b70679fc9d901582b695d0ee517b2aad7b8e63d86122a897d5",
+  "generatedBy": "mdpr-skill",
+  "generatedAt": "2026-06-29T00:00:00Z",
+  "hints": [
+    {
+      "slideId": "trust-layer",
+      "confidence": 0.72,
+      "visualAssetCandidates": [
+        {
+          "kind": "generated-image",
+          "trigger": "large-or-ambiguous-icon",
+          "semanticPrompt": "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘",
+          "confidence": 0.72
+        }
+      ],
+      "rationale": "Selection context suggests generated imagery may be safer than a large or ambiguous icon; final assets remain MDPR-owned."
+    }
+  ]
+}

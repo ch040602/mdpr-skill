@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "mdpr-selection-context-v1",
+  "source": {
+    "kind": "mdpr-preview",
+    "sourceSha256": "b7c16ec3ab0049b70679fc9d901582b695d0ee517b2aad7b8e63d86122a897d5"
+  },
+  "slideId": "trust-layer",
+  "overlappedBlocks": ["headline-1"],
+  "overlappedRegions": ["hero-visual"],
+  "selectionPath": "artifacts/icon-image-fallback-comparison/selection-context.json",
+  "userInstruction": "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘."
+}

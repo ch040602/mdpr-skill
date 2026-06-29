@@ -38,6 +38,26 @@ the main MDPR repository:
 | Output | Editable PPTX, HTML, PDF, reports, previews | Hint files, review artifacts, generated review decks |
 | Safety boundary | Builds must work without hints | Must not choose final coordinates, colors, z-order, arrows, geometry, exact icons, or renderer object IDs |
 
+## Applied Comparison
+
+The practical value of this repository is visible when a reviewer asks for
+agent judgment but the deck still needs deterministic MDPR output. In the
+tracked icon/image fallback example, the source asks what to do when an icon
+would need to be too large or the metaphor is ambiguous.
+
+| Workflow | Result before mdpr-skill bridge | Result with mdpr-skill |
+| --- | --- | --- |
+| Simple Codex skill | Produces useful prose advice, but no schema-valid artifact that MDPR can consume or replay. | Still useful for human review, but not sufficient as an MDPR runtime contract by itself. |
+| MDPR only | Builds the deck deterministically from Markdown with `agentHints.enabled: false`, `accepted: 0`, and `slideCount: 3`. | Remains the final renderer and validator. With accepted hints, it still owns parsing, layout, theme, asset acceptance, and PPTX objects. |
+| mdpr-skill + MDPR | Previously emitted only a general selection hint; there was no generated-image fallback signal. | Emits a bounded `visualAssetCandidates[0]` entry with `kind: "generated-image"` and `trigger: "large-or-ambiguous-icon"`, rejects stale selection contexts with `--markdown`, and reports `sourceVerified: true` in CLI summaries. |
+
+The current guided MDPR build records `agentHints.enabled: true`, `accepted: 1`,
+`rejected: 0`, `ignoredBecauseStale: 0`, and `forbiddenFieldCount: 0`. See the
+full reproduction notes in
+[docs/icon-image-fallback-comparison.md](docs/icon-image-fallback-comparison.md)
+and the generated artifacts under
+`artifacts/icon-image-fallback-comparison/`.
+
 ## Repository Structure
 
 ```text
@@ -192,6 +212,7 @@ Create a proposal from a PowerPoint selection captured with `mdpr-ppt`:
 ```bash
 mdpr-skill ppt propose \
   --selection-context .mdpresent/review/selection-context.json \
+  --markdown deck.md \
   --hints-out .mdpresent/proposals/agent-hint.json \
   --out .mdpresent/proposals/ppt-selection.change-request.json
 ```
@@ -201,6 +222,10 @@ copying `Copy Selection Context` from the `Inspect Selection` task pane. The
 command emits weak semantic hints and an approval-bound edit-intent change
 request. It does not emit coordinates, colors, z-order, recipes, or renderer
 object IDs; MDPR still owns final layout and rendering.
+The `--markdown` check rejects stale selection contexts before they can become
+proposals tied to an older Markdown source hash.
+Successful guarded commands report `sourceVerified: true` and `sourceSha256`
+in their CLI JSON summary.
 
 `eval-core` can run a deterministic baseline MDPR build, rerun MDPR with a
 schema-valid `agent-hint.json`, compare quality and performance metrics, and
@@ -218,6 +243,7 @@ Allowed skill outputs:
 - semantic intent tags
 - grouping and importance hints
 - icon-search keyword ideas
+- generated-image visual asset candidates for large or ambiguous icon requests
 - claim-title and section-flow suggestions
 - semantic layout-intent hints from template layout catalogs
 - visual concern notes with evidence paths
@@ -295,6 +321,9 @@ Generated review artifacts include:
 - `artifacts/external-markdown-visual-eval/iteration-04/contact-sheet.png`
 - `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
 - `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
+- `artifacts/icon-image-fallback-comparison/mdpr-build/deck.pptx`
+- `artifacts/icon-image-fallback-comparison/mdpr-guided-build/deck.pptx`
+- `artifacts/icon-image-fallback-comparison/mdpr-skill-agent-hint.json`
 
 The public repository stores aggregate reference metrics and derived structural
 grammar only. It does not store source URLs, downloaded reference PPT files,
@@ -309,6 +338,7 @@ reference corpus.
 - [Eval-core runner](docs/eval-core.md)
 - [MDPR PowerPoint bridge boundary](docs/mdpr-ppt-bridge.md)
 - [MDPR vs skill results](docs/mdpr-vs-skill-results.md)
+- [Icon image fallback comparison](docs/icon-image-fallback-comparison.md)
 - [Structural pattern taxonomy](docs/structural-pattern-taxonomy.md)
 - [Actions page materials](docs/actions-page-materials.md)
 - [Generator comparison boundary](docs/generator-comparison.md)

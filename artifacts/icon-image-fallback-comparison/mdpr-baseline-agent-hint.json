@@ -1,0 +1,14 @@
+{
+  "mode": "mdpr",
+  "source": "artifacts/icon-image-fallback-comparison/source.md",
+  "agentHints": [],
+  "before": {
+    "generatedImageFallbackSignal": false,
+    "behavior": "MDPR builds from Markdown and deterministic renderer rules without an agent hint."
+  },
+  "after": {
+    "generatedImageFallbackSignal": false,
+    "behavior": "Unchanged unless a validated hint file is supplied."
+  },
+  "boundary": "MDPR owns parsing, layout, icon catalog selection, generated asset acceptance, and final PPTX objects."
+}

@@ -31,6 +31,12 @@ Icon choice should come from keyword search over the tracked local catalog, not 
 
 When this repository is used as an MDPR skill, an agent may suggest a few extra meaning keywords for ambiguous slides. Those hints must stay semantic, for example `workflow`, `validation`, `database`, `palette`, or `chart evidence`. MDPR still chooses the final icon through its deterministic catalog scoring.
 
+If the requested icon would need to be large enough to act as the main visual,
+or if the metaphor is too ambiguous for a small monotone symbol, the skill should
+suggest a `generated-image` visual asset candidate instead of forcing an icon.
+That candidate must stay semantic; it must not include a final image path,
+coordinates, style recipe, or exact renderer choice.
+
 ## Visual Rules
 
 - Use one icon only.

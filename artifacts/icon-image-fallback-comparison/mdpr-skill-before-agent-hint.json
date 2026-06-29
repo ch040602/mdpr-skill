@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "mdpr-agent-hint-v1",
+  "sourceSha256": "b7c16ec3ab0049b70679fc9d901582b695d0ee517b2aad7b8e63d86122a897d5",
+  "generatedBy": "mdpr-skill",
+  "generatedAt": "2026-06-29T00:00:00Z",
+  "hints": [
+    {
+      "slideId": "trust-layer",
+      "confidence": 0.62,
+      "rationale": "Selection context suggests semantic grouping; final layout remains MDPR-owned."
+    }
+  ],
+  "note": "Snapshot of the previous mdpr-skill behavior for this comparison: no generated-image fallback candidate was emitted."
+}

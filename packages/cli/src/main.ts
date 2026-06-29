@@ -1,6 +1,6 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, resolve } from "node:path";
-import { mkdirSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index.js";
 import { buildReviewReport, buildSourceSlideEvidenceLedger, renderReadmeTeaserSvg, reviewAccessibilityContent, reviewCitationProvenance, reviewCoherence, reviewDesignPolicy, reviewNarrativeSpine, reviewRenderedPreviewCritique, reviewSpeakerNotes, reviewTemplateLayoutIntent, reviewVisualPolicy, type CitationSource, type MdprEvidenceRef, type ReadmeTeaserSpec, type RenderedPreviewImage } from "../../review-core/src/index.js";
@@ -62,7 +62,7 @@ function helpText(): string {
     "mdpr-skill",
     "",
     "Commands:",
-    "  hint --source-sha256 <64hex> --out <agent-hint.json>",
+    "  hint (--source-sha256 <64hex> | --selection-context <selection-context.json> [--markdown <deck.md>]) --out <agent-hint.json>",
     "  review --manifest <manifest.json> [--presentation <presentation-ir.json>] [--layout <layout-ir.json>] --out <review-report.json>",
     "  narrative --markdown <deck.md> [--manifest <manifest.json>] [--source-notes <notes.md>] --out <narrative-review.json>",
     "  layout-intent --layout-catalog <catalog.json> --out <layout-intent.json>",
@@ -73,7 +73,7 @@ function helpText(): string {
     "  evidence-ledger --markdown <deck.md> [--sources <sources.json>] [--mdpr-evidence <evidence.json>] --out <evidence-ledger.json>",
     "  eval <deck.md> --out <dir> [--mdpr-path <MdPr>] [--hints <agent-hint.json>]",
     "  edit override-candidate --source-sha256 <64hex> --slide-ref <slide> --instruction <text> --split-by <h3|none> --out <override.json>",
-    "  ppt propose --selection-context <selection-context.json> --out <change-request.json> [--hints-out <agent-hint.json>]",
+    "  ppt propose --selection-context <selection-context.json> [--markdown <deck.md>] --out <change-request.json> [--hints-out <agent-hint.json>]",
     "  design import <DESIGN.md> --out <theme-candidate.json>",
     "  design analyze-html <file.html> --out <html-design-analysis.json>",
     "  teaser --spec <readme-teaser.json> --out <readme-teaser.svg>",
@@ -100,8 +100,8 @@ function runPptCommand(args: string[], io: CliIo): number {
   if (subcommand !== "propose") throw new Error("ppt requires propose");
   const options = parseOptions(args);
   const selectionContextPath = requireOption(options, "selection-context");
-  const context = readJson(selectionContextPath) as SelectionContext;
-  validateSelectionContext(context);
+  const context = readSelectionContext(selectionContextPath);
+  if (options.markdown) assertSelectionContextMatchesMarkdown(context, options.markdown);
   const hint = hintFromSelectionContext(context);
   const hintManifest = buildAgentHintManifest(context.source.sourceSha256, [hint], {
     generatedAt: options["generated-at"],
@@ -141,6 +141,8 @@ function runPptCommand(args: string[], io: CliIo): number {
     hintsOut: options["hints-out"],
     hints: hintManifest.hints.length,
     stage: changeRequest.stage,
+    sourceVerified: Boolean(options.markdown),
+    sourceSha256: context.source.sourceSha256,
   }, null, 2));
   return 0;
 }
@@ -194,14 +196,44 @@ function readSplitPreference(options: Record<string, string>): NonNullable<EditI
 
 function runHintCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
-  const sourceSha256 = requireOption(options, "source-sha256");
-  const manifest = buildAgentHintManifest(sourceSha256, [], {
+  const context = options["selection-context"]
+    ? readSelectionContext(options["selection-context"])
+    : undefined;
+  if (context && options.markdown) assertSelectionContextMatchesMarkdown(context, options.markdown);
+  const sourceSha256 = options["source-sha256"] ?? context?.source.sourceSha256;
+  if (!sourceSha256) throw new Error("hint requires --source-sha256 or --selection-context");
+  if (options["source-sha256"] && context && options["source-sha256"] !== context.source.sourceSha256) {
+    throw new Error("hint --source-sha256 must match selection context source.sourceSha256");
+  }
+  const manifest = buildAgentHintManifest(sourceSha256, context ? [hintFromSelectionContext(context)] : [], {
     generatedAt: options["generated-at"],
     mdprVersion: options["mdpr-version"],
   });
   writeJson(requireOption(options, "out"), manifest);
-  io.stdout(JSON.stringify({ status: "pass", out: options.out }, null, 2));
+  io.stdout(JSON.stringify({
+    status: "pass",
+    out: options.out,
+    sourceVerified: Boolean(context && options.markdown),
+    sourceSha256,
+  }, null, 2));
   return 0;
+}
+
+function readSelectionContext(path: string): SelectionContext {
+  const context = readJson(path) as SelectionContext;
+  validateSelectionContext(context);
+  return context;
+}
+
+function assertSelectionContextMatchesMarkdown(context: SelectionContext, markdownPath: string): void {
+  const markdownSha256 = sha256Text(readText(markdownPath));
+  if (context.source.sourceSha256 !== markdownSha256) {
+    throw new Error("selection context source.sourceSha256 does not match markdown sha256");
+  }
+}
+
+function sha256Text(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 function runReviewCommand(args: string[], io: CliIo): number {

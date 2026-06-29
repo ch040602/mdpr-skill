@@ -36,6 +36,9 @@ source of truth for pass/fail status and release gating.
 Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would benefit from compact semantic guidance.
 
 - Suggest intent, grouping, importance, and icon-search keywords.
+- Suggest generated-image candidates only when an icon would need to become a
+  large primary visual or the visual metaphor is too ambiguous for a small
+  monotone symbol.
 - Keep hints compatible with `agent-hint.json`-style weak semantic input.
 - Validate that hints do not encode final rendering choices.
 - Prefer minimal hints over broad restatement of the source.
@@ -44,6 +47,7 @@ Useful local commands when the repo CLI is available:
 
 ```bash
 node bin/mdpr-skill.js hint --source-sha256 <64hex> --out .mdpresent/proposals/agent-hint.json
+node bin/mdpr-skill.js hint --selection-context .mdpresent/ppt/selection-context.json --markdown deck.md --out .mdpresent/proposals/agent-hint.json
 ```
 
 ### Review Reports
@@ -142,6 +146,9 @@ Use when working with MDPR's built-in design component runtime or related IR.
 
 - Read Slide Element IR or Presentation IR as the content contract.
 - Suggest only semantic hints around intent, grouping, importance, and icon keywords.
+- For icon requests that are too large or semantically ambiguous, suggest a
+  generated-image candidate as a semantic brief instead of an exact icon or
+  asset path.
 - Explain design review findings in terms of MDPR rulebook/config changes.
 - Do not choose recipes, variants, coordinates, shape sizes, typography, colors, z-order, arrows, effects, or exact icon assets.
 - Do not duplicate MDPR renderer behavior in the skill.
@@ -173,6 +180,8 @@ When working with `mdpr-ppt` or PowerPoint selection context:
 - `review rail`: emit `review-report.json` findings only.
 - `edit-intent rail`: record page or decoration change requests as safe proposals.
 - `approved override / pack rail`: require user approval before MDPR validates and applies override or pack candidates.
+- Prefer `--markdown deck.md` with selection-context commands so stale source
+  hashes are rejected before hints or proposals are handed to MDPR.
 
 Never emit final PowerPoint geometry, object IDs, z-order, exact colors, or exact icon assets from a selection context.
 

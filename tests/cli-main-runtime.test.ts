@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -105,6 +106,131 @@ test("runCli writes an agent hint manifest without final design fields", () => {
   }
 });
 
+test("runCli writes an agent hint manifest directly from a selection context", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-hint-selection-"));
+  try {
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const outPath = join(workDir, "agent-hint.json");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-preview",
+        sourceSha256: "e".repeat(64),
+      },
+      slideId: "slide-direct",
+      overlappedBlocks: ["headline-1"],
+      userInstruction: "The icon is too large and ambiguous; generate an image instead.",
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "hint",
+      "--selection-context",
+      selectionContextPath,
+      "--out",
+      outPath,
+      "--generated-at",
+      "2026-06-29T00:00:00Z",
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const manifest = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(manifest.sourceSha256, "e".repeat(64));
+    assert.equal(manifest.hints[0].slideId, "slide-direct");
+    assert.equal(manifest.hints[0].visualAssetCandidates[0].kind, "generated-image");
+    assert.equal(manifest.hints[0].visualAssetCandidates[0].trigger, "large-or-ambiguous-icon");
+    assert.equal(JSON.stringify(manifest).includes("iconPath"), false);
+    assert.equal(JSON.stringify(manifest).includes('"coordinates"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli rejects selection-context hints when markdown sha is stale", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-hint-stale-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const outPath = join(workDir, "agent-hint.json");
+    const staleMarkdown = "# Old title\n";
+    const currentMarkdown = "# Current title\n";
+    const staleSha = createHash("sha256").update(staleMarkdown).digest("hex");
+    writeFileSync(markdownPath, currentMarkdown, "utf-8");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-preview",
+        sourceSha256: staleSha,
+      },
+      slideId: "slide-stale",
+      userInstruction: "The icon is too large; generate an image instead.",
+    }), "utf-8");
+
+    const errors: string[] = [];
+    const exitCode = runCli([
+      "hint",
+      "--selection-context",
+      selectionContextPath,
+      "--markdown",
+      markdownPath,
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: (value) => errors.push(value),
+    });
+
+    assert.equal(exitCode, 1);
+    assert.match(errors.join("\n"), /does not match markdown sha256/);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli reports source verification for markdown-bound selection hints", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-hint-verified-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const outPath = join(workDir, "agent-hint.json");
+    const markdown = "# Verified title\n";
+    const sourceSha = createHash("sha256").update(markdown).digest("hex");
+    writeFileSync(markdownPath, markdown, "utf-8");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-preview",
+        sourceSha256: sourceSha,
+      },
+      slideId: "slide-verified",
+      userInstruction: "The icon is too large; generate an image instead.",
+    }), "utf-8");
+
+    const output: string[] = [];
+    const exitCode = runCli([
+      "hint",
+      "--selection-context",
+      selectionContextPath,
+      "--markdown",
+      markdownPath,
+      "--out",
+      outPath,
+    ], {
+      stdout: (value) => output.push(value),
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const summary = JSON.parse(output.join("\n"));
+    assert.equal(summary.sourceVerified, true);
+    assert.equal(summary.sourceSha256, sourceSha);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
 test("runCli writes an edit-intent setSplit override candidate", () => {
   const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-edit-"));
   try {
@@ -189,6 +315,138 @@ test("runCli converts a PowerPoint selection context into hint and change propos
     assert.deepEqual(change.changes[1].intent.target.regionHints, ["region-main"]);
     assert.equal(JSON.stringify(change).includes('"x"'), false);
     assert.equal(JSON.stringify(change).includes('"color"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli reports source verification for markdown-bound ppt proposals", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-ppt-verified-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const changePath = join(workDir, "change-request.json");
+    const markdown = "# Verified PPT proposal\n";
+    const sourceSha = createHash("sha256").update(markdown).digest("hex");
+    writeFileSync(markdownPath, markdown, "utf-8");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-ppt",
+        sourceSha256: sourceSha,
+      },
+      slideId: "slide-ppt-verified",
+      overlappedBlocks: ["b1"],
+      selectionPath: ".mdpresent/ppt/verified-selection.json",
+      userInstruction: "Keep this selected object aligned with current Markdown.",
+    }), "utf-8");
+
+    const output: string[] = [];
+    const exitCode = runCli([
+      "ppt",
+      "propose",
+      "--selection-context",
+      selectionContextPath,
+      "--markdown",
+      markdownPath,
+      "--out",
+      changePath,
+    ], {
+      stdout: (value) => output.push(value),
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const summary = JSON.parse(output.join("\n"));
+    assert.equal(summary.sourceVerified, true);
+    assert.equal(summary.sourceSha256, sourceSha);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli rejects ppt proposals when selection context markdown sha is stale", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-ppt-stale-"));
+  try {
+    const markdownPath = join(workDir, "deck.md");
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const changePath = join(workDir, "change-request.json");
+    const staleMarkdown = "# Previous slide\n";
+    const currentMarkdown = "# Current slide\n";
+    const staleSha = createHash("sha256").update(staleMarkdown).digest("hex");
+    writeFileSync(markdownPath, currentMarkdown, "utf-8");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-ppt",
+        sourceSha256: staleSha,
+      },
+      slideId: "slide-stale",
+      overlappedBlocks: ["b1"],
+      selectionPath: ".mdpresent/ppt/stale-selection.json",
+      userInstruction: "Keep this selected object with the current markdown.",
+    }), "utf-8");
+
+    const errors: string[] = [];
+    const exitCode = runCli([
+      "ppt",
+      "propose",
+      "--selection-context",
+      selectionContextPath,
+      "--markdown",
+      markdownPath,
+      "--out",
+      changePath,
+    ], {
+      stdout: () => undefined,
+      stderr: (value) => errors.push(value),
+    });
+
+    assert.equal(exitCode, 1);
+    assert.match(errors.join("\n"), /does not match markdown sha256/);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes generated-image hint candidates for large or ambiguous icon selections", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-ppt-image-"));
+  try {
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const hintsPath = join(workDir, "agent-hint.json");
+    const changePath = join(workDir, "change-request.json");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-preview",
+        sourceSha256: "f".repeat(64),
+      },
+      slideId: "slide-icon",
+      overlappedBlocks: ["headline-1"],
+      selectionPath: ".mdpresent/ppt/selection-icon.json",
+      userInstruction: "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘.",
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "ppt",
+      "propose",
+      "--selection-context",
+      selectionContextPath,
+      "--out",
+      changePath,
+      "--hints-out",
+      hintsPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const hints = JSON.parse(readFileSync(hintsPath, "utf-8"));
+    assert.equal(hints.hints[0].visualAssetCandidates[0].kind, "generated-image");
+    assert.equal(hints.hints[0].visualAssetCandidates[0].trigger, "large-or-ambiguous-icon");
+    assert.equal(JSON.stringify(hints).includes("iconPath"), false);
+    assert.equal(JSON.stringify(hints).includes('"coordinates"'), false);
   } finally {
     rmSync(workDir, { recursive: true, force: true });
   }

@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "engine": "mdpresent",
+  "source": {
+    "path": "artifacts\\icon-image-fallback-comparison\\source.md",
+    "sha256": "b7c16ec3ab0049b70679fc9d901582b695d0ee517b2aad7b8e63d86122a897d5"
+  },
+  "config": {
+    "sha256": "1f67d52d6b8dc899f5449350f42c3e588eb0c62f149ca2576edcd7346ce34717",
+    "sources": [
+      {
+        "kind": "default"
+      }
+    ]
+  },
+  "override": null,
+  "pack": null,
+  "agentHints": {
+    "enabled": false,
+    "source": null,
+    "sourceSha256": null,
+    "accepted": 0,
+    "rejected": 0,
+    "ignoredBecauseStale": 0,
+    "forbiddenFieldCount": 0
+  },
+  "presentationMode": "normal",
+  "slideCount": 3,
+  "outputs": [
+    "artifacts\\icon-image-fallback-comparison\\mdpr-build\\deck.pptx"
+  ],
+  "artifacts": [
+    {
+      "path": "artifacts\\icon-image-fallback-comparison\\mdpr-build\\deck.pptx",
+      "format": "pptx",
+      "exists": true,
+      "bytes": 78967,
+      "sha256": "0e0e035b65ad25ab2f225003824d9996f4ee1eecc28b998df744d6bff4139eeb"
+    }
+  ],
+  "designLock": "artifacts\\icon-image-fallback-comparison\\mdpr-build\\mdpresent-design-lock.json",
+  "pptxObjects": [
+    {
+      "slideId": "visual-fallback-demo-d5ecf1",
+      "layoutSlideId": "layout-visual-fallback-demo-d5ecf1",
+      "regionId": "title",
+      "blockIds": [
+        "__title:visual-fallback-demo-d5ecf1"
+      ],
+      "shapeName": "mdpr:visual-fallback-demo-d5ecf1:title:__title:visual-fallback-demo-d5ecf1",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "toc-53a981",
+      "layoutSlideId": "layout-toc-53a981",
+      "regionId": "title",
+      "blockIds": [
+        "__title:toc-53a981"
+      ],
+      "shapeName": "mdpr:toc-53a981:title:__title:toc-53a981",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "toc-53a981",
+      "layoutSlideId": "layout-toc-53a981",
+      "regionId": "toc-item-1",
+      "blockIds": [
+        "toc-item-1"
+      ],
+      "shapeName": "mdpr:toc-53a981:toc-item-1:toc-item-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "trust-layer-48cf3d",
+      "layoutSlideId": "layout-trust-layer-48cf3d",
+      "regionId": "title",
+      "blockIds": [
+        "__title:trust-layer-48cf3d"
+      ],
+      "shapeName": "mdpr:trust-layer-48cf3d:title:__title:trust-layer-48cf3d",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "trust-layer-48cf3d",
+      "layoutSlideId": "layout-trust-layer-48cf3d",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-4"
+      ],
+      "shapeName": "mdpr:trust-layer-48cf3d:item-1:block-4",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "trust-layer-48cf3d",
+      "layoutSlideId": "layout-trust-layer-48cf3d",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-4"
+      ],
+      "shapeName": "mdpr:trust-layer-48cf3d:item-2:block-4",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "trust-layer-48cf3d",
+      "layoutSlideId": "layout-trust-layer-48cf3d",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-4"
+      ],
+      "shapeName": "mdpr:trust-layer-48cf3d:item-3:block-4",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    }
+  ],
+  "diagnostics": [],
+  "validation": {
+    "layoutOverflow": [],
+    "visual": null,
+    "coherence": {
+      "checked": true,
+      "thresholds": {
+        "minimumMixedObjectGroupingScore": 0.75,
+        "minimumObjectCoverageRatio": 0.2
+      },
+      "orphanEvidenceBlocks": 0,
+      "captionDetached": 0,
+      "claimlessSlides": 0,
+      "sectionMotifDrift": 0,
+      "continuationTitleQuality": "ok",
+      "mixedObjectGroupingScore": 1,
+      "checks": {
+        "claimlessEvidenceSlides": true,
+        "detachedCaptions": true,
+        "orphanTables": true,
+        "lowObjectCoverage": true,
+        "sectionMotifDrift": true
+      },
+      "diagnostics": []
+    },
+    "overflowResolution": {
+      "checked": true,
+      "strategyCounts": {
+        "preSplit": 0,
+        "candidateReflow": 0,
+        "regionExpansion": 0,
+        "fontShrink": 0
+      },
+      "continuationSlides": 0,
+      "continuationGroups": 0,
+      "continuationReasons": {
+        "list": 0,
+        "table": 0,
+        "code": 0,
+        "paragraph": 0,
+        "mixed": 0,
+        "toc": 0
+      },
+      "graphOrDiagramBlocksSplit": false
+    }
+  },
+  "metrics": {
+    "slideCount": 3,
+    "overflowCount": 0,
+    "coherenceWarningCount": 0,
+    "coherenceErrorCount": 0,
+    "visualWarningCount": 0,
+    "visualErrorCount": 0,
+    "minFontPt": 18,
+    "textClipRiskCount": 0,
+    "contrastFailures": 0,
+    "connectorWarnings": 0,
+    "buildMs": 55,
+    "outputBytes": {
+      "pptx": 78967
+    }
+  }
+}

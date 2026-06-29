@@ -42,6 +42,12 @@ variants, exact icon paths, geometry, arrows, and renderer object IDs.
 Edit intents become `edit-intent` entries inside `mdpr-change-request-v1`.
 They remain proposals until reviewed and approved. MDPR still owns the final
 layout family resolution, recipe selection, renderer output, and validation.
+When `mdpr-skill ppt propose` receives `--markdown`, it must reject a selection
+context whose `source.sourceSha256` does not match the current Markdown file.
+That keeps approval-bound proposals from carrying hints or edit intents for an
+older source revision.
+When the check succeeds, the CLI summary reports `sourceVerified: true` and the
+verified `sourceSha256`.
 
 ## `mdpr-ppt` Role
 

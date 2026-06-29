@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "mdpr-change-request-v1",
+  "id": "ppt-selection-trust-layer",
+  "stage": "proposed",
+  "createdBy": "mdpr-skill",
+  "source": {
+    "sourceSha256": "b7c16ec3ab0049b70679fc9d901582b695d0ee517b2aad7b8e63d86122a897d5",
+    "selectionRef": "artifacts/icon-image-fallback-comparison/selection-context.json"
+  },
+  "changes": [
+    {
+      "kind": "agent-hint",
+      "hintManifest": {
+        "schemaVersion": "mdpr-agent-hint-v1",
+        "sourceSha256": "b7c16ec3ab0049b70679fc9d901582b695d0ee517b2aad7b8e63d86122a897d5",
+        "generatedBy": "mdpr-skill",
+        "generatedAt": "2026-06-29T00:00:00Z",
+        "hints": [
+          {
+            "slideId": "trust-layer",
+            "confidence": 0.72,
+            "visualAssetCandidates": [
+              {
+                "kind": "generated-image",
+                "trigger": "large-or-ambiguous-icon",
+                "semanticPrompt": "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘",
+                "confidence": 0.72
+              }
+            ],
+            "rationale": "Selection context suggests generated imagery may be safer than a large or ambiguous icon; final assets remain MDPR-owned."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "edit-intent",
+      "intent": {
+        "schemaVersion": "mdpr-edit-intent-v1",
+        "id": "ppt-selection-trust-layer-intent",
+        "sourceSha256": "b7c16ec3ab0049b70679fc9d901582b695d0ee517b2aad7b8e63d86122a897d5",
+        "instruction": "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘.",
+        "target": {
+          "slideRef": "trust-layer",
+          "blockHints": [
+            "headline-1"
+          ],
+          "regionHints": [
+            "hero-visual"
+          ]
+        },
+        "preferences": {
+          "preserveContent": true,
+          "groupingRole": "summary"
+        },
+        "boundary": {
+          "finalDesignDecision": "forbidden",
+          "mdprOwnsRendering": true
+        }
+      }
+    }
+  ],
+  "requiresApproval": true,
+  "approval": null
+}

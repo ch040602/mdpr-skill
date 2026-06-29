@@ -1,0 +1,20 @@
+{
+  "mode": "simple-codex-skill",
+  "input": "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘.",
+  "outputKind": "unstructured-advice",
+  "before": {
+    "suggestion": "큰 아이콘을 넣거나 이미지 생성을 고려한다.",
+    "mdprConsumable": false,
+    "schemaValidAgentHint": false
+  },
+  "after": {
+    "suggestion": "큰 아이콘 대신 생성 이미지가 더 적합하다는 리뷰 메모를 남긴다.",
+    "mdprConsumable": false,
+    "schemaValidAgentHint": false
+  },
+  "risk": [
+    "No machine-readable MDPR contract.",
+    "May drift into exact image style, asset path, or placement instructions.",
+    "Cannot be replayed deterministically by MDPR without another translation step."
+  ]
+}
