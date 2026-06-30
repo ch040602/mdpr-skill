@@ -1,0 +1,571 @@
+{
+  "schema": "mdpr-presentations-probe-battle-v1",
+  "generator": "Presentations skill run_prompt_battle.mjs",
+  "source": "artifacts/external-markdown-visual-eval/external-markdown-visual-eval-report.json",
+  "promptCount": 23,
+  "pptxCount": 23,
+  "contactSheetCount": 23,
+  "firstSlideImageCount": 23,
+  "proofSlideImageCount": 23,
+  "aggregateContactSheets": [
+    "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-first-slides-contact-sheet.png",
+    "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-proof-slides-contact-sheet.png"
+  ],
+  "promptFile": "artifacts\\presentations-probe\\external-md-visual-eval-23\\external-md-prompts-23.json",
+  "minScore": 44.0,
+  "averageScore": 46.3,
+  "profileCoverage": [
+    {
+      "profile": "engineering",
+      "count": 9
+    },
+    {
+      "profile": "finance-ir",
+      "count": 1
+    },
+    {
+      "profile": "gtm",
+      "count": 3
+    },
+    {
+      "profile": "product-platform",
+      "count": 8
+    },
+    {
+      "profile": "strategy",
+      "count": 2
+    }
+  ],
+  "records": [
+    {
+      "index": 1,
+      "prompt_id": "external-md-01-react",
+      "profile": "engineering",
+      "brand": "React",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\01-external-md-01-react\\01-external-md-01-react-react.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\01-external-md-01-react\\01-external-md-01-react-react-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\01-external-md-01-react\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\01-external-md-01-react\\proof-slide.png",
+      "outputBytes": 29484,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'React' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/facebook/react/main/README.md"
+      ]
+    },
+    {
+      "index": 2,
+      "prompt_id": "external-md-02-vite",
+      "profile": "product-platform",
+      "brand": "Vite",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\02-external-md-02-vite\\02-external-md-02-vite-vite.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\02-external-md-02-vite\\02-external-md-02-vite-vite-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\02-external-md-02-vite\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\02-external-md-02-vite\\proof-slide.png",
+      "outputBytes": 29453,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Vite' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/vitejs/vite/main/README.md"
+      ]
+    },
+    {
+      "index": 3,
+      "prompt_id": "external-md-03-vue",
+      "profile": "gtm",
+      "brand": "Vue",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\03-external-md-03-vue\\03-external-md-03-vue-vue.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\03-external-md-03-vue\\03-external-md-03-vue-vue-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\03-external-md-03-vue\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\03-external-md-03-vue\\proof-slide.png",
+      "outputBytes": 29220,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Vue' ( Use profile gtm",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "mission"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/vuejs/core/main/README.md"
+      ]
+    },
+    {
+      "index": 4,
+      "prompt_id": "external-md-04-svelte",
+      "profile": "strategy",
+      "brand": "Svelte",
+      "score": 44,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\04-external-md-04-svelte\\04-external-md-04-svelte-svelte.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\04-external-md-04-svelte\\04-external-md-04-svelte-svelte-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\04-external-md-04-svelte\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\04-external-md-04-svelte\\proof-slide.png",
+      "outputBytes": 29443,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Svelte' ( Use profile strategy",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "market framing"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/sveltejs/svelte/main/README.md"
+      ]
+    },
+    {
+      "index": 5,
+      "prompt_id": "external-md-05-typescript",
+      "profile": "finance-ir",
+      "brand": "TypeScript",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\05-external-md-05-typescript\\05-external-md-05-typescript-typescript.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\05-external-md-05-typescript\\05-external-md-05-typescript-typescript-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\05-external-md-05-typescript\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\05-external-md-05-typescript\\proof-slide.png",
+      "outputBytes": 30524,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'TypeScript' ( Use profile finance-ir",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "highlights"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/microsoft/TypeScript/main/README.md"
+      ]
+    },
+    {
+      "index": 6,
+      "prompt_id": "external-md-06-node",
+      "profile": "product-platform",
+      "brand": "Node.js",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\06-external-md-06-node\\06-external-md-06-node-node-js.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\06-external-md-06-node\\06-external-md-06-node-node-js-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\06-external-md-06-node\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\06-external-md-06-node\\proof-slide.png",
+      "outputBytes": 29446,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Node",
+        "js' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/nodejs/node/main/README.md"
+      ]
+    },
+    {
+      "index": 7,
+      "prompt_id": "external-md-07-express",
+      "profile": "engineering",
+      "brand": "Express",
+      "score": 45,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\07-external-md-07-express\\07-external-md-07-express-express.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\07-external-md-07-express\\07-external-md-07-express-express-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\07-external-md-07-express\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\07-external-md-07-express\\proof-slide.png",
+      "outputBytes": 29494,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Express' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/expressjs/express/master/Readme.md"
+      ]
+    },
+    {
+      "index": 8,
+      "prompt_id": "external-md-08-fastapi",
+      "profile": "product-platform",
+      "brand": "FastAPI",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\08-external-md-08-fastapi\\08-external-md-08-fastapi-fastapi.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\08-external-md-08-fastapi\\08-external-md-08-fastapi-fastapi-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\08-external-md-08-fastapi\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\08-external-md-08-fastapi\\proof-slide.png",
+      "outputBytes": 29458,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'FastAPI' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/fastapi/fastapi/master/README.md"
+      ]
+    },
+    {
+      "index": 9,
+      "prompt_id": "external-md-09-openai-python",
+      "profile": "engineering",
+      "brand": "OpenAI Python",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\09-external-md-09-openai-python\\09-external-md-09-openai-python-openai-python.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\09-external-md-09-openai-python\\09-external-md-09-openai-python-openai-python-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\09-external-md-09-openai-python\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\09-external-md-09-openai-python\\proof-slide.png",
+      "outputBytes": 29529,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'OpenAI Python API library' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/openai/openai-python/main/README.md"
+      ]
+    },
+    {
+      "index": 10,
+      "prompt_id": "external-md-10-langchain",
+      "profile": "product-platform",
+      "brand": "LangChain",
+      "score": 45,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\10-external-md-10-langchain\\10-external-md-10-langchain-langchain.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\10-external-md-10-langchain\\10-external-md-10-langchain-langchain-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\10-external-md-10-langchain\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\10-external-md-10-langchain\\proof-slide.png",
+      "outputBytes": 29483,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'LangChain' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/langchain-ai/langchain/master/README.md"
+      ]
+    },
+    {
+      "index": 11,
+      "prompt_id": "external-md-11-playwright",
+      "profile": "engineering",
+      "brand": "Playwright",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\11-external-md-11-playwright\\11-external-md-11-playwright-playwright.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\11-external-md-11-playwright\\11-external-md-11-playwright-playwright-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\11-external-md-11-playwright\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\11-external-md-11-playwright\\proof-slide.png",
+      "outputBytes": 29504,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Playwright' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/microsoft/playwright/main/README.md"
+      ]
+    },
+    {
+      "index": 12,
+      "prompt_id": "external-md-12-tailwindcss",
+      "profile": "gtm",
+      "brand": "Tailwind CSS",
+      "score": 45,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\12-external-md-12-tailwindcss\\12-external-md-12-tailwindcss-tailwind-css.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\12-external-md-12-tailwindcss\\12-external-md-12-tailwindcss-tailwind-css-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\12-external-md-12-tailwindcss\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\12-external-md-12-tailwindcss\\proof-slide.png",
+      "outputBytes": 29259,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Tailwind CSS' ( Use profile gtm",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "mission"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/tailwindlabs/tailwindcss/main/README.md"
+      ]
+    },
+    {
+      "index": 13,
+      "prompt_id": "external-md-13-kubernetes",
+      "profile": "engineering",
+      "brand": "Kubernetes (K8s)",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\13-external-md-13-kubernetes\\13-external-md-13-kubernetes-kubernetes-k8s.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\13-external-md-13-kubernetes\\13-external-md-13-kubernetes-kubernetes-k8s-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\13-external-md-13-kubernetes\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\13-external-md-13-kubernetes\\proof-slide.png",
+      "outputBytes": 29507,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Kubernetes (K8s)' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/kubernetes/kubernetes/master/README.md"
+      ]
+    },
+    {
+      "index": 14,
+      "prompt_id": "external-md-14-rust",
+      "profile": "engineering",
+      "brand": "Rust",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\14-external-md-14-rust\\14-external-md-14-rust-rust.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\14-external-md-14-rust\\14-external-md-14-rust-rust-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\14-external-md-14-rust\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\14-external-md-14-rust\\proof-slide.png",
+      "outputBytes": 29495,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Rust' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/rust-lang/rust/master/README.md"
+      ]
+    },
+    {
+      "index": 15,
+      "prompt_id": "external-md-15-pytorch",
+      "profile": "product-platform",
+      "brand": "PyTorch",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\15-external-md-15-pytorch\\15-external-md-15-pytorch-pytorch.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\15-external-md-15-pytorch\\15-external-md-15-pytorch-pytorch-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\15-external-md-15-pytorch\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\15-external-md-15-pytorch\\proof-slide.png",
+      "outputBytes": 29485,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'PyTorch' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/pytorch/pytorch/main/README.md"
+      ]
+    },
+    {
+      "index": 16,
+      "prompt_id": "external-md-16-tensorflow",
+      "profile": "engineering",
+      "brand": "TensorFlow",
+      "score": 45,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\16-external-md-16-tensorflow\\16-external-md-16-tensorflow-tensorflow.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\16-external-md-16-tensorflow\\16-external-md-16-tensorflow-tensorflow-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\16-external-md-16-tensorflow\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\16-external-md-16-tensorflow\\proof-slide.png",
+      "outputBytes": 29517,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'TensorFlow' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/tensorflow/tensorflow/master/README.md"
+      ]
+    },
+    {
+      "index": 17,
+      "prompt_id": "external-md-17-pandas",
+      "profile": "product-platform",
+      "brand": "pandas: A",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\17-external-md-17-pandas\\17-external-md-17-pandas-pandas-a.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\17-external-md-17-pandas\\17-external-md-17-pandas-pandas-a-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\17-external-md-17-pandas\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\17-external-md-17-pandas\\proof-slide.png",
+      "outputBytes": 29499,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'pandas: A Powerful Python Data Analysis Toolkit' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/pandas-dev/pandas/main/README.md"
+      ]
+    },
+    {
+      "index": 18,
+      "prompt_id": "external-md-18-numpy",
+      "profile": "engineering",
+      "brand": "NumPy",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\18-external-md-18-numpy\\18-external-md-18-numpy-numpy.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\18-external-md-18-numpy\\18-external-md-18-numpy-numpy-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\18-external-md-18-numpy\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\18-external-md-18-numpy\\proof-slide.png",
+      "outputBytes": 29481,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'NumPy' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/numpy/numpy/main/README.md"
+      ]
+    },
+    {
+      "index": 19,
+      "prompt_id": "external-md-19-huggingface-transformers",
+      "profile": "engineering",
+      "brand": "Transformers",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\19-external-md-19-huggingface-transformers\\19-external-md-19-huggingface-transformers-transformers.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\19-external-md-19-huggingface-transformers\\19-external-md-19-huggingface-transformers-transformers-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\19-external-md-19-huggingface-transformers\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\19-external-md-19-huggingface-transformers\\proof-slide.png",
+      "outputBytes": 29518,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Transformers' ( Use profile engineering",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "AI strategy"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/huggingface/transformers/main/README.md"
+      ]
+    },
+    {
+      "index": 20,
+      "prompt_id": "external-md-20-d3",
+      "profile": "gtm",
+      "brand": "D3: Data-Driven",
+      "score": 45,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\20-external-md-20-d3\\20-external-md-20-d3-d3-data-driven.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\20-external-md-20-d3\\20-external-md-20-d3-d3-data-driven-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\20-external-md-20-d3\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\20-external-md-20-d3\\proof-slide.png",
+      "outputBytes": 29258,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'D3: Data-Driven Documents' ( Use profile gtm",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "mission"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/d3/d3/main/README.md"
+      ]
+    },
+    {
+      "index": 21,
+      "prompt_id": "external-md-21-echarts",
+      "profile": "product-platform",
+      "brand": "Apache ECharts",
+      "score": 47,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\21-external-md-21-echarts\\21-external-md-21-echarts-apache-echarts.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\21-external-md-21-echarts\\21-external-md-21-echarts-apache-echarts-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\21-external-md-21-echarts\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\21-external-md-21-echarts\\proof-slide.png",
+      "outputBytes": 29505,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Apache ECharts' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/apache/echarts/master/README.md"
+      ]
+    },
+    {
+      "index": 22,
+      "prompt_id": "external-md-22-plotly",
+      "profile": "product-platform",
+      "brand": "Plotly.py",
+      "score": 45,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\22-external-md-22-plotly\\22-external-md-22-plotly-plotly-py.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\22-external-md-22-plotly\\22-external-md-22-plotly-plotly-py-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\22-external-md-22-plotly\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\22-external-md-22-plotly\\proof-slide.png",
+      "outputBytes": 29468,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'Plotly",
+        "py' ( Use profile product-platform",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "product vision"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/plotly/plotly.py/master/README.md"
+      ]
+    },
+    {
+      "index": 23,
+      "prompt_id": "external-md-23-system-design-primer",
+      "profile": "strategy",
+      "brand": "The System",
+      "score": 46,
+      "pptx": "artifacts\\presentations-probe\\external-md-visual-eval-23\\23-external-md-23-system-design-primer\\23-external-md-23-system-design-primer-the-system.pptx",
+      "contactSheet": "artifacts\\presentations-probe\\external-md-visual-eval-23\\23-external-md-23-system-design-primer\\23-external-md-23-system-design-primer-the-system-contact-sheet.png",
+      "firstSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\23-external-md-23-system-design-primer\\first-slide.png",
+      "proofSlidePng": "artifacts\\presentations-probe\\external-md-visual-eval-23\\23-external-md-23-system-design-primer\\proof-slide.png",
+      "outputBytes": 29502,
+      "terms": [
+        "Build a five-slide battle probe from the external Markdown source 'The System Design Primer' ( Use profile strategy",
+        "The deck must turn README content into claim-title slides",
+        "one dominant proof object per slide",
+        "source-aware footer",
+        "visible narrative spine",
+        "market framing"
+      ],
+      "links": [
+        "https://raw.githubusercontent.com/donnemartin/system-design-primer/master/README.md"
+      ]
+    }
+  ],
+  "ok": true
+}

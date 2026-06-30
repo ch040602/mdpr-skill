@@ -313,31 +313,131 @@
       2940
     ]
   },
+  "codexPptBaseline": {
+    "generator": "codex-ppt-skill",
+    "iteration": "iteration-02",
+    "outputModel": "image-only PPTX",
+    "contract": "origin_image/slide_XX.png files are assembled into a PPTX by assemble_ppt.py",
+    "assemblyScript": ".cache\\codex-ppt-skill\\skills\\codex-ppt\\scripts\\assemble_ppt.py",
+    "editableTextExpected": false,
+    "comparisonUse": "baseline for visual completeness and PPTX assembly, not a replacement for MDPR editable output",
+    "project": "artifacts\\external-markdown-visual-eval\\iteration-02\\codex-ppt-baseline\\external-md-codex-ppt-iter-02",
+    "originImageCount": 70,
+    "pptx": "artifacts\\external-markdown-visual-eval\\iteration-02\\codex-ppt-baseline\\external-md-codex-ppt-iter-02\\external-md-codex-ppt-iter-02.pptx",
+    "ok": true,
+    "pptxBytes": 1359604
+  },
+  "presentationsReference": {
+    "generator": "Presentations skill",
+    "outputModel": "editable artifact-tool PPTX when @oai/artifact-tool is available",
+    "contract": "claim spine, design system lock, contact-sheet plan, rendered critique, comeback rubric",
+    "battleHarness": "C:\\Users\\hcslab_523\\.codex\\plugins\\cache\\openai-primary-runtime\\presentations\\26.430.10722\\skills\\presentations\\scripts\\run_prompt_battle.mjs",
+    "scriptAvailable": true,
+    "artifactToolRuntime": "C:\\Users\\hcslab_523\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\node_modules\\@oai\\artifact-tool",
+    "artifactToolRuntimeAvailable": true,
+    "runnable": true,
+    "artifactToolRequired": "@oai/artifact-tool/presentation-jsx",
+    "comparisonUse": "rubric and workflow reference for premium editorial deck quality",
+    "probeBattle": {
+      "manifest": "artifacts\\presentations-probe\\external-md-visual-eval-23\\presentations-probe-battle-manifest.json",
+      "schema": "mdpr-presentations-probe-battle-v1",
+      "ok": true,
+      "promptCount": 23,
+      "pptxCount": 23,
+      "contactSheetCount": 23,
+      "firstSlideImageCount": 23,
+      "proofSlideImageCount": 23,
+      "minScore": 44.0,
+      "averageScore": 46.3,
+      "aggregateContactSheets": [
+        "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-first-slides-contact-sheet.png",
+        "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-proof-slides-contact-sheet.png"
+      ]
+    }
+  },
   "teaserComparisonRubric": {
     "referenceBasis": [
       "research teaser: position, size, and color should guide attention",
-      "product teaser: headline, evidence object, and restrained icon/visual anchors should be readable at a glance"
+      "product teaser: headline, evidence object, and restrained icon/visual anchors should be readable at a glance",
+      "codex-ppt: image-only output should be beaten on editability while matching visual completeness",
+      "presentations: comeback rubric should be matched for claim spine, proof object, rhythm, and rendered critique"
     ],
     "criteria": [
-      "focal message",
+      "coherence",
+      "visual guidance",
+      "pretty",
+      "readability",
+      "claim-title strength",
+      "proof-object strength",
+      "thumbnail rhythm",
+      "macro-layout diversity",
       "scale hierarchy",
-      "bounded text",
+      "contrast",
+      "whitespace",
+      "text bounds",
+      "minimum font size",
+      "nonblank rendering",
+      "chart clarity",
+      "table grammar",
+      "diagram legibility",
+      "source provenance",
+      "theme restraint",
+      "accent discipline",
       "object diversity",
-      "coherent contrast",
-      "nonblank rendered PPTX"
+      "card-grid avoidance",
+      "native editability",
+      "image-only baseline delta",
+      "presentations comeback-rubric alignment"
     ]
   },
+  "visualCriteriaScores": {
+    "scale": "0-5",
+    "scores": {
+      "coherence": 5,
+      "visual guidance": 5,
+      "pretty": 3,
+      "readability": 5,
+      "claim-title strength": 5,
+      "proof-object strength": 5,
+      "thumbnail rhythm": 2,
+      "macro-layout diversity": 2,
+      "scale hierarchy": 5,
+      "contrast": 5,
+      "whitespace": 5,
+      "text bounds": 5,
+      "minimum font size": 5,
+      "nonblank rendering": 5,
+      "chart clarity": 4,
+      "table grammar": 5,
+      "diagram legibility": 5,
+      "source provenance": 5,
+      "theme restraint": 5,
+      "accent discipline": 5,
+      "object diversity": 3,
+      "card-grid avoidance": 2,
+      "native editability": 5,
+      "image-only baseline delta": 5,
+      "presentations comeback-rubric alignment": 5
+    },
+    "scoreCount": 25,
+    "minimumScore": 2,
+    "averageScore": 4.44
+  },
   "quality": {
-    "score": 76,
+    "score": 64,
     "ok": false,
     "issues": [
       "rendered slides look too sparse: mean unique colors 73.0",
-      "layout family diversity too low: 4"
+      "layout family diversity too low: 4",
+      "visual criteria below 4/5: minimum 2"
     ],
+    "criteriaAverageScore": 4.44,
     "acceptedImprovementTargets": [
       "If slides are text-heavy, add rule support for stronger summary/table/chart composition.",
       "If teaser focal hierarchy is weak, improve cover/key-message scale and contrast rules.",
-      "If pipeline slides fail, route them through MDPR diagram blocks only."
+      "If pipeline slides fail, route them through MDPR diagram blocks only.",
+      "If codex-ppt baseline assembly fails, fix the origin_image contract or runtime dependency before comparing visual quality.",
+      "If presentations rubric alignment is weak, add claim spine and proof-object checks before rendering."
     ]
   },
   "ok": false

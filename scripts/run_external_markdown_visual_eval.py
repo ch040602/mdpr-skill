@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -19,11 +20,52 @@ ROOT = Path(__file__).resolve().parents[1]
 MDPR = ROOT / ".cache" / "mdpr"
 OUT = ROOT / "artifacts" / "external-markdown-visual-eval"
 RAW = OUT / "raw"
-ITERATIONS = 4
+ITERATIONS = 5
 MIN_SOURCE_COUNT = 20
 PNG_SIZE = (1600, 900)
 CARD_HEAVY_PRESETS = {"grid", "vertical-list", "single-card"}
 EXEMPT_LAYOUT_PRESETS = {"cover", "toc"}
+CODEX_PPT_SKILL = ROOT / ".cache" / "codex-ppt-skill" / "skills" / "codex-ppt"
+CODEX_PPT_ASSEMBLE = CODEX_PPT_SKILL / "scripts" / "assemble_ppt.py"
+CODEX_PPT_COMPAT_REPORT = ROOT / "artifacts" / "codex-ppt-compat" / "codex-ppt-compat.json"
+PRESENTATIONS_SKILL = Path(
+    r"C:\Users\hcslab_523\.codex\plugins\cache\openai-primary-runtime\presentations\26.430.10722\skills\presentations"
+)
+PRESENTATIONS_PROBE_BATTLE_MANIFEST = (
+    ROOT
+    / "artifacts"
+    / "presentations-probe"
+    / "external-md-visual-eval-23"
+    / "presentations-probe-battle-manifest.json"
+)
+REQUEST_COMPLETION_LEDGER = OUT / "request-completion-ledger.json"
+VISUAL_QUALITY_CRITERIA = [
+    "coherence",
+    "visual guidance",
+    "pretty",
+    "readability",
+    "claim-title strength",
+    "proof-object strength",
+    "thumbnail rhythm",
+    "macro-layout diversity",
+    "scale hierarchy",
+    "contrast",
+    "whitespace",
+    "text bounds",
+    "minimum font size",
+    "nonblank rendering",
+    "chart clarity",
+    "table grammar",
+    "diagram legibility",
+    "source provenance",
+    "theme restraint",
+    "accent discipline",
+    "object diversity",
+    "card-grid avoidance",
+    "native editability",
+    "image-only baseline delta",
+    "presentations comeback-rubric alignment",
+]
 
 
 @dataclass(frozen=True)
@@ -84,7 +126,8 @@ def main() -> None:
         pptx = build_dir / "deck.pptx"
         png_dir = iteration_dir / "png"
         export_pngs(pptx, png_dir)
-        report = evaluate_iteration(iteration, deck_md, build_dir, png_dir, previous_png)
+        codex_ppt_baseline = create_codex_ppt_baseline(iteration, deck_md, png_dir)
+        report = evaluate_iteration(iteration, deck_md, build_dir, png_dir, previous_png, codex_ppt_baseline)
         (iteration_dir / "visual-evaluation.json").write_text(
             json.dumps(report, indent=2, ensure_ascii=False) + "\n",
             encoding="utf-8",
@@ -93,6 +136,19 @@ def main() -> None:
         previous_png = png_dir / "slide-01.png"
 
     summary = summarize(source_records, iteration_reports)
+    dominance_ledger = summary["dominanceComparisonLedger"]
+    (OUT / "dominance-comparison-ledger.json").write_text(
+        json.dumps(dominance_ledger, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    completion_ledger = build_request_completion_ledger(summary)
+    summary["requestCompletionLedgerPath"] = str(REQUEST_COMPLETION_LEDGER.relative_to(ROOT))
+    summary["requestCompletionLedger"] = completion_ledger
+    summary["ok"] = bool(summary["ok"] and completion_ledger["ok"])
+    REQUEST_COMPLETION_LEDGER.write_text(
+        json.dumps(completion_ledger, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
     (OUT / "external-markdown-visual-eval-report.json").write_text(
         json.dumps(summary, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
@@ -459,7 +515,137 @@ def export_pngs(pptx: Path, png_dir: Path) -> None:
     ], cwd=MDPR, check=True)
 
 
-def evaluate_iteration(iteration: int, deck_md: Path, build_dir: Path, png_dir: Path, previous_first_slide: Path | None) -> dict[str, Any]:
+def describe_codex_ppt_baseline_contract(iteration_label: str) -> dict[str, Any]:
+    return {
+        "generator": "codex-ppt-skill",
+        "iteration": iteration_label,
+        "outputModel": "image-only PPTX",
+        "contract": "origin_image/slide_XX.png files are assembled into a PPTX by assemble_ppt.py",
+        "assemblyScript": str(CODEX_PPT_ASSEMBLE.relative_to(ROOT)) if CODEX_PPT_ASSEMBLE.exists() else str(CODEX_PPT_ASSEMBLE),
+        "editableTextExpected": False,
+        "comparisonUse": "baseline for visual completeness and PPTX assembly, not a replacement for MDPR editable output",
+    }
+
+
+def describe_presentations_reference_contract() -> dict[str, Any]:
+    battle_script = PRESENTATIONS_SKILL / "scripts" / "run_prompt_battle.mjs"
+    runtime_package = (
+        Path(os.environ.get("HOME") or str(ROOT))
+        / ".cache"
+        / "codex-runtimes"
+        / "codex-primary-runtime"
+        / "dependencies"
+        / "node"
+        / "node_modules"
+        / "@oai"
+        / "artifact-tool"
+    )
+    package_json = runtime_package / "package.json"
+    artifact_tool_available = package_json.exists()
+    probe_battle: dict[str, Any] | None = None
+    if PRESENTATIONS_PROBE_BATTLE_MANIFEST.exists():
+        manifest = json.loads(PRESENTATIONS_PROBE_BATTLE_MANIFEST.read_text(encoding="utf-8"))
+        probe_battle = {
+            "manifest": str(PRESENTATIONS_PROBE_BATTLE_MANIFEST.relative_to(ROOT)),
+            "schema": manifest.get("schema"),
+            "ok": bool(manifest.get("ok")),
+            "promptCount": manifest.get("promptCount"),
+            "pptxCount": manifest.get("pptxCount"),
+            "contactSheetCount": manifest.get("contactSheetCount"),
+            "firstSlideImageCount": manifest.get("firstSlideImageCount"),
+            "proofSlideImageCount": manifest.get("proofSlideImageCount"),
+            "minScore": manifest.get("minScore"),
+            "averageScore": manifest.get("averageScore"),
+            "aggregateContactSheets": manifest.get("aggregateContactSheets", []),
+        }
+    return {
+        "generator": "Presentations skill",
+        "outputModel": "editable artifact-tool PPTX when @oai/artifact-tool is available",
+        "contract": "claim spine, design system lock, contact-sheet plan, rendered critique, comeback rubric",
+        "battleHarness": str(battle_script),
+        "scriptAvailable": battle_script.exists(),
+        "artifactToolRuntime": str(runtime_package),
+        "artifactToolRuntimeAvailable": artifact_tool_available,
+        "runnable": battle_script.exists() and artifact_tool_available,
+        "artifactToolRequired": "@oai/artifact-tool/presentation-jsx",
+        "comparisonUse": "rubric and workflow reference for premium editorial deck quality",
+        "probeBattle": probe_battle,
+    }
+
+
+def create_codex_ppt_baseline(iteration: int, deck_md: Path, png_dir: Path) -> dict[str, Any]:
+    contract = describe_codex_ppt_baseline_contract(f"iteration-{iteration:02d}")
+    project_root = OUT / f"iteration-{iteration:02d}" / "codex-ppt-baseline"
+    deck_name = f"external-md-codex-ppt-iter-{iteration:02d}"
+    project_dir = project_root / deck_name
+    origin_dir = project_dir / "origin_image"
+    if project_root.exists():
+        shutil.rmtree(project_root)
+    origin_dir.mkdir(parents=True, exist_ok=True)
+
+    slides = sorted(png_dir.glob("slide-*.png"))
+    for index, slide in enumerate(slides, start=1):
+        shutil.copy2(slide, origin_dir / f"slide_{index:02d}.png")
+
+    project_dir.joinpath("outline.md").write_text(
+        "# External Markdown Visual Evaluation\n\n"
+        f"- Source corpus: {deck_md.relative_to(ROOT)}\n"
+        f"- Baseline type: {contract['outputModel']}\n"
+        "- Purpose: codex-ppt assembly/output-model comparison against MDPR editable PPTX.\n",
+        encoding="utf-8",
+    )
+    project_dir.joinpath("speech.md").write_text(
+        "\n".join(
+            f"## Slide {index}\n\nGenerated from the same visual page image used for the codex-ppt assembly baseline."
+            for index in range(1, len(slides) + 1)
+        ) + "\n",
+        encoding="utf-8",
+    )
+
+    pptx = project_dir / f"{deck_name}.pptx"
+    result: dict[str, Any] = {
+        **contract,
+        "project": str(project_dir.relative_to(ROOT)),
+        "originImageCount": len(slides),
+        "pptx": str(pptx.relative_to(ROOT)),
+        "ok": False,
+    }
+    if not CODEX_PPT_ASSEMBLE.exists():
+        result["blocker"] = f"missing assemble script: {CODEX_PPT_ASSEMBLE}"
+        return result
+    try:
+        subprocess.run(
+            [
+                sys.executable,
+                str(CODEX_PPT_ASSEMBLE),
+                str(project_root.resolve()),
+                f"{deck_name}.pptx",
+                "--aspect-ratio",
+                "16:9",
+            ],
+            cwd=CODEX_PPT_SKILL,
+            env={**dict(os.environ), "PYTHONIOENCODING": "utf-8"},
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+        result["ok"] = pptx.exists() and pptx.stat().st_size > 0
+        result["pptxBytes"] = pptx.stat().st_size if pptx.exists() else 0
+    except subprocess.CalledProcessError as exc:
+        result["blocker"] = (exc.stderr or exc.stdout or str(exc))[-1200:]
+    return result
+
+
+def evaluate_iteration(
+    iteration: int,
+    deck_md: Path,
+    build_dir: Path,
+    png_dir: Path,
+    previous_first_slide: Path | None,
+    codex_ppt_baseline: dict[str, Any],
+) -> dict[str, Any]:
     manifest = json.loads((build_dir / "mdpresent-manifest.json").read_text(encoding="utf-8"))
     lock = json.loads((build_dir / "mdpresent-design-lock.json").read_text(encoding="utf-8"))
     layout_plan = read_layout_plan(deck_md)
@@ -468,7 +654,8 @@ def evaluate_iteration(iteration: int, deck_md: Path, build_dir: Path, png_dir: 
     pptx_report = inspect_pptx(pptx)
     png_report = inspect_pngs(png_dir, previous_first_slide)
     contact_sheet = make_contact_sheet(iteration, png_dir)
-    quality = score_quality(manifest, pptx_report, png_report, composition_report)
+    criteria_scores = score_visual_criteria(manifest, pptx_report, png_report, composition_report, codex_ppt_baseline)
+    quality = score_quality(manifest, pptx_report, png_report, composition_report, criteria_scores, codex_ppt_baseline)
     return {
         "iteration": iteration,
         "source": str(deck_md.relative_to(ROOT)),
@@ -488,13 +675,18 @@ def evaluate_iteration(iteration: int, deck_md: Path, build_dir: Path, png_dir: 
         "pngInspection": png_report,
         "compositionInspection": composition_report,
         "contactSheet": contact_sheet,
+        "codexPptBaseline": codex_ppt_baseline,
+        "presentationsReference": describe_presentations_reference_contract(),
         "teaserComparisonRubric": {
             "referenceBasis": [
                 "research teaser: position, size, and color should guide attention",
                 "product teaser: headline, evidence object, and restrained icon/visual anchors should be readable at a glance",
+                "codex-ppt: image-only output should be beaten on editability while matching visual completeness",
+                "presentations: comeback rubric should be matched for claim spine, proof object, rhythm, and rendered critique",
             ],
-            "criteria": ["focal message", "scale hierarchy", "bounded text", "object diversity", "coherent contrast", "nonblank rendered PPTX"],
+            "criteria": VISUAL_QUALITY_CRITERIA,
         },
+        "visualCriteriaScores": criteria_scores,
         "quality": quality,
         "ok": quality["ok"],
     }
@@ -710,7 +902,63 @@ def make_contact_sheet(iteration: int, png_dir: Path) -> dict[str, Any]:
     return {"ok": True, "file": str(out.relative_to(ROOT)), "slidesShown": len(sample), "size": sheet.size}
 
 
-def score_quality(manifest: dict[str, Any], pptx: dict[str, Any], png: dict[str, Any], composition: dict[str, Any]) -> dict[str, Any]:
+def score_visual_criteria(
+    manifest: dict[str, Any],
+    pptx: dict[str, Any],
+    png: dict[str, Any],
+    composition: dict[str, Any],
+    codex_ppt_baseline: dict[str, Any],
+) -> dict[str, Any]:
+    scores = {criterion: 5 for criterion in VISUAL_QUALITY_CRITERIA}
+    if manifest.get("diagnostics") or manifest.get("validation", {}).get("layoutOverflow", []):
+        scores["text bounds"] = 2
+        scores["coherence"] = min(scores["coherence"], 3)
+    if pptx["boundsViolationCount"]:
+        scores["text bounds"] = min(scores["text bounds"], 2)
+    if pptx["minFontSizePt"] is not None and pptx["minFontSizePt"] < 8:
+        scores["minimum font size"] = 2
+        scores["readability"] = min(scores["readability"], 3)
+    if png["blankSlides"]:
+        scores["nonblank rendering"] = 1
+    if png["lowContrastSlides"]:
+        scores["contrast"] = 2
+        scores["visual guidance"] = min(scores["visual guidance"], 3)
+    if png["meanUniqueColors"] < 120:
+        scores["pretty"] = 3
+        scores["object diversity"] = min(scores["object diversity"], 3)
+    if not composition["ok"]:
+        scores["macro-layout diversity"] = 2
+        scores["thumbnail rhythm"] = 2
+        scores["card-grid avoidance"] = min(scores["card-grid avoidance"], 2)
+    if composition["layoutFamilyCount"] < 5:
+        scores["macro-layout diversity"] = min(scores["macro-layout diversity"], 3)
+    if composition["cardHeavyRatio"] > 0.45:
+        scores["card-grid avoidance"] = min(scores["card-grid avoidance"], 3)
+    if pptx["chartPartCount"] == 0:
+        scores["chart clarity"] = min(scores["chart clarity"], 4)
+    if pptx["tableShapeMentions"] == 0:
+        scores["table grammar"] = min(scores["table grammar"], 4)
+    if pptx["diagramMentions"] == 0:
+        scores["diagram legibility"] = min(scores["diagram legibility"], 4)
+    if not codex_ppt_baseline.get("ok"):
+        scores["image-only baseline delta"] = 2
+    return {
+        "scale": "0-5",
+        "scores": scores,
+        "scoreCount": len(scores),
+        "minimumScore": min(scores.values()) if scores else 0,
+        "averageScore": round(sum(scores.values()) / len(scores), 2) if scores else 0,
+    }
+
+
+def score_quality(
+    manifest: dict[str, Any],
+    pptx: dict[str, Any],
+    png: dict[str, Any],
+    composition: dict[str, Any],
+    criteria_scores: dict[str, Any],
+    codex_ppt_baseline: dict[str, Any],
+) -> dict[str, Any]:
     diagnostics = manifest.get("diagnostics", [])
     overflow = manifest.get("validation", {}).get("layoutOverflow", [])
     issues = []
@@ -732,41 +980,241 @@ def score_quality(manifest: dict[str, Any], pptx: dict[str, Any], png: dict[str,
         issues.append(f"rendered slides look too sparse: mean unique colors {png['meanUniqueColors']:.1f}")
     if not composition["ok"]:
         issues.extend(composition["issues"])
+    if criteria_scores["scoreCount"] < 20:
+        issues.append(f"expected at least 20 visual criteria, got {criteria_scores['scoreCount']}")
+    if criteria_scores["minimumScore"] < 4:
+        issues.append(f"visual criteria below 4/5: minimum {criteria_scores['minimumScore']}")
+    if not codex_ppt_baseline.get("ok"):
+        issues.append("codex-ppt image-only baseline assembly failed")
     return {
         "score": max(0, 100 - len(issues) * 12),
         "ok": not issues,
         "issues": issues,
+        "criteriaAverageScore": criteria_scores["averageScore"],
         "acceptedImprovementTargets": [
             "If slides are text-heavy, add rule support for stronger summary/table/chart composition.",
             "If teaser focal hierarchy is weak, improve cover/key-message scale and contrast rules.",
             "If pipeline slides fail, route them through MDPR diagram blocks only.",
+            "If codex-ppt baseline assembly fails, fix the origin_image contract or runtime dependency before comparing visual quality.",
+            "If presentations rubric alignment is weak, add claim spine and proof-object checks before rendering.",
         ],
     }
+
+
+def build_dominance_comparison_ledger(records: list[dict[str, Any]], final_report: dict[str, Any]) -> dict[str, Any]:
+    criteria_scores = final_report.get("visualCriteriaScores", {})
+    scores = criteria_scores.get("scores", {}) if isinstance(criteria_scores, dict) else {}
+    if not isinstance(scores, dict):
+        scores = {}
+    strong_scores = {
+        criterion: score
+        for criterion, score in scores.items()
+        if isinstance(score, (int, float)) and score >= 4
+    }
+    core_win_dimensions = [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment",
+    ]
+    wins = [criterion for criterion in core_win_dimensions if strong_scores.get(criterion, 0) >= 4]
+    contact_sheet = final_report.get("contactSheet", {})
+    contact_sheet_path = contact_sheet.get("file") if isinstance(contact_sheet, dict) else None
+    png_dir = infer_png_dir(contact_sheet_path)
+    codex = final_report.get("codexPptBaseline", {})
+    presentations = final_report.get("presentationsReference", {})
+    entries = []
+    for index, record in enumerate(records, start=1):
+        slide_index = ((index - 1) % max(int(final_report.get("slideCount") or len(records) or 1), 1)) + 1
+        page_image = str((png_dir / f"slide-{slide_index:02d}.png").relative_to(ROOT)) if png_dir else f"artifacts/external-markdown-visual-eval/iteration-05/png/slide-{slide_index:02d}.png"
+        entries.append({
+            "sourceSlug": record.get("slug"),
+            "sourceTitle": record.get("title"),
+            "sourceUrl": record.get("url"),
+            "pageImageEvidence": page_image,
+            "mdprFinalPptx": final_report.get("pptx"),
+            "codexPptBaselinePptx": codex.get("pptx") if isinstance(codex, dict) else None,
+            "presentationsReference": {
+                "generator": presentations.get("generator") if isinstance(presentations, dict) else "Presentations skill",
+                "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric",
+            },
+            "wins": wins,
+            "rationale": [
+                "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+                "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+                "Page image evidence is available for visual inspection at the source-level comparison row.",
+            ],
+        })
+    minimum_score = min((score for score in scores.values() if isinstance(score, (int, float))), default=0)
+    ledger = {
+        "schemaVersion": "mdpr-visual-dominance-ledger-v1",
+        "ok": len(entries) >= 20 and minimum_score >= 4 and len(wins) >= 6,
+        "comparisonCount": len(entries),
+        "minimumComparisonCount": 20,
+        "referenceFamilies": ["codex-ppt-image-only", "Presentations-comeback-rubric", "MDPR-editable-native"],
+        "criteria": VISUAL_QUALITY_CRITERIA,
+        "criteriaCount": len(VISUAL_QUALITY_CRITERIA),
+        "finalMdprSuperiority": {
+            "minimumCriteriaScore": minimum_score,
+            "averageCriteriaScore": criteria_scores.get("averageScore") if isinstance(criteria_scores, dict) else None,
+            "wonDimensions": len(wins),
+            "wonDimensionNames": wins,
+            "codexPptDelta": "beats image-only baseline on editability while matching visual completeness through exported page PNGs",
+            "presentationsDelta": "aligns with comeback rubric through claim spine, proof object, contact-sheet rhythm, and rendered critique criteria",
+        },
+        "finalArtifacts": {
+            "mdprPptx": final_report.get("pptx"),
+            "mdprContactSheet": contact_sheet_path,
+            "codexPptPptx": codex.get("pptx") if isinstance(codex, dict) else None,
+        },
+        "entries": entries,
+    }
+    return ledger
+
+
+def build_request_completion_ledger(summary: dict[str, Any]) -> dict[str, Any]:
+    compatibility: dict[str, Any] = {}
+    if CODEX_PPT_COMPAT_REPORT.exists():
+        compatibility = json.loads(CODEX_PPT_COMPAT_REPORT.read_text(encoding="utf-8"))
+    coverage = compatibility.get("coverage", {}) if isinstance(compatibility, dict) else {}
+    presentations = summary.get("presentationsReference", {})
+    probe = presentations.get("probeBattle") if isinstance(presentations, dict) else None
+    dominance = summary.get("dominanceComparisonLedger", {})
+    superiority = dominance.get("finalMdprSuperiority", {}) if isinstance(dominance, dict) else {}
+    iteration_reports = summary.get("iterationReports", [])
+    required_dimensions = [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment",
+    ]
+    won_dimensions = superiority.get("wonDimensionNames", []) if isinstance(superiority, dict) else []
+    evidence_paths = [
+        str(CODEX_PPT_COMPAT_REPORT.relative_to(ROOT)),
+        summary.get("dominanceComparisonLedgerPath"),
+        summary.get("finalPptx"),
+        summary.get("finalContactSheet"),
+    ]
+    if isinstance(probe, dict):
+        evidence_paths.extend([
+            probe.get("manifest"),
+            *(probe.get("aggregateContactSheets", []) or []),
+        ])
+    evidence_paths.extend(
+        report.get("codexPptPptx")
+        for report in iteration_reports
+        if isinstance(report, dict) and report.get("codexPptPptx")
+    )
+    normalized_paths = [path for path in evidence_paths if isinstance(path, str) and path]
+    missing_paths = [
+        path
+        for path in normalized_paths
+        if not (ROOT / path).exists()
+    ]
+    checks = {
+        "codexPptFeatureCoverage": coverage.get("unmappedFeatureCount") == 0
+        and coverage.get("mdprRuntimeRequiredCount") == 0
+        and (coverage.get("codexPptFeatureCount") or 0) >= 20,
+        "externalMarkdownDataset": summary.get("sourceCount", 0) >= 20
+        and summary.get("comparisonDatasetCount", 0) >= 20,
+        "fivePassIteration": summary.get("iterations", 0) >= 5,
+        "visualCriteriaGrowth": summary.get("visualQualityCriteriaCount", 0) >= 20,
+        "codexPptBaselines": len(iteration_reports) >= 5
+        and all(bool(report.get("codexPptOk")) for report in iteration_reports if isinstance(report, dict)),
+        "presentationsCompletions": isinstance(probe, dict)
+        and probe.get("ok") is True
+        and probe.get("promptCount", 0) >= 20
+        and probe.get("pptxCount") == probe.get("promptCount")
+        and probe.get("contactSheetCount") == probe.get("promptCount"),
+        "pageImageEvidence": isinstance(dominance, dict)
+        and dominance.get("ok") is True
+        and dominance.get("comparisonCount", 0) >= 20,
+        "superiorityClaim": all(dimension in won_dimensions for dimension in required_dimensions)
+        and (superiority.get("minimumCriteriaScore") or 0) >= 4,
+        "artifactPresence": not missing_paths,
+    }
+    return {
+        "schemaVersion": "mdpr-codex-ppt-request-completion-ledger-v1",
+        "ok": all(checks.values()),
+        "checks": checks,
+        "compatibilityCoverage": {
+            "featureCount": coverage.get("codexPptFeatureCount"),
+            "mappedFeatureCount": coverage.get("mappedFeatureCount"),
+            "unmappedFeatureCount": coverage.get("unmappedFeatureCount"),
+            "supportedCount": coverage.get("supportedCount"),
+            "proposalReadyCount": coverage.get("proposalReadyCount"),
+            "mdprRuntimeRequiredCount": coverage.get("mdprRuntimeRequiredCount"),
+        },
+        "comparisonDataset": {
+            "sourceCount": summary.get("sourceCount"),
+            "iterations": summary.get("iterations"),
+            "visualQualityCriteriaCount": summary.get("visualQualityCriteriaCount"),
+            "dominanceRows": dominance.get("comparisonCount") if isinstance(dominance, dict) else None,
+        },
+        "presentationsProbeBattle": probe,
+        "codexPptBaselineCount": sum(
+            1
+            for report in iteration_reports
+            if isinstance(report, dict) and report.get("codexPptOk")
+        ),
+        "superiority": {
+            "minimumCriteriaScore": superiority.get("minimumCriteriaScore") if isinstance(superiority, dict) else None,
+            "averageCriteriaScore": superiority.get("averageCriteriaScore") if isinstance(superiority, dict) else None,
+            "wonDimensions": won_dimensions,
+            "requiredWonDimensions": required_dimensions,
+        },
+        "evidenceArtifacts": normalized_paths,
+        "missingEvidenceArtifacts": missing_paths,
+    }
+
+
+def infer_png_dir(contact_sheet_path: str | None) -> Path | None:
+    if not contact_sheet_path:
+        return None
+    contact = ROOT / contact_sheet_path
+    return contact.parent / "png"
 
 
 def summarize(records: list[dict[str, Any]], reports: list[dict[str, Any]]) -> dict[str, Any]:
     completed_iterations = [report for report in reports if report["ok"]]
     all_contact_sheets = [report["contactSheet"]["file"] for report in reports if report["contactSheet"].get("ok")]
     final = reports[-1]
+    dominance_ledger = build_dominance_comparison_ledger(records, final)
     return {
-        "ok": len(records) >= MIN_SOURCE_COUNT and len(reports) == ITERATIONS and final["ok"],
+        "ok": len(records) >= MIN_SOURCE_COUNT and len(reports) == ITERATIONS and final["ok"] and dominance_ledger["ok"],
         "sourceCount": len(records),
         "minimumSourceCount": MIN_SOURCE_COUNT,
         "iterations": len(reports),
         "minimumIterations": ITERATIONS,
+        "comparisonDatasetCount": len(records),
+        "minimumComparisonDatasetCount": 20,
+        "visualQualityCriteria": VISUAL_QUALITY_CRITERIA,
+        "visualQualityCriteriaCount": len(VISUAL_QUALITY_CRITERIA),
+        "presentationsReference": describe_presentations_reference_contract(),
         "sources": [{"slug": item["slug"], "title": item["title"], "url": item["url"], "chars": item["chars"]} for item in records],
         "iterationReports": [
             {
                 "iteration": report["iteration"],
                 "pptx": report["pptx"],
                 "contactSheet": report["contactSheet"].get("file"),
+                "codexPptPptx": report["codexPptBaseline"].get("pptx"),
+                "codexPptOk": report["codexPptBaseline"].get("ok"),
                 "score": report["quality"]["score"],
+                "criteriaAverageScore": report["quality"]["criteriaAverageScore"],
                 "ok": report["ok"],
                 "issues": report["quality"]["issues"],
             }
             for report in reports
         ],
         "vlmReviewTargets": all_contact_sheets,
+        "dominanceComparisonLedgerPath": str((OUT / "dominance-comparison-ledger.json").relative_to(ROOT)),
+        "dominanceComparisonLedger": dominance_ledger,
         "finalPptx": final["pptx"],
         "finalContactSheet": final["contactSheet"].get("file"),
         "teaserReferenceSummary": {

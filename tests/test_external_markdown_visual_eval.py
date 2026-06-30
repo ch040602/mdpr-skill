@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -66,6 +67,114 @@ class ExternalMarkdownVisualEvalTests(unittest.TestCase):
             module.select_source_title("# venv\n\nInstall notes", "Transformers"),
             "Transformers",
         )
+
+    def test_visual_battle_contract_requires_five_iterations_and_twenty_criteria(self):
+        module = load_eval_module()
+
+        self.assertGreaterEqual(module.ITERATIONS, 5)
+        self.assertGreaterEqual(module.MIN_SOURCE_COUNT, 20)
+        self.assertGreaterEqual(len(module.VISUAL_QUALITY_CRITERIA), 20)
+        self.assertIn("coherence", module.VISUAL_QUALITY_CRITERIA)
+        self.assertIn("visual guidance", module.VISUAL_QUALITY_CRITERIA)
+        self.assertIn("pretty", module.VISUAL_QUALITY_CRITERIA)
+        self.assertIn("readability", module.VISUAL_QUALITY_CRITERIA)
+
+    def test_codex_ppt_reference_project_uses_image_only_slide_contract(self):
+        module = load_eval_module()
+        report = module.describe_codex_ppt_baseline_contract("iteration-05")
+
+        self.assertEqual(report["generator"], "codex-ppt-skill")
+        self.assertEqual(report["outputModel"], "image-only PPTX")
+        self.assertIn("origin_image/slide_XX.png", report["contract"])
+        self.assertTrue(report["editableTextExpected"] is False)
+        self.assertTrue(report["assemblyScript"].endswith("assemble_ppt.py"))
+
+    def test_presentations_reference_contract_distinguishes_script_and_runtime(self):
+        module = load_eval_module()
+        report = module.describe_presentations_reference_contract()
+
+        self.assertEqual(report["generator"], "Presentations skill")
+        self.assertIn("comeback rubric", report["contract"])
+        self.assertIn("scriptAvailable", report)
+        self.assertIn("artifactToolRuntimeAvailable", report)
+        self.assertIn("runnable", report)
+
+    def test_presentations_probe_battle_requires_twenty_artifact_tool_outputs(self):
+        module = load_eval_module()
+        report = module.describe_presentations_reference_contract()
+        probe = report["probeBattle"]
+
+        self.assertIsNotNone(probe)
+        self.assertTrue(probe["ok"])
+        self.assertGreaterEqual(probe["promptCount"], 20)
+        self.assertEqual(probe["pptxCount"], probe["promptCount"])
+        self.assertEqual(probe["contactSheetCount"], probe["promptCount"])
+        self.assertEqual(probe["firstSlideImageCount"], probe["promptCount"])
+        self.assertEqual(probe["proofSlideImageCount"], probe["promptCount"])
+        self.assertGreaterEqual(probe["minScore"], 40)
+        self.assertGreaterEqual(len(probe["aggregateContactSheets"]), 2)
+
+    def test_dominance_ledger_requires_source_level_image_evidence_and_reference_deltas(self):
+        module = load_eval_module()
+        records = [
+            {"slug": f"source-{index:02d}", "title": f"Source {index:02d}", "url": f"https://example.test/{index}", "chars": 1000}
+            for index in range(1, 22)
+        ]
+        final_report = {
+            "iteration": 5,
+            "pptx": "artifacts/external-markdown-visual-eval/iteration-05/build/deck.pptx",
+            "contactSheet": {"file": "artifacts/external-markdown-visual-eval/iteration-05/contact-sheet.png"},
+            "slideCount": 41,
+            "visualCriteriaScores": {
+                "scores": {criterion: 5 for criterion in module.VISUAL_QUALITY_CRITERIA},
+                "minimumScore": 5,
+                "averageScore": 5,
+                "scoreCount": len(module.VISUAL_QUALITY_CRITERIA),
+            },
+            "codexPptBaseline": {
+                "ok": True,
+                "pptx": "artifacts/external-markdown-visual-eval/iteration-05/codex-ppt-baseline/final.pptx",
+                "editableTextExpected": False,
+            },
+            "presentationsReference": module.describe_presentations_reference_contract(),
+        }
+
+        ledger = module.build_dominance_comparison_ledger(records, final_report)
+
+        self.assertTrue(ledger["ok"])
+        self.assertGreaterEqual(ledger["comparisonCount"], 20)
+        self.assertEqual(ledger["criteriaCount"], len(module.VISUAL_QUALITY_CRITERIA))
+        self.assertIn("codex-ppt-image-only", ledger["referenceFamilies"])
+        self.assertIn("Presentations-comeback-rubric", ledger["referenceFamilies"])
+        self.assertGreaterEqual(ledger["finalMdprSuperiority"]["minimumCriteriaScore"], 4)
+        self.assertGreaterEqual(ledger["finalMdprSuperiority"]["wonDimensions"], 6)
+        first = ledger["entries"][0]
+        self.assertIn("pageImageEvidence", first)
+        self.assertTrue(first["pageImageEvidence"].endswith("slide-01.png"))
+        self.assertIn("native editability", first["wins"])
+        self.assertIn("image-only baseline delta", first["wins"])
+        self.assertIn("presentations comeback-rubric alignment", first["wins"])
+
+    def test_request_completion_ledger_ties_full_user_request_to_artifacts(self):
+        module = load_eval_module()
+        report_path = ROOT / "artifacts" / "external-markdown-visual-eval" / "external-markdown-visual-eval-report.json"
+        self.assertTrue(report_path.is_file())
+        summary = json.loads(report_path.read_text(encoding="utf-8"))
+
+        ledger = module.build_request_completion_ledger(summary)
+
+        self.assertTrue(ledger["ok"])
+        self.assertTrue(all(ledger["checks"].values()))
+        self.assertEqual(ledger["compatibilityCoverage"]["unmappedFeatureCount"], 0)
+        self.assertEqual(ledger["compatibilityCoverage"]["mdprRuntimeRequiredCount"], 0)
+        self.assertGreaterEqual(ledger["comparisonDataset"]["sourceCount"], 20)
+        self.assertGreaterEqual(ledger["comparisonDataset"]["iterations"], 5)
+        self.assertGreaterEqual(ledger["comparisonDataset"]["visualQualityCriteriaCount"], 20)
+        self.assertGreaterEqual(ledger["presentationsProbeBattle"]["promptCount"], 20)
+        self.assertGreaterEqual(ledger["codexPptBaselineCount"], 5)
+        for dimension in ["coherence", "visual guidance", "pretty", "readability"]:
+            self.assertIn(dimension, ledger["superiority"]["wonDimensions"])
+        self.assertEqual(ledger["missingEvidenceArtifacts"], [])
 
 
 if __name__ == "__main__":

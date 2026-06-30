@@ -290,7 +290,7 @@ The [Playwright VS Code extension](https://marketplace.visualstudio.com/items?it
 
 |          | Linux | macOS | Windows |
 |   :---   | :---: | :---: | :---:   |
-| Chromium<sup>1</sup> 150.0.7871.24 | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Chromium<sup>1</sup> 150.0.7871.46 | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | WebKit 26.5 | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | Firefox 151.0 | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 

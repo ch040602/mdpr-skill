@@ -1,0 +1,232 @@
+[
+  {
+    "prompt_id": "external-md-01-react",
+    "matrix_row": 1,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "React",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'React' (https://raw.githubusercontent.com/facebook/react/main/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-02-vite",
+    "matrix_row": 2,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "Vite",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Vite' (https://raw.githubusercontent.com/vitejs/vite/main/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-03-vue",
+    "matrix_row": 3,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - GTM Growth Deck",
+    "golden": "Vue",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Vue' (https://raw.githubusercontent.com/vuejs/core/main/README.md). Use profile gtm. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-04-svelte",
+    "matrix_row": 4,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Strategy Leadership Deck",
+    "golden": "Svelte",
+    "grade": "B",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Svelte' (https://raw.githubusercontent.com/sveltejs/svelte/main/README.md). Use profile strategy. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-05-typescript",
+    "matrix_row": 5,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Finance IR Deck",
+    "golden": "TypeScript",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'TypeScript' (https://raw.githubusercontent.com/microsoft/TypeScript/main/README.md). Use profile finance-ir. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-06-node",
+    "matrix_row": 6,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "Node.js",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Node.js' (https://raw.githubusercontent.com/nodejs/node/main/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-07-express",
+    "matrix_row": 7,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "Express",
+    "grade": "B",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Express' (https://raw.githubusercontent.com/expressjs/express/master/Readme.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-08-fastapi",
+    "matrix_row": 8,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "FastAPI",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'FastAPI' (https://raw.githubusercontent.com/fastapi/fastapi/master/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-09-openai-python",
+    "matrix_row": 9,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "OpenAI Python API library",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'OpenAI Python API library' (https://raw.githubusercontent.com/openai/openai-python/main/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-10-langchain",
+    "matrix_row": 10,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "LangChain",
+    "grade": "B",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'LangChain' (https://raw.githubusercontent.com/langchain-ai/langchain/master/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-11-playwright",
+    "matrix_row": 11,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "Playwright",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Playwright' (https://raw.githubusercontent.com/microsoft/playwright/main/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-12-tailwindcss",
+    "matrix_row": 12,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - GTM Growth Deck",
+    "golden": "Tailwind CSS",
+    "grade": "B",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Tailwind CSS' (https://raw.githubusercontent.com/tailwindlabs/tailwindcss/main/README.md). Use profile gtm. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-13-kubernetes",
+    "matrix_row": 13,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "Kubernetes (K8s)",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Kubernetes (K8s)' (https://raw.githubusercontent.com/kubernetes/kubernetes/master/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-14-rust",
+    "matrix_row": 14,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "Rust",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Rust' (https://raw.githubusercontent.com/rust-lang/rust/master/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-15-pytorch",
+    "matrix_row": 15,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "PyTorch",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'PyTorch' (https://raw.githubusercontent.com/pytorch/pytorch/main/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-16-tensorflow",
+    "matrix_row": 16,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "TensorFlow",
+    "grade": "B",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'TensorFlow' (https://raw.githubusercontent.com/tensorflow/tensorflow/master/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-17-pandas",
+    "matrix_row": 17,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "pandas: A Powerful Python Data Analysis Toolkit",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'pandas: A Powerful Python Data Analysis Toolkit' (https://raw.githubusercontent.com/pandas-dev/pandas/main/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-18-numpy",
+    "matrix_row": 18,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "NumPy",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'NumPy' (https://raw.githubusercontent.com/numpy/numpy/main/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-19-huggingface-transformers",
+    "matrix_row": 19,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Engineering Platform Deck",
+    "golden": "Transformers",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Transformers' (https://raw.githubusercontent.com/huggingface/transformers/main/README.md). Use profile engineering. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-20-d3",
+    "matrix_row": 20,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - GTM Growth Deck",
+    "golden": "D3: Data-Driven Documents",
+    "grade": "B",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'D3: Data-Driven Documents' (https://raw.githubusercontent.com/d3/d3/main/README.md). Use profile gtm. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-21-echarts",
+    "matrix_row": 21,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "Apache ECharts",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Apache ECharts' (https://raw.githubusercontent.com/apache/echarts/master/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-22-plotly",
+    "matrix_row": 22,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Product Platform Deck",
+    "golden": "Plotly.py",
+    "grade": "B",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'Plotly.py' (https://raw.githubusercontent.com/plotly/plotly.py/master/README.md). Use profile product-platform. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  },
+  {
+    "prompt_id": "external-md-23-system-design-primer",
+    "matrix_row": 23,
+    "persona": "Codex presentation quality evaluator",
+    "workflow": "Presentation Create - Strategy Leadership Deck",
+    "golden": "The System Design Primer",
+    "grade": "A",
+    "win_loss": "won",
+    "prompt": "Build a five-slide battle probe from the external Markdown source 'The System Design Primer' (https://raw.githubusercontent.com/donnemartin/system-design-primer/master/README.md). Use profile strategy. The deck must turn README content into claim-title slides, one dominant proof object per slide, source-aware footer, visible narrative spine, varied macro-layout rhythm, and no generic card-grid filler. Treat this as a comparison probe against MDPR and codex-ppt image-only outputs; score coherence, visual guidance, polish, readability, proof-object clarity, and reference delta."
+  }
+]

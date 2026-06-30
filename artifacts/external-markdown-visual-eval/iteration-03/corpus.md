@@ -27,7 +27,7 @@ Downloaded Markdown => MDPR Parser => Slide Splitter => Layout Planner => PPTX R
 
 ## Iteration Plan
 
-- Current pass: iteration 3 of 4.
+- Current pass: iteration 3 of 5.
 - All passes use the same MDPR parser, layout planner, PPTX renderer, and visual validation path.
 - The corpus is one combined deck, not a set of hand-tuned per-file decks.
 

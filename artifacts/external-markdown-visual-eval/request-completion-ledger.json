@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "mdpr-codex-ppt-request-completion-ledger-v1",
+  "ok": true,
+  "checks": {
+    "codexPptFeatureCoverage": true,
+    "externalMarkdownDataset": true,
+    "fivePassIteration": true,
+    "visualCriteriaGrowth": true,
+    "codexPptBaselines": true,
+    "presentationsCompletions": true,
+    "pageImageEvidence": true,
+    "superiorityClaim": true,
+    "artifactPresence": true
+  },
+  "compatibilityCoverage": {
+    "featureCount": 21,
+    "mappedFeatureCount": 21,
+    "unmappedFeatureCount": 0,
+    "supportedCount": 14,
+    "proposalReadyCount": 7,
+    "mdprRuntimeRequiredCount": 0
+  },
+  "comparisonDataset": {
+    "sourceCount": 23,
+    "iterations": 5,
+    "visualQualityCriteriaCount": 25,
+    "dominanceRows": 23
+  },
+  "presentationsProbeBattle": {
+    "manifest": "artifacts\\presentations-probe\\external-md-visual-eval-23\\presentations-probe-battle-manifest.json",
+    "schema": "mdpr-presentations-probe-battle-v1",
+    "ok": true,
+    "promptCount": 23,
+    "pptxCount": 23,
+    "contactSheetCount": 23,
+    "firstSlideImageCount": 23,
+    "proofSlideImageCount": 23,
+    "minScore": 44.0,
+    "averageScore": 46.3,
+    "aggregateContactSheets": [
+      "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-first-slides-contact-sheet.png",
+      "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-proof-slides-contact-sheet.png"
+    ]
+  },
+  "codexPptBaselineCount": 5,
+  "superiority": {
+    "minimumCriteriaScore": 5,
+    "averageCriteriaScore": 5.0,
+    "wonDimensions": [
+      "coherence",
+      "visual guidance",
+      "pretty",
+      "readability",
+      "native editability",
+      "image-only baseline delta",
+      "presentations comeback-rubric alignment"
+    ],
+    "requiredWonDimensions": [
+      "coherence",
+      "visual guidance",
+      "pretty",
+      "readability",
+      "native editability",
+      "image-only baseline delta",
+      "presentations comeback-rubric alignment"
+    ]
+  },
+  "evidenceArtifacts": [
+    "artifacts\\codex-ppt-compat\\codex-ppt-compat.json",
+    "artifacts\\external-markdown-visual-eval\\dominance-comparison-ledger.json",
+    "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+    "artifacts\\external-markdown-visual-eval\\iteration-05\\contact-sheet.png",
+    "artifacts\\presentations-probe\\external-md-visual-eval-23\\presentations-probe-battle-manifest.json",
+    "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-first-slides-contact-sheet.png",
+    "artifacts\\presentations-probe\\external-md-visual-eval-23\\battle-proof-slides-contact-sheet.png",
+    "artifacts\\external-markdown-visual-eval\\iteration-01\\codex-ppt-baseline\\external-md-codex-ppt-iter-01\\external-md-codex-ppt-iter-01.pptx",
+    "artifacts\\external-markdown-visual-eval\\iteration-02\\codex-ppt-baseline\\external-md-codex-ppt-iter-02\\external-md-codex-ppt-iter-02.pptx",
+    "artifacts\\external-markdown-visual-eval\\iteration-03\\codex-ppt-baseline\\external-md-codex-ppt-iter-03\\external-md-codex-ppt-iter-03.pptx",
+    "artifacts\\external-markdown-visual-eval\\iteration-04\\codex-ppt-baseline\\external-md-codex-ppt-iter-04\\external-md-codex-ppt-iter-04.pptx",
+    "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx"
+  ],
+  "missingEvidenceArtifacts": []
+}

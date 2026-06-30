@@ -3,7 +3,7 @@
   "engine": "mdpresent",
   "source": {
     "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\external-markdown-visual-eval\\iteration-04\\corpus.md",
-    "sha256": "74388b53840edcdf4c1d3dd99d4eebc0714edc78d5197261cc4f0606a0473e00"
+    "sha256": "f5845f47fafdf27933406d973381fe1d5dd86d774ed79e1a6cc2603c6a282b95"
   },
   "config": {
     "sha256": "140ac0928194755da16c3673175861fb6ec37251cb2fca1477dcd1c5c8adce05",
@@ -47,14 +47,14 @@
       "format": "html",
       "exists": true,
       "bytes": 63502,
-      "sha256": "d0d0b973153b1a4424a34cd4458ef3694527ea1afed62c7db2fac040633a2f5e"
+      "sha256": "306cf850fc8fefee7176b72e849bb97a67c8a8ee80f9b4ed9d2741b8f26f111c"
     },
     {
       "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\external-markdown-visual-eval\\iteration-04\\build\\deck.pptx",
       "format": "pptx",
       "exists": true,
       "bytes": 841346,
-      "sha256": "34147524e2ca878339b3a76d47beef0a63585566d0b2753ddc7d606b0c541e8e"
+      "sha256": "ef38adf3d32714476c29aa4344bb07b3e14801fe75ea8022c0af6b8dd814a2c3"
     }
   ],
   "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\external-markdown-visual-eval\\iteration-04\\build\\mdpresent-design-lock.json",
@@ -1927,7 +1927,7 @@
     "textClipRiskCount": 0,
     "contrastFailures": 0,
     "connectorWarnings": 0,
-    "buildMs": 177,
+    "buildMs": 170,
     "outputBytes": {
       "html": 63502,
       "pptx": 841346

@@ -12,13 +12,30 @@ PowerPoint-rendered slides.
   source file.
 - The pipeline slide is ordinary Markdown arrow syntax and is rendered through
   MDPR's normal parser, layout planner, PPTX renderer, and PNG export path.
+- Each iteration also creates a `codex-ppt-skill` image-only baseline by copying
+  the rendered page PNGs into `origin_image/slide_XX.png` and assembling them
+  with `codex-ppt`'s `assemble_ppt.py`. This tests the codex-ppt output model
+  without pretending that an image backend generated those pages.
 
 ## Generated Artifacts
 
 - Summary report: `artifacts/external-markdown-visual-eval/external-markdown-visual-eval-report.json`
-- Final PPTX: `artifacts/external-markdown-visual-eval/iteration-04/build/deck.pptx`
-- Final rendered PNGs: `artifacts/external-markdown-visual-eval/iteration-04/png/`
-- Final all-slide contact sheet: `artifacts/external-markdown-visual-eval/iteration-04/contact-sheet.png`
+- Request completion ledger:
+  `artifacts/external-markdown-visual-eval/request-completion-ledger.json`
+- Dominance comparison ledger:
+  `artifacts/external-markdown-visual-eval/dominance-comparison-ledger.json`
+- Final MDPR editable PPTX: `artifacts/external-markdown-visual-eval/iteration-05/build/deck.pptx`
+- Final codex-ppt image-only PPTX baseline: `artifacts/external-markdown-visual-eval/iteration-05/codex-ppt-baseline/external-md-codex-ppt-iter-05/external-md-codex-ppt-iter-05.pptx`
+- `Presentations` probe PPTX/contact sheets:
+  `artifacts/presentations-probe/external-md-visual-eval/` contains five
+  five-slide probe decks across engineering, product, GTM, strategy, and
+  finance profiles.
+- `Presentations` 23-prompt battle outputs:
+  `artifacts/presentations-probe/external-md-visual-eval-23/` contains 23
+  editable artifact-tool PPTX probes, 23 per-probe contact sheets, 46 retained
+  first/proof slide PNG evidence images, and two aggregate contact sheets.
+- Final rendered PNGs: `artifacts/external-markdown-visual-eval/iteration-05/png/`
+- Final all-slide contact sheet: `artifacts/external-markdown-visual-eval/iteration-05/contact-sheet.png`
 
 ## Iteration Result
 
@@ -28,9 +45,41 @@ PowerPoint-rendered slides.
 | 2 | Bounded bullet extraction applied | 51 | Pass |
 | 3 | Corpus evidence chart added | 28 | Pass |
 | 4 | Rule-based composition diversification and local pipeline Markdown | 38 | Pass |
+| 5 | Same diversified rule path plus codex-ppt image-only assembly baseline | 41 | Pass |
 
-The final report records 23 sources, 4 iterations, 4 generated PPTX decks, 4
-PowerPoint PNG export sets, and all-slide contact sheets for VLM review.
+The final report records 23 sources, 5 iterations, 5 generated MDPR PPTX decks,
+5 codex-ppt image-only PPTX baselines, 5 PowerPoint PNG export sets, and
+all-slide contact sheets for VLM review.
+
+The request completion ledger joins the scattered evidence into one release
+gate. It checks codex-ppt compatibility coverage, 20+ Markdown comparison data,
+five-pass iteration, 20+ visual criteria, codex-ppt baselines, 20+ Presentations
+probe completions, page-image evidence, superiority dimensions, and final
+artifact presence.
+
+The dominance ledger adds one comparison row per source document. Each row
+links a final MDPR page PNG, the final MDPR PPTX, the codex-ppt image-only
+baseline PPTX, and the `Presentations` comeback-rubric reference. The current
+ledger records 23 comparisons, 25 criteria, minimum final criteria score `5`,
+and wins on coherence, visual guidance, polish, readability, native editability,
+image-only baseline delta, and `Presentations` rubric alignment.
+
+## Comparison Criteria
+
+The visual battle now records 25 scoring dimensions, including coherence,
+visual guidance, pretty, readability, claim-title strength, proof-object
+strength, thumbnail rhythm, macro-layout diversity, contrast, whitespace,
+native editability, image-only baseline delta, and alignment with the
+`Presentations` comeback rubric.
+
+The `Presentations` skill is recorded as both a rubric reference and generated
+probes. The first direct run exposed an environment issue: when `HOME` was not
+set for Node, the harness searched the repo-local `.cache` path and could not
+find `@oai/artifact-tool`. Running with `HOME=C:\Users\hcslab_523` and
+`PYTHON=python` produced the 23-prompt artifact-tool battle. The manifest
+`artifacts/presentations-probe/external-md-visual-eval-23/presentations-probe-battle-manifest.json`
+records 23 prompts, 23 PPTX files, 23 per-probe contact sheets, 23 first-slide
+PNGs, 23 proof-slide PNGs, minimum score `44`, and average score `46.3`.
 
 ## Composition Gate
 
@@ -39,7 +88,7 @@ composition in addition to overflow, font size, nonblank rendering, and contrast
 The gate fails decks with excessive repeated card-heavy layout sequences, weak
 title/body scale hierarchy, or too few layout families on larger decks.
 
-Observed improvement in the final iteration:
+Observed improvement in the diversified final iterations:
 
 - Card-heavy layout ratio changed from `0.778` in the previous final deck to
   `0.235`.

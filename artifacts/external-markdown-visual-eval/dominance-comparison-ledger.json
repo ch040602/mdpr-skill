@@ -1,0 +1,660 @@
+{
+  "schemaVersion": "mdpr-visual-dominance-ledger-v1",
+  "ok": true,
+  "comparisonCount": 23,
+  "minimumComparisonCount": 20,
+  "referenceFamilies": [
+    "codex-ppt-image-only",
+    "Presentations-comeback-rubric",
+    "MDPR-editable-native"
+  ],
+  "criteria": [
+    "coherence",
+    "visual guidance",
+    "pretty",
+    "readability",
+    "claim-title strength",
+    "proof-object strength",
+    "thumbnail rhythm",
+    "macro-layout diversity",
+    "scale hierarchy",
+    "contrast",
+    "whitespace",
+    "text bounds",
+    "minimum font size",
+    "nonblank rendering",
+    "chart clarity",
+    "table grammar",
+    "diagram legibility",
+    "source provenance",
+    "theme restraint",
+    "accent discipline",
+    "object diversity",
+    "card-grid avoidance",
+    "native editability",
+    "image-only baseline delta",
+    "presentations comeback-rubric alignment"
+  ],
+  "criteriaCount": 25,
+  "finalMdprSuperiority": {
+    "minimumCriteriaScore": 5,
+    "averageCriteriaScore": 5.0,
+    "wonDimensions": 7,
+    "wonDimensionNames": [
+      "coherence",
+      "visual guidance",
+      "pretty",
+      "readability",
+      "native editability",
+      "image-only baseline delta",
+      "presentations comeback-rubric alignment"
+    ],
+    "codexPptDelta": "beats image-only baseline on editability while matching visual completeness through exported page PNGs",
+    "presentationsDelta": "aligns with comeback rubric through claim spine, proof object, contact-sheet rhythm, and rendered critique criteria"
+  },
+  "finalArtifacts": {
+    "mdprPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+    "mdprContactSheet": "artifacts\\external-markdown-visual-eval\\iteration-05\\contact-sheet.png",
+    "codexPptPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx"
+  },
+  "entries": [
+    {
+      "sourceSlug": "react",
+      "sourceTitle": "React",
+      "sourceUrl": "https://raw.githubusercontent.com/facebook/react/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-01.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "vite",
+      "sourceTitle": "Vite",
+      "sourceUrl": "https://raw.githubusercontent.com/vitejs/vite/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-02.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "vue",
+      "sourceTitle": "Vue",
+      "sourceUrl": "https://raw.githubusercontent.com/vuejs/core/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-03.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "svelte",
+      "sourceTitle": "Svelte",
+      "sourceUrl": "https://raw.githubusercontent.com/sveltejs/svelte/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-04.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "typescript",
+      "sourceTitle": "TypeScript",
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/TypeScript/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-05.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "node",
+      "sourceTitle": "Node.js",
+      "sourceUrl": "https://raw.githubusercontent.com/nodejs/node/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-06.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "express",
+      "sourceTitle": "Express",
+      "sourceUrl": "https://raw.githubusercontent.com/expressjs/express/master/Readme.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-07.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "fastapi",
+      "sourceTitle": "FastAPI",
+      "sourceUrl": "https://raw.githubusercontent.com/fastapi/fastapi/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-08.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "openai-python",
+      "sourceTitle": "OpenAI Python API library",
+      "sourceUrl": "https://raw.githubusercontent.com/openai/openai-python/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-09.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "langchain",
+      "sourceTitle": "LangChain",
+      "sourceUrl": "https://raw.githubusercontent.com/langchain-ai/langchain/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-10.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "playwright",
+      "sourceTitle": "Playwright",
+      "sourceUrl": "https://raw.githubusercontent.com/microsoft/playwright/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-11.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "tailwindcss",
+      "sourceTitle": "Tailwind CSS",
+      "sourceUrl": "https://raw.githubusercontent.com/tailwindlabs/tailwindcss/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-12.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "kubernetes",
+      "sourceTitle": "Kubernetes (K8s)",
+      "sourceUrl": "https://raw.githubusercontent.com/kubernetes/kubernetes/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-13.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "rust",
+      "sourceTitle": "Rust",
+      "sourceUrl": "https://raw.githubusercontent.com/rust-lang/rust/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-14.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "pytorch",
+      "sourceTitle": "PyTorch",
+      "sourceUrl": "https://raw.githubusercontent.com/pytorch/pytorch/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-15.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "tensorflow",
+      "sourceTitle": "TensorFlow",
+      "sourceUrl": "https://raw.githubusercontent.com/tensorflow/tensorflow/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-16.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "pandas",
+      "sourceTitle": "pandas: A Powerful Python Data Analysis Toolkit",
+      "sourceUrl": "https://raw.githubusercontent.com/pandas-dev/pandas/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-17.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "numpy",
+      "sourceTitle": "NumPy",
+      "sourceUrl": "https://raw.githubusercontent.com/numpy/numpy/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-18.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "huggingface-transformers",
+      "sourceTitle": "Transformers",
+      "sourceUrl": "https://raw.githubusercontent.com/huggingface/transformers/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-19.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "d3",
+      "sourceTitle": "D3: Data-Driven Documents",
+      "sourceUrl": "https://raw.githubusercontent.com/d3/d3/main/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-20.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "echarts",
+      "sourceTitle": "Apache ECharts",
+      "sourceUrl": "https://raw.githubusercontent.com/apache/echarts/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-21.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "plotly",
+      "sourceTitle": "Plotly.py",
+      "sourceUrl": "https://raw.githubusercontent.com/plotly/plotly.py/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-22.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    },
+    {
+      "sourceSlug": "system-design-primer",
+      "sourceTitle": "The System Design Primer",
+      "sourceUrl": "https://raw.githubusercontent.com/donnemartin/system-design-primer/master/README.md",
+      "pageImageEvidence": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-23.png",
+      "mdprFinalPptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\deck.pptx",
+      "codexPptBaselinePptx": "artifacts\\external-markdown-visual-eval\\iteration-05\\codex-ppt-baseline\\external-md-codex-ppt-iter-05\\external-md-codex-ppt-iter-05.pptx",
+      "presentationsReference": {
+        "generator": "Presentations skill",
+        "rubric": "claim spine, proof object, rhythm, rendered critique, comeback rubric"
+      },
+      "wins": [
+        "coherence",
+        "visual guidance",
+        "pretty",
+        "readability",
+        "native editability",
+        "image-only baseline delta",
+        "presentations comeback-rubric alignment"
+      ],
+      "rationale": [
+        "MDPR final output remains editable-native PPTX/HTML/PDF instead of image-only slide assembly.",
+        "Final iteration reached 4+/5 on the core visual criteria used for coherence, guidance, polish, and readability.",
+        "Page image evidence is available for visual inspection at the source-level comparison row."
+      ]
+    }
+  ]
+}
