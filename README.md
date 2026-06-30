@@ -3,9 +3,11 @@
 `mdpr-skill` is a thin Codex skill companion for
 [MDPR](https://github.com/ch040602/MdPr).
 
-Use this repository when you want LLM-advised presentation review around MDPR:
-compact semantic hints, icon-keyword ideas, visual-review loops, and review
-artifacts. MDPR remains the deterministic presentation runtime.
+Turn rough Markdown decks into reviewable, visually scored presentation systems
+without letting an agent own the final slide geometry. `mdpr-skill` adds
+semantic hints, visual-review loops, codex-ppt compatibility rails, and
+comparison ledgers around MDPR. MDPR remains the deterministic presentation
+runtime.
 
 For LLM-advised high-quality output, run the skill before MDPR finalizes the
 deck. For normal Markdown-to-PPTX generation, use MDPR directly.
@@ -25,7 +27,29 @@ the main MDPR repository:
 - Preview gallery: https://ch040602.github.io/MdPr/theme-preview/
 - New issue: https://github.com/ch040602/MdPr/issues/new/choose
 
-![MDPR theme style proof contact sheet](https://raw.githubusercontent.com/ch040602/mdpr-skill/main/docs/assets/theme-style-proof-contact-sheet.png)
+![Codex presentations, MDPR, and mdpr-skill plus MDPR visual comparison](docs/assets/mdpr-mode-comparison.png)
+
+## Visual Proof
+
+The latest review run converts 23 unrelated public Markdown sources into a
+five-pass MDPR deck battle, exports every page to PNG, assembles codex-ppt
+image-only baselines, and runs a 23-prompt `Presentations` probe set. The
+completion ledger reports all checks passing: 21/21 codex-ppt feature families
+mapped, 23 comparison rows, 25 visual criteria, 23 `Presentations` probes, five
+codex-ppt baselines, and no missing evidence artifacts.
+
+![External Markdown visual evaluation contact sheet](docs/assets/external-md-visual-eval-contact-sheet.png)
+
+Key proof artifacts:
+
+- Request completion ledger:
+  `artifacts/external-markdown-visual-eval/request-completion-ledger.json`
+- Final editable MDPR deck:
+  `artifacts/external-markdown-visual-eval/iteration-05/build/deck.pptx`
+- Final codex-ppt image-only baseline:
+  `artifacts/external-markdown-visual-eval/iteration-05/codex-ppt-baseline/external-md-codex-ppt-iter-05/external-md-codex-ppt-iter-05.pptx`
+- `Presentations` probe battle:
+  `artifacts/presentations-probe/external-md-visual-eval-23/`
 
 ## Difference from MDPR
 
@@ -54,7 +78,7 @@ assets, and PPTX rendering. See
 and the generated artifacts under
 `artifacts/icon-image-fallback-comparison/`.
 
-![Codex $presentations, MDPR, and mdpr-skill + MDPR comparison](docs/assets/mdpr-mode-comparison.png)
+![MDPR theme style proof contact sheet](docs/assets/theme-style-proof-contact-sheet.png)
 
 ## Repository Structure
 
@@ -159,6 +183,10 @@ node bin/mdpr-skill.js citations --markdown deck.md --sources sources.json --as-
 node bin/mdpr-skill.js rendered-preview --images rendered-images.json --out .mdpresent/review/rendered-preview-review.json
 node bin/mdpr-skill.js accessibility --markdown deck.md --audience "executive review" --out .mdpresent/review/accessibility-review.json
 node bin/mdpr-skill.js evidence-ledger --markdown deck.md --sources sources.json --mdpr-evidence mdpr-evidence.json --out .mdpresent/review/evidence-ledger.json
+node bin/mdpr-skill.js codex-ppt compat --source-ref ningzimu/codex-ppt-skill@93c1e013965a3b42f272252030b2e1a5abede710 --out artifacts/codex-ppt-compat/codex-ppt-compat.json
+node bin/mdpr-skill.js codex-ppt slide-tasks --manifest artifacts/external-markdown-visual-eval/iteration-05/build/mdpresent-manifest.json --markdown artifacts/external-markdown-visual-eval/iteration-05/corpus.md --rendered-images artifacts/codex-ppt-slide-tasks/iteration-05/rendered-images.json --out artifacts/codex-ppt-slide-tasks/iteration-05/tasks
+node bin/mdpr-skill.js codex-ppt job-state init --tasks artifacts/codex-ppt-slide-tasks/iteration-05/tasks/slide-task-packets.json --manifest artifacts/external-markdown-visual-eval/iteration-05/build/mdpresent-manifest.json --out artifacts/codex-ppt-slide-tasks/iteration-05/mdpr-job-state.json
+node bin/mdpr-skill.js codex-ppt generated-assets validate --manifest artifacts/codex-ppt-generated-assets/sample.generated-assets.json
 node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path .cache/mdpr
 ```
 
@@ -187,12 +215,49 @@ and review the generated artifacts, but should not own the final slide layout:
 - compact semantic tags for ambiguous Markdown
 - icon-search keyword ideas
 - safe edit-intent proposals for page, emphasis, layout-family, and decoration-family changes
-- approval-bound DESIGN.md theme candidates for MDPR theme/pack workflows
+- approval-bound DESIGN.md theme candidates for MDPR theme/profile/rulebook workflows
 - local HTML design analysis with CSS-to-PPT feasibility notes
 - coherence and visual policy findings with evidence paths
 - design rail review findings for unsupported PPT effects, raster risks, component drift, and diagram budgets
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
+
+Create a reusable theme and layout proposal from a local `DESIGN.md`:
+
+```bash
+mdpr-skill design import references/editorial-data-review.DESIGN.md \
+  --out .mdpresent/proposals/editorial-data-review.theme-candidate.json
+```
+
+The candidate may include color, typography, spacing, shape tokens, semantic
+layout blueprints, decoration families, and registration targets such as
+`mdpr-theme-pack`, `mdpr-profile`, `mdpr-rulebook`, or
+`deck-local-style-pack`. This is the MDPR-compatible version of a reusable
+style library: `mdpr-skill` captures the visual system and intent, while MDPR
+still validates and applies the final theme pack, profile, rulebook, layout,
+and PPTX objects.
+
+Useful `DESIGN.md` sections:
+
+```markdown
+## Best For
+
+- Executive product reviews.
+
+## Layout Blueprints
+
+- Proof rail: one claim rail with evidence cells; regions: claim, evidence, metric
+
+## Decoration Grammar
+
+- Use numbered rails and thin rule lines.
+
+## Registration Targets
+
+- mdpr-theme-pack
+- mdpr-profile
+- mdpr-rulebook
+```
 
 Create an approval-bound split override candidate from an edit intent:
 
@@ -262,11 +327,30 @@ Forbidden skill outputs:
 - exact icon asset choices
 
 Theme candidates are a separate approved rail. They may contain color,
-typography, spacing, and shape tokens with provenance, but they are not
+typography, spacing, shape tokens, semantic layout blueprints, decoration
+families, and MDPR registration targets with provenance, but they are not
 `agent-hint.json` files and must pass approval/gates before MDPR runtime use.
 HTML design analysis is also proposal-only: it records motifs, token candidates,
 and PPT editability risks, then review-core turns those risks into MDPR policy
 suggestions rather than final coordinates or exact object choices.
+
+The `codex-ppt compat` command maps public `codex-ppt-skill` capabilities into
+MDPR-native rails. It is useful when checking whether image-based deck features
+such as staged approvals, reusable style references, sample approval, required
+asset insertion, subagent slide work, QA repair, and speaker notes have a
+defined editable-MDPR implementation path. See
+[Codex PPT compatibility map](docs/codex-ppt-compatibility.md).
+The `codex-ppt slide-tasks` command implements the per-slide job-packet rail:
+it derives one bounded task JSON file per MDPR slide while excluding renderer
+internals such as geometry, object ids, z-order, exact colors, and final layout
+decisions.
+The `codex-ppt job-state` command initializes, updates, summarizes, and
+validates `mdpr-job-state-v1` files for long-running slide review or repair
+work. Accepted and recorded states require artifact/report evidence, so a chat
+message alone cannot mark a slide complete.
+The `codex-ppt generated-assets` validator records provider/model/prompt-hash,
+size, quality, background, transparency, and provenance metadata for generated
+visual assets while rejecting secrets and full-slide renderer requests.
 
 ## PowerPoint Bridge Boundary
 
@@ -302,6 +386,15 @@ Run the external Markdown visual evaluation loop:
 npm run eval:external-md
 ```
 
+This loop collects 20+ Markdown sources, runs five MDPR build/render/review
+iterations, exports every page to PNG, creates a `codex-ppt-skill` image-only
+PPTX baseline through `assemble_ppt.py`, and scores the run against 25 visual
+criteria including coherence, visual guidance, polish, readability, native
+editability, and `Presentations` comeback-rubric alignment.
+It also writes a source-level dominance ledger with 20+ comparison rows linking
+final page PNG evidence, the MDPR editable deck, the codex-ppt image-only
+baseline, and the `Presentations` rubric reference.
+
 Generated review artifacts include:
 
 - `artifacts/release-check/mdpr-skill-release-check.md`
@@ -316,8 +409,16 @@ Generated review artifacts include:
 - `docs/assets/pipeline-overview.pptx`
 - `docs/assets/pipeline-overview.png`
 - `artifacts/external-markdown-visual-eval/external-markdown-visual-eval-report.json`
-- `artifacts/external-markdown-visual-eval/iteration-04/build/deck.pptx`
-- `artifacts/external-markdown-visual-eval/iteration-04/contact-sheet.png`
+- `artifacts/external-markdown-visual-eval/request-completion-ledger.json`
+- `artifacts/external-markdown-visual-eval/dominance-comparison-ledger.json`
+- `artifacts/external-markdown-visual-eval/iteration-05/build/deck.pptx`
+- `artifacts/external-markdown-visual-eval/iteration-05/codex-ppt-baseline/external-md-codex-ppt-iter-05/external-md-codex-ppt-iter-05.pptx`
+- `artifacts/external-markdown-visual-eval/iteration-05/contact-sheet.png`
+- `artifacts/presentations-probe/external-md-visual-eval/*.pptx`
+- `artifacts/presentations-probe/external-md-visual-eval/*-contact-sheet.png`
+- `artifacts/presentations-probe/external-md-visual-eval-23/presentations-probe-battle-manifest.json`
+- `artifacts/presentations-probe/external-md-visual-eval-23/**/*.pptx`
+- `artifacts/presentations-probe/external-md-visual-eval-23/**/*.png`
 - `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
 - `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
 - `artifacts/icon-image-fallback-comparison/mdpr-build/deck.pptx`
@@ -341,6 +442,7 @@ reference corpus.
 - [Structural pattern taxonomy](docs/structural-pattern-taxonomy.md)
 - [Actions page materials](docs/actions-page-materials.md)
 - [Generator comparison boundary](docs/generator-comparison.md)
+- [Codex PPT compatibility map](docs/codex-ppt-compatibility.md)
 
 MDPR runtime documentation lives in the MDPR repository:
 
