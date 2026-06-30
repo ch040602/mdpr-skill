@@ -54,13 +54,16 @@ assets, and PPTX rendering. See
 and the generated artifacts under
 `artifacts/icon-image-fallback-comparison/`.
 
-![Plain Codex advice, MDPR, and mdpr-skill plus MDPR workflow comparison](docs/assets/mdpr-mode-comparison.png)
+![Codex presentations, MDPR, and mdpr-skill plus MDPR rendered output comparison](docs/assets/mdpr-mode-comparison.png)
+
+The comparison image uses enlarged crops from real rendered slides so the
+readability delta remains visible inside the README.
 
 | Workflow | What it is best at | Practical limit | Why `mdpr-skill + MDPR` is stronger |
 | --- | --- | --- | --- |
-| Plain Codex advice | Fast narrative and design suggestions | Advice is prose; it has no schema-valid MDPR handoff, source hash guard, or deterministic replay path | Useful ideas become safer only after they are converted into bounded, reviewable artifacts |
-| MDPR | Deterministic Markdown-to-PPTX generation, editable PPTX, parser/layout/render ownership | It intentionally avoids LLM judgment and does not infer ambiguous visual intent | It remains the final runtime, so skill assistance does not weaken reproducibility |
-| `mdpr-skill + MDPR` | Semantic hints, review notes, stale-source checks, and generated-image candidates for large or ambiguous icon slots | It must not choose coordinates, exact assets, colors, z-order, or renderer object IDs | Adds quality guidance while preserving MDPR as the deterministic renderer and validation boundary |
+| Codex `$presentations` | High-polish artifact-tool PPTX composition with strong editorial hierarchy | It is a standalone presentation authoring path, not the deterministic MDPR runtime | It sets a visible quality bar for coherence and readability |
+| MDPR | Deterministic Markdown-to-PPTX generation, editable PPTX, parser/layout/render ownership | Dense semantic ideas can still render as a correct but paragraph-heavy slide | It remains the final runtime, so skill assistance does not weaken reproducibility |
+| `mdpr-skill + MDPR` | Semantic hints, review notes, stale-source checks, and generated-image candidates for large or ambiguous icon slots | It must not choose coordinates, exact assets, colors, z-order, or renderer object IDs | Adds grouping, ownership, and scan-order guidance while preserving MDPR as the deterministic renderer and validation boundary |
 
 ## Repository Structure
 
