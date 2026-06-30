@@ -14,6 +14,19 @@ Validation performed:
 - Confirms slide shape order in `ppt/slides/slide1.xml`.
 - Confirms the expected topmost object at overlapping points through PNG pixel samples.
 - Parses `slide1.xml` back out of the generated PPTX and renders the visual proof from parsed geometry and colors.
+- For long-running codex-ppt-compatible review loops, validates
+  `mdpr-job-state-v1` with `mdpr-skill codex-ppt job-state validate --state`
+  or MDPR's mirrored `mdpresent job-state validate <state.json|build-dir>
+  --json` command before treating recorded slide work as complete.
+
+Job-state validation requires:
+
+- statuses are one of `pending`, `dispatched`, `recorded`, `blocked`, or
+  `accepted`;
+- `recorded` and `accepted` tasks include artifact/report evidence;
+- `blocked` tasks include a blocker reason;
+- the boundary keeps renderer internals and chat-only completion out of the
+  state artifact.
 
 Environment note:
 

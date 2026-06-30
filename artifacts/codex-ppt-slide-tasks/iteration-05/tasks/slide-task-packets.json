@@ -1,0 +1,536 @@
+{
+  "schemaVersion": "mdpr-slide-task-packet-set-v1",
+  "generatedBy": "mdpr-skill",
+  "source": {
+    "manifestPath": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\mdpresent-manifest.json",
+    "markdownPath": "artifacts\\external-markdown-visual-eval\\iteration-05\\corpus.md",
+    "renderedImagesPath": "artifacts\\codex-ppt-slide-tasks\\iteration-05\\rendered-images.json"
+  },
+  "packetCount": 41,
+  "packets": [
+    {
+      "slideNumber": 1,
+      "slideId": "external-markdown-visual-evaluation-93e81d",
+      "path": "slide_01.task.json",
+      "roles": [
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 2,
+      "slideId": "1-3-f84387",
+      "path": "slide_02.task.json",
+      "roles": [
+        "item",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 3,
+      "slideId": "2-3-29a5f5",
+      "path": "slide_03.task.json",
+      "roles": [
+        "item",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 4,
+      "slideId": "3-3-cf407f",
+      "path": "slide_04.task.json",
+      "roles": [
+        "item",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 5,
+      "slideId": "runtime-boundary-926c24",
+      "path": "slide_05.task.json",
+      "roles": [
+        "item",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 6,
+      "slideId": "unified-pipeline-c90f83",
+      "path": "slide_06.task.json",
+      "roles": [
+        "diagram",
+        "title"
+      ],
+      "objectKinds": [
+        "native-diagram",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 7,
+      "slideId": "teaser-rubric-6df303",
+      "path": "slide_07.task.json",
+      "roles": [
+        "table",
+        "title"
+      ],
+      "objectKinds": [
+        "native-table",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 8,
+      "slideId": "iteration-plan-6b2cac",
+      "path": "slide_08.task.json",
+      "roles": [
+        "item",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 9,
+      "slideId": "feedback-applied-bf2aec",
+      "path": "slide_09.task.json",
+      "roles": [
+        "item",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 10,
+      "slideId": "evidence-mix-73439a",
+      "path": "slide_10.task.json",
+      "roles": [
+        "body",
+        "chart",
+        "title"
+      ],
+      "objectKinds": [
+        "native-chart",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 11,
+      "slideId": "project-pipeline-source-16042d",
+      "path": "slide_11.task.json",
+      "roles": [
+        "diagram",
+        "title"
+      ],
+      "objectKinds": [
+        "native-diagram",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 12,
+      "slideId": "1-2-44f8e0",
+      "path": "slide_12.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 13,
+      "slideId": "2-2-f62f73",
+      "path": "slide_13.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 14,
+      "slideId": "01-react-a0c594",
+      "path": "slide_14.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 15,
+      "slideId": "02-vite-05c8f4",
+      "path": "slide_15.task.json",
+      "roles": [
+        "body",
+        "chart",
+        "title"
+      ],
+      "objectKinds": [
+        "native-chart",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 16,
+      "slideId": "03-vue-e84c83",
+      "path": "slide_16.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 17,
+      "slideId": "04-svelte-c9b5bb",
+      "path": "slide_17.task.json",
+      "roles": [
+        "diagram",
+        "title"
+      ],
+      "objectKinds": [
+        "native-diagram",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 18,
+      "slideId": "05-typescript-9966fc",
+      "path": "slide_18.task.json",
+      "roles": [
+        "table",
+        "title"
+      ],
+      "objectKinds": [
+        "native-table",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 19,
+      "slideId": "1-3-74bc53",
+      "path": "slide_19.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 20,
+      "slideId": "2-3-5bd9a1",
+      "path": "slide_20.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 21,
+      "slideId": "3-3-2890c7",
+      "path": "slide_21.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 22,
+      "slideId": "07-express-ac9c5f",
+      "path": "slide_22.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 23,
+      "slideId": "08-fastapi-57d33a",
+      "path": "slide_23.task.json",
+      "roles": [
+        "body",
+        "chart",
+        "title"
+      ],
+      "objectKinds": [
+        "native-chart",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 24,
+      "slideId": "09-openai-python-api-library-31884d",
+      "path": "slide_24.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 25,
+      "slideId": "10-langchain-0b84d0",
+      "path": "slide_25.task.json",
+      "roles": [
+        "diagram",
+        "title"
+      ],
+      "objectKinds": [
+        "native-diagram",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 26,
+      "slideId": "11-playwright-1b89b9",
+      "path": "slide_26.task.json",
+      "roles": [
+        "table",
+        "title"
+      ],
+      "objectKinds": [
+        "native-table",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 27,
+      "slideId": "1-2-c29a1a",
+      "path": "slide_27.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 28,
+      "slideId": "2-2-2a92df",
+      "path": "slide_28.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 29,
+      "slideId": "13-kubernetes-k8s-93b4cb",
+      "path": "slide_29.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 30,
+      "slideId": "14-rust-6ee7ef",
+      "path": "slide_30.task.json",
+      "roles": [
+        "body",
+        "chart",
+        "title"
+      ],
+      "objectKinds": [
+        "native-chart",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 31,
+      "slideId": "15-pytorch-a1d0b9",
+      "path": "slide_31.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 32,
+      "slideId": "16-tensorflow-defe30",
+      "path": "slide_32.task.json",
+      "roles": [
+        "diagram",
+        "title"
+      ],
+      "objectKinds": [
+        "native-diagram",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 33,
+      "slideId": "17-pandas-a-powerful-python-data-analysis-toolki-240d76",
+      "path": "slide_33.task.json",
+      "roles": [
+        "table",
+        "title"
+      ],
+      "objectKinds": [
+        "native-table",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 34,
+      "slideId": "1-3-c2aaa0",
+      "path": "slide_34.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 35,
+      "slideId": "2-3-b4e971",
+      "path": "slide_35.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 36,
+      "slideId": "3-3-524046",
+      "path": "slide_36.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 37,
+      "slideId": "19-transformers-d71336",
+      "path": "slide_37.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 38,
+      "slideId": "20-d3-data-driven-documents-2860cc",
+      "path": "slide_38.task.json",
+      "roles": [
+        "body",
+        "chart",
+        "title"
+      ],
+      "objectKinds": [
+        "native-chart",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 39,
+      "slideId": "21-apache-echarts-0b6936",
+      "path": "slide_39.task.json",
+      "roles": [
+        "body",
+        "title"
+      ],
+      "objectKinds": [
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 40,
+      "slideId": "22-plotly-py-adbd2e",
+      "path": "slide_40.task.json",
+      "roles": [
+        "diagram",
+        "title"
+      ],
+      "objectKinds": [
+        "native-diagram",
+        "native-text"
+      ]
+    },
+    {
+      "slideNumber": 41,
+      "slideId": "23-the-system-design-primer-8b55bb",
+      "path": "slide_41.task.json",
+      "roles": [
+        "table",
+        "title"
+      ],
+      "objectKinds": [
+        "native-table",
+        "native-text"
+      ]
+    }
+  ],
+  "boundary": {
+    "mdprOwnsFinalLayout": true,
+    "mdprOwnsFinalThemeBinding": true,
+    "noRendererInternals": true,
+    "forbiddenFieldCategories": [
+      "geometry",
+      "renderer-object-identity",
+      "z-order",
+      "exact-color",
+      "recipe-selection"
+    ]
+  }
+}

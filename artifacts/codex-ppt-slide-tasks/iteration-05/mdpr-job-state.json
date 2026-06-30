@@ -1,0 +1,316 @@
+{
+  "schemaVersion": "mdpr-job-state-v1",
+  "generatedBy": "mdpr-skill",
+  "source": {
+    "taskPacketSetPath": "artifacts\\codex-ppt-slide-tasks\\iteration-05\\tasks\\slide-task-packets.json",
+    "manifestPath": "artifacts\\external-markdown-visual-eval\\iteration-05\\build\\mdpresent-manifest.json"
+  },
+  "completionEvidencePolicy": "artifact-path-or-report-id-required",
+  "tasks": [
+    {
+      "slideNumber": 1,
+      "slideId": "external-markdown-visual-evaluation-93e81d",
+      "packetPath": "slide_01.task.json",
+      "status": "accepted",
+      "updatedAt": "2026-06-30T12:46:18.781Z",
+      "workerId": "mdpr-skill-visual-eval",
+      "evidencePath": "artifacts/external-markdown-visual-eval/iteration-05/visual-evaluation.json"
+    },
+    {
+      "slideNumber": 2,
+      "slideId": "1-3-f84387",
+      "packetPath": "slide_02.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 3,
+      "slideId": "2-3-29a5f5",
+      "packetPath": "slide_03.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 4,
+      "slideId": "3-3-cf407f",
+      "packetPath": "slide_04.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 5,
+      "slideId": "runtime-boundary-926c24",
+      "packetPath": "slide_05.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 6,
+      "slideId": "unified-pipeline-c90f83",
+      "packetPath": "slide_06.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 7,
+      "slideId": "teaser-rubric-6df303",
+      "packetPath": "slide_07.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 8,
+      "slideId": "iteration-plan-6b2cac",
+      "packetPath": "slide_08.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 9,
+      "slideId": "feedback-applied-bf2aec",
+      "packetPath": "slide_09.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 10,
+      "slideId": "evidence-mix-73439a",
+      "packetPath": "slide_10.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 11,
+      "slideId": "project-pipeline-source-16042d",
+      "packetPath": "slide_11.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 12,
+      "slideId": "1-2-44f8e0",
+      "packetPath": "slide_12.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 13,
+      "slideId": "2-2-f62f73",
+      "packetPath": "slide_13.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 14,
+      "slideId": "01-react-a0c594",
+      "packetPath": "slide_14.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 15,
+      "slideId": "02-vite-05c8f4",
+      "packetPath": "slide_15.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 16,
+      "slideId": "03-vue-e84c83",
+      "packetPath": "slide_16.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 17,
+      "slideId": "04-svelte-c9b5bb",
+      "packetPath": "slide_17.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 18,
+      "slideId": "05-typescript-9966fc",
+      "packetPath": "slide_18.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 19,
+      "slideId": "1-3-74bc53",
+      "packetPath": "slide_19.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 20,
+      "slideId": "2-3-5bd9a1",
+      "packetPath": "slide_20.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 21,
+      "slideId": "3-3-2890c7",
+      "packetPath": "slide_21.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 22,
+      "slideId": "07-express-ac9c5f",
+      "packetPath": "slide_22.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 23,
+      "slideId": "08-fastapi-57d33a",
+      "packetPath": "slide_23.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 24,
+      "slideId": "09-openai-python-api-library-31884d",
+      "packetPath": "slide_24.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 25,
+      "slideId": "10-langchain-0b84d0",
+      "packetPath": "slide_25.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 26,
+      "slideId": "11-playwright-1b89b9",
+      "packetPath": "slide_26.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 27,
+      "slideId": "1-2-c29a1a",
+      "packetPath": "slide_27.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 28,
+      "slideId": "2-2-2a92df",
+      "packetPath": "slide_28.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 29,
+      "slideId": "13-kubernetes-k8s-93b4cb",
+      "packetPath": "slide_29.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 30,
+      "slideId": "14-rust-6ee7ef",
+      "packetPath": "slide_30.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 31,
+      "slideId": "15-pytorch-a1d0b9",
+      "packetPath": "slide_31.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 32,
+      "slideId": "16-tensorflow-defe30",
+      "packetPath": "slide_32.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 33,
+      "slideId": "17-pandas-a-powerful-python-data-analysis-toolki-240d76",
+      "packetPath": "slide_33.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 34,
+      "slideId": "1-3-c2aaa0",
+      "packetPath": "slide_34.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 35,
+      "slideId": "2-3-b4e971",
+      "packetPath": "slide_35.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 36,
+      "slideId": "3-3-524046",
+      "packetPath": "slide_36.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 37,
+      "slideId": "19-transformers-d71336",
+      "packetPath": "slide_37.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 38,
+      "slideId": "20-d3-data-driven-documents-2860cc",
+      "packetPath": "slide_38.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 39,
+      "slideId": "21-apache-echarts-0b6936",
+      "packetPath": "slide_39.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 40,
+      "slideId": "22-plotly-py-adbd2e",
+      "packetPath": "slide_40.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    },
+    {
+      "slideNumber": 41,
+      "slideId": "23-the-system-design-primer-8b55bb",
+      "packetPath": "slide_41.task.json",
+      "status": "pending",
+      "updatedAt": "2026-06-30T12:45:36.001Z"
+    }
+  ],
+  "events": [
+    {
+      "slideId": "external-markdown-visual-evaluation-93e81d",
+      "from": "pending",
+      "to": "accepted",
+      "workerId": "mdpr-skill-visual-eval",
+      "evidencePath": "artifacts/external-markdown-visual-eval/iteration-05/visual-evaluation.json",
+      "recordedAt": "2026-06-30T12:46:18.781Z"
+    }
+  ],
+  "boundary": {
+    "mdprOwnsFinalLayout": true,
+    "mdprOwnsFinalThemeBinding": true,
+    "noRendererInternals": true,
+    "noChatMessageCompletion": true
+  }
+}

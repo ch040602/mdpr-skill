@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpresent.dev/schemas/mdpr-codex-ppt-compat.schema.json",
+  "title": "MDPR Codex PPT Compatibility Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "generatedBy", "source", "boundary", "workflowStages", "features", "implementationTodos", "coverage"],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-codex-ppt-compat-v1" },
+    "generatedBy": { "const": "mdpr-skill" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "sourceRef", "reviewedDocs"],
+      "properties": {
+        "repository": { "const": "https://github.com/ningzimu/codex-ppt-skill" },
+        "sourceRef": { "type": "string", "minLength": 1 },
+        "reviewedDocs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["codexPptOutputModel", "mdprOutputModel", "policy"],
+      "properties": {
+        "codexPptOutputModel": { "const": "full-slide-image-pptx" },
+        "mdprOutputModel": { "const": "editable-native-pptx-html-pdf" },
+        "policy": { "const": "map-features-to-mdpr-rails-without-agent-final-rendering" }
+      }
+    },
+    "workflowStages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gate", "codexPptPhase", "mdprImplementationSurface"],
+        "properties": {
+          "gate": {
+            "enum": [
+              "source-intake",
+              "outline-approval",
+              "style-approval",
+              "sample-or-preview-approval",
+              "job-state-preparation",
+              "parallel-generation-or-render",
+              "qa-repair-notes-assembly",
+              "style-library-save"
+            ]
+          },
+          "codexPptPhase": { "type": "string", "minLength": 1 },
+          "mdprImplementationSurface": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "codexPptFeature", "codexPptRefs", "mdprRail", "mdprAlternative", "implementationStatus", "requiredMdprSurfaces", "acceptanceGate"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "codexPptFeature": { "type": "string", "minLength": 1 },
+          "codexPptRefs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "mdprRail": {
+            "enum": [
+              "mdpr-runtime",
+              "mdpr-skill-proposal",
+              "mdpr-skill-review",
+              "mdpr-skill-orchestration",
+              "mdpr-bridge",
+              "mdpr-generated-asset-rail",
+              "unmapped"
+            ]
+          },
+          "mdprAlternative": { "type": "string", "minLength": 1 },
+          "implementationStatus": { "enum": ["supported", "proposal-ready", "mdpr-runtime-required"] },
+          "requiredMdprSurfaces": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "acceptanceGate": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "implementationTodos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "owner", "title", "featureIds", "dependsOn", "acceptance", "validation", "docs"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "owner": { "enum": ["mdpr", "mdpr-skill"] },
+          "title": { "type": "string", "minLength": 1 },
+          "featureIds": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "dependsOn": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "acceptance": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "validation": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+          "docs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["codexPptFeatureCount", "mappedFeatureCount", "unmappedFeatureCount", "supportedCount", "proposalReadyCount", "mdprRuntimeRequiredCount"],
+      "properties": {
+        "codexPptFeatureCount": { "type": "integer", "minimum": 0 },
+        "mappedFeatureCount": { "type": "integer", "minimum": 0 },
+        "unmappedFeatureCount": { "type": "integer", "minimum": 0 },
+        "supportedCount": { "type": "integer", "minimum": 0 },
+        "proposalReadyCount": { "type": "integer", "minimum": 0 },
+        "mdprRuntimeRequiredCount": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

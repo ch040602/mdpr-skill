@@ -30,6 +30,433 @@ test("runCli exposes help and command groups", () => {
   assert.match(output.join("\n"), /teaser/);
   assert.match(output.join("\n"), /gate/);
   assert.match(output.join("\n"), /change/);
+  assert.match(output.join("\n"), /codex-ppt compat/);
+  assert.match(output.join("\n"), /codex-ppt slide-tasks/);
+  assert.match(output.join("\n"), /codex-ppt job-state/);
+  assert.match(output.join("\n"), /codex-ppt generated-assets/);
+});
+
+test("runCli writes a codex-ppt compatibility implementation map", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-codex-ppt-compat-"));
+  try {
+    const outPath = join(workDir, "codex-ppt-compat.json");
+    const output: string[] = [];
+    const exitCode = runCli([
+      "codex-ppt",
+      "compat",
+      "--source-ref",
+      "ningzimu/codex-ppt-skill@93c1e013965a3b42f272252030b2e1a5abede710",
+      "--out",
+      outPath,
+    ], {
+      stdout: (value) => output.push(value),
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const summary = JSON.parse(output.join("\n"));
+    const report = JSON.parse(readFileSync(outPath, "utf-8"));
+    assert.equal(summary.status, "pass");
+    assert.equal(report.schemaVersion, "mdpr-codex-ppt-compat-v1");
+    assert.equal(report.source.sourceRef, "ningzimu/codex-ppt-skill@93c1e013965a3b42f272252030b2e1a5abede710");
+    assert.equal(report.features.length >= 16, true);
+    assert.equal(report.features.every((feature: { mdprRail: string }) => feature.mdprRail !== "unmapped"), true);
+    assert.equal(report.coverage.unmappedFeatureCount, 0);
+    assert.equal(report.coverage.codexPptFeatureCount, report.features.length);
+    assert.equal(report.implementationTodos.length, report.coverage.mdprRuntimeRequiredCount);
+    assert.equal(report.implementationTodos.every((todo: { owner: string }) => todo.owner === "mdpr" || todo.owner === "mdpr-skill"), true);
+    assert.equal(report.implementationTodos.every((todo: { featureIds: string[] }) => todo.featureIds.length >= 1), true);
+    assert.equal(report.implementationTodos.every((todo: { acceptance: string[] }) => todo.acceptance.length >= 2), true);
+    assert.equal(report.implementationTodos.every((todo: { validation: string[] }) => todo.validation.length >= 1), true);
+    assert.equal(report.implementationTodos.every((todo: { dependsOn: string[] }) => Array.isArray(todo.dependsOn)), true);
+    assert.deepEqual(report.implementationTodos.map((todo: { id: string }) => todo.id), []);
+    assert.equal(
+      report.features.find((feature: { id: string }) => feature.id === "per-slide-job-packets").implementationStatus,
+      "supported",
+    );
+    assert.deepEqual(report.workflowStages.map((stage: { gate: string }) => stage.gate), [
+      "source-intake",
+      "outline-approval",
+      "style-approval",
+      "sample-or-preview-approval",
+      "job-state-preparation",
+      "parallel-generation-or-render",
+      "qa-repair-notes-assembly",
+      "style-library-save",
+    ]);
+    assert.equal(
+      report.features.find((feature: { id: string }) => feature.id === "full-slide-image-generation").mdprAlternative,
+      "editable-native-pptx-plus-generated-visual-assets",
+    );
+    assert.deepEqual(
+      report.features.find((feature: { id: string }) => feature.id === "parallel-subagent-generation").requiredMdprSurfaces,
+      ["codex-ppt slide-tasks", "codex-ppt job-state", "mdpr-job-state-v1"],
+    );
+    assert.equal(
+      report.features.find((feature: { id: string }) => feature.id === "parallel-subagent-generation").implementationStatus,
+      "supported",
+    );
+    assert.equal(
+      report.features.find((feature: { id: string }) => feature.id === "built-in-style-references").implementationStatus,
+      "supported",
+    );
+    assert.equal(
+      report.features.find((feature: { id: string }) => feature.id === "image-provider-fallback").implementationStatus,
+      "supported",
+    );
+    assert.equal(
+      report.features.find((feature: { id: string }) => feature.id === "high-resolution-and-transparency").implementationStatus,
+      "supported",
+    );
+    assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+    assert.equal(JSON.stringify(report).includes('"rendererObjectId"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli exports codex-ppt compatible slide task packets without renderer internals", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-slide-tasks-"));
+  try {
+    const manifestPath = join(workDir, "mdpresent-manifest.json");
+    const markdownPath = join(workDir, "deck.md");
+    const imagesPath = join(workDir, "rendered-images.json");
+    const outDir = join(workDir, "slide-tasks");
+    writeFileSync(markdownPath, [
+      "# Launch Review",
+      "",
+      "## Growth slowed but retention proof held.",
+      "",
+      "- Net retention stayed above 120%.",
+      "- Expansion is concentrated in platform accounts.",
+      "",
+      "## Architecture explains the expansion path.",
+      "",
+      "API intake => workflow engine => governed output",
+      "",
+    ].join("\n"), "utf-8");
+    writeFileSync(manifestPath, JSON.stringify({
+      schemaVersion: 1,
+      engine: "mdpresent",
+      source: { path: markdownPath, sha256: "abc123" },
+      slideCount: 2,
+      pptxObjects: [
+        {
+          slideId: "growth-slowed-but-retention-proof-held",
+          layoutSlideId: "layout-growth",
+          regionId: "title",
+          blockIds: ["b1"],
+          shapeName: "mdpr:growth:title:b1",
+          objectKind: "native-text",
+          role: "title",
+          editable: true,
+          x: 100,
+          y: 200,
+          color: "#ff0000",
+          rendererObjectId: "secret-renderer-id",
+        },
+        {
+          slideId: "growth-slowed-but-retention-proof-held",
+          layoutSlideId: "layout-growth",
+          regionId: "body",
+          blockIds: ["b2"],
+          shapeName: "mdpr:growth:body:b2",
+          objectKind: "native-text",
+          role: "body",
+          editable: true,
+        },
+        {
+          slideId: "architecture-explains-the-expansion-path",
+          layoutSlideId: "layout-architecture",
+          regionId: "diagram",
+          blockIds: ["b3"],
+          shapeName: "mdpr:architecture:diagram:b3",
+          objectKind: "native-shape",
+          role: "diagram",
+          editable: true,
+        },
+      ],
+    }), "utf-8");
+    writeFileSync(imagesPath, JSON.stringify({
+      images: [
+        { slideId: "growth-slowed-but-retention-proof-held", imagePath: "png/slide-01.png", evidenceId: "preview-1" },
+        { slideId: "architecture-explains-the-expansion-path", imagePath: "png/slide-02.png", evidenceId: "preview-2" },
+      ],
+    }), "utf-8");
+
+    const output: string[] = [];
+    const exitCode = runCli([
+      "codex-ppt",
+      "slide-tasks",
+      "--manifest",
+      manifestPath,
+      "--markdown",
+      markdownPath,
+      "--rendered-images",
+      imagesPath,
+      "--out",
+      outDir,
+    ], {
+      stdout: (value) => output.push(value),
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const summary = JSON.parse(output.join("\n"));
+    assert.equal(summary.status, "pass");
+    assert.equal(summary.packetCount, 2);
+    const index = JSON.parse(readFileSync(join(outDir, "slide-task-packets.json"), "utf-8"));
+    assert.equal(index.schemaVersion, "mdpr-slide-task-packet-set-v1");
+    assert.equal(index.packets.length, 2);
+    const first = JSON.parse(readFileSync(join(outDir, "slide_01.task.json"), "utf-8"));
+    assert.equal(first.schemaVersion, "mdpr-slide-task-packet-v1");
+    assert.equal(first.slide.slideId, "growth-slowed-but-retention-proof-held");
+    assert.equal(first.slide.slideNumber, 1);
+    assert.deepEqual(first.slide.roles.sort(), ["body", "title"]);
+    assert.equal(first.renderedPreview.imagePath, "png/slide-01.png");
+    assert.equal(first.boundary.mdprOwnsFinalLayout, true);
+    assert.equal(first.boundary.noRendererInternals, true);
+    assert.match(first.localContext.markdownExcerpt, /Net retention/);
+    const serialized = JSON.stringify(first);
+    assert.equal(serialized.includes("shapeName"), false);
+    assert.equal(serialized.includes("layoutSlideId"), false);
+    assert.equal(serialized.includes("rendererObjectId"), false);
+    assert.equal(serialized.includes('"x"'), false);
+    assert.equal(serialized.includes("#ff0000"), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli records codex-ppt compatible job state with evidence-bound completion", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-job-state-"));
+  try {
+    const tasksPath = join(workDir, "slide-task-packets.json");
+    const manifestPath = join(workDir, "mdpresent-manifest.json");
+    const statePath = join(workDir, "mdpr-job-state.json");
+    writeFileSync(manifestPath, JSON.stringify({
+      schemaVersion: 1,
+      engine: "mdpresent",
+      slideCount: 2,
+    }), "utf-8");
+    writeFileSync(tasksPath, JSON.stringify({
+      schemaVersion: "mdpr-slide-task-packet-set-v1",
+      generatedBy: "mdpr-skill",
+      packetCount: 2,
+      packets: [
+        {
+          slideNumber: 1,
+          slideId: "growth-slowed-but-retention-proof-held",
+          path: "slide_01.task.json",
+          roles: ["title", "body"],
+          objectKinds: ["native-text"],
+        },
+        {
+          slideNumber: 2,
+          slideId: "architecture-explains-the-expansion-path",
+          path: "slide_02.task.json",
+          roles: ["diagram"],
+          objectKinds: ["native-shape"],
+        },
+      ],
+      boundary: {
+        mdprOwnsFinalLayout: true,
+        mdprOwnsFinalThemeBinding: true,
+        noRendererInternals: true,
+        forbiddenFieldCategories: ["geometry", "renderer-object-identity"],
+      },
+    }), "utf-8");
+
+    const initOutput: string[] = [];
+    assert.equal(runCli([
+      "codex-ppt",
+      "job-state",
+      "init",
+      "--tasks",
+      tasksPath,
+      "--manifest",
+      manifestPath,
+      "--out",
+      statePath,
+    ], {
+      stdout: (value) => initOutput.push(value),
+      stderr: () => undefined,
+    }), 0);
+    const initSummary = JSON.parse(initOutput.join("\n"));
+    assert.equal(initSummary.status, "pass");
+    assert.equal(initSummary.taskCount, 2);
+
+    const missingEvidenceErrors: string[] = [];
+    assert.equal(runCli([
+      "codex-ppt",
+      "job-state",
+      "update",
+      "--state",
+      statePath,
+      "--slide",
+      "growth-slowed-but-retention-proof-held",
+      "--status",
+      "accepted",
+      "--worker-id",
+      "worker-a",
+      "--out",
+      statePath,
+    ], {
+      stdout: () => undefined,
+      stderr: (value) => missingEvidenceErrors.push(value),
+    }), 1);
+    assert.match(missingEvidenceErrors.join("\n"), /evidence/);
+
+    const updateOutput: string[] = [];
+    assert.equal(runCli([
+      "codex-ppt",
+      "job-state",
+      "update",
+      "--state",
+      statePath,
+      "--slide",
+      "growth-slowed-but-retention-proof-held",
+      "--status",
+      "accepted",
+      "--worker-id",
+      "worker-a",
+      "--evidence",
+      "review/slide-01.acceptance.json",
+      "--out",
+      statePath,
+    ], {
+      stdout: (value) => updateOutput.push(value),
+      stderr: () => undefined,
+    }), 0);
+    const updateSummary = JSON.parse(updateOutput.join("\n"));
+    assert.equal(updateSummary.status, "pass");
+    assert.equal(updateSummary.slideId, "growth-slowed-but-retention-proof-held");
+    assert.equal(updateSummary.taskStatus, "accepted");
+
+    const statusOutput: string[] = [];
+    assert.equal(runCli(["codex-ppt", "job-state", "status", "--state", statePath], {
+      stdout: (value) => statusOutput.push(value),
+      stderr: () => undefined,
+    }), 0);
+    const summary = JSON.parse(statusOutput.join("\n"));
+    assert.equal(summary.schemaVersion, "mdpr-job-state-summary-v1");
+    assert.equal(summary.total, 2);
+    assert.equal(summary.byStatus.accepted, 1);
+    assert.equal(summary.byStatus.pending, 1);
+    assert.equal(summary.completionEvidencePolicy, "artifact-path-or-report-id-required");
+
+    const validateOutput: string[] = [];
+    assert.equal(runCli(["codex-ppt", "job-state", "validate", "--state", statePath], {
+      stdout: (value) => validateOutput.push(value),
+      stderr: () => undefined,
+    }), 0);
+    const validation = JSON.parse(validateOutput.join("\n"));
+    assert.equal(validation.valid, true);
+
+    const state = JSON.parse(readFileSync(statePath, "utf-8"));
+    assert.equal(state.schemaVersion, "mdpr-job-state-v1");
+    assert.equal(state.tasks.length, 2);
+    assert.equal(state.tasks[0].status, "accepted");
+    assert.equal(state.tasks[0].workerId, "worker-a");
+    assert.equal(state.tasks[0].evidencePath, "review/slide-01.acceptance.json");
+    assert.equal(state.boundary.noChatMessageCompletion, true);
+    assert.equal(JSON.stringify(state).includes("rendererObjectId"), false);
+    assert.equal(JSON.stringify(state).includes('"x"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli validates generated asset provider and quality metadata without secrets or full-slide rendering", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-generated-assets-"));
+  try {
+    const manifestPath = join(workDir, "generated-assets.json");
+    writeFileSync(manifestPath, JSON.stringify({
+      schemaVersion: "mdpr-generated-assets-v1",
+      generatedBy: "mdpr-skill",
+      assets: [
+        {
+          assetId: "hero-architecture-visual",
+          kind: "generated-image",
+          purpose: "primary-visual",
+          provider: {
+            id: "openai-compatible",
+            model: "image-model",
+            promptHash: "a".repeat(64),
+            sourceInputHashes: ["b".repeat(64)],
+            supportsTransparency: false,
+            supportedQualities: ["standard"],
+          },
+          request: {
+            size: "1536x1024",
+            quality: "hd",
+            background: "transparent",
+            transparency: "required",
+          },
+          output: {
+            path: "assets/hero-architecture.png",
+            mimeType: "image/png",
+          },
+          boundary: {
+            mdprOwnsPlacement: true,
+            notFullSlideRenderer: true,
+            noSecrets: true,
+          },
+        },
+      ],
+    }), "utf-8");
+
+    const output: string[] = [];
+    assert.equal(runCli(["codex-ppt", "generated-assets", "validate", "--manifest", manifestPath], {
+      stdout: (value) => output.push(value),
+      stderr: () => undefined,
+    }), 0);
+    const validation = JSON.parse(output.join("\n"));
+    assert.equal(validation.schemaVersion, "mdpr-generated-assets-validation-v1");
+    assert.equal(validation.valid, true);
+    assert.equal(validation.assetCount, 1);
+    assert.match(validation.warnings.join("\n"), /transparency/);
+    assert.match(validation.warnings.join("\n"), /quality/);
+
+    const invalidPath = join(workDir, "generated-assets-invalid.json");
+    writeFileSync(invalidPath, JSON.stringify({
+      schemaVersion: "mdpr-generated-assets-v1",
+      generatedBy: "mdpr-skill",
+      assets: [
+        {
+          assetId: "slide-raster",
+          kind: "generated-image",
+          purpose: "full-slide-render",
+          provider: {
+            id: "custom",
+            model: "image-model",
+            promptHash: "c".repeat(64),
+            apiKey: "secret",
+          },
+          request: {
+            size: "1920x1080",
+            quality: "high",
+            background: "opaque",
+            transparency: "not-needed",
+            fullSlide: true,
+          },
+          boundary: {
+            mdprOwnsPlacement: false,
+            notFullSlideRenderer: false,
+            noSecrets: false,
+          },
+        },
+      ],
+    }), "utf-8");
+    const errors: string[] = [];
+    assert.equal(runCli(["codex-ppt", "generated-assets", "validate", "--manifest", invalidPath], {
+      stdout: () => undefined,
+      stderr: (value) => errors.push(value),
+    }), 1);
+    assert.match(errors.join("\n"), /secret|full-slide|boundary/);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
 });
 
 test("runCli writes README teaser SVG with visual pipeline nodes", () => {

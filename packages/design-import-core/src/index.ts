@@ -20,6 +20,27 @@ export type MdprThemeCandidate = {
     spacing: Record<string, number>;
     shape: Record<string, number>;
   };
+  styleSystem: {
+    bestFor: string[];
+    layoutIntents: string[];
+    layoutBlueprints: Array<{
+      name: string;
+      intent: string;
+      description: string;
+      regions: string[];
+    }>;
+    decorationFamilies: string[];
+  };
+  registration: {
+    targets: MdprThemeRegistrationTarget[];
+    workflow: "proposal-review-approve-mdpr-import";
+  };
+  constraints: {
+    mdprOwnsFinalLayout: true;
+    mdprOwnsFinalThemeBinding: true;
+    noRawUseInAgentHints: true;
+    requiresDesignLockUpdate: true;
+  };
   rationale: {
     overview?: string;
     layout?: string;
@@ -27,6 +48,12 @@ export type MdprThemeCandidate = {
   };
   requiresApproval: true;
 };
+
+export type MdprThemeRegistrationTarget =
+  | "mdpr-theme-pack"
+  | "mdpr-profile"
+  | "mdpr-rulebook"
+  | "deck-local-style-pack";
 
 export type BuildThemeCandidateInput = {
   path: string;
@@ -42,6 +69,8 @@ export type ThemeCandidateGateResult = {
     typographyRoleCount: number;
     spacingTokenCount: number;
     shapeTokenCount: number;
+    layoutBlueprintCount: number;
+    decorationFamilyCount: number;
   };
 };
 
@@ -123,6 +152,7 @@ export function parseDesignMd(content: string): DesignMdParseResult {
 export function buildThemeCandidateFromDesignMd(input: BuildThemeCandidateInput): MdprThemeCandidate {
   const parsed = parseDesignMd(input.content);
   const sourceSha256 = createHash("sha256").update(input.content).digest("hex");
+  const layoutBlueprints = parseLayoutBlueprints(parsed.sections["Layout Blueprints"] ?? "");
   return {
     schemaVersion: "mdpr-theme-candidate-v1",
     source: {
@@ -137,6 +167,22 @@ export function buildThemeCandidateFromDesignMd(input: BuildThemeCandidateInput)
       typography: typographyRecord(parsed.frontmatter.typography),
       spacing: numberRecord(parsed.frontmatter.spacing),
       shape: numberRecord(parsed.frontmatter.shape ?? parsed.frontmatter.rounded),
+    },
+    styleSystem: {
+      bestFor: bulletLines(parsed.sections["Best For"] ?? ""),
+      layoutIntents: unique(layoutBlueprints.map((blueprint) => blueprint.intent)),
+      layoutBlueprints,
+      decorationFamilies: decorationFamiliesFromLines(bulletLines(parsed.sections["Decoration Grammar"] ?? "")),
+    },
+    registration: {
+      targets: registrationTargetsFromLines(bulletLines(parsed.sections["Registration Targets"] ?? "")),
+      workflow: "proposal-review-approve-mdpr-import",
+    },
+    constraints: {
+      mdprOwnsFinalLayout: true,
+      mdprOwnsFinalThemeBinding: true,
+      noRawUseInAgentHints: true,
+      requiresDesignLockUpdate: true,
     },
     rationale: {
       ...(parsed.sections.Overview ? { overview: parsed.sections.Overview } : {}),
@@ -185,6 +231,12 @@ export function themeCandidateGate(candidate: unknown): ThemeCandidateGateResult
   validateTypographyMap(typography, findings);
   validateNumberMap(spacing, "tokens.spacing", findings);
   validateNumberMap(shape, "tokens.shape", findings);
+  const styleSystem = asRecord(root.styleSystem);
+  validateStyleSystem(styleSystem, findings);
+  const registration = asRecord(root.registration);
+  validateRegistration(registration, findings);
+  const constraints = asRecord(root.constraints);
+  validateThemeCandidateConstraints(constraints, findings);
 
   findings.push(...collectDesignImportForbiddenFields(root).map((path) => `${path} is a forbidden final-decision field for mdpr-skill design import`));
 
@@ -196,6 +248,8 @@ export function themeCandidateGate(candidate: unknown): ThemeCandidateGateResult
       typographyRoleCount: typography ? Object.keys(typography).length : 0,
       spacingTokenCount: spacing ? Object.keys(spacing).length : 0,
       shapeTokenCount: shape ? Object.keys(shape).length : 0,
+      layoutBlueprintCount: Array.isArray(styleSystem?.layoutBlueprints) ? styleSystem.layoutBlueprints.length : 0,
+      decorationFamilyCount: Array.isArray(styleSystem?.decorationFamilies) ? styleSystem.decorationFamilies.length : 0,
     },
   };
 }
@@ -434,6 +488,59 @@ function bulletLines(value: string): string[] {
     .filter(Boolean);
 }
 
+function parseLayoutBlueprints(value: string): MdprThemeCandidate["styleSystem"]["layoutBlueprints"] {
+  return bulletLines(value).map((line) => {
+    const [labelText, restText = ""] = splitOnce(line, ":");
+    const [descriptionText, regionsText = ""] = splitOnce(restText, "; regions:");
+    const name = labelText.trim();
+    return {
+      name,
+      intent: slugify(name),
+      description: descriptionText.trim(),
+      regions: regionsText.split(",").map((region) => region.trim()).filter(Boolean),
+    };
+  }).filter((blueprint) => blueprint.name && blueprint.description);
+}
+
+function splitOnce(value: string, separator: string): [string, string?] {
+  const index = value.indexOf(separator);
+  if (index === -1) return [value];
+  return [value.slice(0, index), value.slice(index + separator.length)];
+}
+
+function decorationFamiliesFromLines(lines: string[]): string[] {
+  const families: string[] = [];
+  for (const line of lines) {
+    const lower = line.toLowerCase();
+    if (/\bnumbered?\b|\bordered\b/.test(lower)) families.push("numbered-rail");
+    if (/\brule\b|\bline\b/.test(lower)) families.push("rule-lines");
+    if (/\bchips?\b|\bbadges?\b|\bpills?\b/.test(lower)) families.push("accent-chips");
+    if (/\bcard\b/.test(lower)) families.push("cards");
+    if (/\bcallout\b/.test(lower)) families.push("callout");
+    if (/\bglass\b|\bblur\b/.test(lower)) families.push("glass");
+    if (/\bgrid\b/.test(lower)) families.push("grid");
+    if (/\bphoto\b|\bimage\b/.test(lower)) families.push("image-frame");
+    if (/\btexture\b|\bnoise\b/.test(lower)) families.push("texture");
+  }
+  return unique(families);
+}
+
+function registrationTargetsFromLines(lines: string[]): MdprThemeRegistrationTarget[] {
+  const allowed = new Set<MdprThemeRegistrationTarget>([
+    "mdpr-theme-pack",
+    "mdpr-profile",
+    "mdpr-rulebook",
+    "deck-local-style-pack",
+  ]);
+  const targets = lines.filter((line): line is MdprThemeRegistrationTarget => allowed.has(line as MdprThemeRegistrationTarget));
+  return targets.length ? unique(targets) : ["deck-local-style-pack"];
+}
+
+function slugify(value: string): string {
+  const slug = value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  return slug || "custom-layout";
+}
+
 function assertNoDesignImportForbiddenFields(value: unknown, path = "$"): void {
   const [first] = collectDesignImportForbiddenFields(value, path);
   if (first) {
@@ -477,6 +584,74 @@ function validateNumberMap(value: Record<string, unknown> | undefined, path: str
   }
 }
 
+function validateStyleSystem(value: Record<string, unknown> | undefined, findings: string[]): void {
+  if (!value) {
+    findings.push("styleSystem must be an object");
+    return;
+  }
+  validateStringArray(value.bestFor, "styleSystem.bestFor", findings);
+  validateStringArray(value.layoutIntents, "styleSystem.layoutIntents", findings);
+  validateStringArray(value.decorationFamilies, "styleSystem.decorationFamilies", findings);
+  if (!Array.isArray(value.layoutBlueprints)) {
+    findings.push("styleSystem.layoutBlueprints must be an array");
+    return;
+  }
+  value.layoutBlueprints.forEach((rawBlueprint, index) => {
+    const blueprint = asRecord(rawBlueprint);
+    if (!blueprint) {
+      findings.push(`styleSystem.layoutBlueprints[${index}] must be an object`);
+      return;
+    }
+    for (const key of ["name", "intent", "description"]) {
+      if (typeof blueprint[key] !== "string" || !blueprint[key]) {
+        findings.push(`styleSystem.layoutBlueprints[${index}].${key} must be a non-empty string`);
+      }
+    }
+    validateStringArray(blueprint.regions, `styleSystem.layoutBlueprints[${index}].regions`, findings);
+  });
+}
+
+function validateRegistration(value: Record<string, unknown> | undefined, findings: string[]): void {
+  if (!value) {
+    findings.push("registration must be an object");
+    return;
+  }
+  const allowed = new Set(["mdpr-theme-pack", "mdpr-profile", "mdpr-rulebook", "deck-local-style-pack"]);
+  if (!Array.isArray(value.targets)) {
+    findings.push("registration.targets must be an array");
+  } else {
+    for (const target of value.targets) {
+      if (typeof target !== "string" || !allowed.has(target)) {
+        findings.push("registration.targets must contain only mdpr-theme-pack, mdpr-profile, mdpr-rulebook, or deck-local-style-pack");
+        break;
+      }
+    }
+  }
+  if (value.workflow !== "proposal-review-approve-mdpr-import") {
+    findings.push("registration.workflow must be proposal-review-approve-mdpr-import");
+  }
+}
+
+function validateThemeCandidateConstraints(value: Record<string, unknown> | undefined, findings: string[]): void {
+  if (!value) {
+    findings.push("constraints must be an object");
+    return;
+  }
+  for (const key of ["mdprOwnsFinalLayout", "mdprOwnsFinalThemeBinding", "noRawUseInAgentHints", "requiresDesignLockUpdate"]) {
+    if (value[key] !== true) findings.push(`constraints.${key} must be true`);
+  }
+}
+
+function validateStringArray(value: unknown, path: string, findings: string[]): void {
+  if (!Array.isArray(value)) {
+    findings.push(`${path} must be an array`);
+    return;
+  }
+  value.forEach((item, index) => {
+    if (typeof item !== "string" || !item) findings.push(`${path}[${index}] must be a non-empty string`);
+  });
+}
+
 function validateTypographyMap(value: Record<string, unknown> | undefined, findings: string[]): void {
   if (!value) {
     findings.push("tokens.typography must be an object");
@@ -505,6 +680,8 @@ function emptyGateResult(findings: string[]): ThemeCandidateGateResult {
       typographyRoleCount: 0,
       spacingTokenCount: 0,
       shapeTokenCount: 0,
+      layoutBlueprintCount: 0,
+      decorationFamilyCount: 0,
     },
   };
 }

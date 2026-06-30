@@ -131,6 +131,9 @@ test("runValidateSchemaSync checks shared MDPR bridge schema copies", () => {
 test("default schema sync covers promoted MDPR bridge and design schemas", () => {
   assert.deepEqual([...defaultSharedSchemaNames].sort(), [
     "mdpr-html-design-analysis.schema.json",
+    "mdpr-codex-ppt-compat.schema.json",
+    "mdpr-generated-assets.schema.json",
+    "mdpr-job-state.schema.json",
     "mdpr-ppt-pack-candidate.schema.json",
     "mdpr-ppt-selection.schema.json",
     "mdpr-pptx-object-map.schema.json",

@@ -41,6 +41,27 @@ Strict editorial grids with restrained accent use.
 
 Use generous containment and avoid noisy fills.
 
+## Best For
+
+- Executive product reviews.
+- Technical strategy decks.
+
+## Layout Blueprints
+
+- Proof rail: one primary claim rail with two evidence cells; regions: claim, evidence, metric
+- Comparison matrix: two balanced columns with a decision footer; regions: option-a, option-b, verdict
+
+## Decoration Grammar
+
+- Use numbered rails for ordered arguments.
+- Use thin rule lines and sparse accent chips.
+
+## Registration Targets
+
+- mdpr-theme-pack
+- mdpr-profile
+- mdpr-rulebook
+
 ## Do's and Don'ts
 
 - Use accent only for the primary focal element.
@@ -71,6 +92,41 @@ test("buildThemeCandidateFromDesignMd creates approval-bound theme proposal", ()
   assert.equal(candidate.requiresApproval, true);
   assert.equal(candidate.tokens.colors.accent, "#B8422E");
   assert.equal(candidate.tokens.typography.title.fontSizePt, 36);
+  assert.deepEqual(candidate.styleSystem.bestFor, [
+    "Executive product reviews.",
+    "Technical strategy decks.",
+  ]);
+  assert.deepEqual(candidate.styleSystem.layoutIntents, [
+    "proof-rail",
+    "comparison-matrix",
+  ]);
+  assert.deepEqual(candidate.styleSystem.layoutBlueprints, [
+    {
+      name: "Proof rail",
+      intent: "proof-rail",
+      description: "one primary claim rail with two evidence cells",
+      regions: ["claim", "evidence", "metric"],
+    },
+    {
+      name: "Comparison matrix",
+      intent: "comparison-matrix",
+      description: "two balanced columns with a decision footer",
+      regions: ["option-a", "option-b", "verdict"],
+    },
+  ]);
+  assert.deepEqual(candidate.styleSystem.decorationFamilies, [
+    "numbered-rail",
+    "rule-lines",
+    "accent-chips",
+  ]);
+  assert.deepEqual(candidate.registration.targets, [
+    "mdpr-theme-pack",
+    "mdpr-profile",
+    "mdpr-rulebook",
+  ]);
+  assert.equal(candidate.registration.workflow, "proposal-review-approve-mdpr-import");
+  assert.equal(candidate.constraints.mdprOwnsFinalLayout, true);
+  assert.equal(candidate.constraints.mdprOwnsFinalThemeBinding, true);
   assert.deepEqual(candidate.rationale.dosDonts, [
     "Use accent only for the primary focal element.",
     "Do not mix rounded and sharp corners.",
@@ -99,6 +155,13 @@ test("theme candidate schema declares approval-bound design rail", () => {
   assert.equal(schema.properties.schemaVersion.const, "mdpr-theme-candidate-v1");
   assert.equal(schema.properties.source.properties.generatedBy.const, "mdpr-skill");
   assert.equal(schema.properties.requiresApproval.const, true);
+  assert.equal(schema.properties.styleSystem.properties.layoutBlueprints.items.additionalProperties, false);
+  assert.deepEqual(schema.properties.registration.properties.targets.items.enum, [
+    "mdpr-theme-pack",
+    "mdpr-profile",
+    "mdpr-rulebook",
+    "deck-local-style-pack",
+  ]);
 });
 
 test("themeCandidateGate accepts approval-bound candidate rail data", () => {
@@ -113,6 +176,8 @@ test("themeCandidateGate accepts approval-bound candidate rail data", () => {
   assert.equal(result.status, "pass");
   assert.deepEqual(result.findings, []);
   assert.equal(result.metrics.colorTokenCount, 5);
+  assert.equal(result.metrics.layoutBlueprintCount, 2);
+  assert.equal(result.metrics.decorationFamilyCount, 3);
 });
 
 test("themeCandidateGate rejects missing provenance and approval", () => {
@@ -131,6 +196,22 @@ test("themeCandidateGate rejects missing provenance and approval", () => {
       spacing: { md: "wide" },
       shape: { radiusMd: 0.08 },
     },
+    styleSystem: {
+      bestFor: ["ok"],
+      layoutIntents: ["comparison"],
+      layoutBlueprints: [{ name: "Bad", intent: "bad", description: "bad", regions: ["x"] }],
+      decorationFamilies: ["callout"],
+    },
+    registration: {
+      targets: ["raw-coordinates"],
+      workflow: "proposal-review-approve-mdpr-import",
+    },
+    constraints: {
+      mdprOwnsFinalLayout: false,
+      mdprOwnsFinalThemeBinding: true,
+      noRawUseInAgentHints: true,
+      requiresDesignLockUpdate: true,
+    },
     rationale: { dosDonts: [] },
     requiresApproval: false,
   });
@@ -141,6 +222,8 @@ test("themeCandidateGate rejects missing provenance and approval", () => {
   assert.match(result.findings.join("\n"), /requiresApproval/);
   assert.match(result.findings.join("\n"), /tokens.typography/);
   assert.match(result.findings.join("\n"), /tokens.spacing.md/);
+  assert.match(result.findings.join("\n"), /registration.targets/);
+  assert.match(result.findings.join("\n"), /constraints.mdprOwnsFinalLayout/);
 });
 
 test("themeCandidateGate rejects final-decision fields while allowing color tokens", () => {

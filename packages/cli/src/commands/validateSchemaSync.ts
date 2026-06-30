@@ -24,6 +24,9 @@ export const defaultSharedSchemaNames = [
   "mdpr-user-override-candidate.schema.json",
   "mdpr-theme-candidate.schema.json",
   "mdpr-html-design-analysis.schema.json",
+  "mdpr-codex-ppt-compat.schema.json",
+  "mdpr-generated-assets.schema.json",
+  "mdpr-job-state.schema.json",
 ] as const;
 
 export function runValidateSchemaSync(input: ValidateSchemaSyncInput = {}): ValidateSchemaSyncResult {

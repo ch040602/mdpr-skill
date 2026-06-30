@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "mdpr-slide-task-packet-v1",
+  "generatedBy": "mdpr-skill",
+  "slide": {
+    "slideNumber": 38,
+    "slideId": "20-d3-data-driven-documents-2860cc",
+    "roles": [
+      "body",
+      "chart",
+      "title"
+    ],
+    "objectKinds": [
+      "native-chart",
+      "native-text"
+    ],
+    "editableObjectCount": 3
+  },
+  "localContext": {
+    "sourceHeading": "20. D3: Data-Driven Documents",
+    "markdownExcerpt": "``chart labels: Headings, Tables, Code Source: 2, 0, 0 ` - **Source** d3` - **Proof use** Numeric structure is shown as a chart beside explanatory text."
+  },
+  "renderedPreview": {
+    "imagePath": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-38.png",
+    "evidenceId": "iteration-05-preview-38"
+  },
+  "validationExpectations": [
+    "Review semantic coherence, claim clarity, readability, and source fidelity for this slide only.",
+    "Use rendered preview evidence when present; do not infer pass/fail without MDPR validation artifacts.",
+    "Return review findings or repair proposals only. Do not emit coordinates, exact colors, z-order, renderer object ids, or final layout choices."
+  ],
+  "handoff": {
+    "workerScope": "single-slide-review-or-repair-proposal",
+    "requiredInputs": [
+      "this task packet",
+      "referenced rendered preview image when available",
+      "source excerpt embedded in localContext"
+    ],
+    "outputContract": [
+      "status: pass|needs-repair|blocked",
+      "qaNote: concise evidence-grounded note",
+      "repairProposal: optional semantic Markdown/rulebook/config suggestion"
+    ]
+  },
+  "boundary": {
+    "mdprOwnsFinalLayout": true,
+    "mdprOwnsFinalThemeBinding": true,
+    "noRendererInternals": true,
+    "forbiddenFieldCategories": [
+      "geometry",
+      "renderer-object-identity",
+      "z-order",
+      "exact-color",
+      "recipe-selection"
+    ]
+  }
+}

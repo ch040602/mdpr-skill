@@ -140,6 +140,45 @@ Use them to describe capability vocabulary or benchmark context; do not add
 them as dependencies, fallback renderers, or alternate runtimes. MDPR remains
 the deterministic runtime.
 
+### Codex PPT Compatibility Mapping
+
+Use when a user asks to support or match `codex-ppt-skill` capabilities in
+MDPR or `mdpr-skill`.
+
+- Treat `codex-ppt` as an image-based workflow reference, not as an alternate
+  MDPR renderer.
+- Map each feature to an MDPR-native rail: runtime, proposal, review,
+  orchestration, bridge, or generated visual asset rail.
+- Keep `coverage.unmappedFeatureCount` at `0` before claiming implementation
+  coverage.
+- Preserve the output-model distinction: `codex-ppt` produces full-slide image
+  PPTX; MDPR defaults to editable PPTX/HTML/PDF.
+- Use the compatibility map to create MDPR runtime TODOs for missing surfaces
+  such as theme-pack registries, generated-asset provider metadata, slide task
+  packets, and job-state tracking.
+- Use `codex-ppt slide-tasks` when a user needs codex-ppt-style per-slide jobs
+  around an MDPR build. These packets are for single-slide review or repair
+  proposals and must remain free of geometry, renderer object ids, exact colors,
+  z-order, and final layout decisions.
+- Use `codex-ppt job-state` after task packet export when a workflow needs
+  long-running slide review/repair state. `recorded` and `accepted` updates
+  require artifact/report evidence, and `blocked` updates require a blocker
+  reason; never treat chat text alone as completion evidence.
+- Use `codex-ppt generated-assets validate` for generated visual asset provider
+  and quality metadata. The manifest records provider id, model, prompt hash,
+  source input hashes, size, quality, background, transparency policy, and
+  output provenance without secrets and without becoming a full-slide renderer.
+- Do not copy codex-ppt's full-slide image generation as a default MDPR path.
+
+Useful local command:
+
+```bash
+node bin/mdpr-skill.js codex-ppt compat --source-ref ningzimu/codex-ppt-skill@93c1e013965a3b42f272252030b2e1a5abede710 --out artifacts/codex-ppt-compat/codex-ppt-compat.json
+node bin/mdpr-skill.js codex-ppt slide-tasks --manifest artifacts/external-markdown-visual-eval/iteration-05/build/mdpresent-manifest.json --markdown artifacts/external-markdown-visual-eval/iteration-05/corpus.md --rendered-images artifacts/codex-ppt-slide-tasks/iteration-05/rendered-images.json --out artifacts/codex-ppt-slide-tasks/iteration-05/tasks
+node bin/mdpr-skill.js codex-ppt job-state init --tasks artifacts/codex-ppt-slide-tasks/iteration-05/tasks/slide-task-packets.json --manifest artifacts/external-markdown-visual-eval/iteration-05/build/mdpresent-manifest.json --out artifacts/codex-ppt-slide-tasks/iteration-05/mdpr-job-state.json
+node bin/mdpr-skill.js codex-ppt generated-assets validate --manifest artifacts/codex-ppt-generated-assets/sample.generated-assets.json
+```
+
 ### Design Components Boundary
 
 Use when working with MDPR's built-in design component runtime or related IR.
@@ -152,6 +191,33 @@ Use when working with MDPR's built-in design component runtime or related IR.
 - Explain design review findings in terms of MDPR rulebook/config changes.
 - Do not choose recipes, variants, coordinates, shape sizes, typography, colors, z-order, arrows, effects, or exact icon assets.
 - Do not duplicate MDPR renderer behavior in the skill.
+
+### Reusable Theme And Style Pack Proposals
+
+Use when a user wants more theme variety, a reusable visual style, a new deck
+theme, or a style inspired by another PPT/PDF/image while preserving MDPR as
+the final renderer.
+
+- Treat the source as a visual system, not as slide content to copy.
+- Extract reusable tokens, semantic layout blueprints, decoration grammar,
+  best-fit scenarios, and MDPR registration targets.
+- Emit an approval-bound `mdpr-theme-candidate-v1`, not `agent-hint.json`.
+- Use `registration.targets` to distinguish `mdpr-theme-pack`, `mdpr-profile`,
+  `mdpr-rulebook`, and `deck-local-style-pack` follow-up work.
+- Keep `constraints.mdprOwnsFinalLayout`,
+  `constraints.mdprOwnsFinalThemeBinding`, `constraints.noRawUseInAgentHints`,
+  and `constraints.requiresDesignLockUpdate` set to `true`.
+- Do not include source-private content, exact slide copy, copied layouts,
+  final coordinates, exact colors in hints, renderer object IDs, or exact
+  icon/assets choices.
+- If a candidate should become built-in, route it through MDPR approval/import
+  gates before saying it is available as an MDPR runtime theme.
+
+Useful local command:
+
+```bash
+node bin/mdpr-skill.js design import references/custom.DESIGN.md --out .mdpresent/proposals/custom.theme-candidate.json
+```
 
 ### Design Coherence Audit
 

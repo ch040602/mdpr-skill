@@ -1,0 +1,417 @@
+{
+  "schemaVersion": "mdpr-codex-ppt-compat-v1",
+  "generatedBy": "mdpr-skill",
+  "source": {
+    "repository": "https://github.com/ningzimu/codex-ppt-skill",
+    "sourceRef": "ningzimu/codex-ppt-skill@93c1e013965a3b42f272252030b2e1a5abede710",
+    "reviewedDocs": [
+      "skills/codex-ppt/SKILL.md",
+      "skills/codex-ppt/docs/workflow-gates-and-progress.md",
+      "skills/codex-ppt/docs/outline-style-and-sample.md",
+      "skills/codex-ppt/docs/backend-selection.md",
+      "skills/codex-ppt/docs/user-supplied-assets.md",
+      "skills/codex-ppt/docs/slide-generation-and-subagents.md",
+      "skills/codex-ppt/docs/project-assembly-and-reporting.md",
+      "skills/codex-ppt/docs/style-library.md",
+      "README_en.md"
+    ]
+  },
+  "boundary": {
+    "codexPptOutputModel": "full-slide-image-pptx",
+    "mdprOutputModel": "editable-native-pptx-html-pdf",
+    "policy": "map-features-to-mdpr-rails-without-agent-final-rendering"
+  },
+  "workflowStages": [
+    {
+      "gate": "source-intake",
+      "codexPptPhase": "source reading and asset extraction",
+      "mdprImplementationSurface": "MDPR parser, asset manifest, source-to-slide evidence ledger"
+    },
+    {
+      "gate": "outline-approval",
+      "codexPptPhase": "outline confirmation",
+      "mdprImplementationSurface": "Markdown outline draft, slide role hints, split override proposal"
+    },
+    {
+      "gate": "style-approval",
+      "codexPptPhase": "visual style confirmation",
+      "mdprImplementationSurface": "theme candidate, profile candidate, rulebook proposal"
+    },
+    {
+      "gate": "sample-or-preview-approval",
+      "codexPptPhase": "one sample slide approval",
+      "mdprImplementationSurface": "MDPR preview build, rendered-preview review, optional generated visual asset proof"
+    },
+    {
+      "gate": "job-state-preparation",
+      "codexPptPhase": "prepare slide jobs and run state",
+      "mdprImplementationSurface": "MDPR build manifest, mdpr-skill eval report, bridge change request state"
+    },
+    {
+      "gate": "parallel-generation-or-render",
+      "codexPptPhase": "subagent slide generation",
+      "mdprImplementationSurface": "MDPR deterministic render plus bounded review or repair proposals"
+    },
+    {
+      "gate": "qa-repair-notes-assembly",
+      "codexPptPhase": "QA, repair, speaker notes, PPT assembly",
+      "mdprImplementationSurface": "MDPR validation, review reports, speaker notes, editable PPTX export"
+    },
+    {
+      "gate": "style-library-save",
+      "codexPptPhase": "save reusable styles",
+      "mdprImplementationSurface": "approval-bound theme/profile/rulebook registration targets"
+    }
+  ],
+  "features": [
+    {
+      "id": "multi-agent-portability",
+      "codexPptFeature": "Works across Codex, Claude Code, OpenClaw, Hermes Agent, and SKILL.md agents.",
+      "codexPptRefs": [
+        "README_en.md#features"
+      ],
+      "mdprRail": "mdpr-skill-orchestration",
+      "mdprAlternative": "skill instructions plus dependency-light CLI commands",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "skills/mdpr-skill/SKILL.md",
+        "bin/mdpr-skill.js"
+      ],
+      "acceptanceGate": "source-intake"
+    },
+    {
+      "id": "source-intake",
+      "codexPptFeature": "Uses articles, reports, papers, notes, Markdown, PDFs, and Word documents as source material.",
+      "codexPptRefs": [
+        "README_en.md#features",
+        "SKILL.md#Default Workflow"
+      ],
+      "mdprRail": "mdpr-runtime",
+      "mdprAlternative": "MDPR Markdown/Pandoc pipeline plus companion source review rails",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "MDPR parser",
+        "mdpr-skill narrative/citation/accessibility reviews"
+      ],
+      "acceptanceGate": "source-intake"
+    },
+    {
+      "id": "staged-approval-gates",
+      "codexPptFeature": "Requires outline, style, backend, sample, generation, QA, and assembly gates.",
+      "codexPptRefs": [
+        "workflow-gates-and-progress.md"
+      ],
+      "mdprRail": "mdpr-skill-orchestration",
+      "mdprAlternative": "proposal stages and MDPR validation gates instead of one-shot generation",
+      "implementationStatus": "proposal-ready",
+      "requiredMdprSurfaces": [
+        "change request stages",
+        "eval-core",
+        "review reports"
+      ],
+      "acceptanceGate": "outline-approval"
+    },
+    {
+      "id": "outline-planning",
+      "codexPptFeature": "Drafts slide roles, key points, visual ideas, and required source image mapping.",
+      "codexPptRefs": [
+        "outline-style-and-sample.md#Plan The Deck Outline"
+      ],
+      "mdprRail": "mdpr-skill-proposal",
+      "mdprAlternative": "Markdown outline cleanup plus slide role and split proposals",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "narrative review",
+        "edit-intent split candidate",
+        "source evidence ledger"
+      ],
+      "acceptanceGate": "outline-approval"
+    },
+    {
+      "id": "unified-style-selection",
+      "codexPptFeature": "Keeps one visual identity while varying layouts by page role.",
+      "codexPptRefs": [
+        "outline-style-and-sample.md#Confirm A Unified Visual Style"
+      ],
+      "mdprRail": "mdpr-runtime",
+      "mdprAlternative": "profile and rulebook selection with repeated-layout lint",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "design_components/rule-engine",
+        "coherence lint",
+        "theme candidate"
+      ],
+      "acceptanceGate": "style-approval"
+    },
+    {
+      "id": "built-in-style-references",
+      "codexPptFeature": "Ships reusable style references such as clean professional, dashboard, scientific defense, and magazine styles.",
+      "codexPptRefs": [
+        "README_en.md#Style Examples",
+        "references/*.md"
+      ],
+      "mdprRail": "mdpr-runtime",
+      "mdprAlternative": "theme packs, profiles, recipe catalogs, and style gallery examples",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "mdpresent pack list",
+        "mdpresent pack validate",
+        "theme gallery",
+        "profile catalog"
+      ],
+      "acceptanceGate": "style-approval"
+    },
+    {
+      "id": "custom-style-replication",
+      "codexPptFeature": "Analyzes a favorite image, PDF, PPT, or PPTX style before generating a new deck.",
+      "codexPptRefs": [
+        "README_en.md#Usage Tips",
+        "style-library.md"
+      ],
+      "mdprRail": "mdpr-skill-proposal",
+      "mdprAlternative": "DESIGN.md/theme candidate extraction from visible rendered references",
+      "implementationStatus": "proposal-ready",
+      "requiredMdprSurfaces": [
+        "design import",
+        "html design analysis",
+        "rendered preview review"
+      ],
+      "acceptanceGate": "style-approval"
+    },
+    {
+      "id": "reusable-style-library",
+      "codexPptFeature": "Saves a finished or supplied visual system for later use.",
+      "codexPptRefs": [
+        "style-library.md"
+      ],
+      "mdprRail": "mdpr-skill-proposal",
+      "mdprAlternative": "approval-bound theme/profile/rulebook/deck-local style pack registration",
+      "implementationStatus": "proposal-ready",
+      "requiredMdprSurfaces": [
+        "mdpr-theme-candidate-v1",
+        "registration.targets"
+      ],
+      "acceptanceGate": "style-library-save"
+    },
+    {
+      "id": "backend-selection",
+      "codexPptFeature": "Confirms built-in image backend versus CLI/API fallback before sample generation.",
+      "codexPptRefs": [
+        "backend-selection.md",
+        "cli-api-fallback.md"
+      ],
+      "mdprRail": "mdpr-generated-asset-rail",
+      "mdprAlternative": "generated visual asset rail for large/ambiguous visuals while MDPR owns final deck render",
+      "implementationStatus": "proposal-ready",
+      "requiredMdprSurfaces": [
+        "visualAssetCandidates",
+        "generated-image candidate",
+        "asset provenance"
+      ],
+      "acceptanceGate": "sample-or-preview-approval"
+    },
+    {
+      "id": "image-provider-fallback",
+      "codexPptFeature": "Supports OpenAI-compatible providers, AtlasCloud, base URL, and custom model names.",
+      "codexPptRefs": [
+        "image-model-configuration.md",
+        "README_en.md#features"
+      ],
+      "mdprRail": "mdpr-generated-asset-rail",
+      "mdprAlternative": "pluggable generated-asset provider metadata outside the core renderer",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "mdpr-generated-assets-v1",
+        "codex-ppt generated-assets validate",
+        "mdpresent generated-assets validate"
+      ],
+      "acceptanceGate": "sample-or-preview-approval"
+    },
+    {
+      "id": "sample-slide-approval",
+      "codexPptFeature": "Generates one sample slide before full production.",
+      "codexPptRefs": [
+        "outline-style-and-sample.md#Generate One Sample Slide For Approval"
+      ],
+      "mdprRail": "mdpr-skill-review",
+      "mdprAlternative": "MDPR preview build and rendered-preview approval before final export",
+      "implementationStatus": "proposal-ready",
+      "requiredMdprSurfaces": [
+        "rendered-preview review",
+        "eval-core baseline/guided comparison"
+      ],
+      "acceptanceGate": "sample-or-preview-approval"
+    },
+    {
+      "id": "project-directory-state",
+      "codexPptFeature": "Creates project folders with outline, prompts, run state, images, speech, and PPTX.",
+      "codexPptRefs": [
+        "project-assembly-and-reporting.md#Project Directory"
+      ],
+      "mdprRail": "mdpr-runtime",
+      "mdprAlternative": "MDPR output directory with manifest, design lock, review reports, and build artifacts",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "mdpresent-manifest.json",
+        "mdpresent-design-lock.json",
+        "review-report.json"
+      ],
+      "acceptanceGate": "job-state-preparation"
+    },
+    {
+      "id": "required-asset-insertion",
+      "codexPptFeature": "Maps paper figures, charts, screenshots, logos, and diagrams to target slides.",
+      "codexPptRefs": [
+        "user-supplied-assets.md"
+      ],
+      "mdprRail": "mdpr-runtime",
+      "mdprAlternative": "asset manifest and source-to-slide evidence ledger with strict fidelity notes",
+      "implementationStatus": "proposal-ready",
+      "requiredMdprSurfaces": [
+        "asset manifest",
+        "evidence ledger",
+        "renderer asset slots"
+      ],
+      "acceptanceGate": "source-intake"
+    },
+    {
+      "id": "per-slide-job-packets",
+      "codexPptFeature": "Writes self-contained per-slide prompt jobs with local context and input images.",
+      "codexPptRefs": [
+        "slide-generation-and-subagents.md#Final Slide Image Generation"
+      ],
+      "mdprRail": "mdpr-skill-orchestration",
+      "mdprAlternative": "per-slide review/eval packets derived from MDPR presentation and manifest data",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "codex-ppt slide-tasks",
+        "mdpr-slide-task-packet-v1",
+        "manifest slice export"
+      ],
+      "acceptanceGate": "job-state-preparation"
+    },
+    {
+      "id": "parallel-subagent-generation",
+      "codexPptFeature": "Dispatches one slide job per subagent after sample approval.",
+      "codexPptRefs": [
+        "slide-generation-and-subagents.md#Parallel Slide Generation With Subagents",
+        "prompts/slide-worker.md"
+      ],
+      "mdprRail": "mdpr-skill-orchestration",
+      "mdprAlternative": "parallel critical review or repair proposal workers around deterministic MDPR builds",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "codex-ppt slide-tasks",
+        "codex-ppt job-state",
+        "mdpr-job-state-v1"
+      ],
+      "acceptanceGate": "parallel-generation-or-render"
+    },
+    {
+      "id": "full-slide-image-generation",
+      "codexPptFeature": "Generates every final page as one full-slide image.",
+      "codexPptRefs": [
+        "SKILL.md#Overview",
+        "README_en.md#Output Example"
+      ],
+      "mdprRail": "mdpr-runtime",
+      "mdprAlternative": "editable-native-pptx-plus-generated-visual-assets",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "MDPR editable PPTX renderer",
+        "generated visual asset candidate rail"
+      ],
+      "acceptanceGate": "parallel-generation-or-render"
+    },
+    {
+      "id": "single-slide-revision",
+      "codexPptFeature": "Refines one specific slide rather than regenerating the whole deck.",
+      "codexPptRefs": [
+        "README_en.md#Usage Tips",
+        "cli-api-fallback.md#Editing Slides"
+      ],
+      "mdprRail": "mdpr-bridge",
+      "mdprAlternative": "edit intent, approved override candidate, and MDPR rebuild for the affected slide or section",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "edit-intent",
+        "user override candidate",
+        "change request"
+      ],
+      "acceptanceGate": "qa-repair-notes-assembly"
+    },
+    {
+      "id": "qa-repair-loop",
+      "codexPptFeature": "Checks text, outline match, truncation, style, page numbers, overlaps, and required assets before assembly.",
+      "codexPptRefs": [
+        "project-assembly-and-reporting.md#Quality Check And Repair"
+      ],
+      "mdprRail": "mdpr-skill-review",
+      "mdprAlternative": "review reports backed by MDPR validation and rendered preview evidence",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "review",
+        "rendered-preview",
+        "coherence lint",
+        "eval-core"
+      ],
+      "acceptanceGate": "qa-repair-notes-assembly"
+    },
+    {
+      "id": "speaker-notes",
+      "codexPptFeature": "Creates speaker notes and writes them into the PPT.",
+      "codexPptRefs": [
+        "project-assembly-and-reporting.md#Speaker Notes",
+        "README_en.md#features"
+      ],
+      "mdprRail": "mdpr-skill-proposal",
+      "mdprAlternative": "speaker-note review artifact plus MDPR PPTX notes support",
+      "implementationStatus": "proposal-ready",
+      "requiredMdprSurfaces": [
+        "speaker-notes command",
+        "MDPR notes import"
+      ],
+      "acceptanceGate": "qa-repair-notes-assembly"
+    },
+    {
+      "id": "pptx-assembly-export",
+      "codexPptFeature": "Assembles final slide pages into a PPTX.",
+      "codexPptRefs": [
+        "project-assembly-and-reporting.md#Assembly"
+      ],
+      "mdprRail": "mdpr-runtime",
+      "mdprAlternative": "editable PPTX/HTML/PDF export through MDPR, with image-slide mode only as explicit compatibility mode",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "MDPR PPTX renderer",
+        "HTML/PDF exporters"
+      ],
+      "acceptanceGate": "qa-repair-notes-assembly"
+    },
+    {
+      "id": "high-resolution-and-transparency",
+      "codexPptFeature": "Handles higher-resolution image output and transparency workarounds.",
+      "codexPptRefs": [
+        "cli-api-fallback.md#Capabilities And Sizes",
+        "cli-api-fallback.md#Transparent Backgrounds"
+      ],
+      "mdprRail": "mdpr-generated-asset-rail",
+      "mdprAlternative": "asset-level generation/editing policy for visual elements, not full-deck renderer replacement",
+      "implementationStatus": "supported",
+      "requiredMdprSurfaces": [
+        "mdpr-generated-assets-v1 request policy",
+        "quality/background/transparency validation warnings"
+      ],
+      "acceptanceGate": "sample-or-preview-approval"
+    }
+  ],
+  "implementationTodos": [],
+  "coverage": {
+    "codexPptFeatureCount": 21,
+    "mappedFeatureCount": 21,
+    "unmappedFeatureCount": 0,
+    "supportedCount": 14,
+    "proposalReadyCount": 7,
+    "mdprRuntimeRequiredCount": 0
+  }
+}

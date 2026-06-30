@@ -101,6 +101,11 @@ after explicit user approval.
 artifacts. They can contain tokens and PPT effect feasibility evidence, but
 they are not agent hints and must pass approval and MDPR pack import gates
 before runtime use.
+`mdpr-theme-candidate-v1` may also carry semantic layout blueprints,
+decoration families, and registration targets for `mdpr-theme-pack`,
+`mdpr-profile`, `mdpr-rulebook`, or `deck-local-style-pack`. Those fields are
+style-system proposals only. MDPR still owns final recipe selection, layout
+resolution, theme binding, design-lock updates, validation, and rendering.
 
 `schemas/mdpr-change-request.schema.json` defines `mdpr-change-request-v1`.
 It records proposal stages:

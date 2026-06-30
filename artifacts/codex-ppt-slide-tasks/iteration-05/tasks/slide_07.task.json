@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "mdpr-slide-task-packet-v1",
+  "generatedBy": "mdpr-skill",
+  "slide": {
+    "slideNumber": 7,
+    "slideId": "teaser-rubric-6df303",
+    "roles": [
+      "table",
+      "title"
+    ],
+    "objectKinds": [
+      "native-table",
+      "native-text"
+    ],
+    "editableObjectCount": 2
+  },
+  "localContext": {
+    "sourceHeading": "Teaser Rubric",
+    "markdownExcerpt": "| Criterion | Requirement | Failure Signal | | --- | --- | --- | | Focal message | One readable headline and primary object | no dominant title or all-text wall | | Hierarchy | title >= section >= body; proof objects carry emphasis | tiny title or random accents | | Coherence | same-rule layouts across every source | per-source manual styling | | Boundaries | text and shapes stay inside slide and parent boxes | overflow or clipped rows | | Teaser quality | resembles a paper/product teaser in density and polish | blank, generic, or palette-only output |"
+  },
+  "renderedPreview": {
+    "imagePath": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-07.png",
+    "evidenceId": "iteration-05-preview-07"
+  },
+  "validationExpectations": [
+    "Review semantic coherence, claim clarity, readability, and source fidelity for this slide only.",
+    "Use rendered preview evidence when present; do not infer pass/fail without MDPR validation artifacts.",
+    "Return review findings or repair proposals only. Do not emit coordinates, exact colors, z-order, renderer object ids, or final layout choices."
+  ],
+  "handoff": {
+    "workerScope": "single-slide-review-or-repair-proposal",
+    "requiredInputs": [
+      "this task packet",
+      "referenced rendered preview image when available",
+      "source excerpt embedded in localContext"
+    ],
+    "outputContract": [
+      "status: pass|needs-repair|blocked",
+      "qaNote: concise evidence-grounded note",
+      "repairProposal: optional semantic Markdown/rulebook/config suggestion"
+    ]
+  },
+  "boundary": {
+    "mdprOwnsFinalLayout": true,
+    "mdprOwnsFinalThemeBinding": true,
+    "noRendererInternals": true,
+    "forbiddenFieldCategories": [
+      "geometry",
+      "renderer-object-identity",
+      "z-order",
+      "exact-color",
+      "recipe-selection"
+    ]
+  }
+}

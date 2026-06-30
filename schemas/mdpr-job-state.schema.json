@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdpr.dev/schemas/mdpr-job-state.schema.json",
+  "title": "MDPR job state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedBy",
+    "source",
+    "completionEvidencePolicy",
+    "tasks",
+    "events",
+    "boundary"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "mdpr-job-state-v1" },
+    "generatedBy": { "type": "string" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "taskPacketSetPath": { "type": "string" },
+        "manifestPath": { "type": "string" }
+      }
+    },
+    "completionEvidencePolicy": { "const": "artifact-path-or-report-id-required" },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/task" }
+    },
+    "events": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/event" }
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mdprOwnsFinalLayout",
+        "mdprOwnsFinalThemeBinding",
+        "noRendererInternals",
+        "noChatMessageCompletion"
+      ],
+      "properties": {
+        "mdprOwnsFinalLayout": { "const": true },
+        "mdprOwnsFinalThemeBinding": { "const": true },
+        "noRendererInternals": { "const": true },
+        "noChatMessageCompletion": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "status": {
+      "enum": ["pending", "dispatched", "recorded", "blocked", "accepted"]
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slideNumber", "slideId", "status", "updatedAt"],
+      "properties": {
+        "slideNumber": { "type": "integer", "minimum": 1 },
+        "slideId": { "type": "string", "minLength": 1 },
+        "packetPath": { "type": "string" },
+        "status": { "$ref": "#/$defs/status" },
+        "workerId": { "type": "string" },
+        "evidencePath": { "type": "string" },
+        "blockerReason": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slideId", "to", "recordedAt"],
+      "properties": {
+        "slideId": { "type": "string", "minLength": 1 },
+        "from": { "$ref": "#/$defs/status" },
+        "to": { "$ref": "#/$defs/status" },
+        "workerId": { "type": "string" },
+        "evidencePath": { "type": "string" },
+        "blockerReason": { "type": "string" },
+        "recordedAt": { "type": "string" }
+      }
+    }
+  }
+}

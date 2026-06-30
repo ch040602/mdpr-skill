@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "mdpr-generated-assets-v1",
+  "generatedBy": "mdpr-skill",
+  "assets": [
+    {
+      "assetId": "external-md-architecture-visual",
+      "kind": "generated-image",
+      "purpose": "primary-visual",
+      "provider": {
+        "id": "openai-compatible",
+        "model": "image-model",
+        "promptHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceInputHashes": [
+          "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        ],
+        "supportsTransparency": false,
+        "supportedQualities": ["standard"]
+      },
+      "request": {
+        "size": "1536x1024",
+        "quality": "hd",
+        "background": "transparent",
+        "transparency": "required"
+      },
+      "output": {
+        "path": "assets/external-md-architecture-visual.png",
+        "mimeType": "image/png"
+      },
+      "boundary": {
+        "mdprOwnsPlacement": true,
+        "notFullSlideRenderer": true,
+        "noSecrets": true
+      }
+    }
+  ]
+}

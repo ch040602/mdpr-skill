@@ -4,7 +4,7 @@
   "title": "MDPR Theme Candidate",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "source", "tokens", "rationale", "requiresApproval"],
+  "required": ["schemaVersion", "source", "tokens", "styleSystem", "registration", "constraints", "rationale", "requiresApproval"],
   "properties": {
     "schemaVersion": { "const": "mdpr-theme-candidate-v1" },
     "source": {
@@ -34,6 +34,55 @@
         },
         "spacing": { "type": "object", "additionalProperties": { "type": "number" } },
         "shape": { "type": "object", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "styleSystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bestFor", "layoutIntents", "layoutBlueprints", "decorationFamilies"],
+      "properties": {
+        "bestFor": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "layoutIntents": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "layoutBlueprints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "intent", "description", "regions"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "intent": { "type": "string", "minLength": 1 },
+              "description": { "type": "string", "minLength": 1 },
+              "regions": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        "decorationFamilies": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "registration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["targets", "workflow"],
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "enum": ["mdpr-theme-pack", "mdpr-profile", "mdpr-rulebook", "deck-local-style-pack"]
+          }
+        },
+        "workflow": { "const": "proposal-review-approve-mdpr-import" }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mdprOwnsFinalLayout", "mdprOwnsFinalThemeBinding", "noRawUseInAgentHints", "requiresDesignLockUpdate"],
+      "properties": {
+        "mdprOwnsFinalLayout": { "const": true },
+        "mdprOwnsFinalThemeBinding": { "const": true },
+        "noRawUseInAgentHints": { "const": true },
+        "requiresDesignLockUpdate": { "const": true }
       }
     },
     "rationale": {

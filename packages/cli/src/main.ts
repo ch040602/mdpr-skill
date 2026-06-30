@@ -7,6 +7,10 @@ import { buildReviewReport, buildSourceSlideEvidenceLedger, renderReadmeTeaserSv
 import { runMdprSkillEval } from "../../eval-core/src/index.js";
 import { createChangeRequest, transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index.js";
 import { buildEditIntent, editIntentToOverrideCandidate, type EditIntentPreferences } from "../../edit-core/src/index.js";
+import { buildCodexPptCompatMap } from "./commands/codexPptCompat.js";
+import { validateGeneratedAssetsManifest } from "./commands/codexPptGeneratedAssets.js";
+import { createMdprJobState, summarizeMdprJobState, updateMdprJobState, validateMdprJobState, type MdprJobState } from "./commands/codexPptJobState.js";
+import { buildCodexPptSlideTaskPackets } from "./commands/codexPptSlideTasks.js";
 import { analyzeHtmlDesign, buildThemeCandidateFromDesignMd } from "./commands/design.js";
 import { runValidateSchemaSync } from "./commands/validateSchemaSync.js";
 
@@ -45,6 +49,7 @@ export function runCli(argv: string[], io: CliIo = defaultIo): number {
     if (command === "edit") return runEditCommand(args, io);
     if (command === "ppt") return runPptCommand(args, io);
     if (command === "design") return runDesignCommand(args, io);
+    if (command === "codex-ppt") return runCodexPptCommand(args, io);
     if (command === "teaser") return runTeaserCommand(args, io);
     if (command === "change") return runChangeCommand(args, io);
 
@@ -74,12 +79,130 @@ function helpText(): string {
     "  eval <deck.md> --out <dir> [--mdpr-path <MdPr>] [--hints <agent-hint.json>]",
     "  edit override-candidate --source-sha256 <64hex> --slide-ref <slide> --instruction <text> --split-by <h3|none> --out <override.json>",
     "  ppt propose --selection-context <selection-context.json> [--markdown <deck.md>] --out <change-request.json> [--hints-out <agent-hint.json>]",
-    "  design import <DESIGN.md> --out <theme-candidate.json>",
+    "  design import <DESIGN.md> --out <theme-candidate.json>  # tokens plus layout/decoration style-pack proposal",
     "  design analyze-html <file.html> --out <html-design-analysis.json>",
+    "  codex-ppt compat --out <compat-map.json> [--source-ref <repo@sha>]",
+    "  codex-ppt slide-tasks --manifest <mdpresent-manifest.json> [--markdown <deck.md>] [--rendered-images <images.json>] --out <dir>",
+    "  codex-ppt job-state init|update|status|validate --state <mdpr-job-state.json> [--tasks <slide-task-packets.json>] [--out <mdpr-job-state.json>]",
+    "  codex-ppt generated-assets validate --manifest <mdpr-generated-assets.json>",
     "  teaser --spec <readme-teaser.json> --out <readme-teaser.svg>",
     "  gate validate-schema-sync --mdpr-path <MdPr> [--shared-schema <name[,name]>]",
     "  change approve|reject <change-request.json> --out <change-request.json>",
   ].join("\n");
+}
+
+function runCodexPptCommand(args: string[], io: CliIo): number {
+  const subcommand = args.shift();
+  if (subcommand === "slide-tasks") return runCodexPptSlideTasksCommand(args, io);
+  if (subcommand === "job-state") return runCodexPptJobStateCommand(args, io);
+  if (subcommand === "generated-assets") return runCodexPptGeneratedAssetsCommand(args, io);
+  if (subcommand !== "compat") throw new Error("codex-ppt requires compat, slide-tasks, job-state, or generated-assets");
+  const options = parseOptions(args);
+  const outPath = requireOption(options, "out");
+  const report = buildCodexPptCompatMap(options["source-ref"]);
+  writeJson(outPath, report);
+  io.stdout(JSON.stringify({
+    status: report.coverage.unmappedFeatureCount === 0 ? "pass" : "fail",
+    out: outPath,
+    codexPptFeatureCount: report.coverage.codexPptFeatureCount,
+    mappedFeatureCount: report.coverage.mappedFeatureCount,
+    mdprRuntimeRequiredCount: report.coverage.mdprRuntimeRequiredCount,
+  }, null, 2));
+  return report.coverage.unmappedFeatureCount === 0 ? 0 : 1;
+}
+
+function runCodexPptGeneratedAssetsCommand(args: string[], io: CliIo): number {
+  const action = args.shift();
+  if (action !== "validate") throw new Error("codex-ppt generated-assets requires validate");
+  const options = parseOptions(args);
+  const validation = validateGeneratedAssetsManifest(readJson(requireOption(options, "manifest")));
+  const output = JSON.stringify(validation, null, 2);
+  if (validation.valid) io.stdout(output);
+  else io.stderr(output);
+  return validation.valid ? 0 : 1;
+}
+
+function runCodexPptJobStateCommand(args: string[], io: CliIo): number {
+  const action = args.shift();
+  if (!action) throw new Error("codex-ppt job-state requires init, update, status, or validate");
+  const options = parseOptions(args);
+  if (action === "init") {
+    const tasksPath = requireOption(options, "tasks");
+    const outPath = requireOption(options, "out");
+    const state = createMdprJobState({
+      taskPacketSet: readJson(tasksPath),
+      taskPacketSetPath: tasksPath,
+      manifestPath: options.manifest,
+    });
+    writeJson(outPath, state);
+    io.stdout(JSON.stringify({
+      status: "pass",
+      out: outPath,
+      taskCount: state.tasks.length,
+    }, null, 2));
+    return 0;
+  }
+
+  const statePath = requireOption(options, "state");
+  const state = readJson(statePath) as MdprJobState;
+  if (action === "update") {
+    const next = updateMdprJobState({
+      state,
+      slideId: requireOption(options, "slide"),
+      status: requireOption(options, "status"),
+      workerId: options["worker-id"],
+      evidencePath: options.evidence,
+      blockerReason: options["blocker-reason"],
+    });
+    const outPath = options.out ?? statePath;
+    writeJson(outPath, next);
+    const event = next.events[next.events.length - 1];
+    const task = next.tasks.find((item) => item.slideId === event?.slideId);
+    io.stdout(JSON.stringify({
+      status: "pass",
+      out: outPath,
+      slideId: task?.slideId,
+      taskStatus: task?.status,
+    }, null, 2));
+    return 0;
+  }
+  if (action === "status") {
+    io.stdout(JSON.stringify(summarizeMdprJobState(state), null, 2));
+    return 0;
+  }
+  if (action === "validate") {
+    const validation = validateMdprJobState(state);
+    io.stdout(JSON.stringify(validation, null, 2));
+    return validation.valid ? 0 : 1;
+  }
+  throw new Error(`Unknown codex-ppt job-state action: ${action}`);
+}
+
+function runCodexPptSlideTasksCommand(args: string[], io: CliIo): number {
+  const options = parseOptions(args);
+  const manifestPath = requireOption(options, "manifest");
+  const outDir = resolveInvocationPath(requireOption(options, "out"));
+  const markdownPath = options.markdown;
+  const renderedImagesPath = options["rendered-images"];
+  const result = buildCodexPptSlideTaskPackets({
+    manifest: readJson(manifestPath),
+    manifestPath,
+    markdown: markdownPath ? readText(markdownPath) : undefined,
+    markdownPath,
+    renderedImages: renderedImagesPath ? readJson(renderedImagesPath) : undefined,
+    renderedImagesPath,
+  });
+  mkdirSync(outDir, { recursive: true });
+  for (const file of result.packetFiles) {
+    writeJson(`${outDir}/${file.fileName}`, file.packet);
+  }
+  writeJson(`${outDir}/slide-task-packets.json`, result.index);
+  io.stdout(JSON.stringify({
+    status: "pass",
+    out: outDir,
+    packetCount: result.index.packetCount,
+  }, null, 2));
+  return 0;
 }
 
 function runSchemaSyncCommand(args: string[], io: CliIo): number {

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "mdpr-slide-task-packet-v1",
+  "generatedBy": "mdpr-skill",
+  "slide": {
+    "slideNumber": 28,
+    "slideId": "2-2-2a92df",
+    "roles": [
+      "body",
+      "title"
+    ],
+    "objectKinds": [
+      "native-text"
+    ],
+    "editableObjectCount": 3
+  },
+  "localContext": {
+    "sourceHeading": "18. NumPy",
+    "markdownExcerpt": "- **Source** numpy from https://raw.githubusercontent.com/numpy/numpy/main/README.md - **Structure** 0 headings, 0 table-like lines, 0 fenced code blocks. - ****Website** ** https://numpy.org - ****Documentation** ** https://numpy.org/doc - ****Mailing list** ** https://mail.python.org/mailman/listinfo/numpy-discussion - ****Source code** ** https://github.com/numpy/numpy"
+  },
+  "renderedPreview": {
+    "imagePath": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-28.png",
+    "evidenceId": "iteration-05-preview-28"
+  },
+  "validationExpectations": [
+    "Review semantic coherence, claim clarity, readability, and source fidelity for this slide only.",
+    "Use rendered preview evidence when present; do not infer pass/fail without MDPR validation artifacts.",
+    "Return review findings or repair proposals only. Do not emit coordinates, exact colors, z-order, renderer object ids, or final layout choices."
+  ],
+  "handoff": {
+    "workerScope": "single-slide-review-or-repair-proposal",
+    "requiredInputs": [
+      "this task packet",
+      "referenced rendered preview image when available",
+      "source excerpt embedded in localContext"
+    ],
+    "outputContract": [
+      "status: pass|needs-repair|blocked",
+      "qaNote: concise evidence-grounded note",
+      "repairProposal: optional semantic Markdown/rulebook/config suggestion"
+    ]
+  },
+  "boundary": {
+    "mdprOwnsFinalLayout": true,
+    "mdprOwnsFinalThemeBinding": true,
+    "noRendererInternals": true,
+    "forbiddenFieldCategories": [
+      "geometry",
+      "renderer-object-identity",
+      "z-order",
+      "exact-color",
+      "recipe-selection"
+    ]
+  }
+}

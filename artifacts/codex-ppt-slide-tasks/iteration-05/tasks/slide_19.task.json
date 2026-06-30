@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "mdpr-slide-task-packet-v1",
+  "generatedBy": "mdpr-skill",
+  "slide": {
+    "slideNumber": 19,
+    "slideId": "1-3-74bc53",
+    "roles": [
+      "body",
+      "title"
+    ],
+    "objectKinds": [
+      "native-text"
+    ],
+    "editableObjectCount": 3
+  },
+  "localContext": {
+    "sourceHeading": "09. OpenAI Python API library",
+    "markdownExcerpt": "- **Before** Imported Markdown often becomes a repeated list-card continuation. - **After** The same source is routed through comparison, table, chart, or diagram layouts when the structure supports it."
+  },
+  "renderedPreview": {
+    "imagePath": "artifacts\\external-markdown-visual-eval\\iteration-05\\png\\slide-19.png",
+    "evidenceId": "iteration-05-preview-19"
+  },
+  "validationExpectations": [
+    "Review semantic coherence, claim clarity, readability, and source fidelity for this slide only.",
+    "Use rendered preview evidence when present; do not infer pass/fail without MDPR validation artifacts.",
+    "Return review findings or repair proposals only. Do not emit coordinates, exact colors, z-order, renderer object ids, or final layout choices."
+  ],
+  "handoff": {
+    "workerScope": "single-slide-review-or-repair-proposal",
+    "requiredInputs": [
+      "this task packet",
+      "referenced rendered preview image when available",
+      "source excerpt embedded in localContext"
+    ],
+    "outputContract": [
+      "status: pass|needs-repair|blocked",
+      "qaNote: concise evidence-grounded note",
+      "repairProposal: optional semantic Markdown/rulebook/config suggestion"
+    ]
+  },
+  "boundary": {
+    "mdprOwnsFinalLayout": true,
+    "mdprOwnsFinalThemeBinding": true,
+    "noRendererInternals": true,
+    "forbiddenFieldCategories": [
+      "geometry",
+      "renderer-object-identity",
+      "z-order",
+      "exact-color",
+      "recipe-selection"
+    ]
+  }
+}
