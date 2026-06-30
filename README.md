@@ -54,6 +54,14 @@ assets, and PPTX rendering. See
 and the generated artifacts under
 `artifacts/icon-image-fallback-comparison/`.
 
+![Plain Codex advice, MDPR, and mdpr-skill plus MDPR workflow comparison](docs/assets/mdpr-mode-comparison.png)
+
+| Workflow | What it is best at | Practical limit | Why `mdpr-skill + MDPR` is stronger |
+| --- | --- | --- | --- |
+| Plain Codex advice | Fast narrative and design suggestions | Advice is prose; it has no schema-valid MDPR handoff, source hash guard, or deterministic replay path | Useful ideas become safer only after they are converted into bounded, reviewable artifacts |
+| MDPR | Deterministic Markdown-to-PPTX generation, editable PPTX, parser/layout/render ownership | It intentionally avoids LLM judgment and does not infer ambiguous visual intent | It remains the final runtime, so skill assistance does not weaken reproducibility |
+| `mdpr-skill + MDPR` | Semantic hints, review notes, stale-source checks, and generated-image candidates for large or ambiguous icon slots | It must not choose coordinates, exact assets, colors, z-order, or renderer object IDs | Adds quality guidance while preserving MDPR as the deterministic renderer and validation boundary |
+
 ## Repository Structure
 
 ```text
@@ -309,6 +317,7 @@ Generated review artifacts include:
 - `artifacts/theme-decoration-review/theme-decoration-review-iteration-report.json`
 - `docs/assets/theme-style-cover-contact-sheet.png`
 - `docs/assets/theme-style-proof-contact-sheet.png`
+- `docs/assets/mdpr-mode-comparison.png`
 - `docs/assets/theme-decoration-review-matrix.png`
 - `docs/assets/pipeline-overview.pptx`
 - `docs/assets/pipeline-overview.png`

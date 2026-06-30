@@ -485,6 +485,14 @@ class ReleaseCiContractTest(unittest.TestCase):
 
         self.assertEqual(visible_hits, [])
 
+    def test_readme_comparison_image_is_committed(self):
+        readme_text = (ROOT / "README.md").read_text(encoding="utf-8")
+        comparison_image = ROOT / "docs" / "assets" / "mdpr-mode-comparison.png"
+
+        self.assertIn("docs/assets/mdpr-mode-comparison.png", readme_text)
+        self.assertTrue(comparison_image.exists(), "README comparison image should be committed")
+        self.assertGreater(comparison_image.stat().st_size, 10_000)
+
     def test_release_checklist_records_external_trusted_publisher_step(self):
         text = (ROOT / "docs" / "release-checklist.md").read_text(encoding="utf-8")
 
