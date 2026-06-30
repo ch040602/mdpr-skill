@@ -490,7 +490,12 @@ class ReleaseCiContractTest(unittest.TestCase):
         comparison_image = ROOT / "docs" / "assets" / "mdpr-mode-comparison.png"
 
         self.assertIn("docs/assets/mdpr-mode-comparison.png", readme_text)
-        self.assertIn("Codex `$presentations`", readme_text)
+        self.assertIn("Codex $presentations", readme_text)
+        self.assertIn("MDPR", readme_text)
+        self.assertIn("mdpr-skill + MDPR", readme_text)
+        self.assertNotIn("| " + "Workflow" + " |", readme_text)
+        self.assertNotIn("What it is " + "best at", readme_text)
+        self.assertNotIn("Practical " + "limit", readme_text)
         self.assertNotIn("Plain " + "Codex " + "advice", readme_text)
         self.assertNotIn("Evidence " + "source", readme_text)
         self.assertTrue(comparison_image.exists(), "README comparison image should be committed")

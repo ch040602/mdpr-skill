@@ -54,16 +54,7 @@ assets, and PPTX rendering. See
 and the generated artifacts under
 `artifacts/icon-image-fallback-comparison/`.
 
-![Codex presentations, MDPR, and mdpr-skill plus MDPR rendered output comparison](docs/assets/mdpr-mode-comparison.png)
-
-The comparison image uses enlarged crops from real rendered slides so the
-readability delta remains visible inside the README.
-
-| Workflow | What it is best at | Practical limit | Why `mdpr-skill + MDPR` is stronger |
-| --- | --- | --- | --- |
-| Codex `$presentations` | High-polish artifact-tool PPTX composition with strong editorial hierarchy | It is a standalone presentation authoring path, not the deterministic MDPR runtime | It sets a visible quality bar for coherence and readability |
-| MDPR | Deterministic Markdown-to-PPTX generation, editable PPTX, parser/layout/render ownership | Dense semantic ideas can still render as a correct but paragraph-heavy slide | It remains the final runtime, so skill assistance does not weaken reproducibility |
-| `mdpr-skill + MDPR` | Semantic hints, review notes, stale-source checks, and generated-image candidates for large or ambiguous icon slots | It must not choose coordinates, exact assets, colors, z-order, or renderer object IDs | Adds grouping, ownership, and scan-order guidance while preserving MDPR as the deterministic renderer and validation boundary |
+![Codex $presentations, MDPR, and mdpr-skill + MDPR comparison](docs/assets/mdpr-mode-comparison.png)
 
 ## Repository Structure
 
