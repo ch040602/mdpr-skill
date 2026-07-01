@@ -176,6 +176,26 @@ class ExternalMarkdownVisualEvalTests(unittest.TestCase):
             self.assertIn(dimension, ledger["superiority"]["wonDimensions"])
         self.assertEqual(ledger["missingEvidenceArtifacts"], [])
 
+    def test_request_completion_ledger_normalizes_windows_artifact_paths_for_ci(self):
+        module = load_eval_module()
+        report_path = ROOT / "artifacts" / "external-markdown-visual-eval" / "external-markdown-visual-eval-report.json"
+        summary = json.loads(report_path.read_text(encoding="utf-8"))
+
+        summary["dominanceComparisonLedgerPath"] = summary["dominanceComparisonLedgerPath"].replace("/", "\\")
+        summary["finalPptx"] = summary["finalPptx"].replace("/", "\\")
+        summary["finalContactSheet"] = summary["finalContactSheet"].replace("/", "\\")
+        probe = summary["presentationsReference"]["probeBattle"]
+        probe["manifest"] = probe["manifest"].replace("/", "\\")
+        probe["aggregateContactSheets"] = [path.replace("/", "\\") for path in probe["aggregateContactSheets"]]
+        for report in summary["iterationReports"]:
+            report["codexPptPptx"] = report["codexPptPptx"].replace("/", "\\")
+
+        ledger = module.build_request_completion_ledger(summary)
+
+        self.assertTrue(ledger["ok"])
+        self.assertEqual(ledger["missingEvidenceArtifacts"], [])
+        self.assertTrue(all("\\" not in path for path in ledger["evidenceArtifacts"]))
+
 
 if __name__ == "__main__":
     unittest.main()

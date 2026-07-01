@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import re
 import subprocess
 import unittest
 
@@ -147,6 +148,20 @@ class ReleaseCiContractTest(unittest.TestCase):
         self.assertIn("if: ${{ github.event_name == 'release' }}", release_text)
         self.assertNotIn("|| inputs.dry_run == 'false'", release_text)
         self.assertNotIn("NPM_TOKEN", release_text)
+
+    def test_github_actions_workflows_are_only_under_workflows_directory(self):
+        workflows = ROOT / ".github" / "workflows"
+        workflow_files = sorted(workflows.glob("*.yml"))
+
+        self.assertGreaterEqual(len(workflow_files), 1, "GitHub Actions workflows must live in .github/workflows")
+        misplaced = []
+        for path in (ROOT / ".github").rglob("*.yml"):
+            text = path.read_text(encoding="utf-8")
+            looks_like_actions_workflow = "jobs:" in text and re.search(r"(^|\n)on:\s*(\n|$)", text)
+            if looks_like_actions_workflow and path.parent != workflows:
+                misplaced.append(str(path.relative_to(ROOT)))
+
+        self.assertEqual(misplaced, [], "GitHub Actions workflow files must not be placed outside .github/workflows")
 
     def test_ci_installs_python_test_dependencies(self):
         requirements = ROOT / "requirements-ci.txt"
@@ -490,9 +505,10 @@ class ReleaseCiContractTest(unittest.TestCase):
         comparison_image = ROOT / "docs" / "assets" / "mdpr-mode-comparison.png"
 
         self.assertIn("docs/assets/mdpr-mode-comparison.png", readme_text)
-        self.assertIn("Codex $presentations", readme_text)
+        self.assertIn("Codex presentations", readme_text)
         self.assertIn("MDPR", readme_text)
-        self.assertIn("mdpr-skill + MDPR", readme_text)
+        self.assertIn("mdpr-skill plus MDPR", readme_text)
+        self.assertIn("External Markdown visual evaluation contact sheet", readme_text)
         self.assertNotIn("| " + "Workflow" + " |", readme_text)
         self.assertNotIn("What it is " + "best at", readme_text)
         self.assertNotIn("Practical " + "limit", readme_text)

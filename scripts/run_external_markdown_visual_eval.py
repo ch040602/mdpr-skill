@@ -1111,11 +1111,15 @@ def build_request_completion_ledger(summary: dict[str, Any]) -> dict[str, Any]:
         for report in iteration_reports
         if isinstance(report, dict) and report.get("codexPptPptx")
     )
-    normalized_paths = [path for path in evidence_paths if isinstance(path, str) and path]
+    normalized_paths = [
+        normalize_artifact_path(path)
+        for path in evidence_paths
+        if isinstance(path, str) and path
+    ]
     missing_paths = [
         path
         for path in normalized_paths
-        if not (ROOT / path).exists()
+        if not resolve_artifact_path(path).exists()
     ]
     checks = {
         "codexPptFeatureCoverage": coverage.get("unmappedFeatureCount") == 0
@@ -1177,8 +1181,16 @@ def build_request_completion_ledger(summary: dict[str, Any]) -> dict[str, Any]:
 def infer_png_dir(contact_sheet_path: str | None) -> Path | None:
     if not contact_sheet_path:
         return None
-    contact = ROOT / contact_sheet_path
+    contact = resolve_artifact_path(contact_sheet_path)
     return contact.parent / "png"
+
+
+def normalize_artifact_path(path: str) -> str:
+    return path.replace("\\", "/").lstrip("./")
+
+
+def resolve_artifact_path(path: str) -> Path:
+    return ROOT / Path(*normalize_artifact_path(path).split("/"))
 
 
 def summarize(records: list[dict[str, Any]], reports: list[dict[str, Any]]) -> dict[str, Any]:
