@@ -20,6 +20,13 @@ Closes #
 - [ ] Visual or generated-artifact evidence attached when output changes.
 - [ ] Not run, with reason:
 
+## Contributor Evidence
+
+- [ ] Corpus PR includes source, license/public provenance, and stress point.
+- [ ] Visual-review PR includes PNG/PPTX/manifest/report evidence.
+- [ ] Theme-candidate PR stays approval-bound and does not claim MDPR runtime availability before import gates.
+- [ ] Documentation PR links the confusing section or user workflow it improves.
+
 ## Release Impact
 
 - [ ] No user-visible release note needed.

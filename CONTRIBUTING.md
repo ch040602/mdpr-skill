@@ -27,6 +27,31 @@ This repository is the optional Codex skill companion for
 - Use `mdpr-skill` for agent-side review workflows, hint schemas, validation
   artifacts, and documentation about the MDPR handoff.
 
+## First PR Lanes
+
+Good first contributions should be small, reproducible, and evidence-backed.
+The most useful PRs usually fit one of these lanes:
+
+| Lane | Good first PR | Evidence to include |
+| --- | --- | --- |
+| Markdown corpus | Add one public Markdown source or fixture that stresses lists, tables, code, diagrams, claims, or section depth. | Source link, cleaned fixture if needed, expected stress point. |
+| Visual review case | Add or improve one rendered-preview review fixture, report, or contact-sheet note. | PNG/PPTX path, manifest/report path, short before/after note. |
+| Theme candidate | Add one approval-bound `mdpr-theme-candidate-v1` example from a source-neutral `DESIGN.md`. | DESIGN.md excerpt, generated candidate JSON, boundary note. |
+| Schema/example sync | Keep CLI examples, schemas, fixtures, and README snippets aligned. | Focused test command and changed files. |
+| Documentation | Clarify MDPR vs mdpr-skill routing, install flow, or contribution workflow. | Link to the confusing section and the updated wording. |
+
+Starter issues should use one of these labels when maintainers triage them:
+
+- `good first issue`: small, well-scoped, no private context required.
+- `help wanted`: useful external contribution, maintainer review needed.
+- `area: corpus`: Markdown corpus, fixtures, or source cleaning.
+- `area: visual-review`: rendered evidence, review reports, or eval artifacts.
+- `area: theme-candidate`: DESIGN.md and theme/style proposal examples.
+
+For PRs that touch MDPR runtime behavior, open or link an MDPR issue first.
+This repository should not absorb parser, layout, renderer, theme-binding, or
+PPTX object ownership changes.
+
 ## Pull Request Requirements
 
 Every PR should include:

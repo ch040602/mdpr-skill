@@ -1,0 +1,65 @@
+name: Theme or Review Case
+description: Propose a reusable style, theme-candidate, or visual review workflow.
+title: "[Review Case]: "
+labels: ["triage", "help wanted", "area: visual-review"]
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for mdpr-skill-side review workflows, DESIGN.md-derived theme candidates, and visual evidence loops. MDPR still owns final layout, theme binding, geometry, z-order, and PPTX objects.
+  - type: dropdown
+    id: case-type
+    attributes:
+      label: Case type
+      options:
+        - rendered preview review
+        - theme candidate from DESIGN.md
+        - accessibility/content review
+        - evidence ledger
+        - speaker notes/reviewer comments
+        - codex-ppt compatibility rail
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow
+      description: Describe the user workflow this case should support.
+      placeholder: "A maintainer wants to review 20 rendered slide PNGs and turn repeated issues into MDPR rulebook suggestions."
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence you can provide
+      description: Link or list Markdown, manifest, PNG, PPTX, DESIGN.md, report JSON, or fixture paths.
+      placeholder: |
+        source.md
+        mdpresent-manifest.json
+        contact-sheet.png
+        candidate.theme-candidate.json
+    validations:
+      required: true
+  - type: dropdown
+    id: ownership
+    attributes:
+      label: Ownership boundary
+      options:
+        - mdpr-skill hint/review/proposal only
+        - MDPR runtime issue should be opened first
+        - both, with explicit handoff evidence
+        - unsure
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation plan
+      description: Name the test, schema, or artifact check that should prove this case works.
+      placeholder: |
+        npm run test:cli-main
+        npm run test:schema-sync
+        node bin/mdpr-skill.js design import ...
+    validations:
+      required: true

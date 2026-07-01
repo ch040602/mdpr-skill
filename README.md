@@ -27,6 +27,18 @@ the main MDPR repository:
 - Preview gallery: https://ch040602.github.io/MdPr/theme-preview/
 - New issue: https://github.com/ch040602/MdPr/issues/new/choose
 
+Looking for a first useful PR? Bring one real Markdown deck, one visual review
+case, or one reusable style proposal:
+
+- Add a public Markdown corpus case:
+  https://github.com/ch040602/mdpr-skill/issues/new?template=markdown_corpus.yml
+- Propose a reusable review/theme workflow:
+  https://github.com/ch040602/mdpr-skill/issues/new?template=theme_or_review_case.yml
+- Pick a bounded starter task:
+  https://github.com/ch040602/mdpr-skill/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
+- Read the contributor lanes:
+  [CONTRIBUTING.md](CONTRIBUTING.md#first-pr-lanes)
+
 ![Codex presentations, MDPR, and mdpr-skill plus MDPR visual comparison](docs/assets/mdpr-mode-comparison.png)
 
 ## Visual Proof
@@ -110,6 +122,9 @@ Participation standards are in [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 User-visible release notes are tracked in [CHANGELOG.md](CHANGELOG.md).
 Support routing for MDPR runtime issues, mdpr-skill bugs, feature requests, and
 security reports is in [SUPPORT.md](SUPPORT.md).
+
+Maintainer-ready launch copy, community posting targets, and PR recruitment
+messages live in [promotion/contributor-outreach-kit.md](promotion/contributor-outreach-kit.md).
 
 ## Installation
 

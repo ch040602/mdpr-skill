@@ -9,6 +9,9 @@
 - `area: cli`
 - `area: schemas`
 - `area: docs`
+- `area: corpus`
+- `area: visual-review`
+- `area: theme-candidate`
 - `type: feature`
 - `type: refactor`
 - `type: test`
@@ -17,4 +20,6 @@
 - `priority: p1`
 - `priority: p2`
 - `blocked`
+- `good first issue`
 - `good first follow-up`
+- `help wanted`

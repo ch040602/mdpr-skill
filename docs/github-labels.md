@@ -11,6 +11,11 @@ grouping, and release-note generation behave predictably.
 | `triage` | issue forms | New public reports that need owner review. |
 | `type: bug` | bug issue form, release notes | Reproducible mdpr-skill defects. |
 | `type: feature` | feature issue form, release notes | User-visible mdpr-skill improvements. |
+| `good first issue` | maintainer triage | Small starter task with enough context for a first PR. |
+| `help wanted` | maintainer triage, corpus/review issue forms | External contribution would be useful after maintainer review. |
+| `area: corpus` | Markdown corpus issue form | Public Markdown source, fixture, or source-cleaning contribution. |
+| `area: visual-review` | theme/review issue form | Rendered evidence, review report, visual eval, or contact-sheet contribution. |
+| `area: theme-candidate` | theme/review issue form | DESIGN.md, theme-candidate, profile, or style-pack proposal. |
 
 ## Release Note Labels
 
@@ -52,6 +57,11 @@ creating a duplicate.
 gh label create "triage" --color "ededed" --description "Needs maintainer triage"
 gh label create "type: bug" --color "d73a4a" --description "Reproducible mdpr-skill defect"
 gh label create "type: feature" --color "a2eeef" --description "User-visible mdpr-skill improvement"
+gh label create "good first issue" --color "7057ff" --description "Small starter task with enough context for a first PR"
+gh label create "help wanted" --color "008672" --description "External contribution wanted after maintainer triage"
+gh label create "area: corpus" --color "c5def5" --description "Markdown corpus, fixtures, and source-cleaning cases"
+gh label create "area: visual-review" --color "bfd4f2" --description "Rendered evidence, review reports, and visual eval artifacts"
+gh label create "area: theme-candidate" --color "d4c5f9" --description "DESIGN.md and theme/style proposal cases"
 gh label create "breaking-change" --color "b60205" --description "Breaking behavior or API change"
 gh label create "Semver-Major" --color "b60205" --description "Major-version release note"
 gh label create "enhancement" --color "a2eeef" --description "Feature or improvement"

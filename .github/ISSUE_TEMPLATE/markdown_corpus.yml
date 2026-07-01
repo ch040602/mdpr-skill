@@ -1,0 +1,61 @@
+name: Markdown Corpus Case
+description: Contribute a public Markdown source or fixture for visual evaluation.
+title: "[Corpus]: "
+labels: ["triage", "help wanted", "area: corpus"]
+type: feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when you want to contribute a real Markdown case that should improve mdpr-skill review coverage. Parser, layout, renderer, or PPTX runtime bugs should be routed to MDPR first.
+  - type: input
+    id: source
+    attributes:
+      label: Public source or fixture path
+      description: Link the public Markdown source, or name the fixture path you plan to add.
+      placeholder: "https://github.com/org/project/blob/main/README.md"
+    validations:
+      required: true
+  - type: dropdown
+    id: stress
+    attributes:
+      label: Primary stress point
+      options:
+        - long nested lists
+        - dense tables
+        - code-heavy sections
+        - diagrams or pipelines
+        - charts or numeric claims
+        - citation/evidence flow
+        - section splitting
+        - mixed content
+    validations:
+      required: true
+  - type: textarea
+    id: expected-value
+    attributes:
+      label: Why this belongs in the corpus
+      description: Explain the deck behavior this case should exercise.
+      placeholder: "This README has nested API sections and dense option tables that usually produce clipped slides."
+    validations:
+      required: true
+  - type: textarea
+    id: artifact-plan
+    attributes:
+      label: Planned evidence
+      description: List the output or validation evidence you can provide.
+      placeholder: |
+        npm run test:external-md-eval
+        contact sheet path
+        visual-evaluation.json path
+    validations:
+      required: false
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Source rights and boundary
+      options:
+        - label: The source is public and can be referenced or represented as a small fixture under its license.
+          required: true
+        - label: I am not asking mdpr-skill to choose final coordinates, exact colors, z-order, renderer object IDs, or exact icon assets.
+          required: true
