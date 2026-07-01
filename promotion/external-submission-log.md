@@ -1,16 +1,35 @@
 # External Promotion Submission Log
 
 As of 2026-07-01, these external promotion actions have been executed for
-MDPR and mdpr-skill.
+MDPR and mdpr-skill. Promotional pull requests are kept only on repositories
+with at least 1,000 GitHub stars.
 
-## Submitted
+## Active 1,000+ Star Pull Requests
 
 | Channel | Type | Link | Status |
 | --- | --- | --- | --- |
-| mundimark/awesome-markdown | Pull request | https://github.com/mundimark/awesome-markdown/pull/112 | Open |
-| runablehq/Awesome-presentation-tools | Pull request | https://github.com/runablehq/Awesome-presentation-tools/pull/7 | Open |
-| fsciuti/awesome-speaker | Pull request | https://github.com/fsciuti/awesome-speaker/pull/19 | Open |
+| mundimark/awesome-markdown-editors | Pull request | https://github.com/mundimark/awesome-markdown-editors/pull/187 | Open; target had 2,154 stars when submitted |
+
+## Closed Or Removed Pull Requests
+
+| Channel | Type | Link | Status |
+| --- | --- | --- | --- |
+| mundimark/awesome-markdown | Pull request | https://github.com/mundimark/awesome-markdown/pull/112 | Closed; old fork branch is no longer available |
+| runablehq/Awesome-presentation-tools | Pull request | https://github.com/runablehq/Awesome-presentation-tools/pull/7 | Closed; target had 25 stars |
+| fsciuti/awesome-speaker | Pull request | https://github.com/fsciuti/awesome-speaker/pull/19 | Closed; target had 191 stars |
+
+## Non-PR Outreach
+
+| Channel | Type | Link | Status |
+| --- | --- | --- | --- |
 | GitHub Gist: List of markdown presentation tools | Comment | https://gist.github.com/johnloy/27dd124ad40e210e91c70dd1c24ac8c8#gistcomment-6224804 | Posted |
+
+## Audited 1,000+ Star Candidates
+
+| Channel | Stars | Decision |
+| --- | ---: | --- |
+| favourhong/Awesome-Marp | 1,026 | Skipped; repository is a Marp theme package, not a general external listing for Markdown presentation tools. |
+| mundimark/awesome-markdown-editors | 2,154 | Submitted to `UPCOMING.md` under `Misc` because the list accepts Markdown apps, tools, libraries, and services. |
 
 ## Account-Gated Channels
 
@@ -28,7 +47,7 @@ history, or API token before posting. Use
 
 ## Follow-Up
 
-- Watch the three external PRs and respond to maintainer feedback.
+- Watch the active 1,000+ star external PR and respond to maintainer feedback.
 - Avoid cross-posting identical copy to many communities on the same day.
 - Prefer technical feedback asks over generic star requests.
 - Route MDPR runtime questions to https://github.com/ch040602/MdPr.
