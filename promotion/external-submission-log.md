@@ -4,11 +4,11 @@ As of 2026-07-01, these external promotion actions have been executed for
 MDPR and mdpr-skill. Promotional pull requests are kept only on repositories
 with at least 1,000 GitHub stars.
 
-## Active 1,000+ Star Pull Requests
+## Accepted 1,000+ Star Listings
 
 | Channel | Type | Link | Status |
 | --- | --- | --- | --- |
-| mundimark/awesome-markdown-editors | Pull request | https://github.com/mundimark/awesome-markdown-editors/pull/187 | Open; target had 2,154 stars when submitted |
+| mundimark/awesome-markdown-editors | Pull request | https://github.com/mundimark/awesome-markdown-editors/pull/187 | Merged into `UPCOMING.md`; target had 2,154 stars when submitted |
 
 ## Closed Or Removed Pull Requests
 
@@ -29,7 +29,7 @@ with at least 1,000 GitHub stars.
 | Channel | Stars | Decision |
 | --- | ---: | --- |
 | favourhong/Awesome-Marp | 1,026 | Skipped; repository is a Marp theme package, not a general external listing for Markdown presentation tools. |
-| mundimark/awesome-markdown-editors | 2,154 | Submitted to `UPCOMING.md` under `Misc` because the list accepts Markdown apps, tools, libraries, and services. |
+| mundimark/awesome-markdown-editors | 2,154 | Merged into `UPCOMING.md` under `Misc` because the list accepts Markdown apps, tools, libraries, and services. |
 
 ## Account-Gated Channels
 
@@ -47,7 +47,8 @@ history, or API token before posting. Use
 
 ## Follow-Up
 
-- Watch the active 1,000+ star external PR and respond to maintainer feedback.
+- Watch for maintainer follow-up or future promotion from `UPCOMING.md` into
+  the main list.
 - Avoid cross-posting identical copy to many communities on the same day.
 - Prefer technical feedback asks over generic star requests.
 - Route MDPR runtime questions to https://github.com/ch040602/MdPr.
