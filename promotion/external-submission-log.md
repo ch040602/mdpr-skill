@@ -10,6 +10,13 @@ with at least 1,000 GitHub stars.
 | --- | --- | --- | --- |
 | mundimark/awesome-markdown-editors | Pull request | https://github.com/mundimark/awesome-markdown-editors/pull/187 | Merged into `UPCOMING.md`; target had 2,154 stars when submitted |
 
+## Active 1,500+ Star mdpr-skill Pull Requests
+
+| Channel | Type | Link | Status |
+| --- | --- | --- | --- |
+| ComposioHQ/awesome-codex-skills | Pull request | https://github.com/ComposioHQ/awesome-codex-skills/pull/148 | Open and mergeable; target had 14,432 stars when submitted |
+| VoltAgent/awesome-agent-skills | Pull request | https://github.com/VoltAgent/awesome-agent-skills/pull/745 | Open and mergeable; target had 27,007 stars when submitted |
+
 ## Closed Or Removed Pull Requests
 
 | Channel | Type | Link | Status |
@@ -30,6 +37,8 @@ with at least 1,000 GitHub stars.
 | --- | ---: | --- |
 | favourhong/Awesome-Marp | 1,026 | Skipped; repository is a Marp theme package, not a general external listing for Markdown presentation tools. |
 | mundimark/awesome-markdown-editors | 2,154 | Merged into `UPCOMING.md` under `Misc` because the list accepts Markdown apps, tools, libraries, and services. |
+| ComposioHQ/awesome-codex-skills | 14,432 | Submitted because it is a Codex skill-specific curated list. |
+| VoltAgent/awesome-agent-skills | 27,007 | Submitted under `Community Skills > Productivity and Collaboration`; description kept within the repository's 10-word rule. |
 
 ## Account-Gated Channels
 
@@ -47,6 +56,7 @@ history, or API token before posting. Use
 
 ## Follow-Up
 
+- Watch the active 1,500+ star mdpr-skill PRs and respond to maintainer feedback.
 - Watch for maintainer follow-up or future promotion from `UPCOMING.md` into
   the main list.
 - Avoid cross-posting identical copy to many communities on the same day.
