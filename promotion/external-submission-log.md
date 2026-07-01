@@ -16,6 +16,7 @@ with at least 1,000 GitHub stars.
 | --- | --- | --- | --- |
 | ComposioHQ/awesome-codex-skills | Pull request | https://github.com/ComposioHQ/awesome-codex-skills/pull/148 | Open and mergeable; target had 14,432 stars when submitted |
 | VoltAgent/awesome-agent-skills | Pull request | https://github.com/VoltAgent/awesome-agent-skills/pull/745 | Open and mergeable; target had 27,007 stars when submitted |
+| sickn33/antigravity-awesome-skills | Pull request | https://github.com/sickn33/antigravity-awesome-skills/pull/767 | Open and mergeable; target had 42,138 stars when submitted, with multiple same-day merged PRs |
 
 ## Closed Or Removed Pull Requests
 
@@ -39,6 +40,7 @@ with at least 1,000 GitHub stars.
 | mundimark/awesome-markdown-editors | 2,154 | Merged into `UPCOMING.md` under `Misc` because the list accepts Markdown apps, tools, libraries, and services. |
 | ComposioHQ/awesome-codex-skills | 14,432 | Submitted because it is a Codex skill-specific curated list. |
 | VoltAgent/awesome-agent-skills | 27,007 | Submitted under `Community Skills > Productivity and Collaboration`; description kept within the repository's 10-word rule. |
+| sickn33/antigravity-awesome-skills | 42,138 | Submitted because it is an installable multi-agent skill library for Codex CLI, Antigravity, Claude Code, Cursor, Gemini CLI, and similar tools; recent merged PRs on 2026-07-01 indicate active acceptance. |
 
 ## Account-Gated Channels
 
