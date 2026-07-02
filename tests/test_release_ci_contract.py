@@ -9,6 +9,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ReleaseCiContractTest(unittest.TestCase):
+    def assertActionPinned(self, workflow_text, action_name):
+        pattern = rf"uses:\s+{re.escape(action_name)}@[a-f0-9]{{40}}(?:\s+#\s+v[0-9][^\n]*)?"
+        self.assertRegex(workflow_text, pattern)
+
     def test_package_metadata_supports_npm_provenance(self):
         package_json = json.loads((ROOT / "package.json").read_text(encoding="utf-8"))
         npm_install_smoke_text = (ROOT / "tests" / "npm-install-smoke.test.ts").read_text(encoding="utf-8")
@@ -200,8 +204,8 @@ class ReleaseCiContractTest(unittest.TestCase):
 
         self.assertTrue(codeql.exists(), "public repositories should run CodeQL scanning")
         codeql_text = codeql.read_text(encoding="utf-8")
-        self.assertIn("github/codeql-action/init@v4", codeql_text)
-        self.assertIn("github/codeql-action/analyze@v4", codeql_text)
+        self.assertActionPinned(codeql_text, "github/codeql-action/init")
+        self.assertActionPinned(codeql_text, "github/codeql-action/analyze")
         self.assertIn("security-events: write", codeql_text)
         self.assertIn("javascript-typescript", codeql_text)
         self.assertIn("python", codeql_text)
@@ -210,8 +214,8 @@ class ReleaseCiContractTest(unittest.TestCase):
         self.assertTrue(scorecard.exists(), "public repositories should run OpenSSF Scorecard")
         scorecard_text = scorecard.read_text(encoding="utf-8")
         workflow_permissions = scorecard_text.split("jobs:", 1)[0]
-        self.assertRegex(scorecard_text, r"ossf/scorecard-action@v\d+\.\d+\.\d+")
-        self.assertIn("github/codeql-action/upload-sarif@v4", scorecard_text)
+        self.assertActionPinned(scorecard_text, "ossf/scorecard-action")
+        self.assertActionPinned(scorecard_text, "github/codeql-action/upload-sarif")
         self.assertIn("permissions: read-all", workflow_permissions)
         self.assertNotIn("security-events: write", workflow_permissions)
         self.assertNotIn("id-token: write", workflow_permissions)

@@ -693,16 +693,72 @@ function asRecord(value: unknown): Record<string, unknown> | undefined {
 
 function collectCssDeclarations(html: string): Array<{ property: string; value: string }> {
   const declarationTexts: string[] = [];
-  for (const match of html.matchAll(/style\s*=\s*["']([^"']+)["']/gi)) {
-    declarationTexts.push(match[1] ?? "");
-  }
-  for (const match of html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)) {
-    const styleBlock = match[1] ?? "";
-    for (const rule of styleBlock.matchAll(/\{([^{}]+)\}/g)) {
-      declarationTexts.push(rule[1] ?? "");
-    }
+  declarationTexts.push(...collectStyleAttributeValues(html));
+  for (const styleBlock of collectStyleBlocks(html)) {
+    declarationTexts.push(...collectCssRuleDeclarations(styleBlock));
   }
   return declarationTexts.flatMap(parseCssDeclarationText);
+}
+
+function collectStyleAttributeValues(html: string): string[] {
+  const values: string[] = [];
+  let cursor = 0;
+  const lowerHtml = html.toLowerCase();
+  while (cursor < html.length) {
+    const styleIndex = lowerHtml.indexOf("style", cursor);
+    if (styleIndex < 0) break;
+    cursor = styleIndex + "style".length;
+
+    let scan = cursor;
+    while (scan < html.length && isHtmlSpace(html[scan])) scan += 1;
+    if (html[scan] !== "=") continue;
+    scan += 1;
+    while (scan < html.length && isHtmlSpace(html[scan])) scan += 1;
+
+    const quote = html[scan];
+    if (quote !== '"' && quote !== "'") continue;
+    const valueStart = scan + 1;
+    const valueEnd = html.indexOf(quote, valueStart);
+    if (valueEnd < 0) break;
+    values.push(html.slice(valueStart, valueEnd));
+    cursor = valueEnd + 1;
+  }
+  return values;
+}
+
+function collectStyleBlocks(html: string): string[] {
+  const blocks: string[] = [];
+  const lowerHtml = html.toLowerCase();
+  let cursor = 0;
+  while (cursor < html.length) {
+    const tagStart = lowerHtml.indexOf("<style", cursor);
+    if (tagStart < 0) break;
+    const openEnd = html.indexOf(">", tagStart + "<style".length);
+    if (openEnd < 0) break;
+    const closeStart = lowerHtml.indexOf("</style>", openEnd + 1);
+    if (closeStart < 0) break;
+    blocks.push(html.slice(openEnd + 1, closeStart));
+    cursor = closeStart + "</style>".length;
+  }
+  return blocks;
+}
+
+function collectCssRuleDeclarations(css: string): string[] {
+  const declarations: string[] = [];
+  let cursor = 0;
+  while (cursor < css.length) {
+    const open = css.indexOf("{", cursor);
+    if (open < 0) break;
+    const close = css.indexOf("}", open + 1);
+    if (close < 0) break;
+    declarations.push(css.slice(open + 1, close));
+    cursor = close + 1;
+  }
+  return declarations;
+}
+
+function isHtmlSpace(value: string | undefined): boolean {
+  return value === " " || value === "\t" || value === "\n" || value === "\r" || value === "\f";
 }
 
 function parseCssDeclarationText(text: string): Array<{ property: string; value: string }> {
@@ -739,7 +795,46 @@ function extractHexColors(value: string): string[] {
 }
 
 function extractPixelNumbers(value: string): number[] {
-  return [...value.matchAll(/(-?\d+(?:\.\d+)?)px\b/gi)].map((match) => Number(match[1])).filter(Number.isFinite);
+  const numbers: number[] = [];
+  for (let index = 0; index < value.length; index += 1) {
+    const parsed = readCssPixelNumberAt(value, index);
+    if (!parsed) continue;
+    numbers.push(parsed.value);
+    index = parsed.nextIndex - 1;
+  }
+  return numbers;
+}
+
+function readCssPixelNumberAt(input: string, start: number): { value: number; nextIndex: number } | undefined {
+  let cursor = start;
+  if (input[cursor] === "-") cursor += 1;
+
+  const integerStart = cursor;
+  while (cursor < input.length && isAsciiDigit(input[cursor])) cursor += 1;
+  if (cursor === integerStart) return undefined;
+
+  if (input[cursor] === ".") {
+    const fractionStart = cursor + 1;
+    cursor = fractionStart;
+    while (cursor < input.length && isAsciiDigit(input[cursor])) cursor += 1;
+    if (cursor === fractionStart) return undefined;
+  }
+
+  if (input.slice(cursor, cursor + 2).toLowerCase() !== "px") return undefined;
+  const afterUnit = cursor + 2;
+  if (afterUnit < input.length && isAsciiIdentifier(input[afterUnit])) return undefined;
+
+  const value = Number(input.slice(start, cursor));
+  if (!Number.isFinite(value)) return undefined;
+  return { value, nextIndex: afterUnit };
+}
+
+function isAsciiDigit(value: string | undefined): boolean {
+  return value !== undefined && value >= "0" && value <= "9";
+}
+
+function isAsciiIdentifier(value: string | undefined): boolean {
+  return value !== undefined && ((value >= "a" && value <= "z") || (value >= "A" && value <= "Z") || (value >= "0" && value <= "9") || value === "_" || value === "-");
 }
 
 function unique<T>(values: T[]): T[] {

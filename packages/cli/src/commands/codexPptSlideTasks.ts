@@ -183,15 +183,25 @@ function parseMarkdownSections(markdown: string): MarkdownSection[] {
   const sections: MarkdownSection[] = [];
   let current: MarkdownSection | undefined;
   for (const line of markdown.split(/\r?\n/)) {
-    const heading = line.match(/^#{1,3}\s+(.+?)\s*$/);
+    const heading = parseHeadingText(line);
     if (heading) {
-      current = { heading: cleanInline(heading[1]), slug: slugify(heading[1]), text: "" };
+      current = { heading: cleanInline(heading), slug: slugify(heading), text: "" };
       sections.push(current);
       continue;
     }
     if (current) current.text += `${line}\n`;
   }
   return sections;
+}
+
+function parseHeadingText(line: string): string | undefined {
+  let level = 0;
+  while (level < line.length && line[level] === "#") level += 1;
+  if (level < 1 || level > 3) return undefined;
+  const separator = line[level];
+  if (separator !== " " && separator !== "\t") return undefined;
+  const heading = line.slice(level + 1).trim();
+  return heading || undefined;
 }
 
 function findSectionForSlide(slide: SlideSummary, sections: MarkdownSection[]): MarkdownSection | undefined {
