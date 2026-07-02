@@ -174,9 +174,13 @@ class ReleaseCiContractTest(unittest.TestCase):
 
         self.assertTrue(requirements.exists(), "CI Python test requirements must be explicit")
         requirements_text = requirements.read_text(encoding="utf-8")
-        self.assertIn("Pillow", requirements_text)
-        self.assertIn("python -m pip install -r requirements-ci.txt", ci_text)
-        self.assertIn("python -m pip install -r requirements-ci.txt", release_text)
+        self.assertIn("Pillow==", requirements_text)
+        self.assertIn("--hash=sha256:", requirements_text)
+        self.assertIn("python -m pip install --require-hashes -r requirements-ci.txt", ci_text)
+        self.assertIn("python -m pip install --require-hashes -r requirements-ci.txt", release_text)
+        self.assertNotIn("python -m pip install --upgrade pip", ci_text)
+        self.assertNotIn("python -m pip install --upgrade pip", release_text)
+        self.assertNotIn("npm install -g npm@latest", release_text)
 
     def test_public_security_governance_is_configured(self):
         security = ROOT / "SECURITY.md"
