@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import fc from "fast-check";
 import {
   analyzeHtmlDesign,
   buildThemeCandidateFromDesignMd,
@@ -75,6 +76,22 @@ test("parseDesignMd extracts frontmatter tokens and prose sections", () => {
   assert.equal(parsed.frontmatter.typography.title.fontFamily, "Public Sans");
   assert.equal(parsed.sections.Overview, "Strict editorial grids with restrained accent use.");
   assert.match(parsed.sections.Layout ?? "", /generous containment/);
+});
+
+test("design import parsers tolerate fuzzed markdown and html inputs", () => {
+  fc.assert(
+    fc.property(fc.string({ maxLength: 600 }), fc.string({ maxLength: 600 }), (markdown, html) => {
+      const parsed = parseDesignMd(markdown);
+      assert.equal(typeof parsed.sections, "object");
+      assert.ok(Object.keys(parsed.sections).length <= 64);
+
+      const analysis = analyzeHtmlDesign({ html });
+      assert.ok(Array.isArray(analysis.tokens.colors));
+      assert.ok(Array.isArray(analysis.motifs));
+      assert.ok(analysis.motifs.length <= 32);
+    }),
+    { numRuns: 100 },
+  );
 });
 
 test("buildThemeCandidateFromDesignMd creates approval-bound theme proposal", () => {
