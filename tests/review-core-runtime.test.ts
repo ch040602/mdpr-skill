@@ -16,6 +16,8 @@ import {
   reviewSelectionContext,
   buildVisualGuidance,
   buildGeneratorComparisonScorecard,
+  buildHighNeedChartRecipeCatalog,
+  buildScientificChartIntentReport,
   renderReadmeTeaserSvg,
 } from "../packages/review-core/src/index";
 
@@ -268,6 +270,116 @@ test("buildGeneratorComparisonScorecard separates deterministic evidence from ma
   assert.equal(scorecard.dimensions.manual_review_required.winner, "manual-review");
   assert.equal(scorecard.dimensions.native_table_chart_proof_support.winner, "mdpr");
   assert.equal(JSON.stringify(scorecard).includes("objectively prettier"), false);
+});
+
+test("buildScientificChartIntentReport classifies SANFC-like chart structure without raw workbook data", () => {
+  const report = buildScientificChartIntentReport({
+    sourceLabel: "SANFC-like structural fixture",
+    sheets: [
+      {
+        sheetLabel: "Overall-cdf",
+        nonemptyRows: 127,
+        maxColumns: 17,
+        numericCellCount: 592,
+        formulaCellCount: 0,
+        chartFamilies: ["line"],
+      },
+      {
+        sheetLabel: "Overall-BW-SL",
+        nonemptyRows: 39,
+        maxColumns: 39,
+        numericCellCount: 218,
+        formulaCellCount: 0,
+        chartFamilies: ["bar"],
+      },
+      {
+        sheetLabel: "Feasibility_sine",
+        nonemptyRows: 49,
+        maxColumns: 181,
+        numericCellCount: 8643,
+        formulaCellCount: 3600,
+        chartFamilies: ["line"],
+      },
+      {
+        sheetLabel: "heatmap",
+        nonemptyRows: 11,
+        maxColumns: 13,
+        numericCellCount: 99,
+        formulaCellCount: 0,
+        chartFamilies: [],
+      },
+      {
+        sheetLabel: "Security-distance",
+        nonemptyRows: 42,
+        maxColumns: 298,
+        numericCellCount: 1823,
+        formulaCellCount: 71,
+        chartFamilies: ["scatter", "bar"],
+        errorBarCount: 1,
+      },
+    ],
+  });
+
+  const intents = report.intents.map((intent) => intent.intent);
+
+  assert.equal(report.schemaVersion, "mdpr-scientific-chart-intent-v1");
+  assert.equal(report.boundary.evidenceOnly, true);
+  assert.equal(report.boundary.mdprRuntimeAuthority, true);
+  assert.equal(report.boundary.noFinalGeometry, true);
+  assert.equal(report.boundary.noRawWorkbookValues, true);
+  assert.equal(intents.includes("cdf_curve"), true);
+  assert.equal(intents.includes("distribution_box_whisker"), true);
+  assert.equal(intents.includes("distribution_quantile_band"), true);
+  assert.equal(intents.includes("matrix_series"), true);
+  assert.equal(intents.includes("heatmap_summary"), true);
+  assert.equal(intents.includes("mean_with_error_bars"), true);
+  assert.equal(report.intents.every((intent) => intent.designOrder[0] === "data_evidence"), true);
+  assert.equal(report.intents.every((intent) => intent.designOrder[1] === "scientific_chart_intent"), true);
+  assert.equal(report.intents.every((intent) => intent.rendererRequest.target === "mdpr.chart-capability"), true);
+  assert.equal(report.reviewNotes.some((note) => note.type === "ERROR_BAR_KIND_UNKNOWN"), true);
+  assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(report).includes('"rawValues"'), false);
+  assert.equal(JSON.stringify(report).includes('"color"'), false);
+});
+
+test("buildHighNeedChartRecipeCatalog covers non-basic Excel chart needs with MDPR requests", () => {
+  const catalog = buildHighNeedChartRecipeCatalog();
+  const recipeKinds = new Set<string>(catalog.recipes.map((recipe) => recipe.kind));
+
+  for (const expected of [
+    "cdf_curve",
+    "quantile_band",
+    "violin_plot",
+    "beeswarm_plot",
+    "ridgeline_density",
+    "slopegraph",
+    "dumbbell_plot",
+    "bullet_chart",
+    "sankey_alluvial",
+    "marimekko_mosaic",
+    "ternary_plot",
+    "forest_plot",
+    "bland_altman_plot",
+    "control_chart",
+  ]) {
+    assert.equal(recipeKinds.has(expected), true, `missing ${expected}`);
+  }
+
+  assert.equal(catalog.schemaVersion, "mdpr-high-need-chart-recipe-catalog-v1");
+  assert.equal(catalog.boundary.evidenceOnly, true);
+  assert.equal(catalog.boundary.mdprRuntimeAuthority, true);
+  assert.equal(catalog.boundary.noFinalGeometry, true);
+  assert.equal(catalog.boundary.noRawWorkbookValues, true);
+  assert.equal(catalog.coverage.totalRecipes >= 14, true);
+  assert.equal(catalog.coverage.nonBasicExcelRecipes, catalog.recipes.length);
+  assert.equal(catalog.recipes.every((recipe) => recipe.dataShapeRequirements.length > 0), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.semanticRoles.length > 0), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.mdprCapabilityRequest.target === "mdpr.chart-capability"), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.fallbackStrategy.length > 0), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.designOrder[0] === "data_evidence"), true);
+  assert.equal(JSON.stringify(catalog).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(catalog).includes('"rawValues"'), false);
+  assert.equal(JSON.stringify(catalog).includes('"color"'), false);
 });
 
 test("screenshotEvidence records paths and block ids as evidence only", () => {

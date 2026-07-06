@@ -92,6 +92,122 @@ export type GeneratorComparisonScorecard = {
   };
 };
 
+export type ScientificChartIntentKind =
+  | "cdf_curve"
+  | "distribution_box_whisker"
+  | "distribution_quantile_band"
+  | "mean_with_error_bars"
+  | "matrix_series"
+  | "heatmap_summary";
+
+export type ScientificChartFamily = "line" | "bar" | "scatter" | "area" | "boxWhisker" | "heatmap" | "unknown";
+
+export type ScientificChartSheetEvidence = {
+  sheetLabel: string;
+  nonemptyRows: number;
+  maxColumns: number;
+  numericCellCount: number;
+  formulaCellCount: number;
+  chartFamilies?: ScientificChartFamily[];
+  errorBarCount?: number;
+  errorBarKind?: "stddev" | "stderr" | "confidence_interval" | "minmax" | "custom" | "unknown";
+};
+
+export type ScientificChartIntentInput = {
+  sourceLabel: string;
+  sheets: ScientificChartSheetEvidence[];
+};
+
+export type ScientificChartDesignOrderStep =
+  | "data_evidence"
+  | "scientific_chart_intent"
+  | "semantic_visual_guidance"
+  | "renderer_capability_request"
+  | "review_notes";
+
+export type ScientificChartIntentEntry = {
+  intent: ScientificChartIntentKind;
+  sourceSheetLabel: string;
+  evidenceRefs: string[];
+  semanticRoles: string[];
+  designOrder: ScientificChartDesignOrderStep[];
+  rendererRequest: {
+    target: "mdpr.chart-capability";
+    supportNeeded: string;
+  };
+  reviewNotes: string[];
+};
+
+export type ScientificChartIntentReport = {
+  schemaVersion: "mdpr-scientific-chart-intent-v1";
+  generatedBy: "mdpr-skill";
+  sourceLabel: string;
+  boundary: {
+    evidenceOnly: true;
+    mdprRuntimeAuthority: true;
+    noFinalGeometry: true;
+    noRawWorkbookValues: true;
+  };
+  intents: ScientificChartIntentEntry[];
+  reviewNotes: Array<{
+    type: "ERROR_BAR_KIND_UNKNOWN" | "DENSE_MATRIX_NEEDS_SUMMARY" | "DISTRIBUTION_SEMANTICS_REQUIRED" | "CDF_SEMANTICS_REQUIRED";
+    sourceSheetLabel: string;
+    text: string;
+  }>;
+};
+
+export type HighNeedChartRecipeKind =
+  | "cdf_curve"
+  | "quantile_band"
+  | "violin_plot"
+  | "beeswarm_plot"
+  | "ridgeline_density"
+  | "slopegraph"
+  | "dumbbell_plot"
+  | "bullet_chart"
+  | "sankey_alluvial"
+  | "marimekko_mosaic"
+  | "ternary_plot"
+  | "forest_plot"
+  | "bland_altman_plot"
+  | "control_chart";
+
+export type HighNeedChartRecipe = {
+  kind: HighNeedChartRecipeKind;
+  displayName: string;
+  excelDefaultSupport: "not_direct_native" | "workaround_only" | "native_but_semantically_incomplete";
+  whyNeeded: string;
+  dataShapeRequirements: string[];
+  semanticRoles: string[];
+  designOrder: ScientificChartDesignOrderStep[];
+  mdprCapabilityRequest: {
+    target: "mdpr.chart-capability";
+    supportNeeded: string;
+  };
+  fallbackStrategy: string;
+};
+
+export type HighNeedChartRecipeCatalog = {
+  schemaVersion: "mdpr-high-need-chart-recipe-catalog-v1";
+  generatedBy: "mdpr-skill";
+  sourceBoundary: {
+    excelNativeChartReference: string;
+    rule: "catalog-covers-non-basic-or-workaround-only-chart-needs";
+  };
+  boundary: {
+    evidenceOnly: true;
+    mdprRuntimeAuthority: true;
+    noFinalGeometry: true;
+    noRawWorkbookValues: true;
+  };
+  coverage: {
+    totalRecipes: number;
+    nonBasicExcelRecipes: number;
+    minimumExpectedRecipes: 12;
+  };
+  recipes: HighNeedChartRecipe[];
+};
+
 export function buildReviewReport(findings: ReviewFinding[]): ReviewReport {
   return { version: "1.0", source: "mdpr-manifest", findings };
 }
@@ -167,6 +283,52 @@ export function buildGeneratorComparisonScorecard(input: GeneratorComparisonScor
         evidence: input.references.map((reference) => `${reference.name}.manualReviewRequired=${reference.manualReviewRequired !== false}`),
       },
     },
+  };
+}
+
+export function buildScientificChartIntentReport(input: ScientificChartIntentInput): ScientificChartIntentReport {
+  const intents = input.sheets.flatMap((sheet) => scientificChartIntentsForSheet(sheet));
+  const reviewNotes = intents.flatMap((intent) => intent.reviewNotes.map((text) => ({
+    type: scientificChartReviewNoteType(intent.intent, text),
+    sourceSheetLabel: intent.sourceSheetLabel,
+    text,
+  })));
+  return {
+    schemaVersion: "mdpr-scientific-chart-intent-v1",
+    generatedBy: "mdpr-skill",
+    sourceLabel: input.sourceLabel,
+    boundary: {
+      evidenceOnly: true,
+      mdprRuntimeAuthority: true,
+      noFinalGeometry: true,
+      noRawWorkbookValues: true,
+    },
+    intents,
+    reviewNotes,
+  };
+}
+
+export function buildHighNeedChartRecipeCatalog(): HighNeedChartRecipeCatalog {
+  const recipes = highNeedChartRecipes();
+  return {
+    schemaVersion: "mdpr-high-need-chart-recipe-catalog-v1",
+    generatedBy: "mdpr-skill",
+    sourceBoundary: {
+      excelNativeChartReference: "https://support.microsoft.com/en-us/excel/available-chart-types-in-office",
+      rule: "catalog-covers-non-basic-or-workaround-only-chart-needs",
+    },
+    boundary: {
+      evidenceOnly: true,
+      mdprRuntimeAuthority: true,
+      noFinalGeometry: true,
+      noRawWorkbookValues: true,
+    },
+    coverage: {
+      totalRecipes: recipes.length,
+      nonBasicExcelRecipes: recipes.filter((recipe) => recipe.excelDefaultSupport !== "native_but_semantically_incomplete").length,
+      minimumExpectedRecipes: 12,
+    },
+    recipes,
   };
 }
 
@@ -1477,6 +1639,307 @@ function visualGuidanceCategory(finding: ReviewFinding): VisualGuidanceCategory 
   if (/DENSITY|OVERFLOW|BUDGET|COMPLEXITY/.test(type)) return "layout_density";
   if (/CAPTION|CLAIM|SECTION|GROUPING|ORPHAN/.test(type)) return "hierarchy";
   return "readability";
+}
+
+function scientificChartIntentsForSheet(sheet: ScientificChartSheetEvidence): ScientificChartIntentEntry[] {
+  const normalizedLabel = sheet.sheetLabel.toLowerCase();
+  const intents: ScientificChartIntentEntry[] = [];
+  if (normalizedLabel.includes("cdf")) {
+    intents.push(scientificChartIntentEntry(sheet, "cdf_curve", [
+      "x_metric",
+      "y_cumulative_probability",
+      "monotone_non_decreasing_probability",
+    ], [
+      "CDF guidance requires cumulative probability semantics before line or step styling.",
+    ]));
+  }
+  if (/\bbw\b|box|whisker|distribution/.test(normalizedLabel)) {
+    intents.push(scientificChartIntentEntry(sheet, "distribution_box_whisker", [
+      "median_field",
+      "quartile_fields",
+      "whisker_fields",
+      "outlier_policy_if_known",
+    ], [
+      "Distribution guidance requires median, quartile, and whisker semantics before a visual family is selected.",
+    ]));
+    intents.push(scientificChartIntentEntry(sheet, "distribution_quantile_band", [
+      "median_field",
+      "quantile_fields",
+      "band_range",
+      "dense_group_fallback",
+    ], [
+      "Quantile-band guidance is a semantic fallback when MDPR cannot render or should not use a native box-whisker object.",
+    ]));
+  }
+  if (sheet.errorBarCount && sheet.errorBarCount > 0) {
+    intents.push(scientificChartIntentEntry(sheet, "mean_with_error_bars", [
+      "center_value",
+      "error_bar_kind",
+      "error_axis",
+      "confidence_level_if_known",
+    ], [
+      sheet.errorBarKind && sheet.errorBarKind !== "unknown"
+        ? `Error-bar semantics declared as ${sheet.errorBarKind}.`
+        : "Error-bar kind is unknown; annotate or suppress until uncertainty semantics are defined.",
+    ]));
+  }
+  if (normalizedLabel.includes("heatmap")) {
+    intents.push(scientificChartIntentEntry(sheet, "heatmap_summary", [
+      "matrix_x_dimension",
+      "matrix_y_dimension",
+      "cell_value_metric",
+      "aggregation_policy",
+    ], [
+      "Heatmap guidance should summarize matrix evidence before any theme or palette request.",
+    ]));
+  }
+  if (sheet.maxColumns >= 100 || (sheet.formulaCellCount > 0 && sheet.numericCellCount >= 1000)) {
+    intents.push(scientificChartIntentEntry(sheet, "matrix_series", [
+      "series_dimension",
+      "measurement_axis",
+      "formula_dependency_summary",
+      "density_reduction_policy",
+    ], [
+      "Dense matrix series need summarization or small-multiple grouping before foreground chart selection.",
+    ]));
+  }
+  return dedupeScientificChartIntents(intents);
+}
+
+function highNeedChartRecipes(): HighNeedChartRecipe[] {
+  const order: ScientificChartDesignOrderStep[] = [
+    "data_evidence",
+    "scientific_chart_intent",
+    "semantic_visual_guidance",
+    "renderer_capability_request",
+    "review_notes",
+  ];
+  const recipe = (
+    kind: HighNeedChartRecipeKind,
+    displayName: string,
+    whyNeeded: string,
+    dataShapeRequirements: string[],
+    semanticRoles: string[],
+    supportNeeded: string,
+    fallbackStrategy: string,
+    excelDefaultSupport: HighNeedChartRecipe["excelDefaultSupport"] = "not_direct_native",
+  ): HighNeedChartRecipe => ({
+    kind,
+    displayName,
+    excelDefaultSupport,
+    whyNeeded,
+    dataShapeRequirements,
+    semanticRoles,
+    designOrder: order,
+    mdprCapabilityRequest: {
+      target: "mdpr.chart-capability",
+      supportNeeded,
+    },
+    fallbackStrategy,
+  });
+  return [
+    recipe(
+      "cdf_curve",
+      "CDF / ECDF curve",
+      "Cumulative probability is common in latency, reliability, accuracy, and threshold studies but is usually built as a line or scatter workaround.",
+      ["ordered x metric", "cumulative probability or rank proportion", "optional group series"],
+      ["x_metric", "y_cumulative_probability", "monotone_expectation", "percentile_callouts"],
+      "cdf or ecdf curve primitive with monotone/probability-axis validation",
+      "Use a step or line curve request and add percentile callout candidates; avoid smoothing unless source semantics allow it.",
+    ),
+    recipe(
+      "quantile_band",
+      "Quantile band",
+      "Distribution uncertainty is often clearer as median plus bands than as many overlapping lines.",
+      ["x metric or group", "median", "lower quantile", "upper quantile", "optional outer band"],
+      ["median_field", "inner_band", "outer_band", "uncertainty_region"],
+      "quantile band primitive with median marker and band ordering validation",
+      "Request an editable band-plus-line object; fall back to grouped distribution strip when bands are too dense.",
+    ),
+    recipe(
+      "violin_plot",
+      "Violin plot",
+      "Distribution shape and multimodality are important in experiments but are not a direct basic Excel chart.",
+      ["group label", "sample values or density estimate", "optional median and quartiles"],
+      ["distribution_density", "group_comparison", "median_marker", "quartile_markers"],
+      "violin or mirrored-density primitive with optional box overlay",
+      "If density cannot be rendered, request box-whisker or quantile-band fallback with a density-unavailable note.",
+    ),
+    recipe(
+      "beeswarm_plot",
+      "Beeswarm / strip plot",
+      "Small samples and outliers need individual points without hiding distribution behind bars.",
+      ["group label", "individual observations", "optional jitter grouping key"],
+      ["individual_point", "group_axis", "outlier_visibility", "sample_size_visibility"],
+      "beeswarm or jittered strip primitive with collision management",
+      "Fall back to strip plot with deterministic jitter and sample-count labels when true collision packing is unavailable.",
+    ),
+    recipe(
+      "ridgeline_density",
+      "Ridgeline density",
+      "Many related distributions need compact comparison across groups without a grid of separate charts.",
+      ["ordered groups", "density curve per group", "shared x metric"],
+      ["group_stack", "density_curve", "shared_axis", "overlap_policy"],
+      "ridgeline density primitive with shared-axis and overlap validation",
+      "Fall back to small multiples or quantile-band rows when filled densities would be too crowded.",
+    ),
+    recipe(
+      "slopegraph",
+      "Slopegraph",
+      "Before/after or two-period comparisons are often more readable as connected endpoints than as clustered bars.",
+      ["entity label", "start value", "end value", "optional group"],
+      ["start_point", "end_point", "change_direction", "direct_label"],
+      "slopegraph primitive with endpoint label deconfliction",
+      "Fall back to paired dot plot if label density exceeds the slide budget.",
+      "workaround_only",
+    ),
+    recipe(
+      "dumbbell_plot",
+      "Dumbbell plot",
+      "Two-condition comparisons need gap emphasis and direct labels, not generic clustered bars.",
+      ["entity label", "left condition value", "right condition value", "optional delta"],
+      ["condition_a", "condition_b", "delta_gap", "ordered_entity_axis"],
+      "dumbbell primitive with delta ordering and direct-label support",
+      "Fall back to paired lollipop marks with delta labels when connector overlap is too high.",
+      "workaround_only",
+    ),
+    recipe(
+      "bullet_chart",
+      "Bullet chart",
+      "KPI actual/target/range displays are compact alternatives to gauges and speedometers.",
+      ["metric label", "actual value", "target value", "qualitative range thresholds"],
+      ["actual_marker", "target_marker", "range_band", "performance_state"],
+      "bullet chart primitive with threshold bands and target marker",
+      "Fall back to horizontal progress bar plus target marker if compact bullet rendering is unavailable.",
+      "workaround_only",
+    ),
+    recipe(
+      "sankey_alluvial",
+      "Sankey / alluvial flow",
+      "Flow magnitude between stages or categories is difficult to communicate with stock Excel charts.",
+      ["source node", "target node", "flow value", "optional stage order"],
+      ["source_node", "target_node", "flow_width", "stage_order"],
+      "sankey or alluvial primitive with flow conservation checks",
+      "Fall back to staged connected bars or flow table when path routing is unsupported.",
+    ),
+    recipe(
+      "marimekko_mosaic",
+      "Marimekko / mosaic plot",
+      "Two-dimensional composition needs area encoding across both category share and segment share.",
+      ["primary category", "secondary category", "value share"],
+      ["category_width", "segment_height", "part_to_whole", "composition_comparison"],
+      "mosaic or marimekko primitive with normalized area validation",
+      "Fall back to small-multiple stacked bars if area encoding would impair readability.",
+    ),
+    recipe(
+      "ternary_plot",
+      "Ternary plot",
+      "Three-part compositions that sum to one need triangular coordinates rather than x/y scatter axes.",
+      ["component a", "component b", "component c", "optional point label"],
+      ["three_part_composition", "sum_to_one_check", "triangle_axis", "point_label"],
+      "ternary plot primitive with composition-sum validation",
+      "Fall back to normalized stacked bars plus flagged ternary-unavailable note.",
+    ),
+    recipe(
+      "forest_plot",
+      "Forest plot",
+      "Effect estimates with confidence intervals are common in scientific summaries and need aligned intervals plus a null reference.",
+      ["study or subgroup label", "effect estimate", "lower interval", "upper interval", "null reference"],
+      ["effect_estimate", "confidence_interval", "null_line", "study_label"],
+      "forest plot primitive with interval and null-reference semantics",
+      "Fall back to interval dot plot when grouped study rows are too dense.",
+      "workaround_only",
+    ),
+    recipe(
+      "bland_altman_plot",
+      "Bland-Altman plot",
+      "Agreement analysis needs mean-vs-difference scatter with bias and limits of agreement, not a generic scatter alone.",
+      ["paired measurements", "mean value", "difference value", "bias", "agreement limits"],
+      ["mean_axis", "difference_axis", "bias_line", "agreement_limit_lines"],
+      "Bland-Altman primitive with bias and limit reference lines",
+      "Fall back to scatter plus explicit reference-line request and agreement semantics warning.",
+      "workaround_only",
+    ),
+    recipe(
+      "control_chart",
+      "Control chart",
+      "Process monitoring requires centerline and control limits with rule-based anomaly notes.",
+      ["ordered observation", "metric value", "centerline", "upper limit", "lower limit"],
+      ["time_order", "centerline", "control_limits", "rule_violation"],
+      "control chart primitive with limit lines and anomaly-rule evidence",
+      "Fall back to line chart plus semantic limit-line request if process-control rules are unavailable.",
+      "workaround_only",
+    ),
+  ];
+}
+
+function scientificChartIntentEntry(
+  sheet: ScientificChartSheetEvidence,
+  intent: ScientificChartIntentKind,
+  semanticRoles: string[],
+  reviewNotes: string[],
+): ScientificChartIntentEntry {
+  return {
+    intent,
+    sourceSheetLabel: sheet.sheetLabel,
+    evidenceRefs: scientificChartEvidenceRefs(sheet),
+    semanticRoles,
+    designOrder: [
+      "data_evidence",
+      "scientific_chart_intent",
+      "semantic_visual_guidance",
+      "renderer_capability_request",
+      "review_notes",
+    ],
+    rendererRequest: {
+      target: "mdpr.chart-capability",
+      supportNeeded: scientificChartSupportNeeded(intent),
+    },
+    reviewNotes,
+  };
+}
+
+function scientificChartEvidenceRefs(sheet: ScientificChartSheetEvidence): string[] {
+  const refs = [
+    `sheet:${sheet.sheetLabel}`,
+    `rows:${sheet.nonemptyRows}`,
+    `columns:${sheet.maxColumns}`,
+    `numericCells:${sheet.numericCellCount}`,
+    `formulaCells:${sheet.formulaCellCount}`,
+  ];
+  if (sheet.chartFamilies?.length) refs.push(`chartFamilies:${sheet.chartFamilies.join("+")}`);
+  if (sheet.errorBarCount && sheet.errorBarCount > 0) refs.push(`errorBars:${sheet.errorBarCount}`);
+  if (sheet.errorBarKind) refs.push(`errorBarKind:${sheet.errorBarKind}`);
+  return refs;
+}
+
+function scientificChartSupportNeeded(intent: ScientificChartIntentKind): string {
+  if (intent === "cdf_curve") return "cdf-or-ecdf curve semantics with probability-axis validation";
+  if (intent === "distribution_box_whisker") return "box-whisker or equivalent distribution primitive";
+  if (intent === "distribution_quantile_band") return "quantile-band distribution fallback with median marker";
+  if (intent === "mean_with_error_bars") return "uncertainty/error-bar semantics and render validation";
+  if (intent === "matrix_series") return "dense matrix series summarization or small-multiple grouping";
+  return "heatmap or matrix summary primitive";
+}
+
+function scientificChartReviewNoteType(
+  intent: ScientificChartIntentKind,
+  text: string,
+): ScientificChartIntentReport["reviewNotes"][number]["type"] {
+  if (intent === "mean_with_error_bars" && text.toLowerCase().includes("unknown")) return "ERROR_BAR_KIND_UNKNOWN";
+  if (intent === "matrix_series" || intent === "heatmap_summary") return "DENSE_MATRIX_NEEDS_SUMMARY";
+  if (intent === "distribution_box_whisker" || intent === "distribution_quantile_band") return "DISTRIBUTION_SEMANTICS_REQUIRED";
+  return "CDF_SEMANTICS_REQUIRED";
+}
+
+function dedupeScientificChartIntents(intents: ScientificChartIntentEntry[]): ScientificChartIntentEntry[] {
+  const seen = new Set<string>();
+  return intents.filter((intent) => {
+    const key = `${intent.sourceSheetLabel}:${intent.intent}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function evidenceRefsForFinding(finding: ReviewFinding): string[] {
