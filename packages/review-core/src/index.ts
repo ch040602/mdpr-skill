@@ -453,19 +453,7 @@ export function buildDeckDesignOrderTrace(input: DeckDesignOrderTraceInput): Dec
 export function sourceEvidenceRefsFromLedger(ledger: SourceSlideEvidenceLedger): string[] {
   const refs = new Set<string>();
   for (const entry of ledger.entries) {
-    refs.add(`source:${entry.sourcePath}`);
-    refs.add(`slide:${safeRefSegment(entry.slideRef)}`);
-    refs.add(`claim:${safeRefSegment(entry.slideRef)}`);
-    for (const source of entry.sources) {
-      if (source.sourceId) refs.add(`source:${source.sourceId}`);
-      if (source.path) refs.add(`source:${source.path}`);
-      if (source.url) refs.add(`source:${source.url}`);
-    }
-    for (const evidence of entry.mdprEvidenceRefs) {
-      refs.add(`evidence:${evidence.evidenceId}`);
-      if (evidence.path) refs.add(`source:${evidence.path}`);
-      if (evidence.slideId) refs.add(`slide:${safeRefSegment(evidence.slideId)}`);
-    }
+    for (const ref of sourceEvidenceRefsForLedgerEntry(entry)) refs.add(ref);
   }
   return [...refs].filter(Boolean);
 }
@@ -478,11 +466,16 @@ export function buildDeckDesignOrderTraceFromLedger(input: DeckDesignOrderTraceF
     sourceEvidenceRefs,
   });
   const disconnected = ledgerRefs.length > 0 && !sourceEvidenceRefs.some((ref) => ledgerRefs.includes(ref));
+  const scopeMismatch = !disconnected && sourceEvidenceLedgerScopeMismatch(input.ledger, sourceEvidenceRefs, [
+    ...(input.narrativeSpineRefs ?? []),
+    ...(input.slideRoleRefs ?? []),
+  ]);
   return {
     ...trace,
     findings: [
       ...trace.findings,
       ...(disconnected ? sourceEvidenceLedgerDisconnectedFindings(sourceEvidenceRefs, ledgerRefs) : []),
+      ...(scopeMismatch ? sourceEvidenceLedgerScopeMismatchFindings(sourceEvidenceRefs, input.narrativeSpineRefs ?? [], input.slideRoleRefs ?? []) : []),
     ],
   };
 }
@@ -547,6 +540,13 @@ export function validateReviewArtifactDesignOrder(artifact: unknown): ReviewFind
       },
     });
     }
+  }
+  const traceEntries = collectDeckTraceEntries(record);
+  if (traceEntries.length) {
+    findings.push(
+      ...deckDesignOrderStageRefFindings(traceEntries),
+      ...deckDesignOrderPrerequisiteFindings(traceEntries),
+    );
   }
 
   return findings;
@@ -2366,6 +2366,24 @@ function deckDesignOrderEntry(
   };
 }
 
+function collectDeckTraceEntries(record: Record<string, unknown>): DeckDesignOrderTraceEntry[] {
+  return asArray(record.entries)
+    .map((entryValue) => {
+      const entry = asRecord(entryValue);
+      const stage = stringValue(entry?.stage);
+      if (!stage || !DECK_DESIGN_ORDER.includes(stage as DeckDesignOrderStage)) return undefined;
+      const dependsOn = asArray(entry?.dependsOn)
+        .map((value) => String(value))
+        .filter((value): value is DeckDesignOrderStage => DECK_DESIGN_ORDER.includes(value as DeckDesignOrderStage));
+      return deckDesignOrderEntry(
+        stage as DeckDesignOrderStage,
+        asArray(entry?.evidenceRefs).map((ref) => String(ref)).filter(Boolean),
+        dependsOn.length ? dependsOn : DECK_DESIGN_STAGE_DEPENDS_ON[stage as DeckDesignOrderStage],
+      );
+    })
+    .filter((entry): entry is DeckDesignOrderTraceEntry => Boolean(entry));
+}
+
 function deckDesignOrderPrerequisiteFindings(entries: DeckDesignOrderTraceEntry[]): ReviewFinding[] {
   const byStage = new Map(entries.map((entry) => [entry.stage, entry]));
   const findings: ReviewFinding[] = [];
@@ -2443,6 +2461,17 @@ const DECK_DESIGN_STAGE_REF_PREFIXES: Record<DeckDesignOrderStage, string[]> = {
   review_notes: ["review:", "reviewNote:"],
 };
 
+const DECK_DESIGN_STAGE_DEPENDS_ON: Record<DeckDesignOrderStage, DeckDesignOrderStage[]> = {
+  narrative_spine: [],
+  source_evidence: ["narrative_spine"],
+  slide_role: ["narrative_spine"],
+  chart_intent: ["source_evidence", "slide_role"],
+  semantic_visual_guidance: ["chart_intent"],
+  theme_binding_request: ["semantic_visual_guidance"],
+  mdpr_validation_refs: ["theme_binding_request"],
+  review_notes: ["mdpr_validation_refs"],
+};
+
 function deckDesignOrderRefMatchesStage(stage: DeckDesignOrderStage, ref: string): boolean {
   return DECK_DESIGN_STAGE_REF_PREFIXES[stage].some((prefix) => ref.startsWith(prefix));
 }
@@ -2462,6 +2491,60 @@ function sourceEvidenceLedgerDisconnectedFindings(sourceEvidenceRefs: string[], 
       operation: "enableRule",
     },
   }];
+}
+
+function sourceEvidenceLedgerScopeMismatchFindings(sourceEvidenceRefs: string[], narrativeSpineRefs: string[], slideRoleRefs: string[]): ReviewFinding[] {
+  return [{
+    severity: "warning",
+    type: "SOURCE_EVIDENCE_LEDGER_SCOPE_MISMATCH",
+    slideId: "deck",
+    evidence: {
+      sourceEvidenceRefs,
+      narrativeSpineRefs,
+      slideRoleRefs,
+      rule: "source evidence overlaps the ledger globally but not the requested narrative or slide scope",
+    },
+    suggestion: {
+      kind: "mdpr-policy",
+      target: "review.designOrder.sourceLedgerScope",
+      operation: "enableRule",
+    },
+  }];
+}
+
+function sourceEvidenceRefsForLedgerEntry(entry: SourceSlideEvidenceLedgerEntry): string[] {
+  const refs = new Set<string>();
+  refs.add(`source:${entry.sourcePath}`);
+  refs.add(`slide:${safeRefSegment(entry.slideRef)}`);
+  refs.add(`claim:${safeRefSegment(entry.slideRef)}`);
+  for (const source of entry.sources) {
+    if (source.sourceId) refs.add(`source:${source.sourceId}`);
+    if (source.path) refs.add(`source:${source.path}`);
+    if (source.url) refs.add(`source:${source.url}`);
+  }
+  for (const evidence of entry.mdprEvidenceRefs) {
+    refs.add(`evidence:${evidence.evidenceId}`);
+    if (evidence.path) refs.add(`source:${evidence.path}`);
+    if (evidence.slideId) refs.add(`slide:${safeRefSegment(evidence.slideId)}`);
+  }
+  return [...refs].filter(Boolean);
+}
+
+function sourceEvidenceLedgerScopeMismatch(ledger: SourceSlideEvidenceLedger, sourceEvidenceRefs: string[], scopeRefs: string[]): boolean {
+  const scopeTokens = new Set(scopeRefs.flatMap(refScopeTokens));
+  if (!scopeTokens.size) return false;
+  const matchingEntries = ledger.entries.filter((entry) =>
+    sourceEvidenceRefsForLedgerEntry(entry).some((ref) => sourceEvidenceRefs.includes(ref))
+  );
+  if (!matchingEntries.length) return false;
+  return !matchingEntries.some((entry) => scopeTokens.has(safeRefSegment(entry.slideRef)));
+}
+
+function refScopeTokens(ref: string): string[] {
+  return ref
+    .split(":")
+    .map((part) => safeRefSegment(part))
+    .filter((part) => part.length > 1 && !["narrative", "claim", "slide", "sliderole", "role", "data"].includes(part));
 }
 
 function chartIntentEvidenceRefs(report: ScientificChartIntentReport | undefined): string[] {

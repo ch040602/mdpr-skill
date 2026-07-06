@@ -846,6 +846,41 @@ test("validateReviewArtifactDesignOrder scans deck trace entries stage order", (
   assert.equal(JSON.stringify(validateReviewArtifactDesignOrder(scrambled)).includes('"color"'), false);
 });
 
+test("validateReviewArtifactDesignOrder enforces deck trace entry prerequisites", () => {
+  const missingPrereq = {
+    schemaVersion: "mdpr-deck-design-order-trace-v1",
+    entries: [
+      {
+        stage: "chart_intent",
+        evidenceRefs: ["chartIntent:cdf_curve"],
+      },
+    ],
+  };
+  const incompatiblePrereq = {
+    schemaVersion: "mdpr-deck-design-order-trace-v1",
+    entries: [
+      {
+        stage: "source_evidence",
+        evidenceRefs: ["visualApplication:cdf_curve:primary-visual"],
+      },
+      {
+        stage: "slide_role",
+        evidenceRefs: ["slideRole:data"],
+      },
+      {
+        stage: "chart_intent",
+        evidenceRefs: ["chartIntent:cdf_curve"],
+      },
+    ],
+  };
+
+  assert.equal(validateReviewArtifactDesignOrder(missingPrereq).some((finding) => finding.type === "DESIGN_ORDER_PREREQUISITE_MISSING"), true);
+  assert.equal(validateReviewArtifactDesignOrder(incompatiblePrereq).some((finding) => finding.type === "DESIGN_ORDER_PREREQUISITE_MISSING"), true);
+  assert.equal(validateReviewArtifactDesignOrder(incompatiblePrereq).some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), true);
+  assert.equal(JSON.stringify(validateReviewArtifactDesignOrder(incompatiblePrereq)).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(validateReviewArtifactDesignOrder(incompatiblePrereq)).includes('"rawValues"'), false);
+});
+
 test("screenshotEvidence records paths and block ids as evidence only", () => {
   const evidence = screenshotEvidence({
     screenshotPath: ".mdpresent/review/slide-1.png",
@@ -1165,9 +1200,17 @@ test("source ledger bridges into deck design order trace without chart backfill"
       "# Pipeline Review",
       "## Activation",
       "Activation rose by 42% after onboarding changes.[^1]",
+      "## Retention",
+      "Retention improved by 12% for enterprise cohorts.[^2]",
     ].join("\n"),
-    sources: [{ id: "growth-study", title: "Growth study", path: "sources/growth.md" }],
-    mdprEvidence: [{ evidenceId: "chart-activation", slideId: "Activation", kind: "chart", path: "charts/activation.png" }],
+    sources: [
+      { id: "growth-study", title: "Growth study", path: "sources/growth.md" },
+      { id: "retention-study", title: "Retention study", path: "sources/retention.md" },
+    ],
+    mdprEvidence: [
+      { evidenceId: "chart-activation", slideId: "Activation", kind: "chart", path: "charts/activation.png" },
+      { evidenceId: "table-retention", slideId: "Retention", kind: "table", path: "tables/retention.csv" },
+    ],
     sourcePath: "pipeline-review.md",
   });
   const refs = sourceEvidenceRefsFromLedger(ledger);
@@ -1181,6 +1224,12 @@ test("source ledger bridges into deck design order trace without chart backfill"
     sourceEvidenceRefs: ["source:other.md"],
     narrativeSpineRefs: ["narrative:claim:activation"],
   });
+  const scopedMismatch = buildDeckDesignOrderTraceFromLedger({
+    ledger,
+    sourceEvidenceRefs: ["evidence:table-retention", "slide:retention"],
+    narrativeSpineRefs: ["narrative:claim:activation"],
+    slideRoleRefs: ["slide:activation"],
+  });
 
   assert.equal(refs.some((ref) => ref.startsWith("source:")), true);
   assert.equal(refs.some((ref) => ref.startsWith("evidence:")), true);
@@ -1189,6 +1238,7 @@ test("source ledger bridges into deck design order trace without chart backfill"
   assert.equal(trace.findings.some((finding) => finding.type === "DESIGN_ORDER_SOURCE_EVIDENCE_BACKFILLED"), false);
   assert.equal(trace.findings.some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), false);
   assert.equal(disconnected.findings.some((finding) => finding.type === "SOURCE_EVIDENCE_LEDGER_DISCONNECTED"), true);
+  assert.equal(scopedMismatch.findings.some((finding) => finding.type === "SOURCE_EVIDENCE_LEDGER_SCOPE_MISMATCH"), true);
   assert.equal(JSON.stringify(trace).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(trace).includes('"rawValues"'), false);
 });

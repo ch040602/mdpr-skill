@@ -98,6 +98,11 @@ refs such as `source:`, `evidence:`, `claim:`, and `slide:`. The bridge must not
 copy raw claim text, raw data values, coordinates, theme values, or PPTX
 geometry into the trace.
 
+Trace validators must apply the same prerequisite rules to trace-like artifacts
+that they apply to generated traces. Ledger refs must also match the intended
+slide or narrative scope; global overlap with the ledger is not enough when a
+trace targets a specific claim or slide.
+
 ## No-Loss Policy
 
 - [x] Titles must be preserved.
