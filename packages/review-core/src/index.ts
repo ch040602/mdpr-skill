@@ -562,6 +562,7 @@ export type ReviewCoreInput = {
   manifest?: Record<string, unknown>;
   designLock?: Record<string, unknown>;
   selectionContext?: Record<string, unknown>;
+  chartPlacements?: ChartNarrativePlacement[];
   htmlDesignAnalysis?: Record<string, unknown>;
   componentPackCandidate?: Record<string, unknown>;
   diagramMetrics?: Record<string, unknown>;
@@ -860,6 +861,7 @@ export function reviewCoherence(input: ReviewCoreInput): ReviewFinding[] {
     ...reviewSelectionContext(input),
     ...evidenceClaimAlignmentFindings(model),
     ...semanticMotifDriftFindings(model),
+    ...(input.chartPlacements?.length ? reviewChartNarrativeFit({ ...input, chartPlacements: input.chartPlacements }) : []),
     ...sectionRhythmFindings(model, noisySections),
   ];
 }
@@ -2502,6 +2504,12 @@ function collectDesignOrders(record: Record<string, unknown>): string[][] {
   const orders: string[][] = [];
   const direct = asArray(record.designOrder).map((stage) => String(stage)).filter(Boolean);
   if (direct.length) orders.push(direct);
+  const entryStages = asArray(record.entries)
+    .map((entry) => stringValue(asRecord(entry)?.stage))
+    .filter((stage): stage is string => Boolean(stage));
+  if (entryStages.length && entryStages.every((stage) => DECK_DESIGN_ORDER.includes(stage as DeckDesignOrderStage))) {
+    orders.push(entryStages);
+  }
   for (const intent of asArray(record.intents)) {
     const order = asArray(asRecord(intent)?.designOrder).map((stage) => String(stage)).filter(Boolean);
     if (order.length) orders.push(order);

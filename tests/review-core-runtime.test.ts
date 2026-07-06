@@ -749,6 +749,55 @@ test("reviewChartNarrativeFit validates chart placement block identity", () => {
   assert.equal(JSON.stringify(findings).includes('"color"'), false);
 });
 
+test("reviewCoherence optionally integrates chart narrative fit findings", () => {
+  const cdf = buildScientificChartIntentReport({
+    sourceLabel: "integrated-fit",
+    sheets: [
+      {
+        sheetLabel: "Overall-cdf",
+        nonemptyRows: 20,
+        maxColumns: 4,
+        numericCellCount: 40,
+        formulaCellCount: 0,
+        chartFamilies: ["line"],
+      },
+    ],
+  }).intents[0]!;
+  const baseInput = {
+    presentation: {
+      slides: [
+        {
+          id: "slide-integrated",
+          title: "p95 latency improved",
+          intent: "data",
+          headingPath: ["Performance"],
+          blocks: [
+            { id: "claim", type: "paragraph", text: "p95 latency improved across endpoints." },
+            { id: "chart-good", type: "chart", text: "CDF latency by endpoint" },
+          ],
+        },
+      ],
+    },
+    layout: {
+      slides: [
+        { id: "layout-integrated", sourceSlideId: "slide-integrated", layout: { preset: "chart-table" }, regions: [{ id: "main", role: "chart", blockIds: ["claim", "chart-good"] }] },
+      ],
+    },
+  };
+
+  assert.equal(reviewCoherence(baseInput).some((finding) => finding.type.startsWith("CHART_PLACEMENT")), false);
+
+  const findings = reviewCoherence({
+    ...baseInput,
+    chartPlacements: [
+      { sourceSlideId: "slide-missing", chartBlockId: "chart-any", intent: cdf },
+    ],
+  });
+
+  assert.equal(findings.filter((finding) => finding.type === "CHART_PLACEMENT_SLIDE_MISSING").length, 1);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+});
+
 test("validateReviewArtifactDesignOrder scans nested scientific chart and recipe orders", () => {
   const report = buildScientificChartIntentReport({
     sourceLabel: "nested-order",
@@ -773,6 +822,28 @@ test("validateReviewArtifactDesignOrder scans nested scientific chart and recipe
   assert.equal(validateReviewArtifactDesignOrder(recipeCatalog).some((finding) => finding.type === "REVIEW_ARTIFACT_EVIDENCE_MISSING"), false);
   assert.equal(validateReviewArtifactDesignOrder(scrambled).some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
   assert.equal(validateReviewArtifactDesignOrder(scrambledCatalog).some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
+});
+
+test("validateReviewArtifactDesignOrder scans deck trace entries stage order", () => {
+  const trace = buildDeckDesignOrderTrace({
+    narrativeSpineRefs: ["narrative:claim:latency"],
+    sourceEvidenceRefs: ["sheet:Overall-cdf"],
+    slideRoleRefs: ["slideRole:data"],
+    visualGuidanceRefs: ["visualApplication:cdf_curve:primary-visual"],
+    themeBindingRefs: ["theme.chart.sequence"],
+    mdprValidationRefs: ["mdpr:validation:coherence"],
+    reviewNoteRefs: ["reviewNote:CDF_SEMANTICS_REQUIRED:Overall-cdf"],
+  });
+  const scrambled = structuredClone(trace) as typeof trace;
+  scrambled.entries = [
+    trace.entries.find((entry) => entry.stage === "semantic_visual_guidance")!,
+    trace.entries.find((entry) => entry.stage === "source_evidence")!,
+  ];
+
+  assert.equal(validateReviewArtifactDesignOrder(trace).some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), false);
+  assert.equal(validateReviewArtifactDesignOrder(scrambled).some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
+  assert.equal(JSON.stringify(validateReviewArtifactDesignOrder(scrambled)).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(validateReviewArtifactDesignOrder(scrambled)).includes('"color"'), false);
 });
 
 test("screenshotEvidence records paths and block ids as evidence only", () => {

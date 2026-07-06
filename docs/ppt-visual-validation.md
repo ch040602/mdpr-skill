@@ -153,6 +153,9 @@ order on trace-like artifacts and scientific chart order on nested
 `intents[].designOrder` and `recipes[].designOrder`, while recognizing nested
 `intents[].evidenceRefs`, recipe data-shape requirements, and semantic roles as
 valid review evidence.
+Trace-like artifacts are also validated by `entries[].stage` order, so a
+malformed deck trace cannot hide out-of-sequence stages by omitting a separate
+`designOrder` array.
 
 Each trace stage also checks evidence-ref namespaces. For example,
 `source_evidence` accepts source, sheet, rows, columns, numeric-cell,
@@ -191,6 +194,11 @@ Ledger-derived refs use only safe namespaces such as `source:`, `evidence:`,
 ledger, they satisfy `source_evidence` without emitting chart-intent backfill
 warnings. If explicit trace refs ignore the supplied ledger,
 `SOURCE_EVIDENCE_LEDGER_DISCONNECTED` is emitted.
+
+Callers that already use `reviewCoherence` may pass optional `chartPlacements`
+there. When present, chart placement and narrative-fit findings are appended to
+the normal coherence findings; when absent, the historical coherence path is
+unchanged.
 
 Environment note:
 
