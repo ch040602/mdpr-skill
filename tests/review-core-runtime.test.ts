@@ -565,6 +565,19 @@ test("buildDeckDesignOrderTrace and validator flag out-of-order or boundary-leak
 });
 
 test("buildDeckDesignOrderTrace flags stage-incompatible evidence refs", () => {
+  const chartIntentReport = buildScientificChartIntentReport({
+    sourceLabel: "stage-compat",
+    sheets: [
+      {
+        sheetLabel: "Overall-cdf",
+        nonemptyRows: 20,
+        maxColumns: 4,
+        numericCellCount: 40,
+        formulaCellCount: 0,
+        chartFamilies: ["line"],
+      },
+    ],
+  });
   const validTrace = buildDeckDesignOrderTrace({
     narrativeSpineRefs: ["narrative:claim:latency"],
     sourceEvidenceRefs: ["sheet:Overall-cdf", "rows:20", "numericCells:40"],
@@ -578,11 +591,23 @@ test("buildDeckDesignOrderTrace flags stage-incompatible evidence refs", () => {
     narrativeSpineRefs: ["narrative:claim:latency"],
     sourceEvidenceRefs: ["visualApplication:cdf_curve:primary-visual"],
     slideRoleRefs: ["theme.chart.sequence"],
+    chartIntentReport,
     mdprValidationRefs: ["reviewNote:CDF_SEMANTICS_REQUIRED:Overall-cdf"],
+  });
+  const mixedTrace = buildDeckDesignOrderTrace({
+    narrativeSpineRefs: ["narrative:claim:latency"],
+    sourceEvidenceRefs: ["sheet:Overall-cdf", "visualApplication:cdf_curve:primary-visual"],
+    slideRoleRefs: ["slideRole:data"],
+    chartIntentReport,
   });
 
   assert.equal(validTrace.findings.some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), false);
   assert.equal(misplacedTrace.findings.some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), true);
+  assert.equal(misplacedTrace.entries.find((entry) => entry.stage === "source_evidence")?.status, "missing");
+  assert.equal(misplacedTrace.findings.some((finding) => finding.type === "DESIGN_ORDER_PREREQUISITE_MISSING" && finding.evidence?.stage === "chart_intent"), true);
+  assert.equal(mixedTrace.entries.find((entry) => entry.stage === "source_evidence")?.status, "present");
+  assert.equal(mixedTrace.findings.some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), true);
+  assert.equal(mixedTrace.findings.some((finding) => finding.type === "DESIGN_ORDER_PREREQUISITE_MISSING" && finding.evidence?.stage === "chart_intent"), false);
   assert.equal(JSON.stringify(misplacedTrace).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(misplacedTrace).includes('"color"'), false);
 });
@@ -706,6 +731,7 @@ test("reviewChartNarrativeFit validates chart placement block identity", () => {
       ],
     },
     chartPlacements: [
+      { sourceSlideId: "slide-missing", chartBlockId: "chart-any", intent: cdf },
       { sourceSlideId: "slide-placement", chartBlockId: "chart-good", intent: cdf },
       { sourceSlideId: "slide-placement", chartBlockId: "chart-missing", intent: cdf },
       { sourceSlideId: "slide-placement", chartBlockId: "paragraph-bad", intent: cdf },
@@ -713,9 +739,11 @@ test("reviewChartNarrativeFit validates chart placement block identity", () => {
     ],
   });
 
+  assert.equal(findings.some((finding) => finding.type === "CHART_PLACEMENT_SLIDE_MISSING"), true);
   assert.equal(findings.some((finding) => finding.type === "CHART_PLACEMENT_BLOCK_MISSING"), true);
   assert.equal(findings.some((finding) => finding.type === "CHART_PLACEMENT_BLOCK_TYPE_MISMATCH"), true);
   assert.equal(findings.some((finding) => finding.type === "CHART_PLACEMENT_INTENT_MISMATCH"), true);
+  assert.equal(findings.filter((finding) => finding.evidence?.sourceSlideId === "slide-missing").length, 1);
   assert.equal(findings.some((finding) => finding.evidence?.chartBlockId === "chart-good"), false);
   assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(findings).includes('"color"'), false);

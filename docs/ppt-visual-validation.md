@@ -159,6 +159,9 @@ Each trace stage also checks evidence-ref namespaces. For example,
 formula-cell, chart-family, and error-bar refs, while visual, theme, MDPR
 validation, and review-note refs belong to later stages. A misplaced namespace
 creates `DESIGN_ORDER_REF_STAGE_MISMATCH`.
+Stage presence is based on compatible refs, not raw ref count: a stage containing
+only misplaced refs is treated as missing for downstream prerequisite checks,
+while a mixed stage can remain present and still report the incompatible refs.
 
 Coherence review now includes two deck-level semantic warnings:
 
@@ -175,7 +178,8 @@ same-slide claim/title binding. The input is semantic only: source slide id,
 optional chart block id, and chart intent entry.
 
 The same review also checks chart placement link integrity before narrative-fit
-judgment. `CHART_PLACEMENT_BLOCK_MISSING` flags stale chart block ids,
+judgment. `CHART_PLACEMENT_SLIDE_MISSING` flags stale source slide ids,
+`CHART_PLACEMENT_BLOCK_MISSING` flags stale chart block ids,
 `CHART_PLACEMENT_BLOCK_TYPE_MISMATCH` flags mappings to non-evidence blocks, and
 `CHART_PLACEMENT_INTENT_MISMATCH` flags simple semantic mismatches between a
 chart block and the supplied chart intent.

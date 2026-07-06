@@ -897,7 +897,24 @@ export function reviewChartNarrativeFit(input: ChartNarrativeFitInput): ReviewFi
   const findings: ReviewFinding[] = [];
   for (const placement of input.chartPlacements) {
     const sourceSlide = model.slideById.get(placement.sourceSlideId);
-    if (!sourceSlide) continue;
+    if (!sourceSlide) {
+      findings.push({
+        severity: "warning",
+        type: "CHART_PLACEMENT_SLIDE_MISSING",
+        slideId: "deck",
+        evidence: {
+          sourceSlideId: placement.sourceSlideId,
+          chartBlockId: placement.chartBlockId,
+          chartIntent: placement.intent.intent,
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "coherence.chartNarrativeFit.sourceSlide",
+          operation: "enableRule",
+        },
+      });
+      continue;
+    }
     const layoutSlide = model.layoutSlides.find((slide) => slide.sourceSlideId === placement.sourceSlideId);
     const slideRole = layoutSlide ? semanticSlideRole(sourceSlide, layoutSlide) : (sourceSlide.intent ?? "unknown");
     const fit = placement.intent.visualApplication.narrativeFit;
@@ -2338,11 +2355,12 @@ function deckDesignOrderEntry(
   dependsOn: DeckDesignOrderStage[],
 ): DeckDesignOrderTraceEntry {
   const refs = [...new Set(evidenceRefs.map((ref) => String(ref)).filter(Boolean))];
+  const compatibleRefs = refs.filter((ref) => deckDesignOrderRefMatchesStage(stage, ref));
   return {
     stage,
     evidenceRefs: refs,
     dependsOn,
-    status: refs.length ? "present" : "missing",
+    status: compatibleRefs.length ? "present" : "missing",
   };
 }
 
