@@ -174,6 +174,20 @@ one of `visualApplication.narrativeFit.preferredSlideRoles`, and
 same-slide claim/title binding. The input is semantic only: source slide id,
 optional chart block id, and chart intent entry.
 
+The same review also checks chart placement link integrity before narrative-fit
+judgment. `CHART_PLACEMENT_BLOCK_MISSING` flags stale chart block ids,
+`CHART_PLACEMENT_BLOCK_TYPE_MISMATCH` flags mappings to non-evidence blocks, and
+`CHART_PLACEMENT_INTENT_MISMATCH` flags simple semantic mismatches between a
+chart block and the supplied chart intent.
+
+Source-slide evidence ledgers can be bridged into deck design order with
+`sourceEvidenceRefsFromLedger` or `buildDeckDesignOrderTraceFromLedger`.
+Ledger-derived refs use only safe namespaces such as `source:`, `evidence:`,
+`claim:`, and `slide:`. Because these refs come from the independent evidence
+ledger, they satisfy `source_evidence` without emitting chart-intent backfill
+warnings. If explicit trace refs ignore the supplied ledger,
+`SOURCE_EVIDENCE_LEDGER_DISCONNECTED` is emitted.
+
 Environment note:
 
 LibreOffice/PowerPoint rendering is not installed in this environment, so the visual proof is generated as a deterministic PNG from parsed PPTX XML geometry and colors. The PPTX itself is inspected directly for shape z-order.

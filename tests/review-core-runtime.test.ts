@@ -20,6 +20,8 @@ import {
   buildHighNeedChartRecipeCatalog,
   buildScientificChartIntentReport,
   buildDeckDesignOrderTrace,
+  buildDeckDesignOrderTraceFromLedger,
+  sourceEvidenceRefsFromLedger,
   validateReviewArtifactDesignOrder,
   renderReadmeTeaserSvg,
 } from "../packages/review-core/src/index";
@@ -667,6 +669,58 @@ test("reviewChartNarrativeFit checks chart guidance against slide role and claim
   assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
 });
 
+test("reviewChartNarrativeFit validates chart placement block identity", () => {
+  const cdf = buildScientificChartIntentReport({
+    sourceLabel: "placement-fit",
+    sheets: [
+      {
+        sheetLabel: "Overall-cdf",
+        nonemptyRows: 20,
+        maxColumns: 4,
+        numericCellCount: 40,
+        formulaCellCount: 0,
+        chartFamilies: ["line"],
+      },
+    ],
+  }).intents[0]!;
+  const findings = reviewChartNarrativeFit({
+    presentation: {
+      slides: [
+        {
+          id: "slide-placement",
+          title: "p95 latency improved",
+          intent: "data",
+          headingPath: ["Performance"],
+          blocks: [
+            { id: "claim", type: "paragraph", text: "p95 latency improved across endpoints." },
+            { id: "chart-good", type: "chart", text: "CDF latency by endpoint" },
+            { id: "paragraph-bad", type: "paragraph", text: "Revenue table narrative" },
+            { id: "table-mismatch", type: "table", text: "Revenue by account" },
+          ],
+        },
+      ],
+    },
+    layout: {
+      slides: [
+        { id: "layout-placement", sourceSlideId: "slide-placement", layout: { preset: "chart-table" }, regions: [{ id: "main", role: "chart", blockIds: ["claim", "chart-good", "paragraph-bad", "table-mismatch"] }] },
+      ],
+    },
+    chartPlacements: [
+      { sourceSlideId: "slide-placement", chartBlockId: "chart-good", intent: cdf },
+      { sourceSlideId: "slide-placement", chartBlockId: "chart-missing", intent: cdf },
+      { sourceSlideId: "slide-placement", chartBlockId: "paragraph-bad", intent: cdf },
+      { sourceSlideId: "slide-placement", chartBlockId: "table-mismatch", intent: cdf },
+    ],
+  });
+
+  assert.equal(findings.some((finding) => finding.type === "CHART_PLACEMENT_BLOCK_MISSING"), true);
+  assert.equal(findings.some((finding) => finding.type === "CHART_PLACEMENT_BLOCK_TYPE_MISMATCH"), true);
+  assert.equal(findings.some((finding) => finding.type === "CHART_PLACEMENT_INTENT_MISMATCH"), true);
+  assert.equal(findings.some((finding) => finding.evidence?.chartBlockId === "chart-good"), false);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(findings).includes('"color"'), false);
+});
+
 test("validateReviewArtifactDesignOrder scans nested scientific chart and recipe orders", () => {
   const report = buildScientificChartIntentReport({
     sourceLabel: "nested-order",
@@ -1004,6 +1058,40 @@ test("buildSourceSlideEvidenceLedger maps slide claims to source and MDPR eviden
   assert.equal(JSON.stringify(ledger).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(ledger).includes('"layoutId"'), false);
   assert.equal(JSON.stringify(ledger).includes('"verdict"'), false);
+});
+
+test("source ledger bridges into deck design order trace without chart backfill", () => {
+  const ledger = buildSourceSlideEvidenceLedger({
+    markdown: [
+      "# Pipeline Review",
+      "## Activation",
+      "Activation rose by 42% after onboarding changes.[^1]",
+    ].join("\n"),
+    sources: [{ id: "growth-study", title: "Growth study", path: "sources/growth.md" }],
+    mdprEvidence: [{ evidenceId: "chart-activation", slideId: "Activation", kind: "chart", path: "charts/activation.png" }],
+    sourcePath: "pipeline-review.md",
+  });
+  const refs = sourceEvidenceRefsFromLedger(ledger);
+  const trace = buildDeckDesignOrderTraceFromLedger({
+    ledger,
+    narrativeSpineRefs: ["narrative:claim:activation"],
+    slideRoleRefs: ["slideRole:data"],
+  });
+  const disconnected = buildDeckDesignOrderTraceFromLedger({
+    ledger,
+    sourceEvidenceRefs: ["source:other.md"],
+    narrativeSpineRefs: ["narrative:claim:activation"],
+  });
+
+  assert.equal(refs.some((ref) => ref.startsWith("source:")), true);
+  assert.equal(refs.some((ref) => ref.startsWith("evidence:")), true);
+  assert.equal(refs.some((ref) => ref.startsWith("claim:")), true);
+  assert.equal(refs.some((ref) => ref.startsWith("slide:")), true);
+  assert.equal(trace.findings.some((finding) => finding.type === "DESIGN_ORDER_SOURCE_EVIDENCE_BACKFILLED"), false);
+  assert.equal(trace.findings.some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), false);
+  assert.equal(disconnected.findings.some((finding) => finding.type === "SOURCE_EVIDENCE_LEDGER_DISCONNECTED"), true);
+  assert.equal(JSON.stringify(trace).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(trace).includes('"rawValues"'), false);
 });
 
 test("renderReadmeTeaserSvg renders pipeline as nodes and connectors", () => {

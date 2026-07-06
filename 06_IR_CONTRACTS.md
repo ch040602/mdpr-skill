@@ -93,6 +93,11 @@ should use source or structural namespaces such as `sheet:`, `rows:`,
 `errorBars:`. Visual, theme, MDPR validation, and review-note refs belong to
 their later stages. Stage mismatch is a review warning, not a renderer decision.
 
+Source-slide evidence ledgers may feed `source_evidence` through boundary-safe
+refs such as `source:`, `evidence:`, `claim:`, and `slide:`. The bridge must not
+copy raw claim text, raw data values, coordinates, theme values, or PPTX
+geometry into the trace.
+
 ## No-Loss Policy
 
 - [x] Titles must be preserved.

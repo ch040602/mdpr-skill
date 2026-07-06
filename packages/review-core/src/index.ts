@@ -235,6 +235,10 @@ export type DeckDesignOrderTraceInput = {
   reviewNoteRefs?: string[];
 };
 
+export type DeckDesignOrderTraceFromLedgerInput = DeckDesignOrderTraceInput & {
+  ledger: SourceSlideEvidenceLedger;
+};
+
 export type ChartNarrativePlacement = {
   sourceSlideId: string;
   chartBlockId?: string;
@@ -443,6 +447,43 @@ export function buildDeckDesignOrderTrace(input: DeckDesignOrderTraceInput): Dec
     },
     entries,
     findings,
+  };
+}
+
+export function sourceEvidenceRefsFromLedger(ledger: SourceSlideEvidenceLedger): string[] {
+  const refs = new Set<string>();
+  for (const entry of ledger.entries) {
+    refs.add(`source:${entry.sourcePath}`);
+    refs.add(`slide:${safeRefSegment(entry.slideRef)}`);
+    refs.add(`claim:${safeRefSegment(entry.slideRef)}`);
+    for (const source of entry.sources) {
+      if (source.sourceId) refs.add(`source:${source.sourceId}`);
+      if (source.path) refs.add(`source:${source.path}`);
+      if (source.url) refs.add(`source:${source.url}`);
+    }
+    for (const evidence of entry.mdprEvidenceRefs) {
+      refs.add(`evidence:${evidence.evidenceId}`);
+      if (evidence.path) refs.add(`source:${evidence.path}`);
+      if (evidence.slideId) refs.add(`slide:${safeRefSegment(evidence.slideId)}`);
+    }
+  }
+  return [...refs].filter(Boolean);
+}
+
+export function buildDeckDesignOrderTraceFromLedger(input: DeckDesignOrderTraceFromLedgerInput): DeckDesignOrderTraceReport {
+  const ledgerRefs = sourceEvidenceRefsFromLedger(input.ledger);
+  const sourceEvidenceRefs = input.sourceEvidenceRefs ?? ledgerRefs;
+  const trace = buildDeckDesignOrderTrace({
+    ...input,
+    sourceEvidenceRefs,
+  });
+  const disconnected = ledgerRefs.length > 0 && !sourceEvidenceRefs.some((ref) => ledgerRefs.includes(ref));
+  return {
+    ...trace,
+    findings: [
+      ...trace.findings,
+      ...(disconnected ? sourceEvidenceLedgerDisconnectedFindings(sourceEvidenceRefs, ledgerRefs) : []),
+    ],
   };
 }
 
@@ -863,6 +904,61 @@ export function reviewChartNarrativeFit(input: ChartNarrativeFitInput): ReviewFi
     const layoutBlocks = layoutSlide ? blocksForLayoutSlide(layoutSlide, model.blockById) : sourceSlide.blocks;
     const hasClaimSupport = layoutBlocks.some(isClaimBlock) || Boolean(sourceSlide.title && sourceSlide.title.trim().length >= 12);
     const slideId = layoutSlide?.id ?? sourceSlide.id;
+    const placedBlock = placement.chartBlockId ? sourceSlide.blocks.find((block) => block.id === placement.chartBlockId) : undefined;
+    const layoutBlockIds = new Set(layoutBlocks.map((block) => block.id));
+
+    if (placement.chartBlockId && (!placedBlock || (layoutSlide && !layoutBlockIds.has(placement.chartBlockId)))) {
+      findings.push({
+        severity: "warning",
+        type: "CHART_PLACEMENT_BLOCK_MISSING",
+        slideId,
+        evidence: {
+          sourceSlideId: sourceSlide.id,
+          chartBlockId: placement.chartBlockId,
+          chartIntent: placement.intent.intent,
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "coherence.chartNarrativeFit.placementBlock",
+          operation: "enableRule",
+        },
+      });
+    } else if (placedBlock && !isEvidenceBlock(placedBlock)) {
+      findings.push({
+        severity: "warning",
+        type: "CHART_PLACEMENT_BLOCK_TYPE_MISMATCH",
+        slideId,
+        evidence: {
+          sourceSlideId: sourceSlide.id,
+          chartBlockId: placement.chartBlockId,
+          chartIntent: placement.intent.intent,
+          blockType: placedBlock.type,
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "coherence.chartNarrativeFit.placementBlockType",
+          operation: "enableRule",
+        },
+      });
+    } else if (placedBlock && !chartPlacementBlockMatchesIntent(placedBlock, placement.intent.intent)) {
+      findings.push({
+        severity: "warning",
+        type: "CHART_PLACEMENT_INTENT_MISMATCH",
+        slideId,
+        evidence: {
+          sourceSlideId: sourceSlide.id,
+          chartBlockId: placement.chartBlockId,
+          chartIntent: placement.intent.intent,
+          blockType: placedBlock.type,
+          semanticTerms: [...semanticTermsForBlocks([placedBlock])].slice(0, 8),
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "coherence.chartNarrativeFit.intentBinding",
+          operation: "enableRule",
+        },
+      });
+    }
 
     if (!fit.preferredSlideRoles.includes(slideRole)) {
       findings.push({
@@ -2318,7 +2414,7 @@ function deckDesignOrderStageRefFindings(entries: DeckDesignOrderTraceEntry[]): 
 
 const DECK_DESIGN_STAGE_REF_PREFIXES: Record<DeckDesignOrderStage, string[]> = {
   narrative_spine: ["narrative:", "claim:", "section:"],
-  source_evidence: ["source:", "evidence:", "sheet:", "rows:", "columns:", "numericCells:", "formulaCells:", "chartFamilies:", "errorBars:", "errorBarKind:"],
+  source_evidence: ["source:", "evidence:", "claim:", "slide:", "sheet:", "rows:", "columns:", "numericCells:", "formulaCells:", "chartFamilies:", "errorBars:", "errorBarKind:"],
   slide_role: ["slideRole:", "slide:", "layout:", "role:"],
   chart_intent: ["chartIntent:", "sourceSheet:", "sheet:", "rows:", "columns:", "numericCells:", "formulaCells:", "chartFamilies:", "errorBars:", "errorBarKind:"],
   semantic_visual_guidance: ["visual:", "visualApplication:", "density:", "downshift:", "labelBudget:", "aggregation:"],
@@ -2329,6 +2425,23 @@ const DECK_DESIGN_STAGE_REF_PREFIXES: Record<DeckDesignOrderStage, string[]> = {
 
 function deckDesignOrderRefMatchesStage(stage: DeckDesignOrderStage, ref: string): boolean {
   return DECK_DESIGN_STAGE_REF_PREFIXES[stage].some((prefix) => ref.startsWith(prefix));
+}
+
+function sourceEvidenceLedgerDisconnectedFindings(sourceEvidenceRefs: string[], ledgerRefs: string[]): ReviewFinding[] {
+  return [{
+    severity: "warning",
+    type: "SOURCE_EVIDENCE_LEDGER_DISCONNECTED",
+    slideId: "deck",
+    evidence: {
+      sourceEvidenceRefs,
+      ledgerEvidenceRefs: ledgerRefs.slice(0, 12),
+    },
+    suggestion: {
+      kind: "mdpr-policy",
+      target: "review.designOrder.sourceLedgerBridge",
+      operation: "enableRule",
+    },
+  }];
 }
 
 function chartIntentEvidenceRefs(report: ScientificChartIntentReport | undefined): string[] {
@@ -2789,6 +2902,15 @@ function semanticMotifForBlock(block: BlockLike): string {
   return block.type;
 }
 
+function chartPlacementBlockMatchesIntent(block: BlockLike, intent: ScientificChartIntentKind): boolean {
+  const motif = semanticMotifForBlock(block);
+  if (intent === "cdf_curve") return motif === "cdf_or_percentile";
+  if (intent === "distribution_box_whisker" || intent === "distribution_quantile_band") return motif === "distribution";
+  if (intent === "mean_with_error_bars") return motif === "uncertainty_interval";
+  if (intent === "matrix_series" || intent === "heatmap_summary") return motif === "matrix_or_heatmap";
+  return isEvidenceBlock(block);
+}
+
 function semanticSlideRole(slide: PresentationSlideLike, layoutSlide: LayoutSlideLike): string {
   const intent = (slide.intent ?? "").toLowerCase();
   if (intent) return intent;
@@ -2798,6 +2920,11 @@ function semanticSlideRole(slide: PresentationSlideLike, layoutSlide: LayoutSlid
   if (regionRoles.includes("chart")) return "data";
   if (layoutSlide.preset.toLowerCase().includes("section")) return "section";
   return layoutSlide.preset;
+}
+
+function safeRefSegment(value: string): string {
+  const normalized = value.trim().toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/^-+|-+$/g, "");
+  return normalized || "unknown";
 }
 
 function asRecord(value: unknown): Record<string, unknown> | undefined {
