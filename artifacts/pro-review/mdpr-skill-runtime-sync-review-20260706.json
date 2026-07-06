@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "mdpr-skill-pro-review-artifact-v1",
+  "reviewedAt": "2026-07-06T03:45:44.919Z",
+  "provider": "chatgpt",
+  "model": "pro",
+  "effort": "standard",
+  "sessionId": "01KWTRGBEQW7FXJTMRNQKW8B9W",
+  "conversationUrl": "https://chatgpt.com/c/6a473673-dcb4-83ee-b2c5-58d8303c9510?mweb_fallback=1",
+  "scope": {
+    "repository": "C:/Users/hcslab_523/Documents/mdpr-skill",
+    "changedFiles": [
+      "skills/mdpr-skill/SKILL.md"
+    ],
+    "mdprPath": ".cache/mdpr",
+    "mdprCommitAtReview": "ed6ca9a"
+  },
+  "localValidationBeforeReview": [
+    {
+      "command": "node bin/mdpr-skill.js --help",
+      "status": "pass"
+    },
+    {
+      "command": "node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path .cache/mdpr",
+      "status": "pass",
+      "findings": []
+    },
+    {
+      "command": "node .cache/mdpr/packages/cli/dist/index.js job-state validate artifacts/codex-ppt-slide-tasks/iteration-05/mdpr-job-state.json --json",
+      "status": "pass",
+      "valid": true
+    },
+    {
+      "command": "node .cache/mdpr/packages/cli/dist/index.js generated-assets validate artifacts/codex-ppt-generated-assets/sample.generated-assets.json --json",
+      "status": "pass",
+      "valid": true,
+      "warnings": [
+        "external-md-architecture-visual requests quality hd, but provider metadata does not list it as supported",
+        "external-md-architecture-visual requests transparency, but provider metadata says transparency is unsupported"
+      ]
+    }
+  ],
+  "providerTodos": [
+    {
+      "severity": "high",
+      "issue": "Define validation.polish status as MDPR-owned and avoid LLM-invented missing/stale/failing outcomes.",
+      "resolution": "Added MDPR-owned signals and validate command guidance."
+    },
+    {
+      "severity": "medium",
+      "issue": "Record MDPR checkout path, commit/version, schema-sync command, and validation timestamp before claiming compatibility.",
+      "resolution": "Added compatibility evidence recording guidance."
+    },
+    {
+      "severity": "medium",
+      "issue": "Approval example omitted approval metadata while the text required it.",
+      "resolution": "Updated change approve example with --approved-by and --approved-at."
+    },
+    {
+      "severity": "medium",
+      "issue": "Production override and PDF ownership boundary was not explicit.",
+      "resolution": "Added Production Override And PDF Boundary section."
+    },
+    {
+      "severity": "low",
+      "issue": "Hard-coded sample paths could be stale in reusable skill documentation.",
+      "resolution": "Changed MDPR mirror commands to placeholder paths and added substitution guidance."
+    }
+  ],
+  "localValidationAfterReview": [
+    {
+      "command": "node bin/mdpr-skill.js --help",
+      "status": "pass"
+    },
+    {
+      "command": "node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path .cache/mdpr",
+      "status": "pass",
+      "findings": []
+    },
+    {
+      "command": "node .cache/mdpr/packages/cli/dist/index.js job-state validate artifacts/codex-ppt-slide-tasks/iteration-05/mdpr-job-state.json --json",
+      "status": "pass",
+      "valid": true
+    },
+    {
+      "command": "node .cache/mdpr/packages/cli/dist/index.js generated-assets validate artifacts/codex-ppt-generated-assets/sample.generated-assets.json --json",
+      "status": "pass",
+      "valid": true
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass"
+    }
+  ]
+}

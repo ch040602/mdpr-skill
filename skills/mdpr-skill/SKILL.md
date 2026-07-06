@@ -17,6 +17,41 @@ Use this skill as the optional Codex companion for MDPR. MDPR remains the determ
 - Preserve the ability to build the same deck with all agent hints disabled.
 - Do not mutate source Markdown unless the user explicitly asks for a cleaned source draft.
 
+## MDPR Runtime Sync Boundary
+
+Use the local MDPR checkout as the source of truth when this skill is being
+updated for a revised MDPR runtime.
+
+- Treat MDPR schemas as mirrored contracts, not skill-owned inventions. Before
+  claiming compatibility with a revised MDPR checkout, run the schema-sync gate
+  against the target MDPR path.
+- Record the MDPR checkout path, commit hash or version, schema-sync command,
+  and validation timestamp in review notes or artifacts before claiming
+  compatibility with a revised MDPR runtime. Do not treat `.cache/mdpr` or any
+  specific commit as a permanent assumption.
+- Treat MDPR's `validation.polish` manifest field as the deterministic
+  post-AI PPT polish gate. LLM notes may explain or triage polish concerns, but
+  MDPR owns the pass/fail result for font hierarchy, layout composition,
+  highlight pages, cover treatment, detail QA, and theme-gallery evidence.
+- Treat MDPR's `job-state validate/status` and `generated-assets validate`
+  commands as runtime mirror checks for the same contracts that `mdpr-skill`
+  can create or inspect.
+- Keep `mdpr-skill` changes compatible with MDPR's no-agent runtime: all
+  generated hints, edit intents, change requests, and review artifacts must be
+  optional inputs or review evidence.
+
+Useful local commands:
+
+```bash
+git -C <mdpr-path> rev-parse HEAD
+node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path <mdpr-path>
+node <mdpr-path>/packages/cli/dist/index.js job-state validate <job-state.json> --json
+node <mdpr-path>/packages/cli/dist/index.js generated-assets validate <generated-assets.json> --json
+```
+
+Substitute the actual MDPR checkout and artifact paths, and verify referenced
+files exist before treating results as compatibility evidence.
+
 ## LLM-Assisted PPTX Review Boundary
 
 Use LLM judgment only for semantic, narrative, evidence, and review-note
@@ -28,6 +63,20 @@ When an LLM review mentions these issues, ground the note in an MDPR report
 finding, rendered evidence path, manifest field, or explicit source excerpt.
 Treat the LLM note as triage or explanation only; MDPR validation remains the
 source of truth for pass/fail status and release gating.
+
+When reviewing revised-MDPR outputs, explicitly check whether the build manifest
+records `validation.polish`. Missing, stale, and failing status must come from
+MDPR build/validate output, MDPR manifest metadata, or MDPR-reported source
+hash/build metadata, not from LLM judgment. If `validation.polish` is missing,
+stale, or failing according to those MDPR-owned signals, recommend an MDPR
+runtime or validation-policy fix rather than presenting the LLM review as a
+release gate substitute.
+
+Example MDPR-owned check after the runtime has built or validated a deck:
+
+```bash
+node <mdpr-path>/packages/cli/dist/index.js validate <deck.md> --visual --coherence --json
+```
 
 ## Main Workflows
 
@@ -58,6 +107,8 @@ Use when reviewing generated MDPR artifacts, manifests, preview images, review r
 - Distinguish source Markdown problems from MDPR runtime/rulebook problems.
 - Turn repeated visual issues into deterministic MDPR rule or config recommendations.
 - Keep the output actionable for MDPR maintainers.
+- Reference MDPR manifest `validation.polish` when discussing post-AI PPT polish
+  quality, and keep that manifest field as the release gate.
 
 Useful local command:
 
@@ -133,6 +184,45 @@ node bin/mdpr-skill.js accessibility --markdown deck.md --audience "executive re
 node bin/mdpr-skill.js evidence-ledger --markdown deck.md --sources sources.json --mdpr-evidence mdpr-evidence.json --out .mdpresent/review/evidence-ledger.json
 ```
 
+### Change Requests And Override Proposals
+
+Use when an agent or PowerPoint bridge flow needs to record a proposed change
+without applying it directly to MDPR runtime output.
+
+- Emit `mdpr-change-request-v1` proposals for agent hints, edit intents, policy
+  suggestions, pack candidates, or user-override candidates.
+- Keep change requests in `proposed` state until the user explicitly approves
+  or rejects them.
+- Require approval metadata before any pack or override candidate is treated as
+  a runtime input.
+- Use `edit override-candidate` only for bounded split preferences such as
+  `splitBy`, `forceSingleSlide`, or `maxDensity`. It must not encode
+  coordinates, colors, recipes, variants, or final layout decisions.
+- Prefer `ppt propose --markdown` when a PowerPoint selection context is tied
+  to Markdown; this rejects stale source hashes before creating hints or change
+  requests.
+
+Useful local commands:
+
+```bash
+node bin/mdpr-skill.js edit override-candidate --source-sha256 <64hex> --slide-ref slide-3 --instruction "split dense evidence into smaller slides" --split-by h3 --out .mdpresent/proposals/split.override.json
+node bin/mdpr-skill.js ppt propose --selection-context .mdpresent/ppt/selection-context.json --markdown deck.md --out .mdpresent/proposals/ppt-selection.change-request.json --hints-out .mdpresent/proposals/ppt-selection.agent-hint.json
+node bin/mdpr-skill.js change approve .mdpresent/proposals/ppt-selection.change-request.json --approved-by <user-or-reviewer-id> --approved-at <ISO-8601> --out .mdpresent/proposals/ppt-selection.approved.change-request.json
+node bin/mdpr-skill.js change reject .mdpresent/proposals/ppt-selection.change-request.json --out .mdpresent/proposals/ppt-selection.rejected.change-request.json
+```
+
+### Production Override And PDF Boundary
+
+Use when a revised MDPR runtime supports production override application or PDF
+output paths.
+
+- `mdpr-skill` may propose user-approved override candidates and review
+  resulting artifacts.
+- MDPR owns applying production overrides, PDF output, renderer behavior,
+  validation, and pass/fail decisions.
+- Do not encode final layout, coordinates, colors, recipes, variants, renderer
+  object IDs, or PDF rendering decisions in skill output.
+
 ### Generator Comparison Boundary
 
 PptxGenJS, python-pptx, and other PPTX generators are comparison points only.
@@ -168,6 +258,8 @@ MDPR or `mdpr-skill`.
   and quality metadata. The manifest records provider id, model, prompt hash,
   source input hashes, size, quality, background, transparency policy, and
   output provenance without secrets and without becoming a full-slide renderer.
+- Cross-check MDPR's mirrored validators for `mdpr-job-state-v1` and
+  `mdpr-generated-assets-v1` when the revised MDPR runtime is available.
 - Do not copy codex-ppt's full-slide image generation as a default MDPR path.
 
 Useful local command:
@@ -177,6 +269,8 @@ node bin/mdpr-skill.js codex-ppt compat --source-ref ningzimu/codex-ppt-skill@93
 node bin/mdpr-skill.js codex-ppt slide-tasks --manifest artifacts/external-markdown-visual-eval/iteration-05/build/mdpresent-manifest.json --markdown artifacts/external-markdown-visual-eval/iteration-05/corpus.md --rendered-images artifacts/codex-ppt-slide-tasks/iteration-05/rendered-images.json --out artifacts/codex-ppt-slide-tasks/iteration-05/tasks
 node bin/mdpr-skill.js codex-ppt job-state init --tasks artifacts/codex-ppt-slide-tasks/iteration-05/tasks/slide-task-packets.json --manifest artifacts/external-markdown-visual-eval/iteration-05/build/mdpresent-manifest.json --out artifacts/codex-ppt-slide-tasks/iteration-05/mdpr-job-state.json
 node bin/mdpr-skill.js codex-ppt generated-assets validate --manifest artifacts/codex-ppt-generated-assets/sample.generated-assets.json
+node <mdpr-path>/packages/cli/dist/index.js job-state status <job-state.json> --json
+node <mdpr-path>/packages/cli/dist/index.js generated-assets validate <generated-assets.json> --json
 ```
 
 ### Design Components Boundary
@@ -256,9 +350,13 @@ Never emit final PowerPoint geometry, object IDs, z-order, exact colors, or exac
 Prefer the repo's existing commands when the `mdpr-skill` checkout is available:
 
 ```bash
+node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path <mdpr-path>
 npm run validate
 npm run check:mdpr
 npm run check:mdpr-pandoc
 ```
 
-For focused artifact work, validate the exact JSON schema or report contract touched by the task before presenting findings as release-ready.
+For focused artifact work, validate the exact JSON schema or report contract
+touched by the task before presenting findings as release-ready. For revised
+MDPR compatibility work, include the schema-sync gate and any mirrored MDPR
+validator that corresponds to the artifact under review.
