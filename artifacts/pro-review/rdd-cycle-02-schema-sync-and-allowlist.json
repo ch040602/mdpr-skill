@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "rdd-pro-review-cycle-evidence-v1",
+  "cycle": 2,
+  "createdAt": "2026-07-06T04:14:17Z",
+  "sourceReview": {
+    "provider": "chatgpt",
+    "model": "pro",
+    "roundDirectory": ".codex/review-driven-development/pro-review/20260706T040540Z-round-001",
+    "importedTodoIds": [
+      "RDD-T-00000089",
+      "RDD-T-00000090"
+    ]
+  },
+  "implementedTodos": [
+    {
+      "todoId": "RDD-T-00000089",
+      "title": "Separate schema-file coverage from schema-sync validation evidence",
+      "resolution": [
+        "The mdpr-skill release verdict now separates schema_contract_files_covered from schema_sync_gate_passed.",
+        "schema_contract_files_covered is sourced from release_scan_coverage.",
+        "schema_sync_gate_passed is proven only from an actual validate-schema-sync command/report with an existing MDPR checkout; otherwise it remains not_evaluated.",
+        "scripts/validate_rdd_mdpr_skill_profile.py rejects the stale combined schema_sync_and_shared_contracts constraint and rejects coverage-only schema-sync proof."
+      ]
+    },
+    {
+      "todoId": "RDD-T-00000090",
+      "title": "Tighten mdpr-skill omitted-path allowlist to remove stale game-project patterns",
+      "resolution": [
+        "The RDD context inventory helper now uses release-profile-specific omitted-path allowlists.",
+        "The mdpr-skill allowlist contains generated, cache, build, artifact, CI/tooling, and Python bytecode exclusions only.",
+        "scripts/validate_rdd_mdpr_skill_profile.py rejects stale FluxDerby, Unity, Steam, CraftPix, and saves allowlist terms."
+      ]
+    }
+  ],
+  "localValidation": [
+    {
+      "command": "python -m py_compile C:\\Users\\hcslab_523\\.codex\\skills\\review-driven-development\\scripts\\context_inventory.py",
+      "status": "pass"
+    },
+    {
+      "command": "python C:\\Users\\hcslab_523\\.codex\\skills\\review-driven-development\\scripts\\context_inventory.py --root . --sync --structure-completeness --force --force-tfidf",
+      "status": "pass",
+      "observed": {
+        "releaseProfile": "mdpr-skill",
+        "releaseScanCoverageStatus": "pass",
+        "releaseGateStatus": "local_static_structure_gate_pass",
+        "schemaConstraints": [
+          "schema_contract_files_covered",
+          "schema_sync_gate_passed"
+        ],
+        "omittedPathUnclassifiedCount": 0
+      }
+    },
+    {
+      "command": "python scripts\\validate_rdd_mdpr_skill_profile.py",
+      "status": "pass"
+    },
+    {
+      "command": "node bin\\mdpr-skill.js gate validate-schema-sync --mdpr-path .cache\\mdpr",
+      "status": "pass",
+      "findings": []
+    }
+  ],
+  "runtimeBoundary": "MDPR remains the deterministic owner of parsing, layout, rendering, PPTX/PDF output, and validation pass/fail decisions; this cycle only updates RDD evidence classification for mdpr-skill review workflows."
+}

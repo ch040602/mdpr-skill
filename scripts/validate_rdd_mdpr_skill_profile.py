@@ -22,6 +22,17 @@ FORBIDDEN_TERMS = [
     "legal_review",
 ]
 
+FORBIDDEN_ALLOWLIST_TERMS = [
+    "FluxDerby",
+    "craftpix",
+    "Steam",
+    "steam",
+    "Unity",
+    "unity/",
+    "saves/**",
+    "assets/external/craftpix",
+]
+
 
 def fail(message: str) -> None:
     print(f"FAIL: {message}", file=sys.stderr)
@@ -43,6 +54,7 @@ def main() -> None:
     release_evidence = packet.get("release_evidence_completeness", {})
     release_verdict = packet.get("release_verdict", {})
     release_coverage = inventory.get("release_scan_coverage", {})
+    truncation = inventory.get("truncation", {})
 
     if inventory.get("release_profile") != "mdpr-skill":
         fail(f"expected mdpr-skill release profile, got {inventory.get('release_profile')!r}")
@@ -54,11 +66,12 @@ def main() -> None:
         fail(f"expected local static gate pass, got {release_verdict.get('release_gate_status')!r}")
 
     constraints = release_verdict.get("constraints", [])
-    constraint_ids = {
-        item.get("id")
+    constraint_by_id = {
+        item.get("id"): item
         for item in constraints
         if isinstance(item, dict)
     }
+    constraint_ids = set(constraint_by_id)
     forbidden_constraint_ids = {
         "unity_project_structure",
         "unity_editor_execution",
@@ -70,6 +83,38 @@ def main() -> None:
     present_forbidden = sorted(constraint_ids & forbidden_constraint_ids)
     if present_forbidden:
         fail(f"forbidden Unity/Steam constraints present: {', '.join(present_forbidden)}")
+
+    if "schema_sync_and_shared_contracts" in constraint_ids:
+        fail("schema sync and schema contract coverage must be separate constraints")
+    if "schema_contract_files_covered" not in constraint_ids:
+        fail("missing schema_contract_files_covered constraint")
+    if "schema_sync_gate_passed" not in constraint_ids:
+        fail("missing schema_sync_gate_passed constraint")
+
+    schema_contract = constraint_by_id["schema_contract_files_covered"]
+    if schema_contract.get("source") != "release_scan_coverage":
+        fail(f"schema_contract_files_covered must use release_scan_coverage source, got {schema_contract.get('source')!r}")
+
+    schema_sync = constraint_by_id["schema_sync_gate_passed"]
+    if schema_sync.get("status") == "proven":
+        source = str(schema_sync.get("source", ""))
+        command = str(schema_sync.get("command", ""))
+        if source == "release_scan_coverage" or "validate-schema-sync" not in command:
+            fail("schema_sync_gate_passed cannot be proven from inventory coverage alone")
+    elif schema_sync.get("status") != "not_evaluated":
+        fail(f"unexpected schema_sync_gate_passed status: {schema_sync.get('status')!r}")
+
+    allowlist = [
+        str(item)
+        for item in truncation.get("omitted_path_allowlist", [])
+    ]
+    stale_allowlist = sorted(
+        rule
+        for rule in allowlist
+        if any(term in rule for term in FORBIDDEN_ALLOWLIST_TERMS)
+    )
+    if stale_allowlist:
+        fail(f"stale game-project omitted-path allowlist entries present: {', '.join(stale_allowlist)}")
 
     markdown = PROFILE_MD.read_text(encoding="utf-8")
     found_terms = sorted(term for term in FORBIDDEN_TERMS if term in markdown)
