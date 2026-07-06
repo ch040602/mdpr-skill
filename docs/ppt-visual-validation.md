@@ -96,6 +96,25 @@ native-chart frame for scientific, operational, or comparison-heavy data. The
 catalog is still evidence-only: it does not choose final placement, dimensions,
 theme values, raw workbook values, or PPTX renderer objects.
 
+Chart optimization also needs a theme-bound visual application step after the
+chart kind is selected. `review-core` records this as `visualApplication`:
+
+- `chartChoice` decides whether the chart is the primary visual, supporting
+  proof, small multiple, background proof, or comparison strip.
+- `toneSlots` names theme slots such as `theme.chart.sequence`,
+  `theme.chart.accent`, `theme.chart.warning`, and `theme.text.primary`
+  instead of raw colors.
+- `backgroundTreatment` requests a theme surface such as
+  `theme.surface.chartPanel`, `theme.surface.subtleBand`,
+  `theme.surface.transparent`, or `theme.surface.proofHighlight`.
+- `labelStrategy` and `densityStrategy` explain how labels, callouts, small
+  multiples, aggregation, or downshifting should keep the chart readable.
+
+This means the agent should not stop at "use a CDF" or "use a violin plot."
+It should first choose the semantic chart recipe, then request the appropriate
+theme-bound tones and background surface, then leave MDPR to resolve exact
+theme colors, panel geometry, PPTX objects, and final validation.
+
 Environment note:
 
 LibreOffice/PowerPoint rendering is not installed in this environment, so the visual proof is generated as a deterministic PNG from parsed PPTX XML geometry and colors. The PPTX itself is inspected directly for shape z-order.

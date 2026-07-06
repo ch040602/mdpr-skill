@@ -336,9 +336,14 @@ test("buildScientificChartIntentReport classifies SANFC-like chart structure wit
   assert.equal(report.intents.every((intent) => intent.designOrder[0] === "data_evidence"), true);
   assert.equal(report.intents.every((intent) => intent.designOrder[1] === "scientific_chart_intent"), true);
   assert.equal(report.intents.every((intent) => intent.rendererRequest.target === "mdpr.chart-capability"), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.toneSlots.every((slot) => slot.startsWith("theme."))), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.backgroundTreatment.startsWith("theme.")), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.labelStrategy.length > 0), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.densityStrategy.length > 0), true);
   assert.equal(report.reviewNotes.some((note) => note.type === "ERROR_BAR_KIND_UNKNOWN"), true);
   assert.equal(JSON.stringify(report).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(report).includes('"rawValues"'), false);
+  assert.equal(JSON.stringify(report).includes("#"), false);
   assert.equal(JSON.stringify(report).includes('"color"'), false);
 });
 
@@ -377,8 +382,15 @@ test("buildHighNeedChartRecipeCatalog covers non-basic Excel chart needs with MD
   assert.equal(catalog.recipes.every((recipe) => recipe.mdprCapabilityRequest.target === "mdpr.chart-capability"), true);
   assert.equal(catalog.recipes.every((recipe) => recipe.fallbackStrategy.length > 0), true);
   assert.equal(catalog.recipes.every((recipe) => recipe.designOrder[0] === "data_evidence"), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.toneSlots.every((slot) => slot.startsWith("theme."))), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.backgroundTreatment.startsWith("theme.")), true);
+  assert.equal(catalog.recipes.some((recipe) => recipe.visualApplication.backgroundTreatment === "theme.surface.chartPanel"), true);
+  assert.equal(catalog.recipes.some((recipe) => recipe.visualApplication.backgroundTreatment === "theme.surface.subtleBand"), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.labelStrategy.length > 0), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.densityStrategy.length > 0), true);
   assert.equal(JSON.stringify(catalog).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(catalog).includes('"rawValues"'), false);
+  assert.equal(JSON.stringify(catalog).includes("#"), false);
   assert.equal(JSON.stringify(catalog).includes('"color"'), false);
 });
 

@@ -131,6 +131,7 @@ export type ScientificChartIntentEntry = {
   evidenceRefs: string[];
   semanticRoles: string[];
   designOrder: ScientificChartDesignOrderStep[];
+  visualApplication: ChartVisualApplicationGuidance;
   rendererRequest: {
     target: "mdpr.chart-capability";
     supportNeeded: string;
@@ -180,11 +181,20 @@ export type HighNeedChartRecipe = {
   dataShapeRequirements: string[];
   semanticRoles: string[];
   designOrder: ScientificChartDesignOrderStep[];
+  visualApplication: ChartVisualApplicationGuidance;
   mdprCapabilityRequest: {
     target: "mdpr.chart-capability";
     supportNeeded: string;
   };
   fallbackStrategy: string;
+};
+
+export type ChartVisualApplicationGuidance = {
+  chartChoice: "primary-visual" | "supporting-proof" | "small-multiple" | "background-proof" | "comparison-strip";
+  toneSlots: string[];
+  backgroundTreatment: "theme.surface.chartPanel" | "theme.surface.subtleBand" | "theme.surface.transparent" | "theme.surface.proofHighlight";
+  labelStrategy: string;
+  densityStrategy: string;
 };
 
 export type HighNeedChartRecipeCatalog = {
@@ -1731,6 +1741,7 @@ function highNeedChartRecipes(): HighNeedChartRecipe[] {
     dataShapeRequirements,
     semanticRoles,
     designOrder: order,
+    visualApplication: chartVisualApplicationForKind(kind),
     mdprCapabilityRequest: {
       target: "mdpr.chart-capability",
       supportNeeded,
@@ -1891,6 +1902,7 @@ function scientificChartIntentEntry(
       "renderer_capability_request",
       "review_notes",
     ],
+    visualApplication: chartVisualApplicationForIntent(intent),
     rendererRequest: {
       target: "mdpr.chart-capability",
       supportNeeded: scientificChartSupportNeeded(intent),
@@ -1911,6 +1923,108 @@ function scientificChartEvidenceRefs(sheet: ScientificChartSheetEvidence): strin
   if (sheet.errorBarCount && sheet.errorBarCount > 0) refs.push(`errorBars:${sheet.errorBarCount}`);
   if (sheet.errorBarKind) refs.push(`errorBarKind:${sheet.errorBarKind}`);
   return refs;
+}
+
+function chartVisualApplicationForIntent(intent: ScientificChartIntentKind): ChartVisualApplicationGuidance {
+  if (intent === "cdf_curve") {
+    return {
+      chartChoice: "primary-visual",
+      toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
+      backgroundTreatment: "theme.surface.chartPanel",
+      labelStrategy: "Directly label percentile or threshold callouts; keep axis labels semantic and sparse.",
+      densityStrategy: "Use a single emphasized curve first; use small multiples when groups exceed the label budget.",
+    };
+  }
+  if (intent === "distribution_box_whisker" || intent === "distribution_quantile_band") {
+    return {
+      chartChoice: "supporting-proof",
+      toneSlots: ["theme.chart.sequence", "theme.chart.neutral", "theme.chart.accent"],
+      backgroundTreatment: "theme.surface.subtleBand",
+      labelStrategy: "Label median and selected quantile or whisker roles, not every mark.",
+      densityStrategy: "Downshift to compact distribution strips when group count or labels exceed readable density.",
+    };
+  }
+  if (intent === "mean_with_error_bars") {
+    return {
+      chartChoice: "supporting-proof",
+      toneSlots: ["theme.chart.accent", "theme.chart.warning", "theme.text.primary"],
+      backgroundTreatment: "theme.surface.proofHighlight",
+      labelStrategy: "Name the uncertainty meaning near the legend or callout before emphasizing the interval.",
+      densityStrategy: "Prefer fewer emphasized intervals; suppress or annotate unknown uncertainty kinds.",
+    };
+  }
+  if (intent === "matrix_series") {
+    return {
+      chartChoice: "small-multiple",
+      toneSlots: ["theme.chart.sequence", "theme.chart.neutral", "theme.text.secondary"],
+      backgroundTreatment: "theme.surface.transparent",
+      labelStrategy: "Use row or group labels outside the plotting area and reserve direct labels for selected traces.",
+      densityStrategy: "Summarize dense series into representative bands, small multiples, or connected strips.",
+    };
+  }
+  return {
+    chartChoice: "background-proof",
+    toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
+    backgroundTreatment: "theme.surface.chartPanel",
+    labelStrategy: "Label the aggregated metric and show the scale legend only when the chart is the primary evidence.",
+    densityStrategy: "Bucket or aggregate matrix cells before requesting heatmap rendering.",
+  };
+}
+
+function chartVisualApplicationForKind(kind: HighNeedChartRecipeKind): ChartVisualApplicationGuidance {
+  if (kind === "cdf_curve") return chartVisualApplicationForIntent("cdf_curve");
+  if (kind === "quantile_band" || kind === "violin_plot" || kind === "ridgeline_density") {
+    return {
+      chartChoice: kind === "ridgeline_density" ? "small-multiple" : "supporting-proof",
+      toneSlots: ["theme.chart.sequence", "theme.chart.neutral", "theme.text.primary"],
+      backgroundTreatment: "theme.surface.subtleBand",
+      labelStrategy: "Name groups and key distribution markers; avoid labeling every sample or density contour.",
+      densityStrategy: "Use compact rows or bands before adding ornament when groups are numerous.",
+    };
+  }
+  if (kind === "beeswarm_plot") {
+    return {
+      chartChoice: "supporting-proof",
+      toneSlots: ["theme.chart.accent", "theme.chart.neutral", "theme.text.secondary"],
+      backgroundTreatment: "theme.surface.transparent",
+      labelStrategy: "Label groups and notable outliers while preserving individual-point evidence.",
+      densityStrategy: "Use deterministic jitter or strip fallback when collision packing is unavailable.",
+    };
+  }
+  if (kind === "slopegraph" || kind === "dumbbell_plot") {
+    return {
+      chartChoice: "comparison-strip",
+      toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
+      backgroundTreatment: "theme.surface.chartPanel",
+      labelStrategy: "Directly label endpoints and deltas; avoid legends when two states are obvious.",
+      densityStrategy: "Sort by delta and cap visible comparisons before switching to table-plus-chart.",
+    };
+  }
+  if (kind === "bullet_chart" || kind === "control_chart" || kind === "forest_plot" || kind === "bland_altman_plot") {
+    return {
+      chartChoice: "primary-visual",
+      toneSlots: ["theme.chart.accent", "theme.chart.warning", "theme.chart.neutral", "theme.text.primary"],
+      backgroundTreatment: "theme.surface.proofHighlight",
+      labelStrategy: "Keep reference lines, targets, or limits explicitly named because they carry the argument.",
+      densityStrategy: "Prioritize the reference structure and reduce decoration when intervals or limits are dense.",
+    };
+  }
+  if (kind === "sankey_alluvial" || kind === "marimekko_mosaic") {
+    return {
+      chartChoice: "primary-visual",
+      toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.chart.neutral"],
+      backgroundTreatment: "theme.surface.chartPanel",
+      labelStrategy: "Label major flows or segments directly and route minor categories to an aggregated note.",
+      densityStrategy: "Aggregate small categories before routing paths or area segments.",
+    };
+  }
+  return {
+    chartChoice: "supporting-proof",
+    toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
+    backgroundTreatment: "theme.surface.subtleBand",
+    labelStrategy: "Label component axes and selected points before adding explanatory decoration.",
+    densityStrategy: "Validate composition constraints and reduce labels before rendering dense point clouds.",
+  };
 }
 
 function scientificChartSupportNeeded(intent: ScientificChartIntentKind): string {
