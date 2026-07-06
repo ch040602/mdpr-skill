@@ -87,6 +87,12 @@ Review artifacts must carry evidence refs and must not contain final renderer
 fields such as raw coordinates, fixed geometry, renderer object ids, raw style
 fields, final validation verdicts, or workbook raw values.
 
+Evidence refs should match their design-order stage. `source_evidence` refs
+should use source or structural namespaces such as `sheet:`, `rows:`,
+`columns:`, `numericCells:`, `formulaCells:`, `chartFamilies:`, and
+`errorBars:`. Visual, theme, MDPR validation, and review-note refs belong to
+their later stages. Stage mismatch is a review warning, not a renderer decision.
+
 ## No-Loss Policy
 
 - [x] Titles must be preserved.

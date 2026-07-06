@@ -235,6 +235,16 @@ export type DeckDesignOrderTraceInput = {
   reviewNoteRefs?: string[];
 };
 
+export type ChartNarrativePlacement = {
+  sourceSlideId: string;
+  chartBlockId?: string;
+  intent: ScientificChartIntentEntry;
+};
+
+export type ChartNarrativeFitInput = ReviewCoreInput & {
+  chartPlacements: ChartNarrativePlacement[];
+};
+
 export type DeckDesignOrderTraceEntry = {
   stage: DeckDesignOrderStage;
   evidenceRefs: string[];
@@ -418,6 +428,7 @@ export function buildDeckDesignOrderTrace(input: DeckDesignOrderTraceInput): Dec
   const findings = [
     ...(sourceEvidenceBackfilled ? deckDesignOrderSourceEvidenceBackfilledFindings(sourceEvidenceRefs) : []),
     ...deckDesignOrderPrerequisiteFindings(entries),
+    ...deckDesignOrderStageRefFindings(entries),
     ...validateReviewArtifactDesignOrder({ schemaVersion: "mdpr-deck-design-order-trace-v1", entries }),
   ];
   return {
@@ -838,6 +849,62 @@ export function reviewSelectionContext(input: ReviewCoreInput): ReviewFinding[] 
       value: 0.1,
     },
   }];
+}
+
+export function reviewChartNarrativeFit(input: ChartNarrativeFitInput): ReviewFinding[] {
+  const model = normalizeReviewModel(input);
+  const findings: ReviewFinding[] = [];
+  for (const placement of input.chartPlacements) {
+    const sourceSlide = model.slideById.get(placement.sourceSlideId);
+    if (!sourceSlide) continue;
+    const layoutSlide = model.layoutSlides.find((slide) => slide.sourceSlideId === placement.sourceSlideId);
+    const slideRole = layoutSlide ? semanticSlideRole(sourceSlide, layoutSlide) : (sourceSlide.intent ?? "unknown");
+    const fit = placement.intent.visualApplication.narrativeFit;
+    const layoutBlocks = layoutSlide ? blocksForLayoutSlide(layoutSlide, model.blockById) : sourceSlide.blocks;
+    const hasClaimSupport = layoutBlocks.some(isClaimBlock) || Boolean(sourceSlide.title && sourceSlide.title.trim().length >= 12);
+    const slideId = layoutSlide?.id ?? sourceSlide.id;
+
+    if (!fit.preferredSlideRoles.includes(slideRole)) {
+      findings.push({
+        severity: "warning",
+        type: "CHART_NARRATIVE_FIT_GAP",
+        slideId,
+        evidence: {
+          sourceSlideId: sourceSlide.id,
+          chartBlockId: placement.chartBlockId,
+          chartIntent: placement.intent.intent,
+          actualSlideRole: slideRole,
+          preferredSlideRoles: fit.preferredSlideRoles,
+          evidenceBinding: fit.evidenceBinding,
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "coherence.chartNarrativeFit.slideRole",
+          operation: "enableRule",
+        },
+      });
+    }
+
+    if (fit.requiresClaimSupport && !hasClaimSupport) {
+      findings.push({
+        severity: "warning",
+        type: "CHART_CLAIM_SUPPORT_MISSING",
+        slideId,
+        evidence: {
+          sourceSlideId: sourceSlide.id,
+          chartBlockId: placement.chartBlockId,
+          chartIntent: placement.intent.intent,
+          requiredBinding: fit.evidenceBinding,
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "coherence.chartNarrativeFit.claimSupport",
+          operation: "enableRule",
+        },
+      });
+    }
+  }
+  return findings;
 }
 
 export function reviewNarrativeSpine(input: NarrativeSpineInput): NarrativeSpineSuggestion[] {
@@ -2225,6 +2292,43 @@ function deckDesignOrderSourceEvidenceBackfilledFindings(evidenceRefs: string[])
       operation: "enableRule",
     },
   }];
+}
+
+function deckDesignOrderStageRefFindings(entries: DeckDesignOrderTraceEntry[]): ReviewFinding[] {
+  return entries.flatMap((entry) => {
+    const mismatchedRefs = entry.evidenceRefs.filter((ref) => !deckDesignOrderRefMatchesStage(entry.stage, ref));
+    if (!mismatchedRefs.length) return [];
+    return [{
+      severity: "warning" as const,
+      type: "DESIGN_ORDER_REF_STAGE_MISMATCH",
+      slideId: "deck",
+      evidence: {
+        stage: entry.stage,
+        mismatchedRefs,
+        allowedRefPrefixes: DECK_DESIGN_STAGE_REF_PREFIXES[entry.stage],
+      },
+      suggestion: {
+        kind: "mdpr-policy" as const,
+        target: "review.designOrder.stageEvidenceNamespaces",
+        operation: "enableRule" as const,
+      },
+    }];
+  });
+}
+
+const DECK_DESIGN_STAGE_REF_PREFIXES: Record<DeckDesignOrderStage, string[]> = {
+  narrative_spine: ["narrative:", "claim:", "section:"],
+  source_evidence: ["source:", "evidence:", "sheet:", "rows:", "columns:", "numericCells:", "formulaCells:", "chartFamilies:", "errorBars:", "errorBarKind:"],
+  slide_role: ["slideRole:", "slide:", "layout:", "role:"],
+  chart_intent: ["chartIntent:", "sourceSheet:", "sheet:", "rows:", "columns:", "numericCells:", "formulaCells:", "chartFamilies:", "errorBars:", "errorBarKind:"],
+  semantic_visual_guidance: ["visual:", "visualApplication:", "density:", "downshift:", "labelBudget:", "aggregation:"],
+  theme_binding_request: ["theme.", "theme:"],
+  mdpr_validation_refs: ["mdpr:"],
+  review_notes: ["review:", "reviewNote:"],
+};
+
+function deckDesignOrderRefMatchesStage(stage: DeckDesignOrderStage, ref: string): boolean {
+  return DECK_DESIGN_STAGE_REF_PREFIXES[stage].some((prefix) => ref.startsWith(prefix));
 }
 
 function chartIntentEvidenceRefs(report: ScientificChartIntentReport | undefined): string[] {

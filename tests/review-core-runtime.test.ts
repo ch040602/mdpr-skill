@@ -14,6 +14,7 @@ import {
   reviewTemplateLayoutIntent,
   screenshotEvidence,
   reviewSelectionContext,
+  reviewChartNarrativeFit,
   buildVisualGuidance,
   buildGeneratorComparisonScorecard,
   buildHighNeedChartRecipeCatalog,
@@ -559,6 +560,111 @@ test("buildDeckDesignOrderTrace and validator flag out-of-order or boundary-leak
   assert.equal(validation.some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
   assert.equal(validation.some((finding) => finding.type === "REVIEW_ARTIFACT_BOUNDARY_FIELD_LEAK"), true);
   assert.equal(validation.some((finding) => finding.type === "REVIEW_ARTIFACT_EVIDENCE_MISSING"), true);
+});
+
+test("buildDeckDesignOrderTrace flags stage-incompatible evidence refs", () => {
+  const validTrace = buildDeckDesignOrderTrace({
+    narrativeSpineRefs: ["narrative:claim:latency"],
+    sourceEvidenceRefs: ["sheet:Overall-cdf", "rows:20", "numericCells:40"],
+    slideRoleRefs: ["slideRole:data"],
+    visualGuidanceRefs: ["visualApplication:cdf_curve:primary-visual"],
+    themeBindingRefs: ["theme.chart.sequence"],
+    mdprValidationRefs: ["mdpr:validation:coherence"],
+    reviewNoteRefs: ["reviewNote:CDF_SEMANTICS_REQUIRED:Overall-cdf"],
+  });
+  const misplacedTrace = buildDeckDesignOrderTrace({
+    narrativeSpineRefs: ["narrative:claim:latency"],
+    sourceEvidenceRefs: ["visualApplication:cdf_curve:primary-visual"],
+    slideRoleRefs: ["theme.chart.sequence"],
+    mdprValidationRefs: ["reviewNote:CDF_SEMANTICS_REQUIRED:Overall-cdf"],
+  });
+
+  assert.equal(validTrace.findings.some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), false);
+  assert.equal(misplacedTrace.findings.some((finding) => finding.type === "DESIGN_ORDER_REF_STAGE_MISMATCH"), true);
+  assert.equal(JSON.stringify(misplacedTrace).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(misplacedTrace).includes('"color"'), false);
+});
+
+test("reviewChartNarrativeFit checks chart guidance against slide role and claim support", () => {
+  const cdf = buildScientificChartIntentReport({
+    sourceLabel: "narrative-fit",
+    sheets: [
+      {
+        sheetLabel: "Overall-cdf",
+        nonemptyRows: 20,
+        maxColumns: 4,
+        numericCellCount: 40,
+        formulaCellCount: 0,
+        chartFamilies: ["line"],
+      },
+    ],
+  }).intents[0]!;
+  const matrix = buildScientificChartIntentReport({
+    sourceLabel: "narrative-fit",
+    sheets: [
+      {
+        sheetLabel: "Feasibility_sine",
+        nonemptyRows: 49,
+        maxColumns: 181,
+        numericCellCount: 8643,
+        formulaCellCount: 3600,
+        chartFamilies: ["line"],
+      },
+    ],
+  }).intents.find((intent) => intent.intent === "matrix_series")!;
+  const findings = reviewChartNarrativeFit({
+    presentation: {
+      slides: [
+        {
+          id: "slide-good",
+          title: "p95 latency improved",
+          intent: "data",
+          headingPath: ["Performance"],
+          blocks: [
+            { id: "claim-good", type: "paragraph", text: "p95 latency improved across endpoints." },
+            { id: "chart-good", type: "chart", text: "CDF latency by endpoint" },
+          ],
+        },
+        {
+          id: "slide-bad",
+          title: "Appendix",
+          intent: "section",
+          headingPath: ["Performance"],
+          blocks: [
+            { id: "chart-bad", type: "chart", text: "CDF latency by endpoint" },
+          ],
+        },
+        {
+          id: "slide-matrix",
+          title: "Dense matrix appendix",
+          intent: "appendix",
+          headingPath: ["Appendix"],
+          blocks: [
+            { id: "claim-matrix", type: "paragraph", text: "Dense feasibility matrix is summarized here." },
+            { id: "chart-matrix", type: "chart", text: "Feasibility matrix series" },
+          ],
+        },
+      ],
+    },
+    layout: {
+      slides: [
+        { id: "layout-good", sourceSlideId: "slide-good", layout: { preset: "chart-table" }, regions: [{ id: "main", role: "chart", blockIds: ["claim-good", "chart-good"] }] },
+        { id: "layout-bad", sourceSlideId: "slide-bad", layout: { preset: "section-divider" }, regions: [{ id: "main", role: "section", blockIds: ["chart-bad"] }] },
+        { id: "layout-matrix", sourceSlideId: "slide-matrix", layout: { preset: "appendix" }, regions: [{ id: "main", role: "appendix", blockIds: ["claim-matrix", "chart-matrix"] }] },
+      ],
+    },
+    chartPlacements: [
+      { sourceSlideId: "slide-good", chartBlockId: "chart-good", intent: cdf },
+      { sourceSlideId: "slide-bad", chartBlockId: "chart-bad", intent: cdf },
+      { sourceSlideId: "slide-matrix", chartBlockId: "chart-matrix", intent: matrix },
+    ],
+  });
+
+  assert.equal(findings.some((finding) => finding.type === "CHART_NARRATIVE_FIT_GAP"), true);
+  assert.equal(findings.some((finding) => finding.type === "CHART_CLAIM_SUPPORT_MISSING"), true);
+  assert.equal(findings.some((finding) => finding.slideId === "layout-good"), false);
+  assert.equal(findings.some((finding) => finding.slideId === "layout-matrix"), false);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
 });
 
 test("validateReviewArtifactDesignOrder scans nested scientific chart and recipe orders", () => {

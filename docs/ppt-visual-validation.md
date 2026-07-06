@@ -154,12 +154,25 @@ order on trace-like artifacts and scientific chart order on nested
 `intents[].evidenceRefs`, recipe data-shape requirements, and semantic roles as
 valid review evidence.
 
+Each trace stage also checks evidence-ref namespaces. For example,
+`source_evidence` accepts source, sheet, rows, columns, numeric-cell,
+formula-cell, chart-family, and error-bar refs, while visual, theme, MDPR
+validation, and review-note refs belong to later stages. A misplaced namespace
+creates `DESIGN_ORDER_REF_STAGE_MISMATCH`.
+
 Coherence review now includes two deck-level semantic warnings:
 
 - `EVIDENCE_CLAIM_ALIGNMENT_GAP` when a claim and the same-slide evidence block
   share no metric, entity, source ref, or declared semantic role.
 - `SEMANTIC_MOTIF_DRIFT` when repeated evidence motifs in the same section drift
   across slide roles without an explicit narrative transition.
+
+`reviewChartNarrativeFit` checks chart intent entries against semantic slide
+placements. It emits `CHART_NARRATIVE_FIT_GAP` when the actual slide role is not
+one of `visualApplication.narrativeFit.preferredSlideRoles`, and
+`CHART_CLAIM_SUPPORT_MISSING` when a chart requiring claim support has no
+same-slide claim/title binding. The input is semantic only: source slide id,
+optional chart block id, and chart intent entry.
 
 Environment note:
 
