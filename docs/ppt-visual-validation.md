@@ -109,11 +109,44 @@ chart kind is selected. `review-core` records this as `visualApplication`:
   `theme.surface.transparent`, or `theme.surface.proofHighlight`.
 - `labelStrategy` and `densityStrategy` explain how labels, callouts, small
   multiples, aggregation, or downshifting should keep the chart readable.
+- `densityClass`, `labelBudgetClass`, `recommendedDownshift`, and
+  `aggregationRequired` make the density decision machine-checkable before MDPR
+  lays out the final slide.
+- `narrativeFit` binds chart guidance back to preferred slide roles, claim
+  support, and evidence-binding notes so a valid chart is not placed in the
+  wrong narrative position.
 
 This means the agent should not stop at "use a CDF" or "use a violin plot."
 It should first choose the semantic chart recipe, then request the appropriate
 theme-bound tones and background surface, then leave MDPR to resolve exact
 theme colors, panel geometry, PPTX objects, and final validation.
+
+## Deck-Level Design Order
+
+`review-core` also exposes `buildDeckDesignOrderTrace` for deck coherence. The
+trace is evidence-only and records this ordered chain:
+
+1. `narrative_spine`
+2. `source_evidence`
+3. `slide_role`
+4. `chart_intent`
+5. `semantic_visual_guidance`
+6. `theme_binding_request`
+7. `mdpr_validation_refs`
+8. `review_notes`
+
+Later-stage guidance without earlier evidence creates
+`DESIGN_ORDER_PREREQUISITE_MISSING`. Generated review artifacts can also be
+checked with `validateReviewArtifactDesignOrder`, which flags missing evidence
+refs, out-of-order design stages, and boundary leakage such as raw coordinates,
+renderer object ids, fixed geometry, or raw style decisions.
+
+Coherence review now includes two deck-level semantic warnings:
+
+- `EVIDENCE_CLAIM_ALIGNMENT_GAP` when a claim and the same-slide evidence block
+  share no metric, entity, source ref, or declared semantic role.
+- `SEMANTIC_MOTIF_DRIFT` when repeated evidence motifs in the same section drift
+  across slide roles without an explicit narrative transition.
 
 Environment note:
 

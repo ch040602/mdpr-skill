@@ -193,8 +193,59 @@ export type ChartVisualApplicationGuidance = {
   chartChoice: "primary-visual" | "supporting-proof" | "small-multiple" | "background-proof" | "comparison-strip";
   toneSlots: string[];
   backgroundTreatment: "theme.surface.chartPanel" | "theme.surface.subtleBand" | "theme.surface.transparent" | "theme.surface.proofHighlight";
+  densityClass: "sparse" | "moderate" | "dense" | "very-dense";
+  labelBudgetClass: "direct-labels" | "key-labels" | "legend-or-callouts" | "aggregate-first";
+  recommendedDownshift: "none" | "small-multiple" | "distribution-strip" | "aggregate-summary" | "table-plus-chart" | "fallback-note";
+  aggregationRequired: boolean;
+  narrativeFit: {
+    preferredSlideRoles: string[];
+    requiresClaimSupport: boolean;
+    evidenceBinding: string;
+  };
   labelStrategy: string;
   densityStrategy: string;
+};
+
+export type DeckDesignOrderStage =
+  | "narrative_spine"
+  | "source_evidence"
+  | "slide_role"
+  | "chart_intent"
+  | "semantic_visual_guidance"
+  | "theme_binding_request"
+  | "mdpr_validation_refs"
+  | "review_notes";
+
+export type DeckDesignOrderTraceInput = {
+  narrativeSpineRefs?: string[];
+  sourceEvidenceRefs?: string[];
+  slideRoleRefs?: string[];
+  chartIntentReport?: ScientificChartIntentReport;
+  visualGuidanceRefs?: string[];
+  themeBindingRefs?: string[];
+  mdprValidationRefs?: string[];
+  reviewNoteRefs?: string[];
+};
+
+export type DeckDesignOrderTraceEntry = {
+  stage: DeckDesignOrderStage;
+  evidenceRefs: string[];
+  dependsOn: DeckDesignOrderStage[];
+  status: "present" | "missing";
+};
+
+export type DeckDesignOrderTraceReport = {
+  schemaVersion: "mdpr-deck-design-order-trace-v1";
+  generatedBy: "mdpr-skill";
+  boundary: {
+    evidenceOnly: true;
+    mdprRuntimeAuthority: true;
+    noFinalGeometry: true;
+    noRawWorkbookValues: true;
+    noFinalValidationVerdict: true;
+  };
+  entries: DeckDesignOrderTraceEntry[];
+  findings: ReviewFinding[];
 };
 
 export type HighNeedChartRecipeCatalog = {
@@ -340,6 +391,100 @@ export function buildHighNeedChartRecipeCatalog(): HighNeedChartRecipeCatalog {
     },
     recipes,
   };
+}
+
+export function buildDeckDesignOrderTrace(input: DeckDesignOrderTraceInput): DeckDesignOrderTraceReport {
+  const chartIntentRefs = chartIntentEvidenceRefs(input.chartIntentReport);
+  const entries: DeckDesignOrderTraceEntry[] = [
+    deckDesignOrderEntry("narrative_spine", input.narrativeSpineRefs ?? [], []),
+    deckDesignOrderEntry("source_evidence", input.sourceEvidenceRefs ?? chartIntentRefs, ["narrative_spine"]),
+    deckDesignOrderEntry("slide_role", input.slideRoleRefs ?? [], ["narrative_spine"]),
+    deckDesignOrderEntry("chart_intent", chartIntentRefs, ["source_evidence", "slide_role"]),
+    deckDesignOrderEntry("semantic_visual_guidance", input.visualGuidanceRefs ?? chartVisualGuidanceRefs(input.chartIntentReport), ["chart_intent"]),
+    deckDesignOrderEntry("theme_binding_request", input.themeBindingRefs ?? chartThemeBindingRefs(input.chartIntentReport), ["semantic_visual_guidance"]),
+    deckDesignOrderEntry("mdpr_validation_refs", input.mdprValidationRefs ?? [], ["theme_binding_request"]),
+    deckDesignOrderEntry("review_notes", input.reviewNoteRefs ?? chartReviewNoteRefs(input.chartIntentReport), ["mdpr_validation_refs"]),
+  ];
+  const findings = [
+    ...deckDesignOrderPrerequisiteFindings(entries),
+    ...validateReviewArtifactDesignOrder({ schemaVersion: "mdpr-deck-design-order-trace-v1", entries }),
+  ];
+  return {
+    schemaVersion: "mdpr-deck-design-order-trace-v1",
+    generatedBy: "mdpr-skill",
+    boundary: {
+      evidenceOnly: true,
+      mdprRuntimeAuthority: true,
+      noFinalGeometry: true,
+      noRawWorkbookValues: true,
+      noFinalValidationVerdict: true,
+    },
+    entries,
+    findings,
+  };
+}
+
+export function validateReviewArtifactDesignOrder(artifact: unknown): ReviewFinding[] {
+  const findings: ReviewFinding[] = [];
+  const record = asRecord(artifact);
+  if (!record) return findings;
+
+  if (hasFinalDecisionKey(record)) {
+    findings.push({
+      severity: "error",
+      type: "REVIEW_ARTIFACT_BOUNDARY_FIELD_LEAK",
+      slideId: "deck",
+      evidence: {
+        artifactSchema: stringValue(record.schemaVersion) ?? "unknown",
+        rule: "review-artifacts-must-not-own-final-renderer-decisions",
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "review.boundary.finalDecisionFields",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  const directEvidenceRefs = asArray(record.evidenceRefs).map((ref) => String(ref)).filter(Boolean);
+  const entries = asArray(record.entries).map((entry) => asRecord(entry) ?? {});
+  if (!directEvidenceRefs.length && !entries.some((entry) => asArray(entry.evidenceRefs).length > 0)) {
+    findings.push({
+      severity: "warning",
+      type: "REVIEW_ARTIFACT_EVIDENCE_MISSING",
+      slideId: "deck",
+      evidence: {
+        artifactSchema: stringValue(record.schemaVersion) ?? "unknown",
+        requiredField: "evidenceRefs",
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "review.evidenceRefs.required",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  const order = asArray(record.designOrder).map((stage) => String(stage)).filter(Boolean);
+  if (order.length && !isDeckDesignOrderSequence(order)) {
+    findings.push({
+      severity: "warning",
+      type: "DESIGN_ORDER_OUT_OF_SEQUENCE",
+      slideId: "deck",
+      evidence: {
+        artifactSchema: stringValue(record.schemaVersion) ?? "unknown",
+        designOrder: order,
+        expectedOrder: DECK_DESIGN_ORDER,
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "review.designOrder.sequence",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  return findings;
 }
 
 export function reviewFindingHasFinalDecisionField(finding: ReviewFinding): boolean {
@@ -595,6 +740,16 @@ type LayoutSlideLike = {
 };
 
 const EVIDENCE_BLOCK_TYPES = new Set(["chart", "table", "image", "code", "diagram"]);
+const DECK_DESIGN_ORDER: DeckDesignOrderStage[] = [
+  "narrative_spine",
+  "source_evidence",
+  "slide_role",
+  "chart_intent",
+  "semantic_visual_guidance",
+  "theme_binding_request",
+  "mdpr_validation_refs",
+  "review_notes",
+];
 const FINAL_DECISION_FIELDS = new Set([
   "x",
   "y",
@@ -638,6 +793,8 @@ export function reviewCoherence(input: ReviewCoreInput): ReviewFinding[] {
   return [
     ...baseFindings,
     ...reviewSelectionContext(input),
+    ...evidenceClaimAlignmentFindings(model),
+    ...semanticMotifDriftFindings(model),
     ...sectionRhythmFindings(model, noisySections),
   ];
 }
@@ -1221,6 +1378,80 @@ export function claimlessEvidenceFindings(model: ReviewModel | ReviewCoreInput):
         target: "layout.scoring.emphasisPenalty.claim",
         operation: "increaseWeight",
         value: 0.1,
+      },
+    });
+  }
+  return findings;
+}
+
+export function evidenceClaimAlignmentFindings(model: ReviewModel | ReviewCoreInput): ReviewFinding[] {
+  const normalized = isReviewModel(model) ? model : normalizeReviewModel(model);
+  const findings: ReviewFinding[] = [];
+  for (const layoutSlide of normalized.layoutSlides) {
+    const blocks = blocksForLayoutSlide(layoutSlide, normalized.blockById);
+    const evidenceBlocks = blocks.filter(isEvidenceBlock);
+    const claimBlocks = blocks.filter(isClaimBlock);
+    if (!evidenceBlocks.length || !claimBlocks.length) continue;
+    const evidenceTerms = semanticTermsForBlocks(evidenceBlocks);
+    const claimTerms = semanticTermsForBlocks(claimBlocks);
+    const sharedTerms = [...evidenceTerms].filter((term) => claimTerms.has(term));
+    if (sharedTerms.length) continue;
+    findings.push({
+      severity: "warning",
+      type: "EVIDENCE_CLAIM_ALIGNMENT_GAP",
+      slideId: layoutSlide.id,
+      evidence: {
+        sourceSlideId: layoutSlide.sourceSlideId,
+        evidenceBlockIds: evidenceBlocks.map((block) => block.id),
+        claimBlockIds: claimBlocks.map((block) => block.id),
+        evidenceSemanticTerms: [...evidenceTerms].slice(0, 8),
+        claimSemanticTerms: [...claimTerms].slice(0, 8),
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "coherence.evidenceClaimSemanticBinding",
+        operation: "enableRule",
+      },
+    });
+  }
+  return findings;
+}
+
+export function semanticMotifDriftFindings(model: ReviewModel | ReviewCoreInput): ReviewFinding[] {
+  const normalized = isReviewModel(model) ? model : normalizeReviewModel(model);
+  const motifs = new Map<string, Array<{ section: string; motif: string; slideId: string; role: string }>>();
+  for (const layoutSlide of normalized.layoutSlides) {
+    const sourceSlide = normalized.slideById.get(layoutSlide.sourceSlideId);
+    const section = sourceSlide?.headingPath[0];
+    if (!section || !sourceSlide) continue;
+    const evidenceBlocks = blocksForLayoutSlide(layoutSlide, normalized.blockById).filter(isEvidenceBlock);
+    for (const block of evidenceBlocks) {
+      const motif = semanticMotifForBlock(block);
+      const key = `${section}:${motif}`;
+      const role = semanticSlideRole(sourceSlide, layoutSlide);
+      motifs.set(key, [...(motifs.get(key) ?? []), { section, motif, slideId: layoutSlide.id, role }]);
+    }
+  }
+
+  const findings: ReviewFinding[] = [];
+  for (const group of motifs.values()) {
+    const roles = [...new Set(group.map((item) => item.role))];
+    if (group.length < 3 || roles.length < 3) continue;
+    const first = group[0]!;
+    findings.push({
+      severity: "warning",
+      type: "SEMANTIC_MOTIF_DRIFT",
+      slideId: first.slideId,
+      evidence: {
+        section: first.section,
+        motif: first.motif,
+        layoutSlideIds: group.map((item) => item.slideId),
+        semanticRoles: roles,
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "coherence.semanticMotifConsistency",
+        operation: "enableRule",
       },
     });
   }
@@ -1925,12 +2156,95 @@ function scientificChartEvidenceRefs(sheet: ScientificChartSheetEvidence): strin
   return refs;
 }
 
+function deckDesignOrderEntry(
+  stage: DeckDesignOrderStage,
+  evidenceRefs: string[],
+  dependsOn: DeckDesignOrderStage[],
+): DeckDesignOrderTraceEntry {
+  const refs = [...new Set(evidenceRefs.map((ref) => String(ref)).filter(Boolean))];
+  return {
+    stage,
+    evidenceRefs: refs,
+    dependsOn,
+    status: refs.length ? "present" : "missing",
+  };
+}
+
+function deckDesignOrderPrerequisiteFindings(entries: DeckDesignOrderTraceEntry[]): ReviewFinding[] {
+  const byStage = new Map(entries.map((entry) => [entry.stage, entry]));
+  const findings: ReviewFinding[] = [];
+  for (const entry of entries) {
+    if (entry.status !== "present") continue;
+    const missing = entry.dependsOn.filter((stage) => byStage.get(stage)?.status !== "present");
+    if (!missing.length) continue;
+    findings.push({
+      severity: "warning",
+      type: "DESIGN_ORDER_PREREQUISITE_MISSING",
+      slideId: "deck",
+      evidence: {
+        stage: entry.stage,
+        missingPrerequisites: missing,
+        evidenceRefs: entry.evidenceRefs,
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "review.designOrder.prerequisites",
+        operation: "enableRule",
+      },
+    });
+  }
+  return findings;
+}
+
+function chartIntentEvidenceRefs(report: ScientificChartIntentReport | undefined): string[] {
+  if (!report) return [];
+  return report.intents.flatMap((intent) => [
+    `chartIntent:${intent.intent}`,
+    `sourceSheet:${intent.sourceSheetLabel}`,
+    ...intent.evidenceRefs,
+  ]);
+}
+
+function chartVisualGuidanceRefs(report: ScientificChartIntentReport | undefined): string[] {
+  if (!report) return [];
+  return report.intents.flatMap((intent) => [
+    `visualApplication:${intent.intent}:${intent.visualApplication.chartChoice}`,
+    `density:${intent.visualApplication.densityClass}`,
+    `downshift:${intent.visualApplication.recommendedDownshift}`,
+  ]);
+}
+
+function chartThemeBindingRefs(report: ScientificChartIntentReport | undefined): string[] {
+  if (!report) return [];
+  return report.intents.flatMap((intent) => [
+    intent.visualApplication.backgroundTreatment,
+    ...intent.visualApplication.toneSlots,
+  ]);
+}
+
+function chartReviewNoteRefs(report: ScientificChartIntentReport | undefined): string[] {
+  if (!report) return [];
+  return report.reviewNotes.map((note) => `reviewNote:${note.type}:${note.sourceSheetLabel}`);
+}
+
+function isDeckDesignOrderSequence(order: string[]): boolean {
+  let cursor = -1;
+  for (const stage of order) {
+    const next = DECK_DESIGN_ORDER.indexOf(stage as DeckDesignOrderStage);
+    if (next < 0) continue;
+    if (next < cursor) return false;
+    cursor = next;
+  }
+  return true;
+}
+
 function chartVisualApplicationForIntent(intent: ScientificChartIntentKind): ChartVisualApplicationGuidance {
   if (intent === "cdf_curve") {
     return {
       chartChoice: "primary-visual",
       toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
       backgroundTreatment: "theme.surface.chartPanel",
+      ...chartVisualStructure("moderate", "direct-labels", "small-multiple", false, ["data", "comparison", "summary"], true, "primary chart must bind to the slide claim or title takeaway"),
       labelStrategy: "Directly label percentile or threshold callouts; keep axis labels semantic and sparse.",
       densityStrategy: "Use a single emphasized curve first; use small multiples when groups exceed the label budget.",
     };
@@ -1940,6 +2254,7 @@ function chartVisualApplicationForIntent(intent: ScientificChartIntentKind): Cha
       chartChoice: "supporting-proof",
       toneSlots: ["theme.chart.sequence", "theme.chart.neutral", "theme.chart.accent"],
       backgroundTreatment: "theme.surface.subtleBand",
+      ...chartVisualStructure("dense", "key-labels", "distribution-strip", true, ["data", "appendix", "comparison"], true, "distribution proof must cite the compared groups and summary statistic"),
       labelStrategy: "Label median and selected quantile or whisker roles, not every mark.",
       densityStrategy: "Downshift to compact distribution strips when group count or labels exceed readable density.",
     };
@@ -1949,6 +2264,7 @@ function chartVisualApplicationForIntent(intent: ScientificChartIntentKind): Cha
       chartChoice: "supporting-proof",
       toneSlots: ["theme.chart.accent", "theme.chart.warning", "theme.text.primary"],
       backgroundTreatment: "theme.surface.proofHighlight",
+      ...chartVisualStructure("moderate", "legend-or-callouts", "fallback-note", false, ["data", "comparison", "appendix"], true, "uncertainty chart must bind interval meaning to the claim before visual emphasis"),
       labelStrategy: "Name the uncertainty meaning near the legend or callout before emphasizing the interval.",
       densityStrategy: "Prefer fewer emphasized intervals; suppress or annotate unknown uncertainty kinds.",
     };
@@ -1958,6 +2274,7 @@ function chartVisualApplicationForIntent(intent: ScientificChartIntentKind): Cha
       chartChoice: "small-multiple",
       toneSlots: ["theme.chart.sequence", "theme.chart.neutral", "theme.text.secondary"],
       backgroundTreatment: "theme.surface.transparent",
+      ...chartVisualStructure("very-dense", "aggregate-first", "small-multiple", true, ["data", "appendix"], true, "dense series must bind summarized groups to the claim before foreground use"),
       labelStrategy: "Use row or group labels outside the plotting area and reserve direct labels for selected traces.",
       densityStrategy: "Summarize dense series into representative bands, small multiples, or connected strips.",
     };
@@ -1966,6 +2283,7 @@ function chartVisualApplicationForIntent(intent: ScientificChartIntentKind): Cha
     chartChoice: "background-proof",
     toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
     backgroundTreatment: "theme.surface.chartPanel",
+    ...chartVisualStructure("dense", "aggregate-first", "aggregate-summary", true, ["data", "appendix"], true, "heatmap summary must name the aggregated metric and scale role"),
     labelStrategy: "Label the aggregated metric and show the scale legend only when the chart is the primary evidence.",
     densityStrategy: "Bucket or aggregate matrix cells before requesting heatmap rendering.",
   };
@@ -1978,6 +2296,7 @@ function chartVisualApplicationForKind(kind: HighNeedChartRecipeKind): ChartVisu
       chartChoice: kind === "ridgeline_density" ? "small-multiple" : "supporting-proof",
       toneSlots: ["theme.chart.sequence", "theme.chart.neutral", "theme.text.primary"],
       backgroundTreatment: "theme.surface.subtleBand",
+      ...chartVisualStructure("dense", "key-labels", kind === "ridgeline_density" ? "small-multiple" : "distribution-strip", true, ["data", "comparison", "appendix"], true, "distribution recipe must bind groups and summary statistic to the nearby claim"),
       labelStrategy: "Name groups and key distribution markers; avoid labeling every sample or density contour.",
       densityStrategy: "Use compact rows or bands before adding ornament when groups are numerous.",
     };
@@ -1987,6 +2306,7 @@ function chartVisualApplicationForKind(kind: HighNeedChartRecipeKind): ChartVisu
       chartChoice: "supporting-proof",
       toneSlots: ["theme.chart.accent", "theme.chart.neutral", "theme.text.secondary"],
       backgroundTreatment: "theme.surface.transparent",
+      ...chartVisualStructure("dense", "key-labels", "distribution-strip", true, ["data", "comparison", "appendix"], true, "point-level evidence must bind outliers or sample size to the claim"),
       labelStrategy: "Label groups and notable outliers while preserving individual-point evidence.",
       densityStrategy: "Use deterministic jitter or strip fallback when collision packing is unavailable.",
     };
@@ -1996,6 +2316,7 @@ function chartVisualApplicationForKind(kind: HighNeedChartRecipeKind): ChartVisu
       chartChoice: "comparison-strip",
       toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
       backgroundTreatment: "theme.surface.chartPanel",
+      ...chartVisualStructure("moderate", "direct-labels", "table-plus-chart", false, ["comparison", "summary", "data"], true, "comparison strip must bind endpoints and delta to the stated takeaway"),
       labelStrategy: "Directly label endpoints and deltas; avoid legends when two states are obvious.",
       densityStrategy: "Sort by delta and cap visible comparisons before switching to table-plus-chart.",
     };
@@ -2005,6 +2326,7 @@ function chartVisualApplicationForKind(kind: HighNeedChartRecipeKind): ChartVisu
       chartChoice: "primary-visual",
       toneSlots: ["theme.chart.accent", "theme.chart.warning", "theme.chart.neutral", "theme.text.primary"],
       backgroundTreatment: "theme.surface.proofHighlight",
+      ...chartVisualStructure("moderate", "legend-or-callouts", "fallback-note", false, ["data", "summary", "comparison"], true, "reference-line chart must bind target, limit, or interval role to the slide claim"),
       labelStrategy: "Keep reference lines, targets, or limits explicitly named because they carry the argument.",
       densityStrategy: "Prioritize the reference structure and reduce decoration when intervals or limits are dense.",
     };
@@ -2014,6 +2336,7 @@ function chartVisualApplicationForKind(kind: HighNeedChartRecipeKind): ChartVisu
       chartChoice: "primary-visual",
       toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.chart.neutral"],
       backgroundTreatment: "theme.surface.chartPanel",
+      ...chartVisualStructure("very-dense", "aggregate-first", "aggregate-summary", true, ["data", "process", "summary"], true, "flow or area composition must bind major categories to the narrative takeaway"),
       labelStrategy: "Label major flows or segments directly and route minor categories to an aggregated note.",
       densityStrategy: "Aggregate small categories before routing paths or area segments.",
     };
@@ -2022,8 +2345,31 @@ function chartVisualApplicationForKind(kind: HighNeedChartRecipeKind): ChartVisu
     chartChoice: "supporting-proof",
     toneSlots: ["theme.chart.sequence", "theme.chart.accent", "theme.text.primary"],
     backgroundTreatment: "theme.surface.subtleBand",
+    ...chartVisualStructure("dense", "key-labels", "fallback-note", true, ["data", "appendix", "comparison"], true, "specialized composition chart must bind axes or components to the claim"),
     labelStrategy: "Label component axes and selected points before adding explanatory decoration.",
     densityStrategy: "Validate composition constraints and reduce labels before rendering dense point clouds.",
+  };
+}
+
+function chartVisualStructure(
+  densityClass: ChartVisualApplicationGuidance["densityClass"],
+  labelBudgetClass: ChartVisualApplicationGuidance["labelBudgetClass"],
+  recommendedDownshift: ChartVisualApplicationGuidance["recommendedDownshift"],
+  aggregationRequired: boolean,
+  preferredSlideRoles: string[],
+  requiresClaimSupport: boolean,
+  evidenceBinding: string,
+): Pick<ChartVisualApplicationGuidance, "densityClass" | "labelBudgetClass" | "recommendedDownshift" | "aggregationRequired" | "narrativeFit"> {
+  return {
+    densityClass,
+    labelBudgetClass,
+    recommendedDownshift,
+    aggregationRequired,
+    narrativeFit: {
+      preferredSlideRoles,
+      requiresClaimSupport,
+      evidenceBinding,
+    },
   };
 }
 
@@ -2249,6 +2595,38 @@ function isClaimBlock(block: BlockLike): boolean {
 
 function blockText(block: BlockLike): string {
   return block.text ?? block.alt ?? "";
+}
+
+function semanticTermsForBlocks(blocks: BlockLike[]): Set<string> {
+  const stopwords = new Set(["the", "and", "with", "from", "after", "before", "this", "that", "figure", "table", "chart", "source", "note", "main"]);
+  const terms = new Set<string>();
+  for (const block of blocks) {
+    for (const token of blockText(block).toLowerCase().match(/[a-z0-9][a-z0-9_-]{2,}/g) ?? []) {
+      if (!stopwords.has(token)) terms.add(token);
+    }
+  }
+  return terms;
+}
+
+function semanticMotifForBlock(block: BlockLike): string {
+  const text = blockText(block).toLowerCase();
+  if (/\bcdf\b|ecdf|percentile|p95|p99/.test(text)) return "cdf_or_percentile";
+  if (/box|whisker|violin|quantile|distribution/.test(text)) return "distribution";
+  if (/error|interval|confidence|uncertainty/.test(text)) return "uncertainty_interval";
+  if (/heatmap|matrix/.test(text)) return "matrix_or_heatmap";
+  if (/flow|sankey|alluvial/.test(text)) return "flow";
+  return block.type;
+}
+
+function semanticSlideRole(slide: PresentationSlideLike, layoutSlide: LayoutSlideLike): string {
+  const intent = (slide.intent ?? "").toLowerCase();
+  if (intent) return intent;
+  const regionRoles = layoutSlide.regions.map((region) => (region.role ?? "").toLowerCase()).filter(Boolean);
+  if (regionRoles.includes("section")) return "section";
+  if (regionRoles.includes("appendix")) return "appendix";
+  if (regionRoles.includes("chart")) return "data";
+  if (layoutSlide.preset.toLowerCase().includes("section")) return "section";
+  return layoutSlide.preset;
 }
 
 function asRecord(value: unknown): Record<string, unknown> | undefined {

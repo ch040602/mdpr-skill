@@ -60,6 +60,33 @@ type StyledElement = {
 };
 ```
 
+## Review Artifact Design Order
+
+`mdpr-skill` review artifacts are evidence-only. They may describe why an agent
+should request a visual treatment from MDPR, but they must not become renderer
+instructions.
+
+Deck-level review traces must follow this order:
+
+```text
+narrative_spine
+source_evidence
+slide_role
+chart_intent
+semantic_visual_guidance
+theme_binding_request
+mdpr_validation_refs
+review_notes
+```
+
+Later stages depend on earlier evidence. For example, theme binding requests
+must not appear before semantic visual guidance, and chart intent must not appear
+before source evidence and slide role are known.
+
+Review artifacts must carry evidence refs and must not contain final renderer
+fields such as raw coordinates, fixed geometry, renderer object ids, raw style
+fields, final validation verdicts, or workbook raw values.
+
 ## No-Loss Policy
 
 - [x] Titles must be preserved.

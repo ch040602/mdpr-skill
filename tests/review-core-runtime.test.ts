@@ -18,6 +18,8 @@ import {
   buildGeneratorComparisonScorecard,
   buildHighNeedChartRecipeCatalog,
   buildScientificChartIntentReport,
+  buildDeckDesignOrderTrace,
+  validateReviewArtifactDesignOrder,
   renderReadmeTeaserSvg,
 } from "../packages/review-core/src/index";
 
@@ -170,6 +172,88 @@ test("reviewCoherence accepts evidence with a same-slide claim or caption", () =
   };
 
   assert.deepEqual(reviewCoherence({ presentation: cleanPresentation, layout: cleanLayout }), []);
+});
+
+test("reviewCoherence flags evidence and claim semantic alignment gaps without geometry", () => {
+  const findings = reviewCoherence({
+    presentation: {
+      slides: [
+        {
+          id: "slide-misaligned",
+          title: "Revenue improved",
+          headingPath: ["Results"],
+          blocks: [
+            { id: "claim", type: "paragraph", text: "Revenue improved after launch." },
+            { id: "chart", type: "chart", text: "Latency percentile distribution by endpoint" },
+            { id: "caption", type: "paragraph", text: "Figure 1. p95 latency by endpoint." },
+          ],
+        },
+      ],
+    },
+    layout: {
+      slides: [
+        {
+          id: "layout-misaligned",
+          sourceSlideId: "slide-misaligned",
+          layout: { preset: "chart-table" },
+          regions: [{ id: "main", role: "chart", blockIds: ["claim", "chart", "caption"] }],
+        },
+      ],
+    },
+  });
+
+  assert.equal(findings.some((finding) => finding.type === "EVIDENCE_CLAIM_ALIGNMENT_GAP"), true);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+});
+
+test("reviewCoherence flags repeated chart motif drift using semantic roles only", () => {
+  const findings = reviewCoherence({
+    presentation: {
+      slides: [
+        {
+          id: "slide-cdf-a",
+          title: "Latency threshold",
+          headingPath: ["Performance"],
+          intent: "data",
+          blocks: [
+            { id: "claim-a", type: "paragraph", text: "p95 latency improved." },
+            { id: "chart-a", type: "chart", text: "CDF latency by endpoint" },
+          ],
+        },
+        {
+          id: "slide-cdf-b",
+          title: "Latency proof",
+          headingPath: ["Performance"],
+          intent: "section",
+          blocks: [
+            { id: "claim-b", type: "paragraph", text: "p95 latency improved." },
+            { id: "chart-b", type: "chart", text: "CDF latency by endpoint" },
+          ],
+        },
+        {
+          id: "slide-cdf-c",
+          title: "Latency appendix",
+          headingPath: ["Performance"],
+          intent: "appendix",
+          blocks: [
+            { id: "claim-c", type: "paragraph", text: "p95 latency improved." },
+            { id: "chart-c", type: "chart", text: "CDF latency by endpoint" },
+          ],
+        },
+      ],
+    },
+    layout: {
+      slides: [
+        { id: "layout-cdf-a", sourceSlideId: "slide-cdf-a", layout: { preset: "chart-table" }, regions: [{ id: "chart", role: "chart", blockIds: ["claim-a", "chart-a"] }] },
+        { id: "layout-cdf-b", sourceSlideId: "slide-cdf-b", layout: { preset: "section-divider" }, regions: [{ id: "chart", role: "section", blockIds: ["claim-b", "chart-b"] }] },
+        { id: "layout-cdf-c", sourceSlideId: "slide-cdf-c", layout: { preset: "appendix" }, regions: [{ id: "chart", role: "appendix", blockIds: ["claim-c", "chart-c"] }] },
+      ],
+    },
+  });
+
+  assert.equal(findings.some((finding) => finding.type === "SEMANTIC_MOTIF_DRIFT"), true);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(findings).includes('"color"'), false);
 });
 
 test("reviewVisualPolicy reports visual policy findings without final design fields", () => {
@@ -338,6 +422,11 @@ test("buildScientificChartIntentReport classifies SANFC-like chart structure wit
   assert.equal(report.intents.every((intent) => intent.rendererRequest.target === "mdpr.chart-capability"), true);
   assert.equal(report.intents.every((intent) => intent.visualApplication.toneSlots.every((slot) => slot.startsWith("theme."))), true);
   assert.equal(report.intents.every((intent) => intent.visualApplication.backgroundTreatment.startsWith("theme.")), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.densityClass.length > 0), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.labelBudgetClass.length > 0), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.recommendedDownshift.length > 0), true);
+  assert.equal(report.intents.every((intent) => intent.visualApplication.narrativeFit.preferredSlideRoles.length > 0), true);
+  assert.equal(report.intents.every((intent) => typeof intent.visualApplication.narrativeFit.requiresClaimSupport === "boolean"), true);
   assert.equal(report.intents.every((intent) => intent.visualApplication.labelStrategy.length > 0), true);
   assert.equal(report.intents.every((intent) => intent.visualApplication.densityStrategy.length > 0), true);
   assert.equal(report.reviewNotes.some((note) => note.type === "ERROR_BAR_KIND_UNKNOWN"), true);
@@ -386,12 +475,86 @@ test("buildHighNeedChartRecipeCatalog covers non-basic Excel chart needs with MD
   assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.backgroundTreatment.startsWith("theme.")), true);
   assert.equal(catalog.recipes.some((recipe) => recipe.visualApplication.backgroundTreatment === "theme.surface.chartPanel"), true);
   assert.equal(catalog.recipes.some((recipe) => recipe.visualApplication.backgroundTreatment === "theme.surface.subtleBand"), true);
+  assert.equal(catalog.recipes.some((recipe) => recipe.visualApplication.aggregationRequired), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.densityClass.length > 0), true);
+  assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.narrativeFit.evidenceBinding.length > 0), true);
   assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.labelStrategy.length > 0), true);
   assert.equal(catalog.recipes.every((recipe) => recipe.visualApplication.densityStrategy.length > 0), true);
   assert.equal(JSON.stringify(catalog).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(catalog).includes('"rawValues"'), false);
   assert.equal(JSON.stringify(catalog).includes("#"), false);
   assert.equal(JSON.stringify(catalog).includes('"color"'), false);
+});
+
+test("buildDeckDesignOrderTrace records deck-stage prerequisites and boundary-safe findings", () => {
+  const trace = buildDeckDesignOrderTrace({
+    narrativeSpineRefs: ["narrative:claim:activation"],
+    sourceEvidenceRefs: ["source:sheet:Overall-cdf"],
+    slideRoleRefs: ["slideRole:data"],
+    chartIntentReport: buildScientificChartIntentReport({
+      sourceLabel: "SANFC-like structural fixture",
+      sheets: [
+        {
+          sheetLabel: "Overall-cdf",
+          nonemptyRows: 127,
+          maxColumns: 17,
+          numericCellCount: 592,
+          formulaCellCount: 0,
+          chartFamilies: ["line"],
+        },
+      ],
+    }),
+    visualGuidanceRefs: ["visual:chart:theme-bound"],
+    themeBindingRefs: ["theme:profile:technical"],
+    mdprValidationRefs: ["mdpr:validation:coherence"],
+    reviewNoteRefs: ["review:note:1"],
+  });
+
+  assert.equal(trace.schemaVersion, "mdpr-deck-design-order-trace-v1");
+  assert.deepEqual(trace.entries.map((entry) => entry.stage), [
+    "narrative_spine",
+    "source_evidence",
+    "slide_role",
+    "chart_intent",
+    "semantic_visual_guidance",
+    "theme_binding_request",
+    "mdpr_validation_refs",
+    "review_notes",
+  ]);
+  assert.equal(trace.findings.length, 0);
+  assert.equal(validateReviewArtifactDesignOrder(trace).length, 0);
+  assert.equal(JSON.stringify(trace).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(trace).includes('"color"'), false);
+});
+
+test("buildDeckDesignOrderTrace and validator flag out-of-order or boundary-leaking artifacts", () => {
+  const trace = buildDeckDesignOrderTrace({
+    chartIntentReport: buildScientificChartIntentReport({
+      sourceLabel: "chart-only",
+      sheets: [
+        {
+          sheetLabel: "Overall-cdf",
+          nonemptyRows: 20,
+          maxColumns: 4,
+          numericCellCount: 40,
+          formulaCellCount: 0,
+          chartFamilies: ["line"],
+        },
+      ],
+    }),
+    visualGuidanceRefs: ["visual:chart:theme-bound"],
+  });
+  const validation = validateReviewArtifactDesignOrder({
+    schemaVersion: "custom-review-artifact",
+    designOrder: ["semantic_visual_guidance", "source_evidence"],
+    evidenceRefs: [],
+    coordinates: [1, 2],
+  });
+
+  assert.equal(trace.findings.some((finding) => finding.type === "DESIGN_ORDER_PREREQUISITE_MISSING"), true);
+  assert.equal(validation.some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
+  assert.equal(validation.some((finding) => finding.type === "REVIEW_ARTIFACT_BOUNDARY_FIELD_LEAK"), true);
+  assert.equal(validation.some((finding) => finding.type === "REVIEW_ARTIFACT_EVIDENCE_MISSING"), true);
 });
 
 test("screenshotEvidence records paths and block ids as evidence only", () => {
