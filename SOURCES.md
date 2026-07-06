@@ -22,3 +22,18 @@ This TODO pack is an implementation planning artifact. If Design Components cont
 - Chapter metadata observed: Intro, Changing Fonts, Setting the Layout, Creating Highlight Pages, Creating the Cover, Refining Details, Comparing Before and After, Wrapping Up.
 - The requested timestamp, 464 seconds, lands at the transition from cover creation to detail refinement.
 - Local analysis artifacts were generated under ignored cache paths `.cache/youtube/GX0Fn-5YqKE.info.json`, `.cache/youtube/GX0Fn-5YqKE.ko.vtt`, and `.cache/youtube/GX0Fn-5YqKE-json3.ko.json3`.
+
+## Additional source checked on 2026-07-06
+
+- Taste Skill repository: https://github.com/Leonxlnx/taste-skill
+- Pinned HEAD checked locally by `git clone --depth 1`: `b17742737e796305d829b3ad39eda3add0d79060`
+- Public README observed: multiple specialized design skills, image-generation
+  skills, and three bounded dials for design variance, motion intensity, and
+  visual density.
+- Referenced only as a visual-direction pattern source. This repository does
+  not install or vendor Taste Skill code, assets, prompts, or images.
+- Adapted concept: theme-specific visual language, image/reference-board
+  boundary, and decoration update rules are represented as
+  `mdpr-theme-candidate-v1` proposal evidence. MDPR remains the final runtime
+  owner for layouts, theme binding, images, decoration rendering, PPTX/PDF
+  output, and validation pass/fail decisions.

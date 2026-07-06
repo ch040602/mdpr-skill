@@ -4,7 +4,7 @@
   "title": "MDPR Theme Candidate",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "source", "tokens", "styleSystem", "registration", "constraints", "rationale", "requiresApproval"],
+  "required": ["schemaVersion", "source", "tokens", "styleSystem", "visualLanguage", "imagePolicy", "registration", "constraints", "rationale", "requiresApproval"],
   "properties": {
     "schemaVersion": { "const": "mdpr-theme-candidate-v1" },
     "source": {
@@ -39,7 +39,7 @@
     "styleSystem": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["bestFor", "layoutIntents", "layoutBlueprints", "decorationFamilies"],
+      "required": ["bestFor", "layoutIntents", "layoutBlueprints", "decorationFamilies", "decorationRules"],
       "properties": {
         "bestFor": { "type": "array", "items": { "type": "string", "minLength": 1 } },
         "layoutIntents": { "type": "array", "items": { "type": "string", "minLength": 1 } },
@@ -57,7 +57,39 @@
             }
           }
         },
-        "decorationFamilies": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        "decorationFamilies": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "decorationRules": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "visualLanguage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["archetype", "designDials", "themeUsageRules", "antiPatterns"],
+      "properties": {
+        "archetype": { "type": "string", "minLength": 1 },
+        "designDials": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["variance", "motion", "density"],
+          "properties": {
+            "variance": { "type": "number", "minimum": 1, "maximum": 10 },
+            "motion": { "type": "number", "minimum": 1, "maximum": 10 },
+            "density": { "type": "number", "minimum": 1, "maximum": 10 }
+          }
+        },
+        "themeUsageRules": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "antiPatterns": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "imagePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preferredUses", "treatments", "forbiddenUses", "generatedAssetBoundary"],
+      "properties": {
+        "preferredUses": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "treatments": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "forbiddenUses": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "generatedAssetBoundary": { "const": "semantic-reference-only" }
       }
     },
     "registration": {

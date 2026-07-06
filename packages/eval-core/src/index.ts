@@ -167,6 +167,53 @@ export type ReviewRunSummary = {
   findings: ReviewFinding[];
 };
 
+export type DeckCoherenceEvidence = {
+  status: "recorded";
+  run: "baseline" | "skillGuided";
+  decisionAuthority: "mdpr-runtime-gates";
+  metrics: Pick<MdprRunMetrics, "coherenceWarnings" | "overflowCount" | "textClipRiskCount" | "contrastFailures" | "connectorWarnings">;
+  reviewFindingCount: number;
+  reviewErrorCount: number;
+  reviewWarningCount: number;
+  sufficientEvidenceFindingCount: number;
+  missingEvidenceFindingCount: number;
+};
+
+export type DeckCoherenceReport = {
+  status: "recorded";
+  boundary: "evidence-only-not-mdpr-pass-fail";
+  baseline: DeckCoherenceEvidence;
+  skillGuided: DeckCoherenceEvidence;
+  deltas: {
+    coherenceWarnings: number;
+    reviewFindings: number;
+    reviewErrors: number;
+    reviewWarnings: number;
+    missingEvidenceFindings: number;
+  };
+};
+
+export type DesignDecisionTraceStep = {
+  order: number;
+  stage:
+    | "source"
+    | "baseline-build"
+    | "guided-input"
+    | "guided-build"
+    | "review"
+    | "evidence-routing"
+    | "gate-summary";
+  owner: "mdpr" | "mdpr-skill";
+  evidenceRefs: string[];
+  note: string;
+};
+
+export type DesignDecisionTraceReport = {
+  status: "recorded";
+  boundary: "trace-only-not-renderer-instructions";
+  steps: DesignDecisionTraceStep[];
+};
+
 export type MdprSkillEvalInput = Omit<MdprRunInput, "outDir" | "hintsPath" | "packPath"> & {
   outDir: string;
   baselineOutDir?: string;
@@ -205,6 +252,8 @@ export type MdprSkillEvalReport = {
     baseline: ReviewEvidenceRetrievalPlan;
     skillGuided: ReviewEvidenceRetrievalPlan;
   };
+  deckCoherence: DeckCoherenceReport;
+  designDecisionTrace: DesignDecisionTraceReport;
   hintsPath?: string;
   baselinePackPath?: string;
   guidedPackPath?: string;
@@ -315,6 +364,15 @@ export function runMdprSkillEval(input: MdprSkillEvalInput, deps: EvalDeps = {})
     artifactRoot: skillGuided.outDir,
     exists: deps.exists,
   });
+  const deckCoherence = buildDeckCoherenceReport(baseline, skillGuided);
+  const designDecisionTrace = buildDesignDecisionTrace({
+    deckPath: input.deckPath,
+    baseline,
+    skillGuided,
+    hintsPath: skillGuided.hintsPath,
+    baselinePackPath: input.baselinePackPath,
+    guidedPackPath: input.guidedPackPath,
+  });
   const overallStatus = [skillGuided.hintGates.schemaSync, skillGuided.hintGates.boundary, comparison.regressionGate, reviewGate, sufficientContextGate]
     .every((gate) => gate.status === "pass") ? "pass" : "fail";
   const report: MdprSkillEvalReport = {
@@ -343,6 +401,8 @@ export function runMdprSkillEval(input: MdprSkillEvalInput, deps: EvalDeps = {})
       baseline: baselineEvidenceRetrieval,
       skillGuided: guidedEvidenceRetrieval,
     },
+    deckCoherence,
+    designDecisionTrace,
     hintsPath: skillGuided.hintsPath,
     baselinePackPath: input.baselinePackPath,
     guidedPackPath: input.guidedPackPath,
@@ -351,6 +411,118 @@ export function runMdprSkillEval(input: MdprSkillEvalInput, deps: EvalDeps = {})
   };
   if (input.reportPath) emitEvalReport(report, input.reportPath, deps);
   return report;
+}
+
+export function buildDeckCoherenceReport(
+  baseline: EvalRunArtifacts,
+  skillGuided: EvalRunArtifacts,
+): DeckCoherenceReport {
+  const baselineEvidence = buildDeckCoherenceEvidence("baseline", baseline);
+  const guidedEvidence = buildDeckCoherenceEvidence("skillGuided", skillGuided);
+  return {
+    status: "recorded",
+    boundary: "evidence-only-not-mdpr-pass-fail",
+    baseline: baselineEvidence,
+    skillGuided: guidedEvidence,
+    deltas: {
+      coherenceWarnings: guidedEvidence.metrics.coherenceWarnings - baselineEvidence.metrics.coherenceWarnings,
+      reviewFindings: guidedEvidence.reviewFindingCount - baselineEvidence.reviewFindingCount,
+      reviewErrors: guidedEvidence.reviewErrorCount - baselineEvidence.reviewErrorCount,
+      reviewWarnings: guidedEvidence.reviewWarningCount - baselineEvidence.reviewWarningCount,
+      missingEvidenceFindings: guidedEvidence.missingEvidenceFindingCount - baselineEvidence.missingEvidenceFindingCount,
+    },
+  };
+}
+
+function buildDeckCoherenceEvidence(
+  run: DeckCoherenceEvidence["run"],
+  artifact: EvalRunArtifacts,
+): DeckCoherenceEvidence {
+  return {
+    status: "recorded",
+    run,
+    decisionAuthority: "mdpr-runtime-gates",
+    metrics: {
+      coherenceWarnings: artifact.metrics.coherenceWarnings,
+      overflowCount: artifact.metrics.overflowCount,
+      textClipRiskCount: artifact.metrics.textClipRiskCount ?? 0,
+      contrastFailures: artifact.metrics.contrastFailures ?? 0,
+      connectorWarnings: artifact.metrics.connectorWarnings ?? 0,
+    },
+    reviewFindingCount: artifact.review.findingCount,
+    reviewErrorCount: artifact.review.errorCount,
+    reviewWarningCount: artifact.review.warningCount,
+    sufficientEvidenceFindingCount: artifact.review.findingCount - artifact.review.missingEvidenceCount,
+    missingEvidenceFindingCount: artifact.review.missingEvidenceCount,
+  };
+}
+
+export function buildDesignDecisionTrace(input: {
+  deckPath: string;
+  baseline: EvalRunArtifacts;
+  skillGuided: EvalRunArtifacts & { hintsPath?: string };
+  hintsPath?: string;
+  baselinePackPath?: string;
+  guidedPackPath?: string;
+}): DesignDecisionTraceReport {
+  return {
+    status: "recorded",
+    boundary: "trace-only-not-renderer-instructions",
+    steps: [
+      {
+        order: 1,
+        stage: "source",
+        owner: "mdpr",
+        evidenceRefs: [input.deckPath],
+        note: "MDPR parses source Markdown and owns source-to-render decisions.",
+      },
+      {
+        order: 2,
+        stage: "baseline-build",
+        owner: "mdpr",
+        evidenceRefs: [input.baseline.manifestPath],
+        note: "Baseline build evidence is copied from MDPR artifacts.",
+      },
+      {
+        order: 3,
+        stage: "guided-input",
+        owner: "mdpr-skill",
+        evidenceRefs: [
+          ...([input.hintsPath].filter(Boolean) as string[]),
+          ...([input.baselinePackPath, input.guidedPackPath].filter(Boolean) as string[]),
+        ],
+        note: "mdpr-skill supplies schema-checked hints or approved packs as proposal inputs only.",
+      },
+      {
+        order: 4,
+        stage: "guided-build",
+        owner: "mdpr",
+        evidenceRefs: [input.skillGuided.manifestPath],
+        note: "MDPR owns guided rendering and emitted artifact semantics.",
+      },
+      {
+        order: 5,
+        stage: "review",
+        owner: "mdpr-skill",
+        evidenceRefs: ["reviews.baseline", "reviews.skillGuided", "deckCoherence"],
+        note: "mdpr-skill records review evidence and coherence deltas without issuing renderer instructions.",
+      },
+      {
+        order: 6,
+        stage: "evidence-routing",
+        owner: "mdpr-skill",
+        evidenceRefs: ["evidenceRetrieval.baseline", "evidenceRetrieval.skillGuided"],
+        note: "Evidence routing identifies which local corpus can support review findings.",
+      },
+      {
+        order: 7,
+        stage: "gate-summary",
+        owner: "mdpr-skill",
+        evidenceRefs: ["gates"],
+        note: "Gate statuses summarize checks; MDPR remains the runtime owner for parsing, layout, rendering, and validation outcomes.",
+      },
+    ],
+  };
 }
 
 export function emitEvalReport(report: MdprSkillEvalReport, path: string, deps: EvalDeps = {}): void {

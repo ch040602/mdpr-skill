@@ -17,8 +17,157 @@ export type ReviewReport = {
   findings: ReviewFinding[];
 };
 
+export type VisualGuidanceCategory =
+  | "hierarchy"
+  | "readability"
+  | "contrast_or_legibility"
+  | "object_semantics"
+  | "layout_density"
+  | "theme_fit"
+  | "decoration_noise"
+  | "editability_risk";
+
+export type VisualGuidanceFinding = {
+  category: VisualGuidanceCategory;
+  severity: ReviewFinding["severity"];
+  sourceFindingType: string;
+  slideId?: string;
+  evidenceRefs: string[];
+  recommendation: {
+    target: string;
+    text: string;
+  };
+};
+
+export type VisualGuidanceReport = {
+  schemaVersion: "mdpr-visual-guidance-v1";
+  generatedBy: "mdpr-skill";
+  boundary: {
+    mdprValidationAuthority: true;
+    noFinalGeometry: true;
+    noSubjectiveBeautyGate: true;
+  };
+  findings: VisualGuidanceFinding[];
+};
+
+export type GeneratorComparisonScorecardInput = {
+  mdpr: {
+    editableObjectCoverage?: number;
+    deckCoherenceFindingCount?: number;
+    designDecisionTracePresent?: boolean;
+    layoutValidationRefCount?: number;
+    overflowOrDensityFindingCount?: number;
+    nativeTableChartProofSupport?: boolean;
+  };
+  references: Array<{
+    name: string;
+    outputModel: string;
+    editableObjectCoverage?: number;
+    manualReviewRequired?: boolean;
+  }>;
+};
+
+export type GeneratorComparisonDimension = {
+  winner: "mdpr" | "reference" | "manual-review";
+  evidence: string[];
+};
+
+export type GeneratorComparisonScorecard = {
+  schemaVersion: "mdpr-generator-comparison-scorecard-v1";
+  generatedBy: "mdpr-skill";
+  boundary: {
+    evidenceOnly: true;
+    noSubjectiveBeautyGate: true;
+    mdprRuntimeAuthority: true;
+  };
+  comparedReferences: Array<{ name: string; outputModel: string }>;
+  dimensions: {
+    editable_object_coverage: GeneratorComparisonDimension;
+    deck_coherence_findings: GeneratorComparisonDimension;
+    design_decision_trace_presence: GeneratorComparisonDimension;
+    layout_validation_refs: GeneratorComparisonDimension;
+    overflow_or_density_findings: GeneratorComparisonDimension;
+    native_table_chart_proof_support: GeneratorComparisonDimension;
+    manual_review_required: GeneratorComparisonDimension;
+  };
+};
+
 export function buildReviewReport(findings: ReviewFinding[]): ReviewReport {
   return { version: "1.0", source: "mdpr-manifest", findings };
+}
+
+export function buildVisualGuidance(findings: ReviewFinding[]): VisualGuidanceReport {
+  return {
+    schemaVersion: "mdpr-visual-guidance-v1",
+    generatedBy: "mdpr-skill",
+    boundary: {
+      mdprValidationAuthority: true,
+      noFinalGeometry: true,
+      noSubjectiveBeautyGate: true,
+    },
+    findings: findings.map((finding) => ({
+      category: visualGuidanceCategory(finding),
+      severity: finding.severity,
+      sourceFindingType: finding.type,
+      ...(finding.slideId ? { slideId: finding.slideId } : {}),
+      evidenceRefs: evidenceRefsForFinding(finding),
+      recommendation: {
+        target: `mdpr.${visualGuidanceCategory(finding)}`,
+        text: guidanceTextForFinding(finding),
+      },
+    })),
+  };
+}
+
+export function buildGeneratorComparisonScorecard(input: GeneratorComparisonScorecardInput): GeneratorComparisonScorecard {
+  const maxReferenceCoverage = Math.max(0, ...input.references.map((reference) => reference.editableObjectCoverage ?? 0));
+  const manualReviewRequired = input.references.some((reference) => reference.manualReviewRequired !== false);
+  return {
+    schemaVersion: "mdpr-generator-comparison-scorecard-v1",
+    generatedBy: "mdpr-skill",
+    boundary: {
+      evidenceOnly: true,
+      noSubjectiveBeautyGate: true,
+      mdprRuntimeAuthority: true,
+    },
+    comparedReferences: input.references.map((reference) => ({
+      name: reference.name,
+      outputModel: reference.outputModel,
+    })),
+    dimensions: {
+      editable_object_coverage: {
+        winner: (input.mdpr.editableObjectCoverage ?? 0) >= maxReferenceCoverage ? "mdpr" : "reference",
+        evidence: [
+          `mdpr.editableObjectCoverage=${input.mdpr.editableObjectCoverage ?? "unknown"}`,
+          `reference.maxEditableObjectCoverage=${maxReferenceCoverage}`,
+        ],
+      },
+      deck_coherence_findings: {
+        winner: "manual-review",
+        evidence: [`mdpr.deckCoherenceFindingCount=${input.mdpr.deckCoherenceFindingCount ?? "unknown"}`],
+      },
+      design_decision_trace_presence: {
+        winner: input.mdpr.designDecisionTracePresent ? "mdpr" : "manual-review",
+        evidence: [`mdpr.designDecisionTracePresent=${Boolean(input.mdpr.designDecisionTracePresent)}`],
+      },
+      layout_validation_refs: {
+        winner: (input.mdpr.layoutValidationRefCount ?? 0) > 0 ? "mdpr" : "manual-review",
+        evidence: [`mdpr.layoutValidationRefCount=${input.mdpr.layoutValidationRefCount ?? 0}`],
+      },
+      overflow_or_density_findings: {
+        winner: (input.mdpr.overflowOrDensityFindingCount ?? 0) === 0 ? "mdpr" : "manual-review",
+        evidence: [`mdpr.overflowOrDensityFindingCount=${input.mdpr.overflowOrDensityFindingCount ?? "unknown"}`],
+      },
+      native_table_chart_proof_support: {
+        winner: input.mdpr.nativeTableChartProofSupport ? "mdpr" : "manual-review",
+        evidence: [`mdpr.nativeTableChartProofSupport=${Boolean(input.mdpr.nativeTableChartProofSupport)}`],
+      },
+      manual_review_required: {
+        winner: manualReviewRequired ? "manual-review" : "mdpr",
+        evidence: input.references.map((reference) => `${reference.name}.manualReviewRequired=${reference.manualReviewRequired !== false}`),
+      },
+    },
+  };
 }
 
 export function reviewFindingHasFinalDecisionField(finding: ReviewFinding): boolean {
@@ -1316,6 +1465,48 @@ function firstClaimLine(section: MarkdownSection): string | undefined {
     .map((line) => line.trim())
     .find((line) => !line.startsWith("!") && (hasQuantitativeClaim(line) || hasStrongClaim(line)))
     ?.slice(0, 220);
+}
+
+function visualGuidanceCategory(finding: ReviewFinding): VisualGuidanceCategory {
+  const type = finding.type.toUpperCase();
+  if (/NON_EDITABLE|RASTER/.test(type)) return "editability_risk";
+  if (/RAW_HEX|THEME|TOKEN|RADIUS|SHADOW/.test(type)) return "theme_fit";
+  if (/EFFECT|ACCENT|STYLE_DRIFT/.test(type)) return "decoration_noise";
+  if (/CONTRAST|CLIP|FONT|LEGIBILITY/.test(type)) return "contrast_or_legibility";
+  if (/DIAGRAM|OBJECT|ICON|IMAGE/.test(type)) return "object_semantics";
+  if (/DENSITY|OVERFLOW|BUDGET|COMPLEXITY/.test(type)) return "layout_density";
+  if (/CAPTION|CLAIM|SECTION|GROUPING|ORPHAN/.test(type)) return "hierarchy";
+  return "readability";
+}
+
+function evidenceRefsForFinding(finding: ReviewFinding): string[] {
+  const refs = new Set<string>();
+  if (finding.slideId) refs.add(`slide:${finding.slideId}`);
+  const evidence = asRecord(finding.evidence);
+  if (evidence) {
+    const objectKind = evidence.objectKind;
+    if (typeof objectKind === "string" && objectKind) refs.add(`objectKind:${objectKind}`);
+    const role = evidence.role;
+    if (typeof role === "string" && role) refs.add(`role:${role}`);
+    for (const key of ["blockIds", "layoutSlideIds", "regionIds", "sampleLocations"]) {
+      const values = asArray(evidence[key]).map((value) => String(value)).filter(Boolean);
+      for (const value of values.slice(0, 4)) refs.add(`${key}:${value}`);
+    }
+  }
+  if (refs.size === 0) refs.add(`finding:${finding.type}`);
+  return [...refs];
+}
+
+function guidanceTextForFinding(finding: ReviewFinding): string {
+  const category = visualGuidanceCategory(finding);
+  if (category === "editability_risk") return "Prefer MDPR-native editable objects or record an explicit generated-asset boundary before accepting raster primary content.";
+  if (category === "theme_fit") return "Move visual style values into MDPR theme/profile tokens and keep raw style values out of review hints.";
+  if (category === "decoration_noise") return "Reduce decorative intensity or route the issue to an MDPR rulebook/profile update with density-aware downshift behavior.";
+  if (category === "contrast_or_legibility") return "Use MDPR validation evidence to tune contrast, clipping, and readable text scale before treating the deck as visually ready.";
+  if (category === "object_semantics") return "Align object form with source semantics and prefer MDPR rule/config changes over exact asset or geometry instructions.";
+  if (category === "layout_density") return "Split or simplify dense content through MDPR rules, config, or approved override candidates before adding ornament.";
+  if (category === "hierarchy") return "Strengthen source narrative hierarchy, grouping, or evidence pairing before changing theme or decoration.";
+  return "Record a bounded MDPR rulebook, config, or source cleanup recommendation with concrete evidence references.";
 }
 
 function sourcesForClaim(claimExcerpt: string, sources: CitationSource[]): SourceSlideEvidenceLedgerEntry["sources"] {

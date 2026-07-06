@@ -277,6 +277,24 @@ test("runMdprSkillEval executes baseline and guided builds with injected MDPR ad
   assert.equal(report.gates.boundary.status, "pass");
   assert.equal(report.gates.regression.status, "fail");
   assert.equal(report.summary.overallStatus, "fail");
+  assert.equal(report.deckCoherence.status, "recorded");
+  assert.equal(report.deckCoherence.boundary, "evidence-only-not-mdpr-pass-fail");
+  assert.equal(report.deckCoherence.baseline.decisionAuthority, "mdpr-runtime-gates");
+  assert.equal(report.deckCoherence.deltas.reviewFindings, 0);
+  assert.equal(report.deckCoherence.deltas.missingEvidenceFindings, 0);
+  assert.equal(report.designDecisionTrace.status, "recorded");
+  assert.equal(report.designDecisionTrace.boundary, "trace-only-not-renderer-instructions");
+  assert.deepEqual(report.designDecisionTrace.steps.map((step) => step.order), [1, 2, 3, 4, 5, 6, 7]);
+  assert.deepEqual(report.designDecisionTrace.steps.map((step) => step.stage), [
+    "source",
+    "baseline-build",
+    "guided-input",
+    "guided-build",
+    "review",
+    "evidence-routing",
+    "gate-summary",
+  ]);
+  assert.ok(report.designDecisionTrace.steps.every((step) => !JSON.stringify(step).includes("coordinates")));
   assert.equal(report.baseline.profile?.profile?.mode, "baseline");
   assert.equal(report.skillGuided.profile?.profile?.mode, "guided");
   assert.equal(report.skillGuided.profile?.performance?.renderPptxMs, 80);

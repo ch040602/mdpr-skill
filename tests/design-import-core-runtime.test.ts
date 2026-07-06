@@ -57,6 +57,30 @@ Use generous containment and avoid noisy fills.
 - Use numbered rails for ordered arguments.
 - Use thin rule lines and sparse accent chips.
 
+## Visual Language
+
+- archetype: premium-utilitarian-minimalism
+- variance: 5
+- motion: 3
+- density: 3
+- Keep hierarchy editorial and calm.
+
+## Theme Usage Rules
+
+- Use for executive strategy and review decks that need quiet authority.
+- Avoid for playful launch decks or expressive consumer campaigns.
+
+## Image Policy
+
+- Treat generated images as reference boards or source-provided visuals only.
+- Use warm desaturated photography when imagery is required.
+- Do not turn generated imagery into a full-slide PPTX renderer.
+
+## Decoration Update Rules
+
+- Downshift decoration on dense slides before changing typography.
+- Prefer rule lines, numbered rails, and accent chips over decorative blobs.
+
 ## Registration Targets
 
 - mdpr-theme-pack
@@ -136,6 +160,31 @@ test("buildThemeCandidateFromDesignMd creates approval-bound theme proposal", ()
     "rule-lines",
     "accent-chips",
   ]);
+  assert.equal(candidate.visualLanguage.archetype, "premium-utilitarian-minimalism");
+  assert.deepEqual(candidate.visualLanguage.designDials, {
+    variance: 5,
+    motion: 3,
+    density: 3,
+  });
+  assert.deepEqual(candidate.visualLanguage.themeUsageRules, [
+    "Use for executive strategy and review decks that need quiet authority.",
+    "Avoid for playful launch decks or expressive consumer campaigns.",
+  ]);
+  assert.deepEqual(candidate.visualLanguage.antiPatterns, [
+    "Avoid for playful launch decks or expressive consumer campaigns.",
+  ]);
+  assert.deepEqual(candidate.imagePolicy.preferredUses, [
+    "Treat generated images as reference boards or source-provided visuals only.",
+    "Use warm desaturated photography when imagery is required.",
+  ]);
+  assert.deepEqual(candidate.imagePolicy.forbiddenUses, [
+    "Do not turn generated imagery into a full-slide PPTX renderer.",
+  ]);
+  assert.equal(candidate.imagePolicy.generatedAssetBoundary, "semantic-reference-only");
+  assert.deepEqual(candidate.styleSystem.decorationRules, [
+    "Downshift decoration on dense slides before changing typography.",
+    "Prefer rule lines, numbered rails, and accent chips over decorative blobs.",
+  ]);
   assert.deepEqual(candidate.registration.targets, [
     "mdpr-theme-pack",
     "mdpr-profile",
@@ -173,6 +222,8 @@ test("theme candidate schema declares approval-bound design rail", () => {
   assert.equal(schema.properties.source.properties.generatedBy.const, "mdpr-skill");
   assert.equal(schema.properties.requiresApproval.const, true);
   assert.equal(schema.properties.styleSystem.properties.layoutBlueprints.items.additionalProperties, false);
+  assert.deepEqual(schema.properties.visualLanguage.properties.designDials.properties.variance.minimum, 1);
+  assert.equal(schema.properties.imagePolicy.properties.generatedAssetBoundary.const, "semantic-reference-only");
   assert.deepEqual(schema.properties.registration.properties.targets.items.enum, [
     "mdpr-theme-pack",
     "mdpr-profile",
@@ -195,6 +246,8 @@ test("themeCandidateGate accepts approval-bound candidate rail data", () => {
   assert.equal(result.metrics.colorTokenCount, 5);
   assert.equal(result.metrics.layoutBlueprintCount, 2);
   assert.equal(result.metrics.decorationFamilyCount, 3);
+  assert.equal(result.metrics.themeUsageRuleCount, 2);
+  assert.equal(result.metrics.imagePolicyRuleCount, 3);
 });
 
 test("themeCandidateGate rejects missing provenance and approval", () => {

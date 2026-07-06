@@ -16,6 +16,7 @@ Markdown source
   -> review-core coherence and visual policy review on both outputs
   -> sufficient-context check for guided review evidence
   -> regression gate
+  -> deck coherence evidence and design decision trace
   -> mdpr-skill-eval-v1 report
 ```
 
@@ -96,6 +97,20 @@ instructions such as inspecting the layout IR, PPTX object map, rendered
 artifact, design analysis, or manifest metrics. They do not authorize an agent
 to create coordinates, styles, recipes, or renderer objects.
 
+The report also records `deckCoherence` and `designDecisionTrace`.
+`deckCoherence` is a deck-level evidence rollup for baseline and guided runs:
+coherence warnings, overflow, text clipping risk, contrast failures, connector
+warnings, review finding counts, and missing-evidence counts. Its boundary is
+`evidence-only-not-mdpr-pass-fail`; it explains what changed, but it does not
+override MDPR validation or renderer decisions.
+
+`designDecisionTrace` records the order of evidence handoff: source, baseline
+build, guided input, guided build, review, evidence routing, and gate summary.
+Each step names the owner (`mdpr` or `mdpr-skill`) and artifact references. Its
+boundary is `trace-only-not-renderer-instructions`, so it must not contain
+coordinates, renderer object ids, final layouts, theme bindings, or PPTX/PDF
+pass/fail claims.
+
 ## Report
 
 The emitted report uses `schemaVersion: "mdpr-skill-eval-v1"` and records:
@@ -106,6 +121,8 @@ The emitted report uses `schemaVersion: "mdpr-skill-eval-v1"` and records:
 - optional baseline and guided profile metadata copied from MDPR manifests
 - baseline and guided review summaries
 - baseline and guided evidence retrieval route plans
+- deck-level coherence evidence
+- design decision trace steps
 - `schemaSync`, `boundary`, `regression`, `review`, and `sufficientContext`
   gate findings
 - thresholds used for the regression decision

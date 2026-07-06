@@ -30,6 +30,23 @@ export type MdprThemeCandidate = {
       regions: string[];
     }>;
     decorationFamilies: string[];
+    decorationRules: string[];
+  };
+  visualLanguage: {
+    archetype: string;
+    designDials: {
+      variance: number;
+      motion: number;
+      density: number;
+    };
+    themeUsageRules: string[];
+    antiPatterns: string[];
+  };
+  imagePolicy: {
+    preferredUses: string[];
+    treatments: string[];
+    forbiddenUses: string[];
+    generatedAssetBoundary: "semantic-reference-only";
   };
   registration: {
     targets: MdprThemeRegistrationTarget[];
@@ -71,6 +88,8 @@ export type ThemeCandidateGateResult = {
     shapeTokenCount: number;
     layoutBlueprintCount: number;
     decorationFamilyCount: number;
+    themeUsageRuleCount: number;
+    imagePolicyRuleCount: number;
   };
 };
 
@@ -153,6 +172,8 @@ export function buildThemeCandidateFromDesignMd(input: BuildThemeCandidateInput)
   const parsed = parseDesignMd(input.content);
   const sourceSha256 = createHash("sha256").update(input.content).digest("hex");
   const layoutBlueprints = parseLayoutBlueprints(parsed.sections["Layout Blueprints"] ?? "");
+  const visualLanguage = parseVisualLanguage(parsed.sections["Visual Language"] ?? "");
+  const imagePolicy = parseImagePolicy(parsed.sections["Image Policy"] ?? "");
   return {
     schemaVersion: "mdpr-theme-candidate-v1",
     source: {
@@ -173,6 +194,20 @@ export function buildThemeCandidateFromDesignMd(input: BuildThemeCandidateInput)
       layoutIntents: unique(layoutBlueprints.map((blueprint) => blueprint.intent)),
       layoutBlueprints,
       decorationFamilies: decorationFamiliesFromLines(bulletLines(parsed.sections["Decoration Grammar"] ?? "")),
+      decorationRules: bulletLines(parsed.sections["Decoration Update Rules"] ?? ""),
+    },
+    visualLanguage: {
+      archetype: visualLanguage.archetype,
+      designDials: visualLanguage.designDials,
+      themeUsageRules: bulletLines(parsed.sections["Theme Usage Rules"] ?? ""),
+      antiPatterns: bulletLines(parsed.sections["Theme Usage Rules"] ?? "")
+        .filter((line) => /\bavoid\b|\bdo not\b|\bnever\b|\bban(ned)?\b/i.test(line)),
+    },
+    imagePolicy: {
+      preferredUses: imagePolicy.preferredUses,
+      treatments: imagePolicy.treatments,
+      forbiddenUses: imagePolicy.forbiddenUses,
+      generatedAssetBoundary: "semantic-reference-only",
     },
     registration: {
       targets: registrationTargetsFromLines(bulletLines(parsed.sections["Registration Targets"] ?? "")),
@@ -233,6 +268,10 @@ export function themeCandidateGate(candidate: unknown): ThemeCandidateGateResult
   validateNumberMap(shape, "tokens.shape", findings);
   const styleSystem = asRecord(root.styleSystem);
   validateStyleSystem(styleSystem, findings);
+  const visualLanguage = asRecord(root.visualLanguage);
+  validateVisualLanguage(visualLanguage, findings);
+  const imagePolicy = asRecord(root.imagePolicy);
+  validateImagePolicy(imagePolicy, findings);
   const registration = asRecord(root.registration);
   validateRegistration(registration, findings);
   const constraints = asRecord(root.constraints);
@@ -250,6 +289,8 @@ export function themeCandidateGate(candidate: unknown): ThemeCandidateGateResult
       shapeTokenCount: shape ? Object.keys(shape).length : 0,
       layoutBlueprintCount: Array.isArray(styleSystem?.layoutBlueprints) ? styleSystem.layoutBlueprints.length : 0,
       decorationFamilyCount: Array.isArray(styleSystem?.decorationFamilies) ? styleSystem.decorationFamilies.length : 0,
+      themeUsageRuleCount: Array.isArray(visualLanguage?.themeUsageRules) ? visualLanguage.themeUsageRules.length : 0,
+      imagePolicyRuleCount: imagePolicyRuleCount(imagePolicy),
     },
   };
 }
@@ -502,6 +543,47 @@ function parseLayoutBlueprints(value: string): MdprThemeCandidate["styleSystem"]
   }).filter((blueprint) => blueprint.name && blueprint.description);
 }
 
+function parseVisualLanguage(value: string): MdprThemeCandidate["visualLanguage"] {
+  const lines = bulletLines(value);
+  const dials = {
+    variance: boundedDial(numberValue(lines, "variance") ?? 6),
+    motion: boundedDial(numberValue(lines, "motion") ?? 4),
+    density: boundedDial(numberValue(lines, "density") ?? 4),
+  };
+  return {
+    archetype: stringValue(lines, "archetype") ?? "contextual-presentation-theme",
+    designDials: dials,
+    themeUsageRules: [],
+    antiPatterns: [],
+  };
+}
+
+function parseImagePolicy(value: string): MdprThemeCandidate["imagePolicy"] {
+  const lines = bulletLines(value);
+  return {
+    preferredUses: lines.filter((line) => !/\bdo not\b|\bnever\b|\bforbid|\bban(ned)?\b/i.test(line)),
+    treatments: lines.filter((line) => /\btreat|\bgrade|\bphotography|\btexture|\boverlay|\bduotone|\bhalftone|\bimage\b/i.test(line)),
+    forbiddenUses: lines.filter((line) => /\bdo not\b|\bnever\b|\bforbid|\bban(ned)?\b/i.test(line)),
+    generatedAssetBoundary: "semantic-reference-only",
+  };
+}
+
+function stringValue(lines: string[], key: string): string | undefined {
+  const prefix = `${key}:`;
+  return lines.find((line) => line.toLowerCase().startsWith(prefix))?.slice(prefix.length).trim();
+}
+
+function numberValue(lines: string[], key: string): number | undefined {
+  const raw = stringValue(lines, key);
+  if (raw === undefined) return undefined;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function boundedDial(value: number): number {
+  return Math.min(10, Math.max(1, value));
+}
+
 function splitOnce(value: string, separator: string): [string, string?] {
   const index = value.indexOf(separator);
   if (index === -1) return [value];
@@ -592,6 +674,7 @@ function validateStyleSystem(value: Record<string, unknown> | undefined, finding
   validateStringArray(value.bestFor, "styleSystem.bestFor", findings);
   validateStringArray(value.layoutIntents, "styleSystem.layoutIntents", findings);
   validateStringArray(value.decorationFamilies, "styleSystem.decorationFamilies", findings);
+  validateStringArray(value.decorationRules, "styleSystem.decorationRules", findings);
   if (!Array.isArray(value.layoutBlueprints)) {
     findings.push("styleSystem.layoutBlueprints must be an array");
     return;
@@ -609,6 +692,51 @@ function validateStyleSystem(value: Record<string, unknown> | undefined, finding
     }
     validateStringArray(blueprint.regions, `styleSystem.layoutBlueprints[${index}].regions`, findings);
   });
+}
+
+function validateVisualLanguage(value: Record<string, unknown> | undefined, findings: string[]): void {
+  if (!value) {
+    findings.push("visualLanguage must be an object");
+    return;
+  }
+  if (typeof value.archetype !== "string" || !value.archetype) {
+    findings.push("visualLanguage.archetype must be a non-empty string");
+  }
+  const designDials = asRecord(value.designDials);
+  if (!designDials) {
+    findings.push("visualLanguage.designDials must be an object");
+  } else {
+    for (const key of ["variance", "motion", "density"]) {
+      const child = designDials[key];
+      if (typeof child !== "number" || !Number.isFinite(child) || child < 1 || child > 10) {
+        findings.push(`visualLanguage.designDials.${key} must be a number from 1 to 10`);
+      }
+    }
+  }
+  validateStringArray(value.themeUsageRules, "visualLanguage.themeUsageRules", findings);
+  validateStringArray(value.antiPatterns, "visualLanguage.antiPatterns", findings);
+}
+
+function validateImagePolicy(value: Record<string, unknown> | undefined, findings: string[]): void {
+  if (!value) {
+    findings.push("imagePolicy must be an object");
+    return;
+  }
+  validateStringArray(value.preferredUses, "imagePolicy.preferredUses", findings);
+  validateStringArray(value.treatments, "imagePolicy.treatments", findings);
+  validateStringArray(value.forbiddenUses, "imagePolicy.forbiddenUses", findings);
+  if (value.generatedAssetBoundary !== "semantic-reference-only") {
+    findings.push("imagePolicy.generatedAssetBoundary must be semantic-reference-only");
+  }
+}
+
+function imagePolicyRuleCount(value: Record<string, unknown> | undefined): number {
+  if (!value) return 0;
+  return unique([
+    value.preferredUses,
+    value.treatments,
+    value.forbiddenUses,
+  ].filter(Array.isArray).flat() as string[]).length;
 }
 
 function validateRegistration(value: Record<string, unknown> | undefined, findings: string[]): void {
@@ -682,6 +810,8 @@ function emptyGateResult(findings: string[]): ThemeCandidateGateResult {
       shapeTokenCount: 0,
       layoutBlueprintCount: 0,
       decorationFamilyCount: 0,
+      themeUsageRuleCount: 0,
+      imagePolicyRuleCount: 0,
     },
   };
 }

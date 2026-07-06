@@ -295,9 +295,21 @@ the final renderer.
 - Treat the source as a visual system, not as slide content to copy.
 - Extract reusable tokens, semantic layout blueprints, decoration grammar,
   best-fit scenarios, and MDPR registration targets.
+- For theme-specific usage, include proposal-only `visualLanguage`,
+  `imagePolicy`, and `styleSystem.decorationRules` guidance when available:
+  design dials may describe variance, motion, and density, but they must stay
+  bounded selection evidence rather than renderer instructions.
 - Emit an approval-bound `mdpr-theme-candidate-v1`, not `agent-hint.json`.
 - Use `registration.targets` to distinguish `mdpr-theme-pack`, `mdpr-profile`,
   `mdpr-rulebook`, and `deck-local-style-pack` follow-up work.
+- Keep generated image and reference-board guidance under
+  `imagePolicy.generatedAssetBoundary = "semantic-reference-only"`. Use it to
+  describe when images support a theme, how imagery should be treated, and when
+  generated imagery is forbidden, not to request exact image assets or
+  full-slide image rendering.
+- Write decoration guidance as update rules such as downshifting dense slides,
+  preferring rule lines over decorative blobs, or using image frames only when
+  a source image exists.
 - Keep `constraints.mdprOwnsFinalLayout`,
   `constraints.mdprOwnsFinalThemeBinding`, `constraints.noRawUseInAgentHints`,
   and `constraints.requiresDesignLockUpdate` set to `true`.

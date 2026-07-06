@@ -14,6 +14,8 @@ import {
   reviewTemplateLayoutIntent,
   screenshotEvidence,
   reviewSelectionContext,
+  buildVisualGuidance,
+  buildGeneratorComparisonScorecard,
   renderReadmeTeaserSvg,
 } from "../packages/review-core/src/index";
 
@@ -201,6 +203,71 @@ test("reviewVisualPolicy reports visual policy findings without final design fie
   assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
   assert.equal(findings.every((finding) => finding.evidence && Object.keys(finding.evidence).length > 0), true);
   assert.equal(findings.every((finding) => finding.suggestion), true);
+});
+
+test("buildVisualGuidance normalizes review findings into evidence-based categories", () => {
+  const findings = reviewVisualPolicy({
+    manifest: {
+      pptxObjects: [
+        { slideId: "slide-visual", objectKind: "raster-image", role: "table", blockIds: ["table-1"] },
+      ],
+      accentUsage: { accentedObjects: 18, totalObjects: 24 },
+    },
+    designLock: {
+      runtimeOverrides: { calloutFill: "#ABCDEF" },
+      cornerScale: ["compact", "medium", "large", "pill"],
+      depthScale: ["soft", "hard", "glow"],
+      visualTreatments: ["shadow", "glow", "gradient", "transparency", "blur"],
+    },
+  });
+
+  const guidance = buildVisualGuidance(findings);
+
+  assert.equal(guidance.schemaVersion, "mdpr-visual-guidance-v1");
+  assert.equal(guidance.boundary.mdprValidationAuthority, true);
+  assert.equal(guidance.boundary.noFinalGeometry, true);
+  assert.equal(guidance.findings.some((finding) => finding.category === "editability_risk"), true);
+  assert.equal(guidance.findings.some((finding) => finding.category === "decoration_noise"), true);
+  assert.equal(guidance.findings.some((finding) => finding.category === "theme_fit"), true);
+  assert.equal(guidance.findings.every((finding) => finding.recommendation.target.startsWith("mdpr.")), true);
+  assert.equal(guidance.findings.every((finding) => finding.evidenceRefs.length > 0), true);
+  assert.equal(JSON.stringify(guidance).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(guidance).includes('"color"'), false);
+});
+
+test("buildGeneratorComparisonScorecard separates deterministic evidence from manual preference", () => {
+  const scorecard = buildGeneratorComparisonScorecard({
+    mdpr: {
+      editableObjectCoverage: 0.92,
+      deckCoherenceFindingCount: 1,
+      designDecisionTracePresent: true,
+      layoutValidationRefCount: 4,
+      overflowOrDensityFindingCount: 0,
+      nativeTableChartProofSupport: true,
+    },
+    references: [
+      {
+        name: "codex-ppt-skill",
+        outputModel: "image-only PPTX",
+        editableObjectCoverage: 0,
+        manualReviewRequired: true,
+      },
+      {
+        name: "generic-builder",
+        outputModel: "unknown",
+        manualReviewRequired: true,
+      },
+    ],
+  });
+
+  assert.equal(scorecard.schemaVersion, "mdpr-generator-comparison-scorecard-v1");
+  assert.equal(scorecard.boundary.evidenceOnly, true);
+  assert.equal(scorecard.boundary.noSubjectiveBeautyGate, true);
+  assert.equal(scorecard.dimensions.editable_object_coverage.winner, "mdpr");
+  assert.equal(scorecard.dimensions.design_decision_trace_presence.winner, "mdpr");
+  assert.equal(scorecard.dimensions.manual_review_required.winner, "manual-review");
+  assert.equal(scorecard.dimensions.native_table_chart_proof_support.winner, "mdpr");
+  assert.equal(JSON.stringify(scorecard).includes("objectively prettier"), false);
 });
 
 test("screenshotEvidence records paths and block ids as evidence only", () => {

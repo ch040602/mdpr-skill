@@ -24,6 +24,9 @@ must not route deck generation through them.
   comments, placeholder roles, and media handling.
 - Inform benchmark comparisons when explaining why MDPR needs a deterministic
   rule, schema, or renderer feature.
+- Build evidence-only scorecards from MDPR artifacts and review findings.
+- Normalize visual guidance into categories such as editability risk,
+  decoration noise, theme fit, evidence grounding, and accessibility.
 
 ## Forbidden Uses
 
@@ -36,3 +39,22 @@ must not route deck generation through them.
 
 External generators can help describe what good PPTX tooling supports. They do
 not change the runtime contract: the LLM can suggest; MDPR renders and gates.
+
+## Evidence-Based Scorecards
+
+`review-core` exposes `buildVisualGuidance(findings)` and
+`buildGeneratorComparisonScorecard(input)` for comparison reports.
+
+`buildVisualGuidance` maps existing deterministic review findings into
+normalized categories. It carries evidence references such as finding type,
+slide id, object kind, role, block ids, layout slide ids, and region ids. It
+must not echo raw coordinates, colors, typography, object ids, or renderer
+geometry back into the report.
+
+`buildGeneratorComparisonScorecard` compares MDPR against external generator
+references using measurable evidence: editable object coverage, design decision
+trace presence, layout validation references, overflow/density finding counts,
+native table/chart proof support, and whether manual review is required. Manual
+preference remains separate from deterministic evidence. The scorecard may say
+which system has stronger evidence on a dimension, but it must not claim that
+one output is objectively prettier or bypass MDPR validation gates.
