@@ -141,6 +141,19 @@ checked with `validateReviewArtifactDesignOrder`, which flags missing evidence
 refs, out-of-order design stages, and boundary leakage such as raw coordinates,
 renderer object ids, fixed geometry, or raw style decisions.
 
+Chart intent does not satisfy the earlier `source_evidence` stage by itself. If
+the trace derives source evidence from a chart intent report, it only uses
+structural refs such as sheet, row, column, numeric-cell, formula-cell,
+chart-family, and error-bar refs, then emits
+`DESIGN_ORDER_SOURCE_EVIDENCE_BACKFILLED` so agents know independent source
+evidence is still preferred.
+
+`validateReviewArtifactDesignOrder` is nested-artifact aware. It checks deck
+order on trace-like artifacts and scientific chart order on nested
+`intents[].designOrder` and `recipes[].designOrder`, while recognizing nested
+`intents[].evidenceRefs`, recipe data-shape requirements, and semantic roles as
+valid review evidence.
+
 Coherence review now includes two deck-level semantic warnings:
 
 - `EVIDENCE_CLAIM_ALIGNMENT_GAP` when a claim and the same-slide evidence block

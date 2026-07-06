@@ -125,6 +125,14 @@ export type ScientificChartDesignOrderStep =
   | "renderer_capability_request"
   | "review_notes";
 
+const SCIENTIFIC_CHART_DESIGN_ORDER: ScientificChartDesignOrderStep[] = [
+  "data_evidence",
+  "scientific_chart_intent",
+  "semantic_visual_guidance",
+  "renderer_capability_request",
+  "review_notes",
+];
+
 export type ScientificChartIntentEntry = {
   intent: ScientificChartIntentKind;
   sourceSheetLabel: string;
@@ -395,9 +403,11 @@ export function buildHighNeedChartRecipeCatalog(): HighNeedChartRecipeCatalog {
 
 export function buildDeckDesignOrderTrace(input: DeckDesignOrderTraceInput): DeckDesignOrderTraceReport {
   const chartIntentRefs = chartIntentEvidenceRefs(input.chartIntentReport);
+  const sourceEvidenceRefs = input.sourceEvidenceRefs ?? chartStructuralSourceEvidenceRefs(input.chartIntentReport);
+  const sourceEvidenceBackfilled = !input.sourceEvidenceRefs?.length && sourceEvidenceRefs.length > 0;
   const entries: DeckDesignOrderTraceEntry[] = [
     deckDesignOrderEntry("narrative_spine", input.narrativeSpineRefs ?? [], []),
-    deckDesignOrderEntry("source_evidence", input.sourceEvidenceRefs ?? chartIntentRefs, ["narrative_spine"]),
+    deckDesignOrderEntry("source_evidence", sourceEvidenceRefs, ["narrative_spine"]),
     deckDesignOrderEntry("slide_role", input.slideRoleRefs ?? [], ["narrative_spine"]),
     deckDesignOrderEntry("chart_intent", chartIntentRefs, ["source_evidence", "slide_role"]),
     deckDesignOrderEntry("semantic_visual_guidance", input.visualGuidanceRefs ?? chartVisualGuidanceRefs(input.chartIntentReport), ["chart_intent"]),
@@ -406,6 +416,7 @@ export function buildDeckDesignOrderTrace(input: DeckDesignOrderTraceInput): Dec
     deckDesignOrderEntry("review_notes", input.reviewNoteRefs ?? chartReviewNoteRefs(input.chartIntentReport), ["mdpr_validation_refs"]),
   ];
   const findings = [
+    ...(sourceEvidenceBackfilled ? deckDesignOrderSourceEvidenceBackfilledFindings(sourceEvidenceRefs) : []),
     ...deckDesignOrderPrerequisiteFindings(entries),
     ...validateReviewArtifactDesignOrder({ schemaVersion: "mdpr-deck-design-order-trace-v1", entries }),
   ];
@@ -448,7 +459,7 @@ export function validateReviewArtifactDesignOrder(artifact: unknown): ReviewFind
 
   const directEvidenceRefs = asArray(record.evidenceRefs).map((ref) => String(ref)).filter(Boolean);
   const entries = asArray(record.entries).map((entry) => asRecord(entry) ?? {});
-  if (!directEvidenceRefs.length && !entries.some((entry) => asArray(entry.evidenceRefs).length > 0)) {
+  if (!directEvidenceRefs.length && !entries.some((entry) => asArray(entry.evidenceRefs).length > 0) && !hasNestedReviewEvidence(record)) {
     findings.push({
       severity: "warning",
       type: "REVIEW_ARTIFACT_EVIDENCE_MISSING",
@@ -465,8 +476,9 @@ export function validateReviewArtifactDesignOrder(artifact: unknown): ReviewFind
     });
   }
 
-  const order = asArray(record.designOrder).map((stage) => String(stage)).filter(Boolean);
-  if (order.length && !isDeckDesignOrderSequence(order)) {
+  const designOrders = collectDesignOrders(record);
+  for (const order of designOrders) {
+    if (!isReviewDesignOrderSequence(order)) {
     findings.push({
       severity: "warning",
       type: "DESIGN_ORDER_OUT_OF_SEQUENCE",
@@ -474,7 +486,7 @@ export function validateReviewArtifactDesignOrder(artifact: unknown): ReviewFind
       evidence: {
         artifactSchema: stringValue(record.schemaVersion) ?? "unknown",
         designOrder: order,
-        expectedOrder: DECK_DESIGN_ORDER,
+          expectedOrder: expectedDesignOrderFor(order),
       },
       suggestion: {
         kind: "mdpr-policy",
@@ -482,6 +494,7 @@ export function validateReviewArtifactDesignOrder(artifact: unknown): ReviewFind
         operation: "enableRule",
       },
     });
+    }
   }
 
   return findings;
@@ -2196,6 +2209,24 @@ function deckDesignOrderPrerequisiteFindings(entries: DeckDesignOrderTraceEntry[
   return findings;
 }
 
+function deckDesignOrderSourceEvidenceBackfilledFindings(evidenceRefs: string[]): ReviewFinding[] {
+  return [{
+    severity: "warning",
+    type: "DESIGN_ORDER_SOURCE_EVIDENCE_BACKFILLED",
+    slideId: "deck",
+    evidence: {
+      stage: "source_evidence",
+      evidenceRefs,
+      rule: "source evidence was derived from structural chart evidence, not independent deck evidence refs",
+    },
+    suggestion: {
+      kind: "mdpr-policy",
+      target: "review.designOrder.independentSourceEvidence",
+      operation: "enableRule",
+    },
+  }];
+}
+
 function chartIntentEvidenceRefs(report: ScientificChartIntentReport | undefined): string[] {
   if (!report) return [];
   return report.intents.flatMap((intent) => [
@@ -2203,6 +2234,11 @@ function chartIntentEvidenceRefs(report: ScientificChartIntentReport | undefined
     `sourceSheet:${intent.sourceSheetLabel}`,
     ...intent.evidenceRefs,
   ]);
+}
+
+function chartStructuralSourceEvidenceRefs(report: ScientificChartIntentReport | undefined): string[] {
+  if (!report) return [];
+  return [...new Set(report.intents.flatMap((intent) => intent.evidenceRefs.filter((ref) => !ref.startsWith("chartIntent:"))))];
 }
 
 function chartVisualGuidanceRefs(report: ScientificChartIntentReport | undefined): string[] {
@@ -2227,15 +2263,46 @@ function chartReviewNoteRefs(report: ScientificChartIntentReport | undefined): s
   return report.reviewNotes.map((note) => `reviewNote:${note.type}:${note.sourceSheetLabel}`);
 }
 
-function isDeckDesignOrderSequence(order: string[]): boolean {
+function collectDesignOrders(record: Record<string, unknown>): string[][] {
+  const orders: string[][] = [];
+  const direct = asArray(record.designOrder).map((stage) => String(stage)).filter(Boolean);
+  if (direct.length) orders.push(direct);
+  for (const intent of asArray(record.intents)) {
+    const order = asArray(asRecord(intent)?.designOrder).map((stage) => String(stage)).filter(Boolean);
+    if (order.length) orders.push(order);
+  }
+  for (const recipe of asArray(record.recipes)) {
+    const order = asArray(asRecord(recipe)?.designOrder).map((stage) => String(stage)).filter(Boolean);
+    if (order.length) orders.push(order);
+  }
+  return orders;
+}
+
+function hasNestedReviewEvidence(record: Record<string, unknown>): boolean {
+  if (asArray(record.intents).some((intent) => asArray(asRecord(intent)?.evidenceRefs).length > 0)) return true;
+  if (asArray(record.recipes).some((recipe) => {
+    const recipeRecord = asRecord(recipe);
+    return asArray(recipeRecord?.dataShapeRequirements).length > 0 || asArray(recipeRecord?.semanticRoles).length > 0;
+  })) return true;
+  return false;
+}
+
+function isReviewDesignOrderSequence(order: string[]): boolean {
+  const expected = expectedDesignOrderFor(order);
   let cursor = -1;
   for (const stage of order) {
-    const next = DECK_DESIGN_ORDER.indexOf(stage as DeckDesignOrderStage);
+    const next = expected.indexOf(stage);
     if (next < 0) continue;
     if (next < cursor) return false;
     cursor = next;
   }
   return true;
+}
+
+function expectedDesignOrderFor(order: string[]): string[] {
+  return order.some((stage) => ["data_evidence", "scientific_chart_intent", "renderer_capability_request"].includes(stage))
+    ? SCIENTIFIC_CHART_DESIGN_ORDER
+    : DECK_DESIGN_ORDER;
 }
 
 function chartVisualApplicationForIntent(intent: ScientificChartIntentKind): ChartVisualApplicationGuidance {

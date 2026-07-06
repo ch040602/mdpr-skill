@@ -528,20 +528,21 @@ test("buildDeckDesignOrderTrace records deck-stage prerequisites and boundary-sa
 });
 
 test("buildDeckDesignOrderTrace and validator flag out-of-order or boundary-leaking artifacts", () => {
+  const chartIntentReport = buildScientificChartIntentReport({
+    sourceLabel: "chart-only",
+    sheets: [
+      {
+        sheetLabel: "Overall-cdf",
+        nonemptyRows: 20,
+        maxColumns: 4,
+        numericCellCount: 40,
+        formulaCellCount: 0,
+        chartFamilies: ["line"],
+      },
+    ],
+  });
   const trace = buildDeckDesignOrderTrace({
-    chartIntentReport: buildScientificChartIntentReport({
-      sourceLabel: "chart-only",
-      sheets: [
-        {
-          sheetLabel: "Overall-cdf",
-          nonemptyRows: 20,
-          maxColumns: 4,
-          numericCellCount: 40,
-          formulaCellCount: 0,
-          chartFamilies: ["line"],
-        },
-      ],
-    }),
+    chartIntentReport,
     visualGuidanceRefs: ["visual:chart:theme-bound"],
   });
   const validation = validateReviewArtifactDesignOrder({
@@ -551,10 +552,39 @@ test("buildDeckDesignOrderTrace and validator flag out-of-order or boundary-leak
     coordinates: [1, 2],
   });
 
+  assert.equal(trace.entries.find((entry) => entry.stage === "source_evidence")?.evidenceRefs.some((ref) => ref.startsWith("chartIntent:")), false);
+  assert.equal(trace.findings.some((finding) => finding.type === "DESIGN_ORDER_SOURCE_EVIDENCE_BACKFILLED"), true);
   assert.equal(trace.findings.some((finding) => finding.type === "DESIGN_ORDER_PREREQUISITE_MISSING"), true);
+  assert.equal(validateReviewArtifactDesignOrder(chartIntentReport).some((finding) => finding.type === "REVIEW_ARTIFACT_EVIDENCE_MISSING"), false);
   assert.equal(validation.some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
   assert.equal(validation.some((finding) => finding.type === "REVIEW_ARTIFACT_BOUNDARY_FIELD_LEAK"), true);
   assert.equal(validation.some((finding) => finding.type === "REVIEW_ARTIFACT_EVIDENCE_MISSING"), true);
+});
+
+test("validateReviewArtifactDesignOrder scans nested scientific chart and recipe orders", () => {
+  const report = buildScientificChartIntentReport({
+    sourceLabel: "nested-order",
+    sheets: [
+      {
+        sheetLabel: "Overall-cdf",
+        nonemptyRows: 20,
+        maxColumns: 4,
+        numericCellCount: 40,
+        formulaCellCount: 0,
+        chartFamilies: ["line"],
+      },
+    ],
+  });
+  const scrambled = structuredClone(report) as typeof report;
+  scrambled.intents[0]!.designOrder = ["semantic_visual_guidance", "data_evidence"];
+  const recipeCatalog = buildHighNeedChartRecipeCatalog();
+  const scrambledCatalog = structuredClone(recipeCatalog) as typeof recipeCatalog;
+  scrambledCatalog.recipes[0]!.designOrder = ["renderer_capability_request", "data_evidence"];
+
+  assert.equal(validateReviewArtifactDesignOrder(report).some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), false);
+  assert.equal(validateReviewArtifactDesignOrder(recipeCatalog).some((finding) => finding.type === "REVIEW_ARTIFACT_EVIDENCE_MISSING"), false);
+  assert.equal(validateReviewArtifactDesignOrder(scrambled).some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
+  assert.equal(validateReviewArtifactDesignOrder(scrambledCatalog).some((finding) => finding.type === "DESIGN_ORDER_OUT_OF_SEQUENCE"), true);
 });
 
 test("screenshotEvidence records paths and block ids as evidence only", () => {
