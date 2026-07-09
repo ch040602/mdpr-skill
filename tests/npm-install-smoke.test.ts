@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -225,6 +226,58 @@ test("packed npm package installs into a consumer project and exposes mdpr-skill
     assert.equal(bridgeItem.visualAssetCandidates, undefined);
     assert.equal(bridgeItem.iconKeywordCandidates, undefined);
     assert.deepEqual(collectRuntimeDecisionLeaks(bridgeHint), []);
+
+    const bridgeMarkdown = readFileSync(join(root, "tests", "fixtures", "bridge-paragraph-marker-edge.md"), "utf-8");
+    const bridgeMarkdownSha = createHash("sha256").update(bridgeMarkdown).digest("hex");
+    writeFileSync(join(consumerDir, "bridge-paragraph-marker-edge.md"), bridgeMarkdown, "utf-8");
+    writeFileSync(join(consumerDir, "bridge-edge-selection-context.json"), JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-preview",
+        sourceSha256: bridgeMarkdownSha,
+      },
+      slideId: "mixed-marker-slide",
+      overlappedBlocks: ["list-1#0", "list-1#1", "table-1"],
+      userInstruction: "기존 템플릿을 유지하고 이미지 검색, 생성 이미지, 새 아이콘은 모두 쓰지 마.",
+    }), "utf-8");
+    const bridgeEdgeHintOut = join("artifacts", "bridge-edge-agent-hint.json");
+    const bridgeEdgeStdout = run([
+      "exec",
+      "--",
+      "mdpr-skill",
+      "hint",
+      "--selection-context",
+      "bridge-edge-selection-context.json",
+      "--markdown",
+      "bridge-paragraph-marker-edge.md",
+      "--workflow-intent",
+      "template-fill",
+      "--template-source",
+      "hcs-template",
+      "--preserve-master-slides",
+      "true",
+      "--image-policy",
+      "no-image",
+      "--image-search-policy",
+      "disabled",
+      "--icon-policy",
+      "no-new-icons",
+      "--out",
+      bridgeEdgeHintOut,
+    ], consumerDir);
+    const bridgeEdgeSummary = JSON.parse(bridgeEdgeStdout);
+    assert.equal(bridgeEdgeSummary.status, "pass");
+    assert.equal(bridgeEdgeSummary.sourceVerified, true);
+    const bridgeEdgeHint = JSON.parse(readFileSync(join(consumerDir, bridgeEdgeHintOut), "utf-8"));
+    const edgeItem = bridgeEdgeHint.hints[0];
+    assert.equal(edgeItem.workflowIntentCandidate.intent, "template-fill");
+    assert.equal(edgeItem.templateUseCandidate.masterSlidePolicy, "preserve-existing-master-slides");
+    assert.equal(edgeItem.mediaPolicyCandidate.imageUse, "no-image");
+    assert.equal(edgeItem.mediaPolicyCandidate.imageSearch, "disabled");
+    assert.equal(edgeItem.mediaPolicyCandidate.iconUse, "no-new-icons");
+    assert.equal(edgeItem.visualAssetCandidates, undefined);
+    assert.equal(edgeItem.iconKeywordCandidates, undefined);
+    assert.deepEqual(collectRuntimeDecisionLeaks(bridgeEdgeHint), []);
   } finally {
     rmSync(tempRoot, { recursive: true, force: true });
   }

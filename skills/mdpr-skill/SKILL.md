@@ -113,6 +113,14 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   visual system. For the current `mdpresent` CLI, the safe default is
   `mdpresent build deck.md --to pptx --out dist --template master.pptx` plus
   validation; adding MDPR theme flags is a duplicate-theme risk.
+- In `template-fill`, do not synthesize slide-bottom "key message", "caution",
+  "takeaway", or similar callout bands unless the source deck or template has
+  an explicit placeholder for them. Keep safety notes as normal body content,
+  presenter notes, or review notes instead of adding a new visual layer.
+- In `template-fill`, do not override template typography or text colors. Avoid
+  explicit font-family, font-color, raw RGB/hex, decorative fills, or custom
+  line colors in agent-created PowerPoint bridge output; use the existing
+  placeholder defaults, slide master, and PowerPoint theme bindings.
 - If `template-fill` or explicit media policy sets `imageUse: "no-image"` or
   `iconUse: "no-new-icons"`, remove conflicting generated-image or icon keyword
   candidates before handoff; keep only a preflight warning if the conflict is

@@ -90,6 +90,8 @@ const topics: AgentDocTopicSpec[] = [
       "For mdpr-skill hints, use `--workflow-intent template-fill`, `--preserve-master-slides true`, `--image-policy no-image`, `--image-search-policy disabled`, and `--icon-policy no-new-icons` unless the user explicitly asks otherwise.",
       "Do not combine `--template` with `--theme-style`, `--theme-color`, `--theme-harmony`, `--theme-gallery`, `--design`, or theme packs unless the user explicitly asks for a visual transformation.",
       "Do not add new cards, decorative systems, icons, images, or style transformations unless explicitly requested.",
+      "Do not synthesize slide-bottom key-message, caution, takeaway, or similar callout bands unless the source deck or template has an explicit placeholder for them.",
+      "Do not override template typography or text colors; avoid explicit font-family, font-color, raw RGB/hex, decorative fills, or custom line colors in PowerPoint bridge output.",
       "For the current `mdpresent` CLI, prefer `mdpresent build deck.md --to pptx --out dist --template master.pptx` plus validation; extra MDPR theme flags are duplicate-theme risks.",
     ],
     full: [
