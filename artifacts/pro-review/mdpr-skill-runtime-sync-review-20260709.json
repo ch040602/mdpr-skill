@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "mdpr-skill-runtime-sync-evidence-v2",
+  "created_at": "2026-07-09T16:35:00+09:00",
+  "provider": "local-rdd-round-010",
+  "scope": {
+    "repository": "C:/Users/hcslab_523/Documents/mdpr-skill",
+    "mdprPath": "C:/Users/hcslab_523/Documents/mdpresent-spec-scaffold",
+    "mdprSkillCommitAtValidation": "16e239b",
+    "mdprCommitAtValidation": "3c6dfdd",
+    "mdprWorkspaceVersion": "0.1.0",
+    "mdprCorePackageVersion": "0.1.0",
+    "mdprValidationPackageVersion": "0.1.0"
+  },
+  "schemaSync": {
+    "command": "node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
+    "localSchemaHashes": {
+      "agent-hint.schema.json": "1bfa7c67474b48fb9768f311f65f5bc3738f86aa3bdf9524f2143679d9f1ec84",
+      "mdpr-theme-candidate.schema.json": "f18e59306a7ca06da0cba6868931251ffc60e8b7ffcd827b5b6294f484313995",
+      "mdpr-selection-context.schema.json": "f0766e3a4b31b697376d084c2ab224c6673e5fa6f16362091a496c05a3658dd3",
+      "mdpr-ppt-selection.schema.json": "6335a1094d33ffeb453e72020a0088eb0703dc584f6c8192a242a8448dfb37ca",
+      "mdpr-generated-assets.schema.json": "aeb1b4f924078c9c83ca8087662a724e67cc1757c7596cbdb70c86be2363a592"
+    },
+    "mdprSchemaHashes": {
+      "agent-hint.schema.json": "1bfa7c67474b48fb9768f311f65f5bc3738f86aa3bdf9524f2143679d9f1ec84",
+      "mdpr-theme-candidate.schema.json": "f18e59306a7ca06da0cba6868931251ffc60e8b7ffcd827b5b6294f484313995",
+      "mdpr-selection-context.schema.json": "f0766e3a4b31b697376d084c2ab224c6673e5fa6f16362091a496c05a3658dd3",
+      "mdpr-ppt-selection.schema.json": "6335a1094d33ffeb453e72020a0088eb0703dc584f6c8192a242a8448dfb37ca",
+      "mdpr-generated-assets.schema.json": "aeb1b4f924078c9c83ca8087662a724e67cc1757c7596cbdb70c86be2363a592"
+    },
+    "status": "pass",
+    "findings": []
+  },
+  "runtimeBridgeFixtures": {
+    "accepted": [
+      "bridge-allowed-hints.json",
+      "bridge-edge-allowed-hints.json"
+    ],
+    "conflict": [
+      "bridge-edge-conflict-hints.json"
+    ],
+    "forbidden": [
+      "bridge-forbidden-hints.json"
+    ]
+  },
+  "localValidationAfterReview": [
+    {
+      "command": "node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
+      "status": "pass",
+      "findings": []
+    },
+    {
+      "command": "corepack pnpm test:pack",
+      "status": "pass",
+      "fixtureIds": [
+        "bridge-allowed-hints.json",
+        "bridge-edge-allowed-hints.json",
+        "bridge-edge-conflict-hints.json",
+        "bridge-forbidden-hints.json"
+      ]
+    },
+    {
+      "command": "corepack pnpm test:preflight",
+      "status": "pass",
+      "gateIds": [
+        "agent-runtime-bridge",
+        "template-master-package-integrity"
+      ]
+    }
+  ]
+}

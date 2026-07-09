@@ -1,9 +1,20 @@
 from pathlib import Path
+import hashlib
+import json
 import re
 import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SYNC_EVIDENCE = ROOT / "artifacts" / "pro-review" / "mdpr-skill-runtime-sync-review-20260709.json"
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 class AgentHintSchemaSyncTests(unittest.TestCase):
@@ -18,6 +29,28 @@ class AgentHintSchemaSyncTests(unittest.TestCase):
             mdpr_schema.read_text(encoding="utf-8"),
             "mdpr-skill agent-hint.schema.json must stay a synced copy of MDPR's schema",
         )
+
+    def test_runtime_schema_sync_evidence_is_bound_to_current_schema_hashes(self):
+        self.assertTrue(SYNC_EVIDENCE.exists(), "fresh 2026-07-09 schema sync evidence artifact is missing")
+        artifact = json.loads(SYNC_EVIDENCE.read_text(encoding="utf-8"))
+        self.assertEqual(artifact["schemaVersion"], "mdpr-skill-runtime-sync-evidence-v2")
+        self.assertRegex(artifact["created_at"], r"^2026-07-09T")
+        self.assertEqual(artifact["schemaSync"]["status"], "pass")
+        self.assertEqual(artifact["schemaSync"]["findings"], [])
+        self.assertNotIn("20260706", json.dumps(artifact))
+
+        mdpr_path = Path(artifact["scope"]["mdprPath"])
+        self.assertTrue(mdpr_path.exists(), f"recorded MDPR path is missing: {mdpr_path}")
+        for schema_name, local_hash in artifact["schemaSync"]["localSchemaHashes"].items():
+            mdpr_hash = artifact["schemaSync"]["mdprSchemaHashes"].get(schema_name)
+            self.assertEqual(local_hash, mdpr_hash, f"recorded local/MDPR hash drift for {schema_name}")
+            self.assertEqual(sha256_file(ROOT / "schemas" / schema_name), local_hash, f"local schema hash drift for {schema_name}")
+            self.assertEqual(sha256_file(mdpr_path / "schemas" / schema_name), mdpr_hash, f"MDPR schema hash drift for {schema_name}")
+
+        fixtures = artifact["runtimeBridgeFixtures"]
+        self.assertIn("bridge-edge-allowed-hints.json", fixtures["accepted"])
+        self.assertIn("bridge-edge-conflict-hints.json", fixtures["conflict"])
+        self.assertIn("bridge-forbidden-hints.json", fixtures["forbidden"])
 
     def test_hints_core_manifest_uses_mdpr_agent_hint_schema_version(self):
         source = (ROOT / "packages" / "hints-core" / "src" / "index.ts").read_text(encoding="utf-8")

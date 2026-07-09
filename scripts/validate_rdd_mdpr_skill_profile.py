@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 from pathlib import Path
 
@@ -9,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_JSON = ROOT / ".codex" / "review-driven-development" / "project-structure-completeness.json"
 PROFILE_MD = ROOT / ".codex" / "review-driven-development" / "project-structure-completeness.md"
+SYNC_EVIDENCE = ROOT / "artifacts" / "pro-review" / "mdpr-skill-runtime-sync-review-20260709.json"
 
 FORBIDDEN_TERMS = [
     "FLUX DERBY",
@@ -39,7 +41,45 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def validate_schema_sync_evidence() -> None:
+    if not SYNC_EVIDENCE.exists():
+        fail(f"missing fresh schema sync evidence: {SYNC_EVIDENCE}")
+    artifact = json.loads(SYNC_EVIDENCE.read_text(encoding="utf-8"))
+    if artifact.get("schemaVersion") != "mdpr-skill-runtime-sync-evidence-v2":
+        fail("fresh schema sync evidence has unexpected schemaVersion")
+    if not str(artifact.get("created_at", "")).startswith("2026-07-09T"):
+        fail("fresh schema sync evidence must be dated 2026-07-09 or later for this release profile")
+    if "20260706" in json.dumps(artifact):
+        fail("fresh schema sync evidence must not reference stale 20260706 artifacts")
+    schema_sync = artifact.get("schemaSync", {})
+    if schema_sync.get("status") != "pass" or schema_sync.get("findings") not in ([], None):
+        fail("fresh schema sync evidence must record a passing validate-schema-sync command")
+    mdpr_path = Path(str(artifact.get("scope", {}).get("mdprPath", "")))
+    if not mdpr_path.exists():
+        fail(f"fresh schema sync evidence references missing MDPR path: {mdpr_path}")
+    local_hashes = schema_sync.get("localSchemaHashes", {})
+    mdpr_hashes = schema_sync.get("mdprSchemaHashes", {})
+    if not local_hashes or not mdpr_hashes:
+        fail("fresh schema sync evidence must record local and MDPR schema hashes")
+    for schema_name, local_hash in local_hashes.items():
+        if mdpr_hashes.get(schema_name) != local_hash:
+            fail(f"fresh schema sync evidence records local/MDPR hash drift for {schema_name}")
+        if sha256_file(ROOT / "schemas" / schema_name) != local_hash:
+            fail(f"fresh schema sync evidence local hash is stale for {schema_name}")
+        if sha256_file(mdpr_path / "schemas" / schema_name) != local_hash:
+            fail(f"fresh schema sync evidence MDPR hash is stale for {schema_name}")
+
+
 def main() -> None:
+    validate_schema_sync_evidence()
     if not PROFILE_JSON.exists():
         fail(f"missing RDD profile JSON: {PROFILE_JSON}")
     if not PROFILE_MD.exists():
@@ -99,6 +139,8 @@ def main() -> None:
     if schema_sync.get("status") == "proven":
         source = str(schema_sync.get("source", ""))
         command = str(schema_sync.get("command", ""))
+        if source != "artifacts/pro-review/mdpr-skill-runtime-sync-review-20260709.json":
+            fail(f"schema_sync_gate_passed must use fresh 20260709 evidence, got {source!r}")
         if source == "release_scan_coverage" or "validate-schema-sync" not in command:
             fail("schema_sync_gate_passed cannot be proven from inventory coverage alone")
     elif schema_sync.get("status") != "not_evaluated":
