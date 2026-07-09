@@ -223,7 +223,11 @@ when MDPR-rendered evidence needs a human-readable review artifact.
 - `citations`: flag missing citations, stale sources, and unsupported claims
   from source metadata.
 - `rendered-preview`: consume MDPR-generated PNG/contact-sheet paths and emit
-  visual concern notes only.
+  visual concern notes only. Validate these artifacts with
+  `validateRenderedPreviewCritiqueBoundary` when available; the notes may cite
+  slide labels, rendered image paths, contact sheets, and MDPR finding IDs, but
+  must not prescribe exact coordinates, fonts, colors, icons, image paths,
+  crops, copied master/layout IDs, z-order, or renderer object IDs.
 - `accessibility`: draft alt text, plain-language, acronym expansion, and
   audience-fit suggestions.
 - `evidence-ledger`: map slide claims to source metadata and MDPR evidence IDs.
@@ -238,6 +242,12 @@ These helpers may cite source paths, headings, rendered image paths, MDPR
 finding IDs, source IDs, and evidence IDs. They must not emit coordinates,
 colors, typography, z-order, geometry, renderer object IDs, or pass/fail
 validation decisions.
+
+For source-neutral style references, prefer `DESIGN.md` frontmatter
+`sourceNeutral: true` with semantic tone, density, layout intent, decoration,
+and image-policy sections only. Do not include literal hex colors, exact fonts,
+copied PowerPoint master/layout IDs, exact icons, image paths, crops, or
+renderer object IDs; MDPR owns final theme binding and template preservation.
 
 Useful local commands:
 

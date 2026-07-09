@@ -1,0 +1,17 @@
+{
+  "renderedImages": [
+    {
+      "slideId": "slide-1",
+      "imagePath": "artifacts/rendered/slide-01.png",
+      "contactSheetPath": "artifacts/rendered/contact-sheet.png",
+      "mdprFindingId": "visual-font-floor-1",
+      "mdprFindingType": "VISUAL_FONT_FLOOR"
+    },
+    {
+      "slideId": "slide-2",
+      "imagePath": "artifacts/rendered/slide-02.png",
+      "mdprFindingId": "text-overflow-2",
+      "mdprFindingType": "TEXT_OVERFLOW"
+    }
+  ]
+}

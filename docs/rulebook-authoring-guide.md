@@ -35,3 +35,10 @@ audience and purpose, slide role, content density, object form, layout family,
 theme surface, then decoration intensity. Reject theme-first changes that add
 image treatment, glass, texture, or card ornament before content role and
 density have been evaluated.
+
+`sourceNeutral: true` DESIGN.md imports are stricter than ordinary design-token
+imports. Treat them as evidence for rulebook selection and theme preservation,
+not as a source of raw style tokens. The import gate rejects literal hex colors,
+exact font fields, exact icons, image paths, crops, copied master/layout IDs,
+coordinates, z-order, and renderer objects so rulebooks cannot accidentally
+copy a reference source instead of asking MDPR to bind the active theme.

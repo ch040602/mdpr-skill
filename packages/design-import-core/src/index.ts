@@ -148,20 +148,46 @@ const FORBIDDEN_DESIGN_IMPORT_FIELDS = new Set([
   "box",
   "zOrder",
   "z-order",
+  "zIndex",
   "recipeId",
   "variantId",
   "arrow",
   "coordinates",
   "geometry",
   "rendererObjectId",
+  "rendererObject",
   "iconPath",
   "iconName",
+  "exactIcon",
+  "imagePath",
+  "finalImagePath",
+  "finalImageAsset",
+  "crop",
+  "cropRect",
+  "masterId",
+  "layoutId",
+  "copiedMasterId",
+  "copiedLayoutId",
+]);
+
+const SOURCE_NEUTRAL_LITERAL_FIELDS = new Set([
+  "colors",
+  "color",
+  "hex",
+  "typography",
+  "fontFamily",
+  "fontSize",
+  "fontSizePt",
+  "spacing",
+  "shape",
+  "radius",
 ]);
 
 export function parseDesignMd(content: string): DesignMdParseResult {
   const { frontmatterText, body } = splitFrontmatter(content);
   const frontmatter = parseSimpleYaml(frontmatterText);
   assertNoDesignImportForbiddenFields(frontmatter);
+  assertNoSourceNeutralLiteralFields(frontmatter);
   return {
     frontmatter,
     sections: parseMarkdownSections(body),
@@ -628,6 +654,31 @@ function assertNoDesignImportForbiddenFields(value: unknown, path = "$"): void {
   if (first) {
     throw new Error(`${first} is a forbidden final-decision field for mdpr-skill design import`);
   }
+}
+
+function assertNoSourceNeutralLiteralFields(value: Record<string, unknown>): void {
+  if (value.sourceNeutral !== true) return;
+  const [first] = collectSourceNeutralLiteralFields(value);
+  if (first) {
+    throw new Error(`${first} is a literal design field in a source-neutral DESIGN.md import`);
+  }
+}
+
+function collectSourceNeutralLiteralFields(value: unknown, path = "$"): string[] {
+  const findings: string[] = [];
+  if (!value || typeof value !== "object") return findings;
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => findings.push(...collectSourceNeutralLiteralFields(item, `${path}[${index}]`)));
+    return findings;
+  }
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    if (key === "sourceNeutral") continue;
+    if (SOURCE_NEUTRAL_LITERAL_FIELDS.has(key) || typeof child === "string" && /#[0-9a-f]{3,8}\b/i.test(child)) {
+      findings.push(`${path}.${key}`);
+    }
+    findings.push(...collectSourceNeutralLiteralFields(child, `${path}.${key}`));
+  }
+  return findings;
 }
 
 function collectDesignImportForbiddenFields(value: unknown, path = "$"): string[] {

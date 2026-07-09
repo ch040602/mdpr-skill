@@ -250,6 +250,51 @@ test("themeCandidateGate accepts approval-bound candidate rail data", () => {
   assert.equal(result.metrics.imagePolicyRuleCount, 3);
 });
 
+test("buildThemeCandidateFromDesignMd accepts source-neutral semantic DESIGN.md fixture", () => {
+  const content = readFileSync("tests/fixtures/source-neutral-design.md", "utf-8");
+  const candidate = buildThemeCandidateFromDesignMd({
+    path: "tests/fixtures/source-neutral-design.md",
+    content,
+    generatedAt: "2026-07-09T00:00:00Z",
+  });
+  const result = themeCandidateGate(candidate);
+
+  assert.equal(candidate.requiresApproval, true);
+  assert.equal(candidate.constraints.mdprOwnsFinalThemeBinding, true);
+  assert.equal(candidate.tokens.colors.accent, undefined);
+  assert.deepEqual(candidate.tokens.typography, {});
+  assert.deepEqual(candidate.styleSystem.layoutIntents, ["evidence-rail", "decision-review"]);
+  assert.equal(candidate.visualLanguage.archetype, "source-neutral-minimalism");
+  assert.equal(candidate.visualLanguage.designDials.density, 4);
+  assert.equal(candidate.imagePolicy.generatedAssetBoundary, "semantic-reference-only");
+  assert.equal(result.status, "pass");
+});
+
+test("source-neutral DESIGN.md rejects raw literals and final runtime decisions", () => {
+  const negativeFixture = readFileSync("tests/fixtures/source-neutral-design-negative.md", "utf-8");
+  assert.throws(() => buildThemeCandidateFromDesignMd({
+    path: "tests/fixtures/source-neutral-design-negative.md",
+    content: negativeFixture,
+  }), /forbidden final-decision field|literal design field/);
+
+  assert.throws(() => buildThemeCandidateFromDesignMd({
+    path: "DESIGN.md",
+    content: `---
+sourceNeutral: true
+colors:
+  accent: "#123456"
+typography:
+  title:
+    fontFamily: "Exact Source Font"
+---
+
+## Overview
+
+Literal values must not enter a source-neutral import.
+`,
+  }), /literal design field/);
+});
+
 test("themeCandidateGate rejects missing provenance and approval", () => {
   const result = themeCandidateGate({
     schemaVersion: "mdpr-theme-candidate-v1",

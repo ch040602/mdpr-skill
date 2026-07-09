@@ -833,6 +833,7 @@ const FINAL_DECISION_FIELDS = new Set([
   "typography",
   "zOrder",
   "z-order",
+  "zIndex",
   "recipeId",
   "variantId",
   "radius",
@@ -843,9 +844,20 @@ const FINAL_DECISION_FIELDS = new Set([
   "style",
   "iconPath",
   "iconName",
+  "exactIcon",
+  "imagePath",
+  "finalImagePath",
+  "finalImageAsset",
+  "crop",
+  "cropRect",
+  "masterId",
+  "layoutId",
+  "copiedMasterId",
+  "copiedLayoutId",
   "coordinates",
   "geometry",
   "rendererObjectId",
+  "rendererObject",
 ]);
 
 export function reviewCoherence(input: ReviewCoreInput): ReviewFinding[] {
@@ -1214,6 +1226,14 @@ export function reviewRenderedPreviewCritique(input: RenderedPreviewCritiqueInpu
         llmMayOverrideMdprGate: false,
       },
     }));
+}
+
+export function validateRenderedPreviewCritiqueBoundary(notes: unknown): ReviewFinding[] {
+  return validateReviewArtifactDesignOrder({
+    schemaVersion: "mdpr-rendered-preview-critique-v1",
+    evidenceRefs: ["review:rendered-preview"],
+    reviewNotes: notes,
+  });
 }
 
 export function reviewAccessibilityContent(input: AccessibilityContentInput): AccessibilityContentSuggestion[] {

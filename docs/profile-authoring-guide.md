@@ -49,3 +49,11 @@ selection guidance:
 `density`. MDPR may use those values as profile/rulebook selection evidence
 after approval, but mdpr-skill must not convert them into coordinates, exact
 recipes, animations, or PowerPoint object choices.
+
+For existing-template work, a `DESIGN.md` may declare `sourceNeutral: true` in
+frontmatter. In that mode the import is semantic only: layout intent, density,
+tone, decoration grammar, image policy, and approval-bound rationale. Do not
+include literal hex colors, exact fonts, coordinates, copied master/layout IDs,
+exact icons, image paths, crops, z-order, or renderer object IDs. MDPR binds
+the approved proposal back to the active PowerPoint theme, master slides, and
+validation gates.

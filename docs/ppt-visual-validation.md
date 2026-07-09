@@ -169,6 +169,15 @@ Stage presence is based on compatible refs, not raw ref count: a stage containin
 only misplaced refs is treated as missing for downstream prerequisite checks,
 while a mixed stage can remain present and still report the incompatible refs.
 
+Rendered-preview critique is also evidence-only. `reviewRenderedPreviewCritique`
+may cite slide labels, rendered PNG paths, contact sheets, and MDPR finding
+IDs/types so a reviewer can inspect the visual output. It must not prescribe
+exact coordinates, fonts, colors, icons, image paths, crops, copied
+master/layout IDs, z-order, or renderer object IDs. Use
+`validateRenderedPreviewCritiqueBoundary` or
+`validateReviewArtifactDesignOrder` to reject critique artifacts that leak
+runtime-owned final-decision fields.
+
 Coherence review now includes two deck-level semantic warnings:
 
 - `EVIDENCE_CLAIM_ALIGNMENT_GAP` when a claim and the same-slide evidence block

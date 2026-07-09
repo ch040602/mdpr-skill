@@ -649,9 +649,9 @@ function routeReviewFindingEvidence(
       route.add("pptx-object-map");
       coveredKeys.push(...presentEvidenceKeys(evidence, ["objectKind", "role"]));
     }
-    if (hasAnyEvidenceKey(evidence, ["screenshotPath"])) {
+    if (hasAnyEvidenceKey(evidence, ["screenshotPath", "renderedImagePath", "contactSheetPath"])) {
       route.add("rendered-artifact");
-      coveredKeys.push(...presentEvidenceKeys(evidence, ["screenshotPath"]));
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["screenshotPath", "renderedImagePath", "contactSheetPath"]));
     }
     if (hasAnyEvidenceKey(evidence, ["selectionPath", "userInstruction"])) {
       route.add("selection-context");
@@ -665,9 +665,9 @@ function routeReviewFindingEvidence(
       route.add("diagram-metrics");
       coveredKeys.push(...presentEvidenceKeys(evidence, ["diagramId", "nodeCount", "edgeCount", "accentCount"]));
     }
-    if (hasAnyEvidenceKey(evidence, ["accentedObjects", "totalObjects", "pathCount", "distinctCount", "visualTreatmentCount", "ratio", "budget"])) {
+    if (hasAnyEvidenceKey(evidence, ["accentedObjects", "totalObjects", "pathCount", "distinctCount", "visualTreatmentCount", "ratio", "budget", "mdprFindingId", "mdprFindingType"])) {
       route.add("mdpr-manifest");
-      coveredKeys.push(...presentEvidenceKeys(evidence, ["accentedObjects", "totalObjects", "pathCount", "distinctCount", "visualTreatmentCount", "ratio", "budget"]));
+      coveredKeys.push(...presentEvidenceKeys(evidence, ["accentedObjects", "totalObjects", "pathCount", "distinctCount", "visualTreatmentCount", "ratio", "budget", "mdprFindingId", "mdprFindingType"]));
     }
   }
   const candidateCorpusIds = [...route];

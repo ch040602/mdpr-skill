@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   reviewCoherence,
@@ -23,6 +24,7 @@ import {
   buildDeckDesignOrderTraceFromLedger,
   sourceEvidenceRefsFromLedger,
   validateReviewArtifactDesignOrder,
+  validateRenderedPreviewCritiqueBoundary,
   renderReadmeTeaserSvg,
 } from "../packages/review-core/src/index";
 
@@ -1246,22 +1248,37 @@ test("reviewCitationProvenance reports missing citations stale sources and unsup
 });
 
 test("reviewRenderedPreviewCritique returns visual concern notes with image evidence only", () => {
-  const notes = reviewRenderedPreviewCritique({
-    renderedImages: [
-      { slideId: "slide-1", imagePath: "png/slide-01.png", contactSheetPath: "contact-sheet.png" },
-      { slideId: "slide-2", imagePath: "png/slide-02.png", mdprFindingId: "overflow-2", mdprFindingType: "TEXT_OVERFLOW" },
-    ],
-  });
+  const fixture = JSON.parse(readFileSync("tests/fixtures/rendered-preview.fixture.json", "utf-8"));
+  const notes = reviewRenderedPreviewCritique(fixture);
 
   assert.equal(notes.length, 2);
   assert.equal(notes.every((note) => note.kind === "visual-concern-note"), true);
   assert.equal(notes.every((note) => note.generatedBy === "mdpr-skill"), true);
-  assert.equal(notes.every((note) => note.evidence.renderedImagePath.startsWith("png/")), true);
-  assert.equal(notes.some((note) => note.evidence.mdprFindingId === "overflow-2"), true);
+  assert.equal(notes.every((note) => note.evidence.renderedImagePath.startsWith("artifacts/rendered/")), true);
+  assert.equal(notes.some((note) => note.evidence.mdprFindingId === "text-overflow-2"), true);
   assert.equal(notes.every((note) => note.boundary.mdprValidationAuthority === true), true);
   assert.equal(notes.every((note) => note.boundary.llmMayOverrideMdprGate === false), true);
   assert.equal(JSON.stringify(notes).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(notes).includes('"verdict"'), false);
+  assert.deepEqual(validateRenderedPreviewCritiqueBoundary(notes), []);
+});
+
+test("validateRenderedPreviewCritiqueBoundary rejects runtime-owned final decision leakage", () => {
+  const findings = validateRenderedPreviewCritiqueBoundary([
+    {
+      type: "RENDERED_PREVIEW_CONCERN_NOTE",
+      evidence: { slideId: "slide-1", renderedImagePath: "artifacts/rendered/slide-01.png" },
+      note: {
+        text: "Bad critique",
+        x: 1,
+        fontFamily: "Exact Font",
+        finalImagePath: "assets/generated.png",
+        cropRect: "0,0,100,100",
+      },
+    },
+  ]);
+
+  assert.equal(findings.some((finding) => finding.type === "REVIEW_ARTIFACT_BOUNDARY_FIELD_LEAK"), true);
 });
 
 test("reviewAccessibilityContent emits content-only accessibility suggestions", () => {
