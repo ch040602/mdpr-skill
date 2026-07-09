@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "mdpr-agent-hint-v1",
+  "sourceSha256": "5e6cacd6b53d6b3020bed36fef7b8c910bbddca3535d71b4887dfbf96d597435",
+  "generatedBy": "mdpr-skill",
+  "generatedAt": "2026-07-09T00:00:00Z",
+  "hints": [
+    {
+      "slideId": "slide-adoption-funnel",
+      "workflowIntentCandidate": {
+        "intent": "template-fill",
+        "confidence": 0.86,
+        "evidenceRefs": ["template:hcs-template"]
+      },
+      "confidence": 0.86,
+      "mediaPolicyCandidate": {
+        "imageUse": "no-image",
+        "imageSearch": "disabled",
+        "iconUse": "no-new-icons",
+        "evidenceRefs": ["template:hcs-template", "instruction:no-new-media"]
+      },
+      "iconKeywordCandidates": [
+        {
+          "keyword": "validation",
+          "elementIds": ["b2"],
+          "evidenceRefs": ["element:b2"],
+          "reason": "Schema-valid negative fixture for no-new-icons conflict.",
+          "confidence": 0.7,
+          "workflowIntentRef": "workflow:template-fill"
+        }
+      ],
+      "visualAssetCandidates": [
+        {
+          "kind": "generated-image",
+          "trigger": "explicit-generated-asset-request",
+          "requestRef": "request:negative-fixture",
+          "semanticPrompt": "minimal validation visual",
+          "confidence": 0.72
+        }
+      ],
+      "rationale": "Negative compatibility fixture only; MDPR must ignore conflicting media candidates."
+    }
+  ]
+}

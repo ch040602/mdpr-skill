@@ -16,6 +16,11 @@ Use this skill as the optional Codex companion for MDPR. MDPR remains the determ
 - Express fixes as Markdown cleanup, MDPR rulebook changes, config changes, deterministic policy changes, or approval-bound proposals.
 - Preserve the ability to build the same deck with all agent hints disabled.
 - Do not mutate source Markdown unless the user explicitly asks for a cleaned source draft.
+- Treat media policy as a hard handoff boundary: `imageUse: "no-image"` means no
+  generated-image candidates, and `iconUse: "no-new-icons"` means no icon
+  keyword candidates. If conflicting candidates appear, emit preflight warnings
+  and rely on MDPR runtime diagnostics as the authoritative accept/ignore
+  result.
 
 ## MDPR Runtime Sync Boundary
 
@@ -91,6 +96,10 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   explicitly ask for a new visual system, default to `template-fill`: preserve
   master slides, placeholders, and the existing theme frame. Do not add new
   cards, surfaces, icons, images, or style systems in this mode.
+- If `template-fill` or explicit media policy sets `imageUse: "no-image"` or
+  `iconUse: "no-new-icons"`, remove conflicting generated-image or icon keyword
+  candidates before handoff; keep only a preflight warning if the conflict is
+  useful review evidence.
 - Suggest generated-image candidates only when the source contains image
   evidence or the user explicitly requests a generated asset. A large or
   ambiguous icon is not enough by itself.
@@ -327,8 +336,9 @@ Use when working with MDPR's built-in design component runtime or related IR.
 - Read Slide Element IR or Presentation IR as the content contract.
 - Suggest only semantic hints around intent, grouping, importance, and icon keywords.
 - For icon requests that are too large or semantically ambiguous, suggest a
-  generated-image candidate as a semantic brief instead of an exact icon or
-  asset path.
+  generated-image candidate only when source image evidence exists or the user
+  explicitly approves generated assets; otherwise keep the finding as semantic
+  review guidance.
 - Explain design review findings in terms of MDPR rulebook/config changes.
 - Do not choose recipes, variants, coordinates, shape sizes, typography, colors, z-order, arrows, effects, or exact icon assets.
 - Do not duplicate MDPR renderer behavior in the skill.

@@ -69,7 +69,11 @@ or rendering.
 as a PPT rendering authority. The equivalent preflight for mdpr-skill is:
 one primary key message per slide by default, minimal hint coverage, no hint
 that restates every source block, and no template-fill hint that adds image,
-icon, or style-transform candidates without explicit evidence.
+icon, or style-transform candidates without explicit evidence. Media policy is
+also checked directly: `imageUse: "no-image"` conflicts with generated-image
+candidates, and `iconUse: "no-new-icons"` conflicts with icon keyword
+candidates. mdpr-skill warns before handoff; MDPR remains the runtime authority
+that ignores schema-valid conflicting candidates with deterministic diagnostics.
 Primary key-message candidates should carry `evidenceRefs` or a `claimRef`
 whenever possible. Element IDs are necessary for mapping but are not enough by
 themselves to justify subjective emphasis. `section-transition` may use a
@@ -199,7 +203,9 @@ the current workflow permits new icons. Each `iconKeywordCandidates[]` entry
 must include `keyword`, `elementIds`, `evidenceRefs`, `reason`, and
 `confidence`; it must not include `iconName`, `iconPath`, coordinates, colors,
 or exact renderer fields. In `template-fill`, default to
-`iconUse: "no-new-icons"` unless the user explicitly asks for icons.
+`iconUse: "no-new-icons"` unless the user explicitly asks for icons. If that
+policy remains active, do not emit icon keyword candidates; preflight will flag
+the conflict and MDPR will ignore the candidate at runtime.
 
 Use `visualAssetCandidates` only when the source context includes a source image
 reference or the user explicitly requests a generated asset. The default image
@@ -207,7 +213,9 @@ policy is `no-image` and `imageSearch: "disabled"`. If source images exist,
 use `source-image-only`; if the user explicitly requests generation, use
 `generated-asset-approved`. The candidate is a semantic brief for a possible
 generated image, not a final image prompt, asset path, style recipe, or
-placement instruction.
+placement instruction. If `imageUse` is `no-image`, do not emit
+`visualAssetCandidates`; preflight will flag the conflict and MDPR will ignore
+the candidate at runtime.
 
 Generated or searched image assets must remain provenance-bound. A deck-level
 source image reference does not authorize images on unrelated slides. Prefer

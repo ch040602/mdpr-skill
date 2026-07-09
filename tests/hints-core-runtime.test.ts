@@ -180,6 +180,12 @@ test("validateAgentHintPreflight flags overbroad and contradictory template-fill
     slideId: "slide-preflight",
     confidence: 0.78,
     workflowIntentCandidate: { intent: "template-fill", confidence: 0.86, evidenceRefs: ["template:hcs"] },
+    mediaPolicyCandidate: {
+      imageUse: "no-image",
+      imageSearch: "disabled",
+      iconUse: "no-new-icons",
+      evidenceRefs: ["template:hcs"],
+    },
     keyMessageCandidates: [
       { messageRole: "main-takeaway", emphasisLevel: "primary", elementIds: ["b1"], reason: "Primary claim.", confidence: 0.8 },
       { messageRole: "decision-needed", emphasisLevel: "primary", elementIds: ["b2"], reason: "Also primary.", confidence: 0.8 },
@@ -208,9 +214,47 @@ test("validateAgentHintPreflight flags overbroad and contradictory template-fill
   assert.equal(types.includes("KEY_MESSAGE_EVIDENCE_MISSING"), true);
   assert.equal(types.includes("HINT_RESTATES_SOURCE_ELEMENTS"), true);
   assert.equal(types.includes("TEMPLATE_FILL_HINT_POLICY_CONFLICT"), true);
+  assert.equal(types.includes("MEDIA_POLICY_CANDIDATE_CONFLICT"), true);
   assert.equal(findings.every((finding) => finding.slideId === "slide-preflight"), true);
   assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(findings).includes('"fontSize"'), false);
+});
+
+test("validateAgentHintPreflight warns for generic media policy candidate conflicts", () => {
+  const findings = validateAgentHintPreflight([{
+    slideId: "slide-media-policy",
+    confidence: 0.78,
+    mediaPolicyCandidate: {
+      imageUse: "no-image",
+      imageSearch: "disabled",
+      iconUse: "no-new-icons",
+      evidenceRefs: ["instruction:no-media"],
+    },
+    iconKeywordCandidates: [{
+      keyword: "shield",
+      elementIds: ["claim-1"],
+      evidenceRefs: ["element:claim-1"],
+      reason: "Schema-valid but conflicts with no-new-icons.",
+      confidence: 0.7,
+    }],
+    visualAssetCandidates: [{
+      kind: "generated-image",
+      trigger: "explicit-generated-asset-request",
+      requestRef: "request:visual",
+      semanticPrompt: "minimal validation visual",
+      confidence: 0.72,
+    }],
+  }]);
+  const conflicts = findings.filter((finding) => finding.type === "MEDIA_POLICY_CANDIDATE_CONFLICT");
+
+  assert.equal(conflicts.length, 2);
+  assert.deepEqual(conflicts.map((finding) => finding.evidence.policy).sort(), [
+    "iconUse:no-new-icons",
+    "imageUse:no-image",
+  ]);
+  assert.equal(conflicts.every((finding) => finding.suggestion.operation === "removeConflict"), true);
+  assert.equal(JSON.stringify(conflicts).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(conflicts).includes('"iconName"'), false);
 });
 
 test("validateAgentHintPreflight gates style-transform on explicit evidence", () => {
@@ -252,14 +296,25 @@ test("buildAgentHintManifest rejects final icon asset decisions", () => {
 test("cross-repo hint compatibility fixture stays source-bound and boundary-safe", () => {
   const markdown = readFileSync("artifacts/cross-repo-hint-compatibility/deck.md", "utf-8");
   const manifest = JSON.parse(readFileSync("artifacts/cross-repo-hint-compatibility/agent-hint.json", "utf-8"));
+  const negativeManifest = JSON.parse(readFileSync("artifacts/cross-repo-hint-compatibility/agent-hint-policy-conflict.json", "utf-8"));
   const sourceHash = createHash("sha256").update(markdown).digest("hex");
 
   assert.equal(manifest.sourceSha256, sourceHash);
+  assert.equal(negativeManifest.sourceSha256, sourceHash);
   assert.doesNotThrow(() => buildAgentHintManifest(manifest.sourceSha256, manifest.hints, {
     generatedAt: manifest.generatedAt,
   }));
+  assert.doesNotThrow(() => buildAgentHintManifest(negativeManifest.sourceSha256, negativeManifest.hints, {
+    generatedAt: negativeManifest.generatedAt,
+  }));
   assert.equal(manifest.hints[0].keyMessageCandidates[0].evidenceRefs[0], "element:b2");
   assert.equal(manifest.hints[0].iconKeywordCandidates[0].keyword, "validation");
+  assert.equal(
+    validateAgentHintPreflight(negativeManifest).filter((finding) => finding.type === "MEDIA_POLICY_CANDIDATE_CONFLICT").length,
+    2,
+  );
   assert.equal(JSON.stringify(manifest).includes("iconName"), false);
+  assert.equal(JSON.stringify(negativeManifest).includes("iconName"), false);
   assert.equal(JSON.stringify(manifest).includes("coordinates"), false);
+  assert.equal(JSON.stringify(negativeManifest).includes("coordinates"), false);
 });

@@ -95,6 +95,7 @@ export type AgentHintPreflightFinding = {
     | "KEY_MESSAGE_EVIDENCE_MISSING"
     | "HINT_RESTATES_SOURCE_ELEMENTS"
     | "TEMPLATE_FILL_HINT_POLICY_CONFLICT"
+    | "MEDIA_POLICY_CANDIDATE_CONFLICT"
     | "STYLE_TRANSFORM_EVIDENCE_MISSING"
     | "DUPLICATE_HINT_CANDIDATE";
   slideId: string;
@@ -298,6 +299,48 @@ export function validateAgentHintPreflight(
     }
 
     const workflowIntent = hint.workflowIntentCandidate?.intent;
+    if (
+      hint.mediaPolicyCandidate?.iconUse === "no-new-icons"
+      && (hint.iconKeywordCandidates?.length ?? 0) > 0
+    ) {
+      findings.push({
+        severity: "warning",
+        type: "MEDIA_POLICY_CANDIDATE_CONFLICT",
+        slideId: hint.slideId,
+        evidence: {
+          policy: "iconUse:no-new-icons",
+          hasIconKeywords: true,
+          candidateCount: hint.iconKeywordCandidates?.length ?? 0,
+          runtimeOwner: "MDPR rejects schema-valid conflicting icon hints at handoff",
+        },
+        suggestion: {
+          kind: "mdpr-skill-preflight",
+          target: "hints.mediaPolicy.iconUse",
+          operation: "removeConflict",
+        },
+      });
+    }
+    if (
+      hint.mediaPolicyCandidate?.imageUse === "no-image"
+      && (hint.visualAssetCandidates?.length ?? 0) > 0
+    ) {
+      findings.push({
+        severity: "warning",
+        type: "MEDIA_POLICY_CANDIDATE_CONFLICT",
+        slideId: hint.slideId,
+        evidence: {
+          policy: "imageUse:no-image",
+          hasVisualAssetCandidates: true,
+          candidateCount: hint.visualAssetCandidates?.length ?? 0,
+          runtimeOwner: "MDPR rejects schema-valid conflicting visual hints at handoff",
+        },
+        suggestion: {
+          kind: "mdpr-skill-preflight",
+          target: "hints.mediaPolicy.imageUse",
+          operation: "removeConflict",
+        },
+      });
+    }
     if (
       workflowIntent === "template-fill"
       && (
