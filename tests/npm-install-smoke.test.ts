@@ -82,6 +82,45 @@ test("packed npm package installs into a consumer project and exposes mdpr-skill
     assert.match(help, /hint/);
     assert.match(help, /review/);
 
+    const docsList = JSON.parse(run(["exec", "--", "mdpr-skill", "docs", "--json"], consumerDir));
+    const docTopics = docsList.topics.map((topic: { topic: string }) => topic.topic).sort();
+    assert.deepEqual(docTopics, [
+      "astryx-comparison",
+      "bootstrap",
+      "boundaries",
+      "commands",
+      "design-import",
+      "media",
+      "preflight",
+      "review",
+      "template-fill",
+    ]);
+
+    const templateFillDocs = run(["exec", "--", "mdpr-skill", "docs", "template-fill", "--dense"], consumerDir);
+    assert.match(templateFillDocs, /preserve-master-slides true/);
+    assert.match(templateFillDocs, /image-policy no-image/);
+    assert.match(templateFillDocs, /icon-policy no-new-icons/);
+
+    const mediaDocs = JSON.parse(run(["exec", "--", "mdpr-skill", "docs", "media", "--json"], consumerDir));
+    assert.equal(mediaDocs.schemaVersion, "mdpr-skill-agent-docs-v1");
+    assert.equal(mediaDocs.topic, "media");
+    assert.match(mediaDocs.markdown, /Default image search to disabled/);
+    assert.match(mediaDocs.markdown, /Generated-image candidates require explicit request evidence/);
+
+    const astryxDocs = JSON.parse(run(["exec", "--", "mdpr-skill", "docs", "astryx-comparison", "--json"], consumerDir));
+    assert.equal(astryxDocs.topic, "astryx-comparison");
+    assert.match(astryxDocs.markdown, /local branch CLI docs/);
+    assert.match(astryxDocs.markdown, /Do not borrow: React component APIs/);
+
+    const preflightDocs = JSON.parse(run(["exec", "--", "mdpr-skill", "docs", "preflight", "--json"], consumerDir));
+    assert.equal(preflightDocs.topic, "preflight");
+    assert.match(preflightDocs.markdown, /MDPR owns parsing/);
+    assert.match(preflightDocs.markdown, /mdpr-skill owns semantic hints/);
+    const installedDocsText = JSON.stringify([mediaDocs, astryxDocs, preflightDocs]);
+    assert.equal(/\bx\/y\/w\/h\b/.test(installedDocsText), false);
+    assert.equal(/#[0-9a-fA-F]{6}/.test(installedDocsText), false);
+    assert.equal(/iconPath|imagePath|rendererObjectId/.test(installedDocsText), false);
+
     const hintOut = join("artifacts", "agent-hint.json");
     const hintStdout = run([
       "exec",

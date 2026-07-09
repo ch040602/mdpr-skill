@@ -4,6 +4,7 @@ export type AgentDocTopic =
   | "commands"
   | "template-fill"
   | "media"
+  | "preflight"
   | "review"
   | "design-import"
   | "astryx-comparison";
@@ -111,6 +112,29 @@ const topics: AgentDocTopicSpec[] = [
       "Use explicit-request-only generated asset guidance when the user asks for image generation or search.",
       "In template-fill mode, prefer no-new-icons unless the user explicitly permits icon changes.",
       "Rendered-preview review may cite PNG/contact-sheet paths and MDPR finding IDs, but not final repairs.",
+    ],
+  },
+  {
+    topic: "preflight",
+    title: "Agent Preflight",
+    description: "Mechanical checklist before an agent emits hints, review notes, or proposals.",
+    dense: [
+      "Read intent first: template-fill, style-transform, theme-import, generated-asset request, or review-only.",
+      "Ground every hint or finding in Markdown, manifest, selection context, rendered preview, MDPR diagnostics, or source metadata.",
+      "For template-fill, preserve the existing PPTX/POTX/theme frame and prefer no new images or icons unless the user explicitly permits them.",
+      "Default image search to disabled; generated-image candidates require explicit request evidence and generated-asset workflow intent.",
+      "Keep icon guidance semantic-keyword-only unless policy permits more, and never choose exact icon assets.",
+      "Preserve source content and readability evidence; propose splits, summaries, or edits as approval-bound changes rather than silent rewrites.",
+      "Separate content, evidence, prompt, and output artifacts so review logs can prove what changed and why.",
+      "MDPR owns parsing, splitting, layout, coordinates, typography, colors, z-order, theme binding, assets, and PPTX objects.",
+      "mdpr-skill owns semantic hints, review notes, evidence ledgers, and approval-bound proposals only.",
+    ],
+    full: [
+      "Borrow taste-skill's mechanical preflight discipline without importing frontend visual rules.",
+      "If any check cannot be proven locally, downgrade the artifact to a review note or TODO.",
+      "Do not use a passing LLM review as a substitute for MDPR overflow, polish, coherence, editability, or validation gates.",
+      "Do not encode final PPT geometry, raw theme values, exact assets, copied master/layout IDs, crops, or renderer object identity.",
+      "When a user asks for minimalism or an existing theme, prefer content pruning, emphasis hierarchy, and template preservation over new decoration.",
     ],
   },
   {

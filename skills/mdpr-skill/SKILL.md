@@ -14,7 +14,7 @@ Use this skill as the optional Codex companion for MDPR. MDPR remains the determ
 - When the local CLI is available, start by reading branch-local guidance with
   `node bin/mdpr-skill.js docs bootstrap --dense` and then the narrow topic
   for the task, such as `docs boundaries --dense`, `docs template-fill --dense`,
-  `docs media --dense`, or `docs review --dense`. This mirrors the
+  `docs media --dense`, `docs preflight --dense`, or `docs review --dense`. This mirrors the
   agent-ready CLI-docs pattern used by Astryx while keeping MDPR-specific
   runtime ownership intact.
 - Let MDPR own parsing, slide splitting, recipes, layout, coordinates, geometry, typography, colors, z-order, arrows, effects, exact icon assets, renderer object IDs, and final PPTX objects.

@@ -46,6 +46,7 @@ test("runCli exposes dense agent docs inspired by branch-local CLI guidance", ()
   const list = JSON.parse(listOutput.join("\n"));
   assert.equal(list.schemaVersion, "mdpr-skill-agent-docs-v1");
   assert.equal(list.topics.some((topic: { topic: string }) => topic.topic === "bootstrap"), true);
+  assert.equal(list.topics.some((topic: { topic: string }) => topic.topic === "preflight"), true);
   assert.equal(list.topics.some((topic: { topic: string }) => topic.topic === "astryx-comparison"), true);
 
   const denseOutput: string[] = [];
@@ -69,6 +70,23 @@ test("runCli exposes dense agent docs inspired by branch-local CLI guidance", ()
   assert.equal(doc.dense, true);
   assert.match(doc.markdown, /local branch CLI docs/);
   assert.match(doc.markdown, /Do not borrow: React component APIs/);
+
+  const preflightOutput: string[] = [];
+  assert.equal(runCli(["docs", "preflight", "--json"], {
+    stdout: (value) => preflightOutput.push(value),
+    stderr: () => undefined,
+  }), 0);
+  const preflight = JSON.parse(preflightOutput.join("\n"));
+  assert.equal(preflight.topic, "preflight");
+  assert.match(preflight.markdown, /Read intent first/);
+  assert.match(preflight.markdown, /Default image search to disabled/);
+  assert.match(preflight.markdown, /Separate content, evidence, prompt, and output artifacts/);
+  assert.match(preflight.markdown, /MDPR owns parsing/);
+  assert.match(preflight.markdown, /mdpr-skill owns semantic hints/);
+  assert.match(preflight.markdown, /Do not encode final PPT geometry/);
+  assert.equal(/\bx\/y\/w\/h\b/.test(preflight.markdown), false);
+  assert.equal(/#[0-9a-fA-F]{6}/.test(preflight.markdown), false);
+  assert.equal(/iconPath|imagePath|rendererObjectId/.test(preflight.markdown), false);
 });
 
 test("runCli writes a codex-ppt compatibility implementation map", () => {
