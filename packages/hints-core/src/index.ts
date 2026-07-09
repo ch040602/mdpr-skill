@@ -96,6 +96,8 @@ export type AgentHintPreflightFinding = {
     | "HINT_RESTATES_SOURCE_ELEMENTS"
     | "TEMPLATE_FILL_HINT_POLICY_CONFLICT"
     | "MEDIA_POLICY_CANDIDATE_CONFLICT"
+    | "MEDIA_PERMISSION_EVIDENCE_MISSING"
+    | "RUNTIME_OWNERSHIP_FIELD_CONFLICT"
     | "STYLE_TRANSFORM_EVIDENCE_MISSING"
     | "DUPLICATE_HINT_CANDIDATE";
   slideId: string;
@@ -167,9 +169,39 @@ export const FORBIDDEN_AGENT_HINT_FIELDS = [
   "iconPath",
   "iconName",
   "coordinates",
+  "crop",
+  "cropRect",
+  "exactIcon",
+  "finalImageAsset",
+  "finalImagePath",
   "geometry",
+  "layoutId",
+  "rendererObject",
   "rendererObjectId",
 ] as const;
+
+export type RoundTodoProposal = {
+  id?: string;
+  title: string;
+  owner?: string;
+  rationale?: string;
+  files?: string[];
+  acceptance?: string[];
+  validation?: string[];
+  evidenceRefs?: string[];
+};
+
+export type RoundTodoQualityFinding = {
+  severity: "info" | "warning";
+  type: "ROUND_TODO_DUPLICATE_OR_VAGUE" | "ROUND_TODO_EVIDENCE_MISSING";
+  todoTitle: string;
+  evidence: Record<string, unknown>;
+  suggestion: {
+    kind: "mdpr-skill-round-review";
+    target: string;
+    operation: "dedupe" | "addEvidence" | "reduce";
+  };
+};
 
 export function buildAgentHintManifest(
   sourceSha256: string,
@@ -235,6 +267,25 @@ export function validateAgentHintPreflight(
   const hints = Array.isArray(input) ? input : input.hints;
   const findings: AgentHintPreflightFinding[] = [];
   for (const hint of hints) {
+    const forbiddenPaths = forbiddenFieldPaths(hint);
+    if (forbiddenPaths.length) {
+      findings.push({
+        severity: "warning",
+        type: "RUNTIME_OWNERSHIP_FIELD_CONFLICT",
+        slideId: hint.slideId,
+        evidence: {
+          fieldPaths: forbiddenPaths,
+          rule: "mdpr-skill-hints-must-not-own-geometry-theme-assets-or-renderer-objects",
+          runtimeOwner: "MDPR",
+        },
+        suggestion: {
+          kind: "mdpr-skill-preflight",
+          target: "hints.runtimeOwnership",
+          operation: "removeConflict",
+        },
+      });
+    }
+
     const primaryKeyMessages = (hint.keyMessageCandidates ?? []).filter((candidate) => candidate.emphasisLevel === "primary");
     if (primaryKeyMessages.length > 1) {
       findings.push({
@@ -341,6 +392,25 @@ export function validateAgentHintPreflight(
         },
       });
     }
+    const unauthorizedVisuals = (hint.visualAssetCandidates ?? [])
+      .filter((candidate) => !visualAssetHasPositivePermission(hint, candidate));
+    if (unauthorizedVisuals.length > 0 && hint.mediaPolicyCandidate?.imageUse !== "no-image") {
+      findings.push({
+        severity: "warning",
+        type: "MEDIA_PERMISSION_EVIDENCE_MISSING",
+        slideId: hint.slideId,
+        evidence: {
+          candidateCount: unauthorizedVisuals.length,
+          requiredEvidence: ["workflowIntent:generated-asset-request", "imageSearch:explicit-request-only", "request:* or instruction:generated-asset-request"],
+          rule: "no-image-search-generation-or-icon-escalation-without-positive-evidence",
+        },
+        suggestion: {
+          kind: "mdpr-skill-preflight",
+          target: "hints.visualAssetCandidates.evidence",
+          operation: "addEvidence",
+        },
+      });
+    }
     if (
       workflowIntent === "template-fill"
       && (
@@ -404,6 +474,60 @@ export function validateAgentHintPreflight(
         },
       });
     }
+  }
+  return findings;
+}
+
+export function validateRoundTodoProposalQuality(
+  proposals: RoundTodoProposal[],
+  options: { completedTodoTitles?: string[]; completedFeatureIds?: string[] } = {},
+): RoundTodoQualityFinding[] {
+  const completedKeys = new Set([
+    ...(options.completedTodoTitles ?? []).map(normalizeTodoKey),
+    ...(options.completedFeatureIds ?? []).map(normalizeTodoKey),
+  ].filter(Boolean));
+  const seen = new Set<string>();
+  const findings: RoundTodoQualityFinding[] = [];
+  for (const proposal of proposals) {
+    const titleKey = normalizeTodoKey(proposal.title);
+    const duplicate = Boolean(titleKey && (seen.has(titleKey) || completedKeys.has(titleKey)));
+    const vague = isVagueTodoProposal(proposal);
+    if (duplicate || vague) {
+      findings.push({
+        severity: "warning",
+        type: "ROUND_TODO_DUPLICATE_OR_VAGUE",
+        todoTitle: proposal.title,
+        evidence: {
+          duplicate,
+          vague,
+          hasFiles: Boolean(proposal.files?.length),
+          acceptanceCount: proposal.acceptance?.length ?? 0,
+          validationCount: proposal.validation?.length ?? 0,
+          rule: "round-4-plus-pro-reviews-must-return-non-duplicate-locally-actionable-todos",
+        },
+        suggestion: {
+          kind: "mdpr-skill-round-review",
+          target: "pro-review.locally_actionable_todos",
+          operation: duplicate ? "dedupe" : "reduce",
+        },
+      });
+    }
+    if (!(proposal.evidenceRefs?.length || proposal.files?.length)) {
+      findings.push({
+        severity: "info",
+        type: "ROUND_TODO_EVIDENCE_MISSING",
+        todoTitle: proposal.title,
+        evidence: {
+          rule: "pro-review-todos-need-file-or-evidence-binding-before-import",
+        },
+        suggestion: {
+          kind: "mdpr-skill-round-review",
+          target: "pro-review.todo.evidenceRefs",
+          operation: "addEvidence",
+        },
+      });
+    }
+    if (titleKey) seen.add(titleKey);
   }
   return findings;
 }
@@ -617,6 +741,7 @@ function referencedHintElementIds(hint: SkillHint): Set<string> {
   hint.keyMessageCandidates?.forEach((candidate) => add(candidate.elementIds));
   hint.contentSplitCandidates?.forEach((candidate) => add(candidate.elementIds));
   hint.readabilityCandidates?.forEach((candidate) => add(candidate.elementIds));
+  hint.iconKeywordCandidates?.forEach((candidate) => add(candidate.elementIds));
   return refs;
 }
 
@@ -637,12 +762,49 @@ function duplicateCandidateKeys(hint: SkillHint): string[] {
 }
 
 export function assertNoForbiddenFields(value: unknown, path = "$"): void {
-  if (!value || typeof value !== "object") return;
-  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
-    if ((FORBIDDEN_AGENT_HINT_FIELDS as readonly string[]).includes(key)) {
-      throw new Error(`${path}.${key} is a forbidden final-decision field for mdpr-skill hints`);
-    }
-    if (Array.isArray(child)) child.forEach((item, index) => assertNoForbiddenFields(item, `${path}.${key}[${index}]`));
-    else assertNoForbiddenFields(child, `${path}.${key}`);
+  const paths = forbiddenFieldPaths(value, path);
+  if (paths.length) {
+    throw new Error(`${paths[0]} is a forbidden final-decision field for mdpr-skill hints`);
   }
+}
+
+function forbiddenFieldPaths(value: unknown, path = "$"): string[] {
+  if (!value || typeof value !== "object") return [];
+  if (Array.isArray(value)) return value.flatMap((item, index) => forbiddenFieldPaths(item, `${path}[${index}]`));
+  return Object.entries(value as Record<string, unknown>).flatMap(([key, child]) => {
+    const childPath = `${path}.${key}`;
+    const own = (FORBIDDEN_AGENT_HINT_FIELDS as readonly string[]).includes(key) ? [childPath] : [];
+    return [...own, ...forbiddenFieldPaths(child, childPath)];
+  });
+}
+
+function visualAssetHasPositivePermission(hint: SkillHint, candidate: VisualAssetCandidate): boolean {
+  if (hint.mediaPolicyCandidate?.imageUse !== "generated-asset-approved") return false;
+  if (hint.mediaPolicyCandidate.imageSearch !== "explicit-request-only") return false;
+  if (candidate.trigger !== "explicit-generated-asset-request") return false;
+  const refs = [
+    ...(hint.workflowIntentCandidate?.evidenceRefs ?? []),
+    ...(hint.mediaPolicyCandidate.evidenceRefs ?? []),
+    candidate.requestRef,
+  ].filter(Boolean);
+  const hasRequestRef = refs.some((ref) => /^(?:request:|instruction:generated-asset-request\b)/i.test(ref));
+  return hint.workflowIntentCandidate?.intent === "generated-asset-request" && hasRequestRef;
+}
+
+function normalizeTodoKey(value: string | undefined): string {
+  return (value ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9가-힣]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function isVagueTodoProposal(proposal: RoundTodoProposal): boolean {
+  const text = normalizeTodoKey(`${proposal.title} ${proposal.rationale ?? ""}`);
+  const generic = /^(improve|enhance|better|polish|fix|add|개선|보강|정리)\b/.test(text)
+    || /\b(readability|icons?|images?|theme|quality|가독성|아이콘|이미지|테마|품질)\b/.test(text);
+  const lacksActionableShape = !(proposal.files?.length)
+    || (proposal.acceptance?.length ?? 0) < 2
+    || (proposal.validation?.length ?? 0) < 1;
+  return generic && lacksActionableShape;
 }

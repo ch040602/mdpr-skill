@@ -6,6 +6,7 @@ import {
   buildAgentHintManifest,
   hintFromSelectionContext,
   validateAgentHintPreflight,
+  validateRoundTodoProposalQuality,
 } from "../packages/hints-core/src/index";
 
 const sourceSha256 = "b".repeat(64);
@@ -257,6 +258,68 @@ test("validateAgentHintPreflight warns for generic media policy candidate confli
   assert.equal(JSON.stringify(conflicts).includes('"iconName"'), false);
 });
 
+test("validateAgentHintPreflight flags runtime-owned fields and missing generated-asset permission", () => {
+  const findings = validateAgentHintPreflight([{
+    slideId: "slide-runtime-boundary",
+    confidence: 0.78,
+    mediaPolicyCandidate: {
+      imageUse: "generated-asset-approved",
+      imageSearch: "explicit-request-only",
+      iconUse: "semantic-keywords-only",
+      evidenceRefs: [],
+    },
+    readabilityCandidates: [{
+      action: "shorten-copy",
+      elementIds: ["claim-1"],
+      reason: "Diagnostic only.",
+      confidence: 0.72,
+      x: 1,
+      cropRect: { x: 0, y: 0, w: 1, h: 1 },
+    } as never],
+    visualAssetCandidates: [{
+      kind: "generated-image",
+      trigger: "explicit-generated-asset-request",
+      requestRef: "asset:hero",
+      semanticPrompt: "hero visual",
+      confidence: 0.72,
+      finalImagePath: "hero.png",
+      exactIcon: "ShieldCheck",
+      rendererObject: { id: "shape-1" },
+    } as never],
+  }]);
+  const runtimeFinding = findings.find((finding) => finding.type === "RUNTIME_OWNERSHIP_FIELD_CONFLICT");
+  const permissionFinding = findings.find((finding) => finding.type === "MEDIA_PERMISSION_EVIDENCE_MISSING");
+
+  assert.ok(runtimeFinding);
+  const fieldPaths = runtimeFinding.evidence.fieldPaths as string[];
+  assert.equal(fieldPaths.some((path) => path.endsWith(".x")), true);
+  assert.equal(fieldPaths.some((path) => path.endsWith(".finalImagePath")), true);
+  assert.ok(permissionFinding);
+  assert.equal(permissionFinding.suggestion.operation, "addEvidence");
+});
+
+test("buildAgentHintManifest rejects generated asset and renderer final decisions", () => {
+  assert.throws(() => buildAgentHintManifest(sourceSha256, [{
+    slideId: "slide-image-forbidden",
+    confidence: 0.8,
+    mediaPolicyCandidate: {
+      imageUse: "generated-asset-approved",
+      imageSearch: "explicit-request-only",
+      iconUse: "semantic-keywords-only",
+      evidenceRefs: ["request:hero"],
+    },
+    visualAssetCandidates: [{
+      kind: "generated-image",
+      trigger: "explicit-generated-asset-request",
+      requestRef: "request:hero",
+      semanticPrompt: "hero visual",
+      confidence: 0.72,
+      finalImagePath: "hero.png",
+      rendererObject: { id: "shape-1" },
+    } as never],
+  }]), /forbidden final-decision field/);
+});
+
 test("validateAgentHintPreflight gates style-transform on explicit evidence", () => {
   const unsafe = validateAgentHintPreflight([{
     slideId: "slide-style",
@@ -291,6 +354,39 @@ test("buildAgentHintManifest rejects final icon asset decisions", () => {
       iconName: "ShieldCheck",
     } as never],
   }]), /forbidden final-decision field/);
+});
+
+test("validateRoundTodoProposalQuality rejects duplicate or vague Pro TODO imports", () => {
+  const findings = validateRoundTodoProposalQuality([
+    {
+      title: "Scope agent hints after split",
+      files: ["packages/core/src/coherence/applyAgentHints.ts"],
+      acceptance: ["same as completed round"],
+      validation: ["npm test"],
+      evidenceRefs: ["round:3"],
+    },
+    {
+      title: "Improve image quality",
+      rationale: "better images and icons",
+      acceptance: ["looks better"],
+    },
+    {
+      title: "Add runtime-owned field preflight",
+      files: ["packages/hints-core/src/index.ts"],
+      acceptance: ["flags coordinates", "flags final assets"],
+      validation: ["npm run test:hints-core"],
+      evidenceRefs: ["pro:round-4"],
+    },
+  ], {
+    completedTodoTitles: ["Scope agent hints after split"],
+  });
+
+  assert.equal(findings.filter((finding) => finding.type === "ROUND_TODO_DUPLICATE_OR_VAGUE").length, 2);
+  assert.equal(findings.some((finding) =>
+    finding.type === "ROUND_TODO_EVIDENCE_MISSING"
+    && finding.todoTitle === "Improve image quality"
+  ), true);
+  assert.equal(findings.some((finding) => finding.todoTitle === "Add runtime-owned field preflight"), false);
 });
 
 test("cross-repo hint compatibility fixture stays source-bound and boundary-safe", () => {

@@ -21,6 +21,10 @@ Use this skill as the optional Codex companion for MDPR. MDPR remains the determ
   keyword candidates. If conflicting candidates appear, emit preflight warnings
   and rely on MDPR runtime diagnostics as the authoritative accept/ignore
   result.
+- Treat all runtime-owned fields as forbidden in hints and review artifacts:
+  coordinates, geometry, crop/cropRect, raw colors, typography, z-order,
+  exact icons, final image paths, renderer objects, recipe/variant/layout IDs,
+  and copied PowerPoint object IDs.
 
 ## MDPR Runtime Sync Boundary
 
@@ -102,7 +106,9 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   useful review evidence.
 - Suggest generated-image candidates only when the source contains image
   evidence or the user explicitly requests a generated asset. A large or
-  ambiguous icon is not enough by itself.
+  ambiguous icon is not enough by itself. Positive permission requires
+  generated-asset workflow intent, `imageSearch: "explicit-request-only"`, and
+  request/instruction evidence bound to the candidate.
 - Default image search to disabled. Use source-image-only guidance when source
   images exist, and explicit-request-only guidance when the user asks for image
   generation or search.
@@ -115,18 +121,21 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
 - Treat paragraph marker handling as MDPR-owned runtime behavior. Current MDPR
   normalizes dash and bullet-like lines such as `-item`, `•`, `·`, `–`, `—`,
   `−`, `ㆍ`, and `▪` into stable list structure while preserving `---` slide
-  breaks, pipeline arrows, negative-number prose, fenced code, indented code,
-  and raw `<pre>` blocks. mdpr-skill may suggest source cleanup or readability
-  notes around these markers, and may consume MDPR source-cleanup diagnostics
-  when available, but must not encode marker-specific layout or rendering
-  decisions.
+  breaks, pipeline arrows, negative-number prose, year-leading prose such as
+  `2026. Roadmap`, fenced code, indented code, and raw `<pre>` blocks. Real
+  ordered lists keep source numbering through MDPR splitting. mdpr-skill may
+  suggest source cleanup or readability notes around these markers, and may
+  consume MDPR source-cleanup diagnostics when available, but must not encode
+  marker-specific layout or rendering decisions.
 - Keep hints compatible with `agent-hint.json`-style weak semantic input.
 - Validate that hints do not encode final rendering choices.
 - Prefer minimal hints over broad restatement of the source.
 - Run a preflight mindset inspired by reference skills such as `taste-skill`:
   one primary key message per slide by default, no broad restatement of every
   source block, no contradictory template-fill media/icon candidates, and no
-  decorative hints that MDPR can already derive deterministically.
+  decorative hints that MDPR can already derive deterministically. For recursive
+  Pro/RDD loops, reject duplicate or vague TODO proposals before import unless
+  they name concrete files, acceptance checks, validation, and new evidence.
 - Ground primary key-message candidates with `evidenceRefs` or `claimRef` when
   available. Treat ungrounded primary emphasis as a preflight warning, not as a
   final slide design instruction.

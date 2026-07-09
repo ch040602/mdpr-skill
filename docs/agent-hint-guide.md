@@ -7,6 +7,9 @@ Generated-image candidates require explicit generated-asset evidence; a large
 or ambiguous icon is not enough by itself. Hints cannot specify recipe IDs,
 variant IDs, boxes, coordinates, colors, effects, exact icon asset paths, exact
 icon names, exact image assets, z-order, typography, or renderer object IDs.
+Preflight also flags runtime-owned fields if they appear in nested candidates,
+including `crop`, `cropRect`, `finalImagePath`, `exactIcon`,
+`rendererObject`, and `layoutId`; manifest creation rejects those fields.
 Builds must remain valid with agents disabled.
 
 MDPR accepts hints through `mdpresent build deck.md --hints deck.mdpr-hints.json`
@@ -63,7 +66,8 @@ arrows, negative-number prose, fenced code, indented code, and raw `<pre>`
 blocks. mdpr-skill may emit source-cleanup or readability notes around those
 markers, and may reference MDPR source-cleanup diagnostics when present, but
 agent hints must not choose marker-specific layout, bullet glyphs, indentation,
-or rendering.
+or rendering. Year-leading prose such as `2026. Roadmap` stays prose, while
+real ordered lists keep their source numbering through MDPR list splitting.
 
 `taste-skill` is useful as a comparison reference for process discipline, not
 as a PPT rendering authority. The equivalent preflight for mdpr-skill is:
@@ -72,8 +76,12 @@ that restates every source block, and no template-fill hint that adds image,
 icon, or style-transform candidates without explicit evidence. Media policy is
 also checked directly: `imageUse: "no-image"` conflicts with generated-image
 candidates, and `iconUse: "no-new-icons"` conflicts with icon keyword
-candidates. mdpr-skill warns before handoff; MDPR remains the runtime authority
-that ignores schema-valid conflicting candidates with deterministic diagnostics.
+candidates. Generated-image candidates also need positive request evidence:
+`workflowIntentCandidate.intent: "generated-asset-request"`,
+`imageSearch: "explicit-request-only"`, and a `request:*` or
+`instruction:generated-asset-request` ref. mdpr-skill warns before handoff;
+MDPR remains the runtime authority that ignores schema-valid conflicting
+candidates with deterministic diagnostics.
 Primary key-message candidates should carry `evidenceRefs` or a `claimRef`
 whenever possible. Element IDs are necessary for mapping but are not enough by
 themselves to justify subjective emphasis. `section-transition` may use a
@@ -211,9 +219,10 @@ Use `visualAssetCandidates` only when the source context includes a source image
 reference or the user explicitly requests a generated asset. The default image
 policy is `no-image` and `imageSearch: "disabled"`. If source images exist,
 use `source-image-only`; if the user explicitly requests generation, use
-`generated-asset-approved`. The candidate is a semantic brief for a possible
-generated image, not a final image prompt, asset path, style recipe, or
-placement instruction. If `imageUse` is `no-image`, do not emit
+`generated-asset-approved` plus `imageSearch: "explicit-request-only"` and keep
+the request ref on the candidate. The candidate is a semantic brief for a
+possible generated image, not a final image prompt, asset path, style recipe,
+or placement instruction. If `imageUse` is `no-image`, do not emit
 `visualAssetCandidates`; preflight will flag the conflict and MDPR will ignore
 the candidate at runtime.
 
