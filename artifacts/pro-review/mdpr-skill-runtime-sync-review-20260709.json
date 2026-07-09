@@ -15,14 +15,14 @@
     "command": "node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
     "localSchemaHashes": {
       "agent-hint.schema.json": "1bfa7c67474b48fb9768f311f65f5bc3738f86aa3bdf9524f2143679d9f1ec84",
-      "mdpr-theme-candidate.schema.json": "f18e59306a7ca06da0cba6868931251ffc60e8b7ffcd827b5b6294f484313995",
+      "mdpr-theme-candidate.schema.json": "0c5e6bf1c8d96a8a9e272883602eed354db9418cdae21c0c8e59364e45541530",
       "mdpr-selection-context.schema.json": "f0766e3a4b31b697376d084c2ab224c6673e5fa6f16362091a496c05a3658dd3",
       "mdpr-ppt-selection.schema.json": "6335a1094d33ffeb453e72020a0088eb0703dc584f6c8192a242a8448dfb37ca",
       "mdpr-generated-assets.schema.json": "aeb1b4f924078c9c83ca8087662a724e67cc1757c7596cbdb70c86be2363a592"
     },
     "mdprSchemaHashes": {
       "agent-hint.schema.json": "1bfa7c67474b48fb9768f311f65f5bc3738f86aa3bdf9524f2143679d9f1ec84",
-      "mdpr-theme-candidate.schema.json": "f18e59306a7ca06da0cba6868931251ffc60e8b7ffcd827b5b6294f484313995",
+      "mdpr-theme-candidate.schema.json": "0c5e6bf1c8d96a8a9e272883602eed354db9418cdae21c0c8e59364e45541530",
       "mdpr-selection-context.schema.json": "f0766e3a4b31b697376d084c2ab224c6673e5fa6f16362091a496c05a3658dd3",
       "mdpr-ppt-selection.schema.json": "6335a1094d33ffeb453e72020a0088eb0703dc584f6c8192a242a8448dfb37ca",
       "mdpr-generated-assets.schema.json": "aeb1b4f924078c9c83ca8087662a724e67cc1757c7596cbdb70c86be2363a592"
