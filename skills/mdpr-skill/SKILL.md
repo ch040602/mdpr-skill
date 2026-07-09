@@ -106,6 +106,13 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   explicitly ask for a new visual system, default to `template-fill`: preserve
   master slides, placeholders, and the existing theme frame. Do not add new
   cards, surfaces, icons, images, or style systems in this mode.
+- In `template-fill`, treat the supplied PPTX/POTX slide master as the primary
+  visual system. Do not pass `--theme-style`, `--theme-color`,
+  `--theme-harmony`, `--theme-gallery`, `--design`, theme packs, or
+  source-neutral DESIGN imports unless the user explicitly asks to transform the
+  visual system. For the current `mdpresent` CLI, the safe default is
+  `mdpresent build deck.md --to pptx --out dist --template master.pptx` plus
+  validation; adding MDPR theme flags is a duplicate-theme risk.
 - If `template-fill` or explicit media policy sets `imageUse: "no-image"` or
   `iconUse: "no-new-icons"`, remove conflicting generated-image or icon keyword
   candidates before handoff; keep only a preflight warning if the conflict is
@@ -124,6 +131,12 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   exact icon name, file path, placement, or style.
 - For dense or wordy content, prefer semantic `contentSplitCandidates` and
   `readabilityCandidates` before visual decoration.
+- For Korean decks and mixed Korean/English decks, prevent awkward wrapping as
+  source cleanup: shorten claim titles, replace long inline tool names with a
+  shorter label plus detail in notes, split long bullets into label/detail
+  pairs, and move secondary evidence to speaker notes or a follow-up slide. Do
+  not prescribe exact manual line breaks, font sizes, or coordinates; MDPR owns
+  final typography and wrapping.
 - Treat paragraph marker handling as MDPR-owned runtime behavior. Current MDPR
   normalizes dash and bullet-like lines such as `-item`, `•`, `·`, `–`, `—`,
   `−`, `ㆍ`, and `▪` into stable list structure while preserving `---` slide
@@ -165,7 +178,9 @@ Use when reviewing generated MDPR artifacts, manifests, preview images, review r
   preservation evidence missing, slide-scoped placeholder mismatches,
   rasterized template-fill output, images without source/request, generated
   assets whose provenance is not bound to the asset or slide, undeclared image
-  search, new icon substitution, dense content, and overly long copy.
+  search, new icon substitution, dense content, overly long copy, duplicate
+  theme application from MDPR theme flags, and awkward Korean/English wrapping
+  visible in rendered previews.
 - Distinguish source Markdown problems from MDPR runtime/rulebook problems.
 - Turn repeated visual issues into deterministic MDPR rule or config recommendations.
 - Keep the output actionable for MDPR maintainers.

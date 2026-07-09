@@ -180,6 +180,51 @@ test("packed npm package installs into a consumer project and exposes mdpr-skill
     assert.equal(hint.generatedBy, "mdpr-skill");
     assert.equal(hint.sourceSha256, "a".repeat(64));
     assert.deepEqual(hint.hints, []);
+
+    writeFileSync(join(consumerDir, "selection-context.json"), JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-preview",
+        sourceSha256: "b".repeat(64),
+      },
+      slideId: "slide-template-bridge",
+      overlappedBlocks: ["claim-1", "proof-1"],
+      userInstruction: "기존 HCS PPT 테마와 마스터 슬라이드를 유지하고 이미지는 추가하지 마.",
+    }), "utf-8");
+    const bridgeHintOut = join("artifacts", "bridge-agent-hint.json");
+    const bridgeHintStdout = run([
+      "exec",
+      "--",
+      "mdpr-skill",
+      "hint",
+      "--selection-context",
+      "selection-context.json",
+      "--workflow-intent",
+      "template-fill",
+      "--template-source",
+      "hcs-template",
+      "--preserve-master-slides",
+      "true",
+      "--image-policy",
+      "no-image",
+      "--image-search-policy",
+      "disabled",
+      "--icon-policy",
+      "no-new-icons",
+      "--out",
+      bridgeHintOut,
+    ], consumerDir);
+    assert.equal(JSON.parse(bridgeHintStdout).status, "pass");
+    const bridgeHint = JSON.parse(readFileSync(join(consumerDir, bridgeHintOut), "utf-8"));
+    const bridgeItem = bridgeHint.hints[0];
+    assert.equal(bridgeItem.workflowIntentCandidate.intent, "template-fill");
+    assert.equal(bridgeItem.templateUseCandidate.masterSlidePolicy, "preserve-existing-master-slides");
+    assert.equal(bridgeItem.mediaPolicyCandidate.imageUse, "no-image");
+    assert.equal(bridgeItem.mediaPolicyCandidate.imageSearch, "disabled");
+    assert.equal(bridgeItem.mediaPolicyCandidate.iconUse, "no-new-icons");
+    assert.equal(bridgeItem.visualAssetCandidates, undefined);
+    assert.equal(bridgeItem.iconKeywordCandidates, undefined);
+    assert.deepEqual(collectRuntimeDecisionLeaks(bridgeHint), []);
   } finally {
     rmSync(tempRoot, { recursive: true, force: true });
   }
