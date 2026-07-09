@@ -8,6 +8,36 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const npm = "npm";
+const forbiddenRuntimeKeys = new Set([
+  "x",
+  "y",
+  "w",
+  "h",
+  "cropRect",
+  "iconPath",
+  "imagePath",
+  "rendererObjectId",
+  "masterId",
+  "layoutId",
+  "fontFamily",
+  "fontName",
+  "zOrder",
+]);
+
+function collectRuntimeDecisionLeaks(value: unknown, path = "$"): string[] {
+  if (!value || typeof value !== "object") {
+    if (typeof value === "string" && path !== "$.markdown" && /#[0-9a-fA-F]{6}\b/.test(value)) return [`${path}:raw-hex`];
+    return [];
+  }
+  if (Array.isArray(value)) {
+    return value.flatMap((item, index) => collectRuntimeDecisionLeaks(item, `${path}[${index}]`));
+  }
+  return Object.entries(value as Record<string, unknown>).flatMap(([key, item]) => {
+    const nextPath = `${path}.${key}`;
+    const ownLeak = forbiddenRuntimeKeys.has(key) ? [nextPath] : [];
+    return [...ownLeak, ...collectRuntimeDecisionLeaks(item, nextPath)];
+  });
+}
 
 function run(args: string[], cwd: string): string {
   const result = spawnSync(npm, args, {
@@ -116,10 +146,21 @@ test("packed npm package installs into a consumer project and exposes mdpr-skill
     assert.equal(preflightDocs.topic, "preflight");
     assert.match(preflightDocs.markdown, /MDPR owns parsing/);
     assert.match(preflightDocs.markdown, /mdpr-skill owns semantic hints/);
-    const installedDocsText = JSON.stringify([mediaDocs, astryxDocs, preflightDocs]);
-    assert.equal(/\bx\/y\/w\/h\b/.test(installedDocsText), false);
-    assert.equal(/#[0-9a-fA-F]{6}/.test(installedDocsText), false);
-    assert.equal(/iconPath|imagePath|rendererObjectId/.test(installedDocsText), false);
+    assert.deepEqual(collectRuntimeDecisionLeaks([
+      docsList,
+      { topic: "template-fill", markdown: templateFillDocs },
+      mediaDocs,
+      astryxDocs,
+      preflightDocs,
+    ]), []);
+    assert.deepEqual(collectRuntimeDecisionLeaks({ markdown: "do not emit x/y/w/h or imagePath in hints" }), []);
+    assert.deepEqual(collectRuntimeDecisionLeaks({ layout: { x: 1, y: 2, w: 3, h: 4 }, cropRect: {} }), [
+      "$.layout.x",
+      "$.layout.y",
+      "$.layout.w",
+      "$.layout.h",
+      "$.cropRect",
+    ]);
 
     const hintOut = join("artifacts", "agent-hint.json");
     const hintStdout = run([
