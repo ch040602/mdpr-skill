@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   buildAgentHintManifest,
@@ -52,7 +54,10 @@ test("hintFromSelectionContext suggests generated assets only for explicit image
       confidence: 0.72,
     },
   ]);
-  assert.deepEqual(hint.iconKeywordCandidates, ["large", "metaphor", "ambiguous", "generate"]);
+  assert.deepEqual(hint.iconKeywordCandidates?.map((candidate) => candidate.keyword), ["large", "metaphor", "ambiguous", "generate"]);
+  assert.deepEqual(hint.iconKeywordCandidates?.[0]?.elementIds, ["headline-1"]);
+  assert.deepEqual(hint.iconKeywordCandidates?.[0]?.evidenceRefs, ["instruction:generated-asset-request"]);
+  assert.match(hint.iconKeywordCandidates?.[0]?.reason ?? "", /semantic keyword search/);
   assert.equal(JSON.stringify(hint).includes("iconName"), false);
   assert.equal(JSON.stringify(hint).includes("iconPath"), false);
 
@@ -85,6 +90,36 @@ test("hintFromSelectionContext does not generate images for large icon ambiguity
   assert.equal(hint.visualAssetCandidates, undefined);
   assert.equal(hint.mediaPolicyCandidate?.imageUse, "no-image");
   assert.equal(hint.mediaPolicyCandidate?.imageSearch, "disabled");
+});
+
+test("hintFromSelectionContext emits evidence-bound semantic icon candidates only when permitted", () => {
+  const templateFill = hintFromSelectionContext({
+    schemaVersion: "mdpr-selection-context-v1",
+    source: { kind: "mdpr-preview", sourceSha256 },
+    slideId: "slide-icon-template",
+    overlappedBlocks: ["claim-1"],
+    userInstruction: "Add icons for the claim.",
+    workflowIntent: "template-fill",
+    iconPolicy: "no-new-icons",
+  });
+  const permitted = hintFromSelectionContext({
+    schemaVersion: "mdpr-selection-context-v1",
+    source: { kind: "mdpr-preview", sourceSha256 },
+    slideId: "slide-icon",
+    overlappedBlocks: ["claim-1", "proof-1"],
+    sourceEvidenceRefs: ["source:claim"],
+    userInstruction: "Use small semantic icons for trust and evidence.",
+    iconPolicy: "semantic-keywords-only",
+  });
+
+  assert.equal(templateFill.mediaPolicyCandidate?.iconUse, "no-new-icons");
+  assert.equal(templateFill.iconKeywordCandidates, undefined);
+  assert.equal(permitted.mediaPolicyCandidate?.iconUse, "semantic-keywords-only");
+  assert.equal(permitted.iconKeywordCandidates?.[0]?.keyword, "use");
+  assert.deepEqual(permitted.iconKeywordCandidates?.[0]?.elementIds, ["claim-1", "proof-1"]);
+  assert.deepEqual(permitted.iconKeywordCandidates?.[0]?.evidenceRefs, ["source:claim"]);
+  assert.equal(JSON.stringify(permitted).includes('"iconName"'), false);
+  assert.equal(JSON.stringify(permitted).includes('"iconPath"'), false);
 });
 
 test("hintFromSelectionContext keeps generated-image semantic prompts within schema limits", () => {
@@ -152,7 +187,13 @@ test("validateAgentHintPreflight flags overbroad and contradictory template-fill
     readabilityCandidates: [
       { action: "shorten-copy", elementIds: ["b1", "b2", "b3", "b4"], reason: "Restates all content.", confidence: 0.7 },
     ],
-    iconKeywordCandidates: ["spark"],
+    iconKeywordCandidates: [{
+      keyword: "spark",
+      elementIds: ["b1"],
+      evidenceRefs: ["element:b1"],
+      reason: "Explicit icon request.",
+      confidence: 0.7,
+    }],
     visualAssetCandidates: [
       { kind: "generated-image", trigger: "explicit-generated-asset-request", requestRef: "request:1", semanticPrompt: "spark visual", confidence: 0.7 },
     ],
@@ -191,4 +232,34 @@ test("validateAgentHintPreflight gates style-transform on explicit evidence", ()
   assert.deepEqual(safeHint.workflowIntentCandidate?.evidenceRefs, ["instruction:style-transform-request"]);
   assert.equal(safe.some((finding) => finding.type === "STYLE_TRANSFORM_EVIDENCE_MISSING"), false);
   assert.equal(JSON.stringify(unsafe).includes('"coordinates"'), false);
+});
+
+test("buildAgentHintManifest rejects final icon asset decisions", () => {
+  assert.throws(() => buildAgentHintManifest(sourceSha256, [{
+    slideId: "slide-icon-forbidden",
+    confidence: 0.8,
+    iconKeywordCandidates: [{
+      keyword: "trust",
+      elementIds: ["claim-1"],
+      evidenceRefs: ["element:claim-1"],
+      reason: "Forbidden exact icon decision.",
+      confidence: 0.7,
+      iconName: "ShieldCheck",
+    } as never],
+  }]), /forbidden final-decision field/);
+});
+
+test("cross-repo hint compatibility fixture stays source-bound and boundary-safe", () => {
+  const markdown = readFileSync("artifacts/cross-repo-hint-compatibility/deck.md", "utf-8");
+  const manifest = JSON.parse(readFileSync("artifacts/cross-repo-hint-compatibility/agent-hint.json", "utf-8"));
+  const sourceHash = createHash("sha256").update(markdown).digest("hex");
+
+  assert.equal(manifest.sourceSha256, sourceHash);
+  assert.doesNotThrow(() => buildAgentHintManifest(manifest.sourceSha256, manifest.hints, {
+    generatedAt: manifest.generatedAt,
+  }));
+  assert.equal(manifest.hints[0].keyMessageCandidates[0].evidenceRefs[0], "element:b2");
+  assert.equal(manifest.hints[0].iconKeywordCandidates[0].keyword, "validation");
+  assert.equal(JSON.stringify(manifest).includes("iconName"), false);
+  assert.equal(JSON.stringify(manifest).includes("coordinates"), false);
 });

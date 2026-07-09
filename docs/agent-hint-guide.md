@@ -1,13 +1,13 @@
 # Agent Hint Guide
 
 Agent hints may suggest semantic intent, grouping, importance, key-message
-priority, content split/readability candidates, compact icon-search keywords,
-template-fill policy, or generated-image candidates. Generated-image candidates
-require explicit generated-asset evidence; a large or ambiguous icon is not
-enough by itself. Hints cannot specify recipe IDs, variant IDs, boxes,
-coordinates, colors, effects, exact icon asset paths, exact image assets,
-z-order, typography, or renderer object IDs. Builds must remain valid with
-agents disabled.
+priority, content split/readability candidates, evidence-bound icon keyword
+candidates, template-fill policy, or generated-image candidates.
+Generated-image candidates require explicit generated-asset evidence; a large
+or ambiguous icon is not enough by itself. Hints cannot specify recipe IDs,
+variant IDs, boxes, coordinates, colors, effects, exact icon asset paths, exact
+icon names, exact image assets, z-order, typography, or renderer object IDs.
+Builds must remain valid with agents disabled.
 
 MDPR accepts hints through `mdpresent build deck.md --hints deck.mdpr-hints.json`
 or `mdpresent validate deck.md --hints deck.mdpr-hints.json`. The hint file is
@@ -136,6 +136,7 @@ are ignored by default and become validation errors when MDPR runs with
           "messageRole": "main-takeaway",
           "emphasisLevel": "primary",
           "elementIds": ["b2"],
+          "evidenceRefs": ["element:b2"],
           "preferredPlaceholderRole": "title",
           "reason": "Main takeaway should stay bound to the claim placeholder.",
           "confidence": 0.78
@@ -169,20 +170,36 @@ are ignored by default and become validation errors when MDPR runs with
         "iconUse": "no-new-icons",
         "evidenceRefs": ["template:hcs-template"]
       },
+      "iconKeywordCandidates": [
+        {
+          "keyword": "validation",
+          "elementIds": ["b2"],
+          "evidenceRefs": ["element:b2"],
+          "reason": "Explicit icon request permits semantic keyword search only.",
+          "confidence": 0.7,
+          "workflowIntentRef": "workflow:generated-asset-request"
+        }
+      ],
       "rationale": "Review note only."
     }
   ]
 }
 ```
 
-For icon hints, use short meaning words rather than asset names:
+For icon hints, use structured semantic candidates rather than asset names:
 
 ```text
-Good: validation, database, workflow, color palette, chart evidence
+Good keyword values: validation, database, workflow, color palette, chart evidence
 Avoid: use icon file X, place Tabler icon Y at coordinates, make it large
 ```
 
-MDPR owns the final deterministic icon catalog search. The skill can only suggest candidate meaning keywords when the slide semantics are ambiguous and the current workflow permits new icons. In `template-fill`, default to `iconUse: "no-new-icons"` unless the user explicitly asks for icons.
+MDPR owns the final deterministic icon catalog search. The skill can only
+suggest candidate meaning keywords when the slide semantics are ambiguous and
+the current workflow permits new icons. Each `iconKeywordCandidates[]` entry
+must include `keyword`, `elementIds`, `evidenceRefs`, `reason`, and
+`confidence`; it must not include `iconName`, `iconPath`, coordinates, colors,
+or exact renderer fields. In `template-fill`, default to
+`iconUse: "no-new-icons"` unless the user explicitly asks for icons.
 
 Use `visualAssetCandidates` only when the source context includes a source image
 reference or the user explicitly requests a generated asset. The default image

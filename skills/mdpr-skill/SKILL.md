@@ -84,9 +84,9 @@ node <mdpr-path>/packages/cli/dist/index.js validate <deck.md> --visual --cohere
 
 Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would benefit from compact semantic guidance.
 
-- Suggest intent, grouping, importance, icon-search keywords, key-message
-  priority, content split, readability, template-use, and media-policy
-  semantics.
+- Suggest intent, grouping, importance, evidence-bound icon-search keywords as
+  structured icon keyword candidates, key-message priority, content split,
+  readability, template-use, and media-policy semantics.
 - When a user provides or references an existing PPTX/POTX/theme and does not
   explicitly ask for a new visual system, default to `template-fill`: preserve
   master slides, placeholders, and the existing theme frame. Do not add new
@@ -97,8 +97,10 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
 - Default image search to disabled. Use source-image-only guidance when source
   images exist, and explicit-request-only guidance when the user asks for image
   generation or search.
-- Default icon use to no-new-icons in template-fill workflows. Icon keywords
-  are allowed only as semantic search terms when the workflow permits icons.
+- Default icon use to no-new-icons in template-fill workflows. Icon keyword
+  candidates are allowed only as semantic search terms when the workflow permits
+  icons, and each candidate must carry element/source evidence rather than an
+  exact icon name, file path, placement, or style.
 - For dense or wordy content, prefer semantic `contentSplitCandidates` and
   `readabilityCandidates` before visual decoration.
 - Treat paragraph marker handling as MDPR-owned runtime behavior. Current MDPR

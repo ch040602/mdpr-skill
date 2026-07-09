@@ -10,7 +10,7 @@ export type SkillHint = {
   readabilityCandidates?: ReadabilityCandidate[];
   templateUseCandidate?: TemplateUseCandidate;
   mediaPolicyCandidate?: MediaPolicyCandidate;
-  iconKeywordCandidates?: string[];
+  iconKeywordCandidates?: IconKeywordCandidate[];
   visualAssetCandidates?: VisualAssetCandidate[];
   rationale?: string;
 };
@@ -60,6 +60,15 @@ export type MediaPolicyCandidate = {
   imageSearch: "disabled" | "source-evidence-only" | "explicit-request-only";
   iconUse: "no-new-icons" | "semantic-keywords-only";
   evidenceRefs: string[];
+};
+
+export type IconKeywordCandidate = {
+  keyword: string;
+  elementIds: string[];
+  evidenceRefs: string[];
+  reason: string;
+  confidence: number;
+  workflowIntentRef?: string;
 };
 
 export type VisualAssetCandidate = {
@@ -190,7 +199,13 @@ export function hintFromSelectionContext(context: SelectionContext, options: Hin
   const keyMessageCandidates = buildKeyMessageCandidates(context.userInstruction, blockIds, merged.sourceEvidenceRefs);
   const contentSplitCandidates = buildContentSplitCandidates(context.userInstruction, blockIds);
   const readabilityCandidates = buildReadabilityCandidates(context.userInstruction, blockIds);
-  const iconKeywordCandidates = buildIconKeywordCandidates(context.userInstruction, mediaPolicyCandidate.iconUse);
+  const iconKeywordCandidates = buildIconKeywordCandidates(
+    context.userInstruction,
+    mediaPolicyCandidate.iconUse,
+    blockIds,
+    merged.sourceEvidenceRefs.length ? merged.sourceEvidenceRefs : mediaPolicyCandidate.evidenceRefs,
+    workflowIntentCandidate,
+  );
   const visualAssetCandidates = buildVisualAssetCandidates(context.userInstruction, merged, mediaPolicyCandidate);
   return {
     slideId: context.slideId,
@@ -285,7 +300,10 @@ export function validateAgentHintPreflight(
     const workflowIntent = hint.workflowIntentCandidate?.intent;
     if (
       workflowIntent === "template-fill"
-      && ((hint.iconKeywordCandidates?.length ?? 0) > 0 || (hint.visualAssetCandidates?.length ?? 0) > 0)
+      && (
+        ((hint.iconKeywordCandidates?.length ?? 0) > 0 && hint.mediaPolicyCandidate?.iconUse !== "semantic-keywords-only")
+        || (hint.visualAssetCandidates?.length ?? 0) > 0
+      )
     ) {
       findings.push({
         severity: "warning",
@@ -439,12 +457,29 @@ function hasExplicitStyleTransformRequest(userInstruction: string): boolean {
   return /\b(new visual system|change the visual system|style transform|visual overhaul|redesign the style|new theme|different theme)\b|시각 시스템 변경|새로운 시각|스타일 변환|스타일을 바꿔|테마를 바꿔|전면 개편/.test(text);
 }
 
-function buildIconKeywordCandidates(userInstruction: string | undefined, iconUse: MediaPolicyCandidate["iconUse"]): string[] | undefined {
+function buildIconKeywordCandidates(
+  userInstruction: string | undefined,
+  iconUse: MediaPolicyCandidate["iconUse"],
+  blockIds: string[],
+  evidenceRefs: string[],
+  workflowIntentCandidate: WorkflowIntentCandidate | undefined,
+): IconKeywordCandidate[] | undefined {
   if (!userInstruction || iconUse === "no-new-icons") return undefined;
   const text = userInstruction.toLowerCase();
   if (!/\b(icon|icons|glyph|pictogram)\b|아이콘/.test(text)) return undefined;
+  if (!blockIds.length && !evidenceRefs.length) return undefined;
   const tokens = buildSemanticImagePrompt(userInstruction).split(/\s+/).filter((token) => !/^(icon|icons|아이콘)$/.test(token));
-  return tokens.length ? tokens.slice(0, 4) : undefined;
+  const refs = evidenceRefs.length ? evidenceRefs.slice(0, 8) : blockIds.slice(0, 4).map((blockId) => `element:${blockId}`);
+  return tokens.length
+    ? tokens.slice(0, 4).map((keyword) => ({
+      keyword,
+      elementIds: blockIds.slice(0, 8),
+      evidenceRefs: refs,
+      reason: "Explicit icon instruction permits semantic keyword search only; final icon asset choice remains MDPR-owned.",
+      confidence: 0.7,
+      ...(workflowIntentCandidate ? { workflowIntentRef: `workflow:${workflowIntentCandidate.intent}` } : {}),
+    }))
+    : undefined;
 }
 
 function buildKeyMessageCandidates(userInstruction: string | undefined, blockIds: string[], sourceEvidenceRefs: string[] = []): KeyMessageCandidate[] | undefined {

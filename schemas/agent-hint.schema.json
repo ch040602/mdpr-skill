@@ -324,10 +324,51 @@
             "type": "array",
             "maxItems": 12,
             "items": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 48,
-              "pattern": "^[A-Za-z0-9 _.-]+$"
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["keyword", "elementIds", "evidenceRefs", "reason", "confidence"],
+              "properties": {
+                "keyword": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 48,
+                  "pattern": "^[A-Za-z0-9 _.-]+$"
+                },
+                "elementIds": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "evidenceRefs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  }
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "workflowIntentRef": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                }
+              }
             }
           },
           "visualAssetCandidates": {
