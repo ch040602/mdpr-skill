@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, isAbsolute, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { buildAgentHintManifest, hintFromSelectionContext, type SelectionContext } from "../../hints-core/src/index.js";
+import { buildAgentHintManifest, hintFromSelectionContext, type HintBuildOptions, type SelectionContext } from "../../hints-core/src/index.js";
 import { buildReviewReport, buildSourceSlideEvidenceLedger, renderReadmeTeaserSvg, reviewAccessibilityContent, reviewCitationProvenance, reviewCoherence, reviewDesignPolicy, reviewNarrativeSpine, reviewRenderedPreviewCritique, reviewSpeakerNotes, reviewTemplateLayoutIntent, reviewVisualPolicy, type CitationSource, type MdprEvidenceRef, type ReadmeTeaserSpec, type RenderedPreviewImage } from "../../review-core/src/index.js";
 import { runMdprSkillEval } from "../../eval-core/src/index.js";
 import { createChangeRequest, transitionChangeRequest, type ChangeRequest, type ChangeStage } from "../../change-core/src/index.js";
@@ -67,8 +67,8 @@ function helpText(): string {
     "mdpr-skill",
     "",
     "Commands:",
-    "  hint (--source-sha256 <64hex> | --selection-context <selection-context.json> [--markdown <deck.md>]) --out <agent-hint.json>",
-    "  review --manifest <manifest.json> [--presentation <presentation-ir.json>] [--layout <layout-ir.json>] --out <review-report.json>",
+    "  hint (--source-sha256 <64hex> | --selection-context <selection-context.json> [--markdown <deck.md>]) --out <agent-hint.json> [--workflow-intent template-fill] [--template-source <ref>] [--preserve-master-slides true] [--image-policy no-image] [--image-search-policy disabled] [--icon-policy no-new-icons]",
+    "  review --manifest <manifest.json> [--presentation <presentation-ir.json>] [--layout <layout-ir.json>] [--template-summary <template-summary.json>] --out <review-report.json>",
     "  narrative --markdown <deck.md> [--manifest <manifest.json>] [--source-notes <notes.md>] --out <narrative-review.json>",
     "  layout-intent --layout-catalog <catalog.json> --out <layout-intent.json>",
     "  speaker-notes --markdown <deck.md> [--source-notes <notes.md>] --out <speaker-notes.json>",
@@ -225,7 +225,7 @@ function runPptCommand(args: string[], io: CliIo): number {
   const selectionContextPath = requireOption(options, "selection-context");
   const context = readSelectionContext(selectionContextPath);
   if (options.markdown) assertSelectionContextMatchesMarkdown(context, options.markdown);
-  const hint = hintFromSelectionContext(context);
+  const hint = hintFromSelectionContext(context, hintBuildOptions(options));
   const hintManifest = buildAgentHintManifest(context.source.sourceSha256, [hint], {
     generatedAt: options["generated-at"],
     mdprVersion: options["mdpr-version"],
@@ -328,7 +328,7 @@ function runHintCommand(args: string[], io: CliIo): number {
   if (options["source-sha256"] && context && options["source-sha256"] !== context.source.sourceSha256) {
     throw new Error("hint --source-sha256 must match selection context source.sourceSha256");
   }
-  const manifest = buildAgentHintManifest(sourceSha256, context ? [hintFromSelectionContext(context)] : [], {
+  const manifest = buildAgentHintManifest(sourceSha256, context ? [hintFromSelectionContext(context, hintBuildOptions(options))] : [], {
     generatedAt: options["generated-at"],
     mdprVersion: options["mdpr-version"],
   });
@@ -364,10 +364,11 @@ function runReviewCommand(args: string[], io: CliIo): number {
   const manifest = readJson(requireOption(options, "manifest"));
   const presentation = options.presentation ? readJson(options.presentation) : undefined;
   const layout = options.layout ? readJson(options.layout) : undefined;
+  const templateSummary = options["template-summary"] ? readJson(options["template-summary"]) : undefined;
   const report = buildReviewReport([
-    ...reviewCoherence({ manifest, presentation, layout }),
-    ...reviewVisualPolicy({ manifest, presentation, layout }),
-    ...reviewDesignPolicy({ manifest, presentation, layout }),
+    ...reviewCoherence({ manifest, presentation, layout, templateSummary }),
+    ...reviewVisualPolicy({ manifest, presentation, layout, templateSummary }),
+    ...reviewDesignPolicy({ manifest, presentation, layout, templateSummary }),
   ]);
   writeJson(requireOption(options, "out"), report);
   io.stdout(JSON.stringify({ status: "pass", findings: report.findings.length, out: options.out }, null, 2));
@@ -395,7 +396,7 @@ function runNarrativeCommand(args: string[], io: CliIo): number {
 
 function runLayoutIntentCommand(args: string[], io: CliIo): number {
   const options = parseOptions(args);
-  const catalogPath = requireOption(options, "layout-catalog");
+  const catalogPath = options["layout-catalog"] ?? requireOption(options, "template-summary");
   const hints = reviewTemplateLayoutIntent({
     layoutCatalog: readJson(catalogPath),
     sourcePath: catalogPath,
@@ -408,6 +409,39 @@ function runLayoutIntentCommand(args: string[], io: CliIo): number {
   writeJson(requireOption(options, "out"), report);
   io.stdout(JSON.stringify({ status: "pass", hints: hints.length, out: options.out }, null, 2));
   return 0;
+}
+
+function hintBuildOptions(options: Record<string, string>): HintBuildOptions {
+  return {
+    ...(options["workflow-intent"] ? { workflowIntent: parseWorkflowIntent(options["workflow-intent"]) } : {}),
+    ...(options["template-source"] ? { templateSourceRef: options["template-source"] } : {}),
+    ...(options["preserve-master-slides"] === "true" ? { preserveMasterSlides: true } : {}),
+    ...(options["source-image-ref"] ? { sourceImageRefs: splitCsvOption(options["source-image-ref"]) } : {}),
+    ...(options["explicit-generated-asset-request-ref"] ? { explicitGeneratedAssetRequestRef: options["explicit-generated-asset-request-ref"] } : {}),
+    ...(options["image-policy"] ? { imagePolicy: parseImagePolicy(options["image-policy"]) } : {}),
+    ...(options["image-search-policy"] ? { imageSearchPolicy: parseImageSearchPolicy(options["image-search-policy"]) } : {}),
+    ...(options["icon-policy"] ? { iconPolicy: parseIconPolicy(options["icon-policy"]) } : {}),
+  };
+}
+
+function parseWorkflowIntent(value: string): NonNullable<HintBuildOptions["workflowIntent"]> {
+  if (value === "template-fill" || value === "style-transform" || value === "theme-import" || value === "generated-asset-request") return value;
+  throw new Error(`Unsupported --workflow-intent value: ${value}`);
+}
+
+function parseImagePolicy(value: string): NonNullable<HintBuildOptions["imagePolicy"]> {
+  if (value === "no-image" || value === "source-image-only" || value === "generated-asset-approved") return value;
+  throw new Error(`Unsupported --image-policy value: ${value}`);
+}
+
+function parseImageSearchPolicy(value: string): NonNullable<HintBuildOptions["imageSearchPolicy"]> {
+  if (value === "disabled" || value === "source-evidence-only" || value === "explicit-request-only") return value;
+  throw new Error(`Unsupported --image-search-policy value: ${value}`);
+}
+
+function parseIconPolicy(value: string): NonNullable<HintBuildOptions["iconPolicy"]> {
+  if (value === "no-new-icons" || value === "semantic-keywords-only") return value;
+  throw new Error(`Unsupported --icon-policy value: ${value}`);
 }
 
 function runSpeakerNotesCommand(args: string[], io: CliIo): number {

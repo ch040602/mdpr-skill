@@ -567,9 +567,66 @@ test("runCli writes an agent hint manifest directly from a selection context", (
     assert.equal(manifest.sourceSha256, "e".repeat(64));
     assert.equal(manifest.hints[0].slideId, "slide-direct");
     assert.equal(manifest.hints[0].visualAssetCandidates[0].kind, "generated-image");
-    assert.equal(manifest.hints[0].visualAssetCandidates[0].trigger, "large-or-ambiguous-icon");
+    assert.equal(manifest.hints[0].visualAssetCandidates[0].trigger, "explicit-generated-asset-request");
+    assert.equal(manifest.hints[0].visualAssetCandidates[0].requestRef, "instruction:generated-asset-request");
     assert.equal(JSON.stringify(manifest).includes("iconPath"), false);
     assert.equal(JSON.stringify(manifest).includes('"coordinates"'), false);
+  } finally {
+    rmSync(workDir, { recursive: true, force: true });
+  }
+});
+
+test("runCli writes template-fill media and master-slide hint policies", () => {
+  const workDir = mkdtempSync(join(tmpdir(), "mdpr-skill-cli-hint-template-fill-"));
+  try {
+    const selectionContextPath = join(workDir, "selection-context.json");
+    const outPath = join(workDir, "agent-hint.json");
+    writeFileSync(selectionContextPath, JSON.stringify({
+      schemaVersion: "mdpr-selection-context-v1",
+      source: {
+        kind: "mdpr-preview",
+        sourceSha256: "f".repeat(64),
+      },
+      slideId: "slide-template-fill",
+      overlappedBlocks: ["claim-1", "proof-1", "detail-1"],
+      userInstruction: "핵심 메시지를 강조하고 가독성 좋게 줄여줘. 이미지는 쓰지 말고 기존 PPT 테마를 유지해.",
+    }), "utf-8");
+
+    const exitCode = runCli([
+      "hint",
+      "--selection-context",
+      selectionContextPath,
+      "--workflow-intent",
+      "template-fill",
+      "--template-source",
+      "hcs-template",
+      "--preserve-master-slides",
+      "true",
+      "--image-policy",
+      "no-image",
+      "--image-search-policy",
+      "disabled",
+      "--icon-policy",
+      "no-new-icons",
+      "--out",
+      outPath,
+    ], {
+      stdout: () => undefined,
+      stderr: () => undefined,
+    });
+
+    assert.equal(exitCode, 0);
+    const manifest = JSON.parse(readFileSync(outPath, "utf-8"));
+    const hint = manifest.hints[0];
+    assert.equal(hint.workflowIntentCandidate.intent, "template-fill");
+    assert.equal(hint.templateUseCandidate.masterSlidePolicy, "preserve-existing-master-slides");
+    assert.equal(hint.mediaPolicyCandidate.imageUse, "no-image");
+    assert.equal(hint.mediaPolicyCandidate.imageSearch, "disabled");
+    assert.equal(hint.mediaPolicyCandidate.iconUse, "no-new-icons");
+    assert.equal(hint.visualAssetCandidates, undefined);
+    assert.equal(hint.iconKeywordCandidates, undefined);
+    assert.equal(hint.keyMessageCandidates[0].messageRole, "main-takeaway");
+    assert.equal(JSON.stringify(hint).includes('"coordinates"'), false);
   } finally {
     rmSync(workDir, { recursive: true, force: true });
   }
@@ -871,7 +928,7 @@ test("runCli writes generated-image hint candidates for large or ambiguous icon 
     assert.equal(exitCode, 0);
     const hints = JSON.parse(readFileSync(hintsPath, "utf-8"));
     assert.equal(hints.hints[0].visualAssetCandidates[0].kind, "generated-image");
-    assert.equal(hints.hints[0].visualAssetCandidates[0].trigger, "large-or-ambiguous-icon");
+    assert.equal(hints.hints[0].visualAssetCandidates[0].trigger, "explicit-generated-asset-request");
     assert.equal(JSON.stringify(hints).includes("iconPath"), false);
     assert.equal(JSON.stringify(hints).includes('"coordinates"'), false);
   } finally {

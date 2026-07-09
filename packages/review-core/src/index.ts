@@ -562,6 +562,7 @@ export type ReviewCoreInput = {
   manifest?: Record<string, unknown>;
   designLock?: Record<string, unknown>;
   selectionContext?: Record<string, unknown>;
+  templateSummary?: Record<string, unknown>;
   chartPlacements?: ChartNarrativePlacement[];
   htmlDesignAnalysis?: Record<string, unknown>;
   componentPackCandidate?: Record<string, unknown>;
@@ -710,8 +711,8 @@ export type AccessibilityContentInput = {
 };
 
 export type AccessibilityContentSuggestion = {
-  type: "ALT_TEXT_DRAFT" | "PLAIN_LANGUAGE_CHECK" | "ACRONYM_EXPANSION" | "AUDIENCE_FIT_NOTE";
-  kind: "alt-text-draft" | "plain-language" | "acronym-expansion" | "audience-fit";
+  type: "ALT_TEXT_DRAFT" | "PLAIN_LANGUAGE_CHECK" | "ACRONYM_EXPANSION" | "AUDIENCE_FIT_NOTE" | "MARKDOWN_MARKER_NORMALIZATION_NOTE";
+  kind: "alt-text-draft" | "plain-language" | "acronym-expansion" | "audience-fit" | "source-cleanup";
   generatedBy: "mdpr-skill";
   evidence: {
     sourcePath: string;
@@ -1215,6 +1216,22 @@ export function reviewRenderedPreviewCritique(input: RenderedPreviewCritiqueInpu
 export function reviewAccessibilityContent(input: AccessibilityContentInput): AccessibilityContentSuggestion[] {
   const sourcePath = input.sourcePath ?? "markdown";
   const suggestions: AccessibilityContentSuggestion[] = [];
+  const markerLine = input.markdown.split(/\r?\n/)
+    .map((line) => line.trim())
+    .find(isParagraphMarkerNormalizationCandidate);
+  if (markerLine) {
+    suggestions.push({
+      type: "MARKDOWN_MARKER_NORMALIZATION_NOTE",
+      kind: "source-cleanup",
+      generatedBy: "mdpr-skill",
+      evidence: { sourcePath, markdownExcerpt: markerLine.slice(0, 180) },
+      suggestion: {
+        text: "MDPR owns paragraph-marker normalization for dash and bullet-like lines; keep the source as clear list items or plain sentences rather than using layout-specific marker prose.",
+      },
+      boundary: { mdprVisualAccessibilityAuthority: true },
+    });
+  }
+
   const imageWithoutAlt = [...input.markdown.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)]
     .find((match) => !match[1]?.trim() && match[2]?.trim());
   if (imageWithoutAlt) {
@@ -1694,6 +1711,8 @@ export function reviewVisualPolicy(input: ReviewCoreInput): ReviewFinding[] {
     ...effectBudgetFindings(input),
     ...accentOveruseFindings(input),
     ...nonEditableObjectFindings(input),
+    ...reviewTemplateFidelity(input),
+    ...reviewMediaPolicy(input),
   ];
 }
 
@@ -1704,7 +1723,284 @@ export function reviewDesignPolicy(input: ReviewCoreInput): ReviewFinding[] {
     ...componentStyleDriftFindings(input),
     ...diagramComplexityBudgetFindings(input),
     ...diagramAccentBudgetFindings(input),
+    ...reviewContentFitPolicy(input),
   ];
+}
+
+export function reviewTemplateFidelity(input: ReviewCoreInput): ReviewFinding[] {
+  const manifest = asRecord(input.manifest) ?? {};
+  const templateSummary = asRecord(input.templateSummary ?? manifest.templateSummary);
+  const workflowIntent = stringValue(manifest.workflowIntent)
+    ?? stringValue(asRecord(manifest.agentHints)?.workflowIntent)
+    ?? stringValue(asRecord(asRecord(manifest.policy)?.workflow)?.intent);
+  const templateFill = workflowIntent === "template-fill" || Boolean(templateSummary);
+  if (!templateFill) return [];
+
+  const findings: ReviewFinding[] = [];
+  const masterRefs = templateMasterRefs(templateSummary, manifest);
+  const placeholderRoles = templatePlaceholderRoles(templateSummary, manifest);
+  const templateEvidence = asRecord(manifest.templatePreservationEvidence);
+  const placeholderFillRefs = stringArrayAt(templateEvidence, "placeholderFillRefs");
+  const placeholderFillRecords = placeholderFillEvidenceRecords(templateEvidence);
+  const masterThemeRefs = stringArrayAt(templateEvidence, "masterThemeRefs");
+
+  if (masterRefs.length > 0 && masterThemeRefs.length === 0) {
+    findings.push({
+      severity: "warning",
+      type: "TEMPLATE_MASTER_THEME_EVIDENCE_MISSING",
+      slideId: "deck",
+      evidence: {
+        workflowIntent: workflowIntent ?? "template-fill",
+        masterRefs: masterRefs.slice(0, 8),
+        rule: "existing-ppt-master-slides-should-be-used-as-theme-source",
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "template.masterSlides.asThemeSource",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  if (placeholderRoles.length > 0 && placeholderFillRefs.length === 0) {
+    findings.push({
+      severity: "warning",
+      type: "PLACEHOLDER_PRESERVATION_EVIDENCE_MISSING",
+      slideId: "deck",
+      evidence: {
+        workflowIntent: workflowIntent ?? "template-fill",
+        placeholderRoles: placeholderRoles.slice(0, 12),
+        rule: "prefer-existing-placeholders-before-new-text-overlays",
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "template.placeholderFill.evidenceRequired",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  for (const object of manifestObjects(manifest)) {
+    const objectKind = stringValue(object.objectKind) ?? stringValue(object.kind) ?? "";
+    const role = stringValue(object.role) ?? "";
+    const slideId = stringValue(object.slideId) ?? "deck";
+    if (/full-slide|slide-raster|raster-image/.test(objectKind) && /slide|primary|body|table|chart/.test(role || "slide")) {
+      findings.push({
+        severity: "warning",
+        type: "RASTERIZED_TEMPLATE_FILL_RISK",
+        slideId,
+        evidence: {
+          objectKind,
+          role: role || "unknown",
+          workflowIntent: workflowIntent ?? "template-fill",
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "templateFill.editablePptxObjects",
+          operation: "enableRule",
+        },
+      });
+    }
+    if (
+      placeholderFillRefs.length > 0
+      && placeholderRoles.includes(role)
+      && /text|textbox|text-box|shape/.test(objectKind)
+      && !hasScopedPlaceholderFill(placeholderFillRecords, slideId, role)
+    ) {
+      findings.push({
+        severity: "warning",
+        type: "PLACEHOLDER_SCOPE_MISMATCH",
+        slideId,
+        evidence: {
+          placeholderRole: role,
+          workflowIntent: workflowIntent ?? "template-fill",
+          rule: "placeholder-evidence-should-be-bound-to-slide-and-role",
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "template.placeholderFill.slideScopedEvidence",
+          operation: "enableRule",
+        },
+      });
+      findings.push({
+        severity: "warning",
+        type: "TEXT_OVERLAY_WHILE_PLACEHOLDER_EXISTS",
+        slideId,
+        evidence: {
+          objectKind,
+          placeholderRole: role,
+          rule: "prefer-existing-placeholder-before-new-text-object",
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "template.placeholderFill.preferExistingSlots",
+          operation: "enableRule",
+        },
+      });
+    }
+  }
+
+  return findings;
+}
+
+export function reviewMediaPolicy(input: ReviewCoreInput): ReviewFinding[] {
+  const manifest = asRecord(input.manifest) ?? {};
+  const policy = asRecord(manifest.mediaPolicy) ?? asRecord(asRecord(manifest.agentHints)?.mediaPolicyCandidate) ?? {};
+  const workflowIntent = stringValue(manifest.workflowIntent) ?? stringValue(asRecord(asRecord(manifest.agentHints)?.workflowIntentCandidate)?.intent);
+  const sourceImageRefs = stringArrayAt(policy, "sourceImageRefs")
+    .concat(stringArrayAt(manifest, "sourceImageRefs"))
+    .concat(stringArrayAt(asRecord(manifest.templatePreservationEvidence), "sourceImageRefs"));
+  const explicitGeneratedRefs = stringArrayAt(policy, "explicitGeneratedAssetRequestRefs")
+    .concat(stringArrayAt(manifest, "explicitGeneratedAssetRequestRefs"));
+  const generatedAssets = asArray(manifest.generatedAssets).concat(asArray(asRecord(manifest.generatedAssets)?.assets));
+  const iconCandidates = asArray(manifest.iconCandidates).concat(asArray(asRecord(manifest.agentHints)?.iconKeywordCandidates));
+  const imageSearch = stringValue(policy.imageSearch) ?? stringValue(manifest.imageSearchPolicy);
+  const findings: ReviewFinding[] = [];
+
+  if (generatedAssets.length > 0 && sourceImageRefs.length === 0 && explicitGeneratedRefs.length === 0) {
+    findings.push({
+      severity: "warning",
+      type: "IMAGE_WITHOUT_SOURCE_OR_REQUEST",
+      slideId: "deck",
+      evidence: {
+        generatedAssetCount: generatedAssets.length,
+        sourceImageRefCount: sourceImageRefs.length,
+        explicitGeneratedAssetRequestCount: explicitGeneratedRefs.length,
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "media.imageUse.provenanceGate",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  generatedAssets.map((asset) => asRecord(asset) ?? {}).forEach((asset, index) => {
+    const assetSourceRefs = stringArrayAt(asset, "sourceImageRefs");
+    const assetRequestRefs = stringArrayAt(asset, "explicitGeneratedAssetRequestRefs")
+      .concat(stringArrayAt(asset, "requestRefs"))
+      .concat(stringValue(asset.approvedGeneratedAssetProposalRef) ? [stringValue(asset.approvedGeneratedAssetProposalRef)!] : []);
+    const slideId = stringValue(asset.slideId) ?? "deck";
+    const hasBoundProvenance = assetSourceRefs.length > 0 || assetRequestRefs.length > 0;
+    if (!hasBoundProvenance) {
+      findings.push({
+        severity: "warning",
+        type: "GENERATED_ASSET_PROVENANCE_UNBOUND",
+        slideId,
+        evidence: {
+          assetRef: safeRefSegment(stringValue(asset.semanticRef) ?? `generated-asset-${index + 1}`),
+          rule: "generated-assets-need-asset-or-slide-bound-source-or-request",
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "media.generatedAssets.boundProvenance",
+          operation: "enableRule",
+        },
+      });
+    }
+    if (!hasBoundProvenance && sourceImageRefs.length > 0) {
+      findings.push({
+        severity: "warning",
+        type: "SOURCE_IMAGE_SCOPE_MISMATCH",
+        slideId,
+        evidence: {
+          assetRef: safeRefSegment(stringValue(asset.semanticRef) ?? `generated-asset-${index + 1}`),
+          sourceImageRefCount: sourceImageRefs.length,
+          rule: "deck-level-source-image-does-not-authorize-every-generated-asset",
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "media.sourceImages.slideOrAssetScope",
+          operation: "enableRule",
+        },
+      });
+    }
+  });
+
+  if (imageSearch && imageSearch !== "disabled" && sourceImageRefs.length === 0 && explicitGeneratedRefs.length === 0) {
+    findings.push({
+      severity: "warning",
+      type: "IMAGE_SEARCH_POLICY_UNDECLARED",
+      slideId: "deck",
+      evidence: {
+        imageSearch,
+        rule: "image-search-needs-source-image-or-explicit-user-request",
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "media.imageSearch.explicitEvidenceRequired",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  if (workflowIntent === "template-fill" && iconCandidates.length > 0) {
+    findings.push({
+      severity: "info",
+      type: "ICON_SUBSTITUTION_FOR_TEMPLATE_SLOT_RISK",
+      slideId: "deck",
+      evidence: {
+        workflowIntent,
+        iconCandidateCount: iconCandidates.length,
+        rule: "template-fill-should-not-add-new-icons-unless-requested",
+      },
+      suggestion: {
+        kind: "mdpr-policy",
+        target: "templateFill.iconPolicy.noNewIconsByDefault",
+        operation: "enableRule",
+      },
+    });
+  }
+
+  return findings;
+}
+
+export function reviewContentFitPolicy(input: ReviewCoreInput): ReviewFinding[] {
+  const model = normalizeReviewModel(input);
+  const findings: ReviewFinding[] = [];
+  for (const slide of model.presentationSlides) {
+    const textBlocks = slide.blocks.filter(isSupportTextBlock);
+    const longBlocks = textBlocks.filter((block) => blockText(block).trim().length > 180);
+    const bulletLikeCount = textBlocks.filter((block) => isParagraphMarkerNormalizationCandidate(blockText(block).trim()) || block.type === "bulletList").length;
+    const evidenceCount = slide.blocks.filter(isEvidenceBlock).length;
+    if (longBlocks.length > 0) {
+      findings.push({
+        severity: "warning",
+        type: "READABILITY_COPY_TOO_LONG",
+        slideId: slide.id,
+        evidence: {
+          blockIds: longBlocks.slice(0, 6).map((block) => block.id),
+          maxCharacterCount: Math.max(...longBlocks.map((block) => blockText(block).trim().length)),
+          rule: "shorten-copy-or-move-detail-to-speaker-notes",
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "content.readability.copyBudget",
+          operation: "enableRule",
+        },
+      });
+    }
+    if (textBlocks.length + evidenceCount >= 8 || bulletLikeCount >= 7) {
+      findings.push({
+        severity: "warning",
+        type: "CONTENT_SPLIT_RECOMMENDED",
+        slideId: slide.id,
+        evidence: {
+          textBlockCount: textBlocks.length,
+          evidenceBlockCount: evidenceCount,
+          bulletLikeCount,
+          rule: "split-dense-content-before-visual-decoration",
+        },
+        suggestion: {
+          kind: "mdpr-policy",
+          target: "content.split.denseSlides",
+          operation: "increaseWeight",
+          value: 0.15,
+        },
+      });
+    }
+  }
+  return findings;
 }
 
 export function pptEffectUnsupportedFindings(input: ReviewCoreInput): ReviewFinding[] {
@@ -2854,6 +3150,12 @@ function hasCitationMarker(line: string): boolean {
   return /\[\^?\w+\]|\(\s*https?:\/\/|source:/i.test(line);
 }
 
+function isParagraphMarkerNormalizationCandidate(line: string): boolean {
+  const trimmed = line.trim();
+  if (!trimmed || /^-{3,}$/.test(trimmed) || /^-\d/.test(trimmed) || /^->/.test(trimmed)) return false;
+  return /^[•·ㆍ▪◦‣–—−]\s*\S/.test(trimmed) || /^-[^\s-]\S*/.test(trimmed) || /^[-*]\s+\S/.test(trimmed);
+}
+
 function hasQuantitativeClaim(line: string): boolean {
   return /\b\d+(?:\.\d+)?\s*(?:%|percent\b|x\b|k\b|m\b|b\b|ms\b|s\b|days?\b|weeks?\b|months?\b|years?\b)/i.test(line);
 }
@@ -2907,6 +3209,64 @@ function normalizeTemplateLayouts(value: unknown): TemplateLayoutLike[] {
       roles: [...new Set(placeholders.map((placeholder) => normalizedPlaceholderRole(placeholder)).filter(Boolean))],
     };
   }).filter((layout) => layout.roles.length > 0);
+}
+
+function templateMasterRefs(templateSummary: Record<string, unknown> | undefined, manifest: Record<string, unknown>): string[] {
+  const refs = new Set<string>();
+  const source = templateSummary ?? {};
+  for (const key of ["masterRefs", "masterSlideRefs", "slideMasterRefs"]) {
+    for (const ref of stringArrayAt(source, key)) refs.add(safeRefSegment(ref));
+    for (const ref of stringArrayAt(manifest, key)) refs.add(safeRefSegment(ref));
+  }
+  const masters = asArray(source.masters ?? source.masterSlides ?? source.slideMasters);
+  masters.forEach((master, index) => {
+    const record = asRecord(master) ?? {};
+    refs.add(safeRefSegment(stringValue(record.name) ?? stringValue(record.label) ?? `master-${index + 1}`));
+  });
+  return [...refs].filter(Boolean);
+}
+
+function templatePlaceholderRoles(templateSummary: Record<string, unknown> | undefined, manifest: Record<string, unknown>): string[] {
+  const roles = new Set<string>();
+  for (const layout of normalizeTemplateLayouts(templateSummary)) {
+    for (const role of layout.roles) roles.add(role);
+  }
+  const manifestPlaceholders = asArray(manifest.placeholders ?? asRecord(manifest.templateSummary)?.placeholders);
+  for (const placeholder of manifestPlaceholders) {
+    const role = normalizedPlaceholderRole(asRecord(placeholder) ?? {});
+    if (role) roles.add(role);
+  }
+  return [...roles].filter(Boolean);
+}
+
+function manifestObjects(manifest: Record<string, unknown>): Record<string, unknown>[] {
+  const objects = [
+    ...asArray(manifest.pptxObjects),
+    ...asArray(manifest.objects),
+    ...asArray(asRecord(manifest.renderedObjects)?.objects),
+  ];
+  return objects.map((object) => asRecord(object) ?? {});
+}
+
+function placeholderFillEvidenceRecords(templateEvidence: Record<string, unknown> | undefined): Array<{ slideRef: string; placeholderRole: string }> {
+  const records = [
+    ...asArray(templateEvidence?.placeholderFillRecords),
+    ...asArray(templateEvidence?.placeholderFills),
+    ...asArray(templateEvidence?.fills),
+  ];
+  return records.map((record) => {
+    const value = asRecord(record) ?? {};
+    return {
+      slideRef: safeRefSegment(stringValue(value.slideRef) ?? stringValue(value.slideId) ?? ""),
+      placeholderRole: normalizedPlaceholderRole(value),
+    };
+  }).filter((record) => record.slideRef && record.placeholderRole);
+}
+
+function hasScopedPlaceholderFill(records: Array<{ slideRef: string; placeholderRole: string }>, slideId: string, role: string): boolean {
+  const safeSlide = safeRefSegment(slideId);
+  const safeRole = safeRefSegment(role);
+  return records.some((record) => record.slideRef === safeSlide && record.placeholderRole === safeRole);
 }
 
 function normalizedPlaceholderRole(placeholder: Record<string, unknown>): string {

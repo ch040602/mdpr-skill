@@ -18,6 +18,36 @@ not create final coordinates, raw colors, typography, z-order, arrow geometry,
 component variants, renderer object IDs, or exact icon asset decisions.
 In short, `mdpr-skill` must not create final coordinates.
 
+## Workflow Intent
+
+PowerPoint bridge flows should classify the requested work before producing
+hints or proposals:
+
+| Intent | Meaning | Default media behavior |
+| --- | --- | --- |
+| `template-fill` | Preserve the existing PPTX/POTX masters, placeholders, and theme frame while filling or simplifying content. | `imageUse: no-image`, `imageSearch: disabled`, `iconUse: no-new-icons` |
+| `template-fidelity-review` | Review whether MDPR output preserved masters, placeholders, source mapping, and editability. | Evidence-only review findings |
+| `style-transform` | Create a new visual direction or reusable style system. Requires explicit user approval. | Approval-bound proposal only |
+| `theme-import` | Treat a source design as a reusable visual system, not slide content to copy. | Approval-bound theme candidate |
+| `generated-asset-request` | User explicitly asks for generated imagery or source-image-aware assets. | Generated asset rail with provenance |
+
+When a user supplies or references an existing PPT theme and does not ask for a
+new visual system, prefer `template-fill`. Existing master slides are the theme
+source; mdpr-skill may ask MDPR to preserve them, but must not restyle them.
+Do not use text overlays when placeholder roles are available, and do not
+search for or generate images unless there is source image evidence or an
+explicit generated-asset request.
+Placeholder preservation evidence should be scoped by slide and role. A single
+deck-level placeholder fill reference proves that at least one placeholder was
+used, but it must not mask a different slide that bypassed an available title,
+body, caption, chart, table, or image placeholder with a new overlay object.
+
+Image asset evidence should be scoped by asset or slide. A source image on one
+slide does not authorize generated imagery elsewhere. Generated or searched
+image candidates should carry a local `sourceImageRefs`,
+`explicitGeneratedAssetRequestRefs`, or `approvedGeneratedAssetProposalRef`
+before MDPR or an approved bridge considers the final asset.
+
 ## Edit Intent Rail
 
 The edit-intent rail is for natural-language editing UX. A user or agent may
@@ -151,6 +181,9 @@ MDPR owns:
   `mdpr-theme-candidate.schema.json`, and
   `mdpr-html-design-analysis.schema.json`
 - proposal reports and evidence paths
+- preflight-style comparison checks inspired by reference repos such as
+  `taste-skill`: preserve-first behavior, minimal semantic hints, source-bound
+  image usage, and no generic decorative additions in template-fill mode
 
 `mdpr-ppt` owns:
 

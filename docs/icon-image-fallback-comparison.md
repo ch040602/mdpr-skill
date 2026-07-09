@@ -11,6 +11,8 @@ same source and selection context are stored under
   `artifacts/icon-image-fallback-comparison/source.md`
 - Selection context:
   `artifacts/icon-image-fallback-comparison/selection-context.json`
+- Source-image provenance fixture:
+  `artifacts/icon-image-fallback-comparison/source-image-provenance.svg`
 - Pure MDPR build:
   `artifacts/icon-image-fallback-comparison/mdpr-build/deck.pptx`
 - Pure MDPR manifest:
@@ -81,7 +83,22 @@ node .cache/mdpr/packages/cli/dist/index.js build \
 | --- | --- | --- | --- |
 | Unstructured advice | Produces prose such as "use a large icon or generate an image." It is not an MDPR-consumable contract. | Still unstructured if used alone; it can describe intent but cannot safely carry it into MDPR without a schema bridge. | `advice-baseline-output.json` |
 | MDPR | Builds the deck deterministically from Markdown. The generated manifest records `agentHints.enabled: false`, `accepted: 0`, and `slideCount: 3`. | With the mdpr-skill hint supplied, MDPR records `agentHints.enabled: true`, `accepted: 1`, `rejected: 0`, `ignoredBecauseStale: 0`, and `forbiddenFieldCount: 0`. MDPR still owns parsing, layout, asset acceptance, and final PPTX objects. | `mdpr-build/mdpresent-manifest.json`, `mdpr-guided-build/mdpresent-manifest.json` |
-| mdpr-skill | Same selection context produced only a general selection hint with confidence `0.62`; no generated-image fallback signal existed. | `hint --selection-context --markdown` now emits a schema-valid `visualAssetCandidates[0]` with `kind: "generated-image"`, `trigger: "large-or-ambiguous-icon"`, and a semantic prompt, while rejecting stale selection contexts before MDPR silently ignores them. `ppt propose --markdown` applies the same stale-source guard before wrapping the hint in an approval-bound change request. Both guarded commands report `sourceVerified: true` in their CLI summaries. | `mdpr-skill-before-agent-hint.json`, `mdpr-skill-agent-hint.json`, `mdpr-skill-change-request.json` |
+| mdpr-skill | Same selection context produced only a general selection hint with confidence `0.62`; no generated-image fallback signal existed. | `hint --selection-context --markdown` now emits a schema-valid `visualAssetCandidates[0]` only when there is explicit generated-asset evidence, with `kind: "generated-image"`, `trigger: "explicit-generated-asset-request"`, a request ref, and a semantic prompt, while rejecting stale selection contexts before MDPR silently ignores them. `ppt propose --markdown` applies the same stale-source guard before wrapping the hint in an approval-bound change request. Both guarded commands report `sourceVerified: true` in their CLI summaries. | `mdpr-skill-before-agent-hint.json`, `mdpr-skill-agent-hint.json`, `mdpr-skill-change-request.json` |
+
+## Reference Skill Comparison
+
+The `taste-skill` reference repo is used here only as a quality-process
+comparison: read the context, preserve existing systems during redesign, avoid
+generic decorative defaults, and run a preflight before delivery. For MDPR and
+mdpr-skill, the equivalent rules are narrower:
+
+- preserve the PPT template frame in `template-fill` instead of inventing new
+  surfaces, icons, or images;
+- prefer a single primary key message and concise content split/readability
+  hints over broad source restatement;
+- keep image use source-bound or explicit-request-bound;
+- keep generated image candidates semantic until MDPR or an approved bridge
+  accepts the final asset.
 
 ## Practical Difference
 
@@ -92,7 +109,8 @@ metadata:
 ```json
 {
   "kind": "generated-image",
-  "trigger": "large-or-ambiguous-icon",
+  "trigger": "explicit-generated-asset-request",
+  "requestRef": "instruction:generated-asset-request",
   "semanticPrompt": "아이콘이 너무 크거나 의미가 애매하다면 이미지 생성으로 처리해줘",
   "confidence": 0.72
 }
@@ -107,6 +125,13 @@ That gives the downstream MDPR/runtime side a clear handoff point:
   `hint --selection-context --markdown` path, and by using the same source
   guard for `ppt propose --markdown`, while leaving final rendering decisions
   to MDPR.
+
+The same policy now applies after assets exist: generated assets should carry
+asset- or slide-bound `sourceImageRefs`, `explicitGeneratedAssetRequestRefs`,
+or `approvedGeneratedAssetProposalRef`. A deck-level source image reference is
+not enough to authorize unrelated generated imagery.
+The local `source-image-provenance.svg` fixture exists only as source evidence
+for this policy; it is not a final asset-selection instruction.
 
 ## Boundary Check
 

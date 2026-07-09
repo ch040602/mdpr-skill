@@ -294,6 +294,107 @@ test("reviewVisualPolicy reports visual policy findings without final design fie
   assert.equal(findings.every((finding) => finding.suggestion), true);
 });
 
+test("reviewVisualPolicy flags template master and placeholder preservation gaps", () => {
+  const findings = reviewVisualPolicy({
+    manifest: {
+      workflowIntent: "template-fill",
+      pptxObjects: [
+        { slideId: "slide-1", objectKind: "raster-image", role: "slide" },
+      ],
+    },
+    templateSummary: {
+      masterSlides: [{ name: "HCS Content Master" }],
+      layouts: [
+        {
+          name: "Title and Body",
+          placeholders: [
+            { role: "title", x: 1, y: 1 },
+            { role: "body", x: 2, y: 2 },
+          ],
+        },
+      ],
+    },
+  });
+  const types = findings.map((finding) => finding.type);
+
+  assert.equal(types.includes("TEMPLATE_MASTER_THEME_EVIDENCE_MISSING"), true);
+  assert.equal(types.includes("PLACEHOLDER_PRESERVATION_EVIDENCE_MISSING"), true);
+  assert.equal(types.includes("RASTERIZED_TEMPLATE_FILL_RISK"), true);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+  assert.equal(JSON.stringify(findings).includes('"x"'), false);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
+});
+
+test("reviewVisualPolicy flags slide-scoped placeholder preservation mismatches", () => {
+  const findings = reviewVisualPolicy({
+    manifest: {
+      workflowIntent: "template-fill",
+      templatePreservationEvidence: {
+        masterThemeRefs: ["HCS Content Master"],
+        placeholderFillRefs: ["slide-1:title"],
+        placeholderFillRecords: [
+          { slideRef: "slide-1", placeholderRole: "title", sourceElementRefs: ["claim-1"], placeholderFillRef: "slide-1:title" },
+        ],
+      },
+      pptxObjects: [
+        { slideId: "slide-2", objectKind: "text-box", role: "title", sourceElementRefs: ["claim-2"] },
+      ],
+    },
+    templateSummary: {
+      masterSlides: [{ name: "HCS Content Master" }],
+      layouts: [{ name: "Title and Body", placeholders: [{ role: "title" }, { role: "body" }] }],
+    },
+  });
+  const types = findings.map((finding) => finding.type);
+
+  assert.equal(types.includes("PLACEHOLDER_SCOPE_MISMATCH"), true);
+  assert.equal(types.includes("TEXT_OVERLAY_WHILE_PLACEHOLDER_EXISTS"), true);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(findings).includes('"objectId"'), false);
+});
+
+test("reviewVisualPolicy flags image and icon policy risks in template-fill mode", () => {
+  const findings = reviewVisualPolicy({
+    manifest: {
+      workflowIntent: "template-fill",
+      mediaPolicy: {
+        imageSearch: "explicit-request-only",
+      },
+      generatedAssets: [{ kind: "generated-image", promptHash: "abc" }],
+      iconCandidates: ["spark", "workflow"],
+    },
+  });
+  const types = findings.map((finding) => finding.type);
+
+  assert.equal(types.includes("IMAGE_WITHOUT_SOURCE_OR_REQUEST"), true);
+  assert.equal(types.includes("IMAGE_SEARCH_POLICY_UNDECLARED"), true);
+  assert.equal(types.includes("ICON_SUBSTITUTION_FOR_TEMPLATE_SLOT_RISK"), true);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+});
+
+test("reviewVisualPolicy requires generated asset provenance to be bound per asset or slide", () => {
+  const findings = reviewVisualPolicy({
+    manifest: {
+      mediaPolicy: {
+        imageSearch: "source-evidence-only",
+        sourceImageRefs: ["slide-1:source-image"],
+      },
+      generatedAssets: [
+        { slideId: "slide-1", kind: "generated-image", sourceImageRefs: ["slide-1:source-image"] },
+        { slideId: "slide-2", kind: "generated-image", semanticRef: "ambiguous-hero" },
+      ],
+    },
+  });
+  const types = findings.map((finding) => finding.type);
+
+  assert.equal(types.includes("GENERATED_ASSET_PROVENANCE_UNBOUND"), true);
+  assert.equal(types.includes("SOURCE_IMAGE_SCOPE_MISMATCH"), true);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+  assert.equal(JSON.stringify(findings).includes('"prompt"'), false);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
+});
+
 test("buildVisualGuidance normalizes review findings into evidence-based categories", () => {
   const findings = reviewVisualPolicy({
     manifest: {
@@ -322,6 +423,36 @@ test("buildVisualGuidance normalizes review findings into evidence-based categor
   assert.equal(guidance.findings.every((finding) => finding.evidenceRefs.length > 0), true);
   assert.equal(JSON.stringify(guidance).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(guidance).includes('"color"'), false);
+});
+
+test("reviewDesignPolicy flags dense and wordy content before visual decoration", () => {
+  const findings = reviewDesignPolicy({
+    presentation: {
+      slides: [
+        {
+          id: "slide-dense-copy",
+          title: "Dense Copy",
+          blocks: [
+            { id: "b1", type: "paragraph", text: "This sentence is intentionally long because it combines background, method, result, implication, limitation, next action, stakeholder context, operational detail, and a hidden assumption into one overloaded slide block that should be shortened." },
+            { id: "b2", type: "bulletList", text: "- one" },
+            { id: "b3", type: "bulletList", text: "- two" },
+            { id: "b4", type: "bulletList", text: "- three" },
+            { id: "b5", type: "bulletList", text: "- four" },
+            { id: "b6", type: "bulletList", text: "- five" },
+            { id: "b7", type: "bulletList", text: "- six" },
+            { id: "b8", type: "bulletList", text: "- seven" },
+          ],
+        },
+      ],
+    },
+  });
+  const types = findings.map((finding) => finding.type);
+
+  assert.equal(types.includes("READABILITY_COPY_TOO_LONG"), true);
+  assert.equal(types.includes("CONTENT_SPLIT_RECOMMENDED"), true);
+  assert.equal(findings.every((finding) => !reviewFindingHasFinalDecisionField(finding)), true);
+  assert.equal(JSON.stringify(findings).includes('"fontSize"'), false);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
 });
 
 test("buildGeneratorComparisonScorecard separates deterministic evidence from manual preference", () => {
@@ -1157,6 +1288,27 @@ test("reviewAccessibilityContent emits content-only accessibility suggestions", 
   assert.equal(JSON.stringify(suggestions).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(suggestions).includes('"fontSize"'), false);
   assert.equal(JSON.stringify(suggestions).includes('"verdict"'), false);
+});
+
+test("reviewAccessibilityContent references MDPR paragraph marker normalization as source cleanup", () => {
+  const suggestions = reviewAccessibilityContent({
+    markdown: [
+      "# Marker Review",
+      "## Notes",
+      "-공백 없는 하이픈 항목",
+      "– en dash item",
+      "-3 point change is a sentence, not a bullet.",
+      "---",
+    ].join("\n"),
+    sourcePath: "marker-review.md",
+  });
+
+  const cleanup = suggestions.find((suggestion) => suggestion.type === "MARKDOWN_MARKER_NORMALIZATION_NOTE");
+  assert.equal(cleanup?.kind, "source-cleanup");
+  assert.equal(cleanup?.evidence.sourcePath, "marker-review.md");
+  assert.match(cleanup?.suggestion.text ?? "", /MDPR owns paragraph-marker normalization/);
+  assert.equal(JSON.stringify(cleanup).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(cleanup).includes('"fontSize"'), false);
 });
 
 test("buildSourceSlideEvidenceLedger maps slide claims to source and MDPR evidence refs", () => {

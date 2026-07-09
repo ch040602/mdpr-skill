@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Source image provenance placeholder</title>
+  <desc id="desc">A neutral evidence image used to bind generated-image candidates to a concrete source-image reference.</desc>
+  <rect width="960" height="540" fill="#f7f7f5"/>
+  <rect x="72" y="72" width="816" height="396" rx="18" fill="#ffffff" stroke="#d8d8d2" stroke-width="2"/>
+  <path d="M156 352 326 214 464 322 592 186 804 352" fill="none" stroke="#4f6f63" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="244" cy="174" r="42" fill="#d9e8df" stroke="#4f6f63" stroke-width="8"/>
+  <rect x="156" y="390" width="648" height="18" rx="9" fill="#d8d8d2"/>
+  <rect x="156" y="424" width="412" height="14" rx="7" fill="#e7e3d7"/>
+</svg>

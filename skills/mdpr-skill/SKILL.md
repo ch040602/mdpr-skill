@@ -84,13 +84,38 @@ node <mdpr-path>/packages/cli/dist/index.js validate <deck.md> --visual --cohere
 
 Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would benefit from compact semantic guidance.
 
-- Suggest intent, grouping, importance, and icon-search keywords.
-- Suggest generated-image candidates only when an icon would need to become a
-  large primary visual or the visual metaphor is too ambiguous for a small
-  monotone symbol.
+- Suggest intent, grouping, importance, icon-search keywords, key-message
+  priority, content split, readability, template-use, and media-policy
+  semantics.
+- When a user provides or references an existing PPTX/POTX/theme and does not
+  explicitly ask for a new visual system, default to `template-fill`: preserve
+  master slides, placeholders, and the existing theme frame. Do not add new
+  cards, surfaces, icons, images, or style systems in this mode.
+- Suggest generated-image candidates only when the source contains image
+  evidence or the user explicitly requests a generated asset. A large or
+  ambiguous icon is not enough by itself.
+- Default image search to disabled. Use source-image-only guidance when source
+  images exist, and explicit-request-only guidance when the user asks for image
+  generation or search.
+- Default icon use to no-new-icons in template-fill workflows. Icon keywords
+  are allowed only as semantic search terms when the workflow permits icons.
+- For dense or wordy content, prefer semantic `contentSplitCandidates` and
+  `readabilityCandidates` before visual decoration.
+- Treat paragraph marker handling as MDPR-owned runtime behavior. Current MDPR
+  normalizes dash and bullet-like lines such as `-item`, `•`, `·`, `–`, `—`,
+  `−`, `ㆍ`, and `▪` into stable list structure while preserving `---` slide
+  breaks, pipeline arrows, negative-number prose, fenced code, indented code,
+  and raw `<pre>` blocks. mdpr-skill may suggest source cleanup or readability
+  notes around these markers, and may consume MDPR source-cleanup diagnostics
+  when available, but must not encode marker-specific layout or rendering
+  decisions.
 - Keep hints compatible with `agent-hint.json`-style weak semantic input.
 - Validate that hints do not encode final rendering choices.
 - Prefer minimal hints over broad restatement of the source.
+- Run a preflight mindset inspired by reference skills such as `taste-skill`:
+  one primary key message per slide by default, no broad restatement of every
+  source block, no contradictory template-fill media/icon candidates, and no
+  decorative hints that MDPR can already derive deterministically.
 
 Useful local commands when the repo CLI is available:
 
@@ -104,6 +129,11 @@ node bin/mdpr-skill.js hint --selection-context .mdpresent/ppt/selection-context
 Use when reviewing generated MDPR artifacts, manifests, preview images, review reports, or handoff artifacts.
 
 - Report visual concerns with evidence paths.
+- Flag template-fill risks such as master-theme evidence missing, placeholder
+  preservation evidence missing, slide-scoped placeholder mismatches,
+  rasterized template-fill output, images without source/request, generated
+  assets whose provenance is not bound to the asset or slide, undeclared image
+  search, new icon substitution, dense content, and overly long copy.
 - Distinguish source Markdown problems from MDPR runtime/rulebook problems.
 - Turn repeated visual issues into deterministic MDPR rule or config recommendations.
 - Keep the output actionable for MDPR maintainers.
@@ -143,6 +173,9 @@ needs semantic layout-intent hints before MDPR chooses any actual layout.
   summary.
 - Emit semantic intents such as comparison, chart-focus, evidence, or
   section-divider.
+- Treat existing PowerPoint master slides as the theme source when the workflow
+  is `template-fill`. Ask for preservation evidence; do not transform the
+  master, copy exact placeholder IDs, or choose final layouts.
 - Include provenance through the catalog path, layout label, and placeholder
   roles.
 - Do not emit placeholder coordinates, placeholder IDs, layout IDs, layout
@@ -168,6 +201,9 @@ when MDPR-rendered evidence needs a human-readable review artifact.
 - `accessibility`: draft alt text, plain-language, acronym expansion, and
   audience-fit suggestions.
 - `evidence-ledger`: map slide claims to source metadata and MDPR evidence IDs.
+- For readability and Korean decks, recommend shorter claim titles, fewer
+  bullets, and moving detail to notes as content suggestions only. Do not pick
+  font sizes or exact line breaks.
 
 These helpers may cite source paths, headings, rendered image paths, MDPR
 finding IDs, source IDs, and evidence IDs. They must not emit coordinates,

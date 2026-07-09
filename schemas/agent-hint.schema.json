@@ -38,6 +38,30 @@
             "type": "string",
             "minLength": 1
           },
+          "workflowIntentCandidate": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["intent", "confidence", "evidenceRefs"],
+            "properties": {
+              "intent": {
+                "enum": ["template-fill", "style-transform", "theme-import", "generated-asset-request"]
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "maxItems": 24,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                }
+              }
+            }
+          },
           "intentCandidate": {
             "enum": [
               "title",
@@ -130,6 +154,157 @@
               }
             }
           },
+          "keyMessageCandidates": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["messageRole", "emphasisLevel", "elementIds", "reason", "confidence"],
+              "properties": {
+                "messageRole": {
+                  "enum": ["main-takeaway", "decision-needed", "risk-callout", "proof-anchor", "section-transition"]
+                },
+                "emphasisLevel": {
+                  "enum": ["primary", "secondary", "supporting"]
+                },
+                "elementIds": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "preferredPlaceholderRole": {
+                  "enum": ["title", "subtitle", "body", "callout", "caption"]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "contentSplitCandidates": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["reason", "elementIds", "preferredSplitBy", "confidence"],
+              "properties": {
+                "reason": {
+                  "enum": ["dense-content", "mixed-topics", "long-bullets", "evidence-overload"]
+                },
+                "elementIds": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 40,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "preferredSplitBy": {
+                  "enum": ["h2", "h3", "h4", "block-group", "list-chunk"]
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "readabilityCandidates": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["action", "elementIds", "reason", "confidence"],
+              "properties": {
+                "action": {
+                  "enum": ["shorten-copy", "plain-language", "reduce-bullet-count", "claim-title", "move-detail-to-notes"]
+                },
+                "elementIds": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 40,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "templateUseCandidate": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["templateSourceRef", "masterSlidePolicy", "placeholderPolicy", "confidence"],
+            "properties": {
+              "templateSourceRef": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "masterSlidePolicy": {
+                "enum": ["preserve-existing-master-slides", "use-master-as-theme-source"]
+              },
+              "placeholderPolicy": {
+                "enum": ["prefer-existing-placeholders", "fill-named-slots-only"]
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          },
+          "mediaPolicyCandidate": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["imageUse", "imageSearch", "iconUse", "evidenceRefs"],
+            "properties": {
+              "imageUse": {
+                "enum": ["no-image", "source-image-only", "generated-asset-approved"]
+              },
+              "imageSearch": {
+                "enum": ["disabled", "source-evidence-only", "explicit-request-only"]
+              },
+              "iconUse": {
+                "enum": ["no-new-icons", "semantic-keywords-only"]
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "maxItems": 24,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                }
+              }
+            }
+          },
           "iconKeywordCandidates": {
             "type": "array",
             "maxItems": 12,
@@ -146,13 +321,18 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["kind", "trigger", "semanticPrompt", "confidence"],
+              "required": ["kind", "trigger", "requestRef", "semanticPrompt", "confidence"],
               "properties": {
                 "kind": {
                   "enum": ["generated-image"]
                 },
                 "trigger": {
-                  "enum": ["large-or-ambiguous-icon"]
+                  "enum": ["explicit-generated-asset-request"]
+                },
+                "requestRef": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
                 },
                 "semanticPrompt": {
                   "type": "string",

@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   buildAgentHintManifest,
   hintFromSelectionContext,
+  validateAgentHintPreflight,
 } from "../packages/hints-core/src/index";
 
 const sourceSha256 = "b".repeat(64);
@@ -33,7 +34,7 @@ test("hintFromSelectionContext converts selected blocks into semantic grouping o
   }));
 });
 
-test("hintFromSelectionContext suggests image generation when icon intent is large or ambiguous", () => {
+test("hintFromSelectionContext suggests generated assets only for explicit image requests", () => {
   const hint = hintFromSelectionContext({
     schemaVersion: "mdpr-selection-context-v1",
     source: { kind: "mdpr-preview", sourceSha256 },
@@ -45,12 +46,13 @@ test("hintFromSelectionContext suggests image generation when icon intent is lar
   assert.deepEqual(hint.visualAssetCandidates, [
     {
       kind: "generated-image",
-      trigger: "large-or-ambiguous-icon",
+      trigger: "explicit-generated-asset-request",
+      requestRef: "instruction:generated-asset-request",
       semanticPrompt: "large metaphor ambiguous generate image",
       confidence: 0.72,
     },
   ]);
-  assert.equal(hint.iconKeywordCandidates, undefined);
+  assert.deepEqual(hint.iconKeywordCandidates, ["large", "metaphor", "ambiguous", "generate"]);
   assert.equal(JSON.stringify(hint).includes("iconName"), false);
   assert.equal(JSON.stringify(hint).includes("iconPath"), false);
 
@@ -59,7 +61,7 @@ test("hintFromSelectionContext suggests image generation when icon intent is lar
   }));
 });
 
-test("hintFromSelectionContext supports Korean large or ambiguous icon instructions", () => {
+test("hintFromSelectionContext supports Korean explicit generated image instructions", () => {
   const hint = hintFromSelectionContext({
     schemaVersion: "mdpr-selection-context-v1",
     source: { kind: "mdpr-preview", sourceSha256 },
@@ -68,19 +70,21 @@ test("hintFromSelectionContext supports Korean large or ambiguous icon instructi
   });
 
   assert.equal(hint.visualAssetCandidates?.[0]?.kind, "generated-image");
-  assert.equal(hint.visualAssetCandidates?.[0]?.trigger, "large-or-ambiguous-icon");
+  assert.equal(hint.visualAssetCandidates?.[0]?.trigger, "explicit-generated-asset-request");
   assert.match(hint.visualAssetCandidates?.[0]?.semanticPrompt ?? "", /이미지/);
 });
 
-test("hintFromSelectionContext does not treat generic image generation as an icon fallback", () => {
+test("hintFromSelectionContext does not generate images for large icon ambiguity without explicit generation", () => {
   const hint = hintFromSelectionContext({
     schemaVersion: "mdpr-selection-context-v1",
     source: { kind: "mdpr-preview", sourceSha256 },
     slideId: "slide-image",
-    userInstruction: "Generate an image for the source photo section.",
+    userInstruction: "The icon is too large and the metaphor is ambiguous.",
   });
 
   assert.equal(hint.visualAssetCandidates, undefined);
+  assert.equal(hint.mediaPolicyCandidate?.imageUse, "no-image");
+  assert.equal(hint.mediaPolicyCandidate?.imageSearch, "disabled");
 });
 
 test("hintFromSelectionContext keeps generated-image semantic prompts within schema limits", () => {
@@ -103,4 +107,65 @@ test("hintFromSelectionContext keeps generated-image semantic prompts within sch
   });
 
   assert.equal((hint.visualAssetCandidates?.[0]?.semanticPrompt.length ?? 0) <= 160, true);
+});
+
+test("hintFromSelectionContext emits template-fill policies without new icons or images", () => {
+  const hint = hintFromSelectionContext({
+    schemaVersion: "mdpr-selection-context-v1",
+    source: { kind: "mdpr-preview", sourceSha256 },
+    slideId: "slide-template",
+    overlappedBlocks: ["claim-1", "proof-1", "detail-1"],
+    userInstruction: "핵심 메시지를 강조하고 가독성 있게 줄임. 내용이 많으면 분리해줘. 아이콘은 추가하지 마.",
+  }, {
+    workflowIntent: "template-fill",
+    templateSourceRef: "hcs-template",
+    preserveMasterSlides: true,
+    imagePolicy: "no-image",
+    imageSearchPolicy: "disabled",
+    iconPolicy: "no-new-icons",
+  });
+
+  assert.equal(hint.workflowIntentCandidate?.intent, "template-fill");
+  assert.equal(hint.templateUseCandidate?.masterSlidePolicy, "preserve-existing-master-slides");
+  assert.equal(hint.mediaPolicyCandidate?.imageUse, "no-image");
+  assert.equal(hint.mediaPolicyCandidate?.imageSearch, "disabled");
+  assert.equal(hint.mediaPolicyCandidate?.iconUse, "no-new-icons");
+  assert.equal(hint.iconKeywordCandidates, undefined);
+  assert.equal(hint.visualAssetCandidates, undefined);
+  assert.equal(hint.keyMessageCandidates?.[0]?.messageRole, "main-takeaway");
+  assert.equal(hint.contentSplitCandidates?.[0]?.preferredSplitBy, "list-chunk");
+  assert.equal(hint.readabilityCandidates?.[0]?.action, "shorten-copy");
+  assert.equal(JSON.stringify(hint).includes('"fontSize"'), false);
+  assert.equal(JSON.stringify(hint).includes('"coordinates"'), false);
+});
+
+test("validateAgentHintPreflight flags overbroad and contradictory template-fill hints", () => {
+  const manifest = buildAgentHintManifest(sourceSha256, [{
+    slideId: "slide-preflight",
+    confidence: 0.78,
+    workflowIntentCandidate: { intent: "template-fill", confidence: 0.86, evidenceRefs: ["template:hcs"] },
+    keyMessageCandidates: [
+      { messageRole: "main-takeaway", emphasisLevel: "primary", elementIds: ["b1"], reason: "Primary claim.", confidence: 0.8 },
+      { messageRole: "decision-needed", emphasisLevel: "primary", elementIds: ["b2"], reason: "Also primary.", confidence: 0.8 },
+    ],
+    readabilityCandidates: [
+      { action: "shorten-copy", elementIds: ["b1", "b2", "b3", "b4"], reason: "Restates all content.", confidence: 0.7 },
+    ],
+    iconKeywordCandidates: ["spark"],
+    visualAssetCandidates: [
+      { kind: "generated-image", trigger: "explicit-generated-asset-request", requestRef: "request:1", semanticPrompt: "spark visual", confidence: 0.7 },
+    ],
+  }], { generatedAt: "2026-06-24T00:00:00Z" });
+
+  const findings = validateAgentHintPreflight(manifest, {
+    sourceElementIdsBySlide: { "slide-preflight": ["b1", "b2", "b3", "b4"] },
+  });
+  const types = findings.map((finding) => finding.type);
+
+  assert.equal(types.includes("MULTIPLE_PRIMARY_KEY_MESSAGES"), true);
+  assert.equal(types.includes("HINT_RESTATES_SOURCE_ELEMENTS"), true);
+  assert.equal(types.includes("TEMPLATE_FILL_HINT_POLICY_CONFLICT"), true);
+  assert.equal(findings.every((finding) => finding.slideId === "slide-preflight"), true);
+  assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
+  assert.equal(JSON.stringify(findings).includes('"fontSize"'), false);
 });

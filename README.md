@@ -81,11 +81,12 @@ It documents what MDPR owns, what `mdpr-skill` may suggest, and which artifacts
 can be reproduced without exposing private benchmark names, source-review
 ordering, or implementation sequence.
 
-The image-fallback example is the public applied proof: when a selected icon is
-too large or ambiguous for a small symbol, `mdpr-skill` emits a bounded
-`visualAssetCandidates[0]` entry with `kind: "generated-image"` and
-`trigger: "large-or-ambiguous-icon"`. MDPR still owns final layout, theme,
-assets, and PPTX rendering. See
+The image-fallback example is the public applied proof: when the source carries
+image evidence or the user explicitly requests a generated asset,
+`mdpr-skill` emits a bounded `visualAssetCandidates[0]` entry with
+`kind: "generated-image"`, `trigger: "explicit-generated-asset-request"`, and a
+request reference. A large or ambiguous icon alone is not enough to request an
+image. MDPR still owns final layout, theme, assets, and PPTX rendering. See
 [docs/icon-image-fallback-comparison.md](docs/icon-image-fallback-comparison.md)
 and the generated artifacts under
 `artifacts/icon-image-fallback-comparison/`.

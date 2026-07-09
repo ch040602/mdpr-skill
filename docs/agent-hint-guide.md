@@ -1,9 +1,11 @@
 # Agent Hint Guide
 
-Agent hints may suggest semantic intent, grouping, importance, compact icon-search
-keywords, or generated-image candidates for cases where an icon would need to be
-large or the metaphor is ambiguous. They cannot specify recipe IDs, variant IDs,
-boxes, coordinates, colors, effects, exact icon asset paths, exact image assets,
+Agent hints may suggest semantic intent, grouping, importance, key-message
+priority, content split/readability candidates, compact icon-search keywords,
+template-fill policy, or generated-image candidates. Generated-image candidates
+require explicit generated-asset evidence; a large or ambiguous icon is not
+enough by itself. Hints cannot specify recipe IDs, variant IDs, boxes,
+coordinates, colors, effects, exact icon asset paths, exact image assets,
 z-order, typography, or renderer object IDs. Builds must remain valid with
 agents disabled.
 
@@ -30,6 +32,44 @@ node bin/mdpr-skill.js hint \
   --markdown deck.md \
   --out deck.mdpr-hints.json
 ```
+
+For a template-preserving PPTX/POTX workflow, make the operating mode explicit:
+
+```bash
+node bin/mdpr-skill.js hint \
+  --selection-context selection-context.json \
+  --markdown deck.md \
+  --workflow-intent template-fill \
+  --template-source hcs-template \
+  --preserve-master-slides true \
+  --image-policy no-image \
+  --image-search-policy disabled \
+  --icon-policy no-new-icons \
+  --out deck.mdpr-hints.json
+```
+
+`template-fill` means preserve the uploaded/current PowerPoint master slides,
+layout language, and placeholders as the theme source. mdpr-skill may suggest
+semantic slot roles, key-message priority, content splitting, and readability
+cleanup, but it must not suggest new cards, surface systems, icons, generated
+images, raw colors, typography, coordinates, or exact PPT objects. Use
+`style-transform` only when the user explicitly asks to change the visual
+system.
+
+MDPR owns Markdown paragraph marker normalization. Runtime parsing normalizes
+dash and bullet-like lines such as `-item`, `•`, `·`, `–`, `—`, `−`, `ㆍ`, and
+`▪` into stable list structure while preserving `---` slide breaks, pipeline
+arrows, negative-number prose, fenced code, indented code, and raw `<pre>`
+blocks. mdpr-skill may emit source-cleanup or readability notes around those
+markers, and may reference MDPR source-cleanup diagnostics when present, but
+agent hints must not choose marker-specific layout, bullet glyphs, indentation,
+or rendering.
+
+`taste-skill` is useful as a comparison reference for process discipline, not
+as a PPT rendering authority. The equivalent preflight for mdpr-skill is:
+one primary key message per slide by default, minimal hint coverage, no hint
+that restates every source block, and no template-fill hint that adds image,
+icon, or style-transform candidates without explicit evidence.
 
 `--markdown` is optional but recommended. When present, mdpr-skill hashes the
 current Markdown and rejects the selection context if `source.sourceSha256` is
@@ -76,15 +116,49 @@ are ignored by default and become validation errors when MDPR runs with
           "confidence": 0.82
         }
       ],
-      "iconKeywordCandidates": ["funnel", "activation"],
-      "visualAssetCandidates": [
+      "workflowIntentCandidate": {
+        "intent": "template-fill",
+        "confidence": 0.86,
+        "evidenceRefs": ["template:hcs-template"]
+      },
+      "keyMessageCandidates": [
         {
-          "kind": "generated-image",
-          "trigger": "large-or-ambiguous-icon",
-          "semanticPrompt": "activation funnel handoff",
-          "confidence": 0.72
+          "messageRole": "main-takeaway",
+          "emphasisLevel": "primary",
+          "elementIds": ["b2"],
+          "preferredPlaceholderRole": "title",
+          "reason": "Main takeaway should stay bound to the claim placeholder.",
+          "confidence": 0.78
         }
       ],
+      "contentSplitCandidates": [
+        {
+          "reason": "dense-content",
+          "elementIds": ["b2", "b3", "b4"],
+          "preferredSplitBy": "list-chunk",
+          "confidence": 0.76
+        }
+      ],
+      "readabilityCandidates": [
+        {
+          "action": "shorten-copy",
+          "elementIds": ["b3"],
+          "reason": "Shorten support copy before changing layout.",
+          "confidence": 0.76
+        }
+      ],
+      "templateUseCandidate": {
+        "templateSourceRef": "hcs-template",
+        "masterSlidePolicy": "preserve-existing-master-slides",
+        "placeholderPolicy": "prefer-existing-placeholders",
+        "confidence": 0.86
+      },
+      "mediaPolicyCandidate": {
+        "imageUse": "no-image",
+        "imageSearch": "disabled",
+        "iconUse": "no-new-icons",
+        "evidenceRefs": ["template:hcs-template"]
+      },
       "rationale": "Review note only."
     }
   ]
@@ -98,10 +172,20 @@ Good: validation, database, workflow, color palette, chart evidence
 Avoid: use icon file X, place Tabler icon Y at coordinates, make it large
 ```
 
-MDPR owns the final deterministic icon catalog search. The skill can only suggest candidate meaning keywords when the slide semantics are ambiguous.
+MDPR owns the final deterministic icon catalog search. The skill can only suggest candidate meaning keywords when the slide semantics are ambiguous and the current workflow permits new icons. In `template-fill`, default to `iconUse: "no-new-icons"` unless the user explicitly asks for icons.
 
-Use `visualAssetCandidates` only when a small monotone icon would not carry the
-meaning well, for example when the icon would have to become a large decorative
-object or the metaphor is unclear. The candidate is a semantic brief for a
-possible generated image, not a final image prompt, asset path, style recipe, or
+Use `visualAssetCandidates` only when the source context includes a source image
+reference or the user explicitly requests a generated asset. The default image
+policy is `no-image` and `imageSearch: "disabled"`. If source images exist,
+use `source-image-only`; if the user explicitly requests generation, use
+`generated-asset-approved`. The candidate is a semantic brief for a possible
+generated image, not a final image prompt, asset path, style recipe, or
 placement instruction.
+
+Generated or searched image assets must remain provenance-bound. A deck-level
+source image reference does not authorize images on unrelated slides. Prefer
+asset- or slide-scoped refs such as `sourceImageRefs`,
+`explicitGeneratedAssetRequestRefs`, or `approvedGeneratedAssetProposalRef` on
+each generated asset candidate. mdpr-skill may flag missing provenance, but
+MDPR or an approved bridge still owns final asset selection, cropping,
+placement, and acceptance.
