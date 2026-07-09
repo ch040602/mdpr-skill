@@ -116,6 +116,12 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   one primary key message per slide by default, no broad restatement of every
   source block, no contradictory template-fill media/icon candidates, and no
   decorative hints that MDPR can already derive deterministically.
+- Ground primary key-message candidates with `evidenceRefs` or `claimRef` when
+  available. Treat ungrounded primary emphasis as a preflight warning, not as a
+  final slide design instruction.
+- Require explicit user/request/approval evidence before using
+  `style-transform`. Existing PPTX/POTX/theme workflows stay `template-fill`
+  unless the user asks to change the visual system.
 
 Useful local commands when the repo CLI is available:
 
@@ -204,6 +210,9 @@ when MDPR-rendered evidence needs a human-readable review artifact.
 - For readability and Korean decks, recommend shorter claim titles, fewer
   bullets, and moving detail to notes as content suggestions only. Do not pick
   font sizes or exact line breaks.
+- Prefer MDPR-provided source-cleanup diagnostics over re-deriving parser
+  heuristics. Use raw Markdown marker heuristics only as a conservative fallback
+  when no MDPR cleanup diagnostics were supplied.
 
 These helpers may cite source paths, headings, rendered image paths, MDPR
 finding IDs, source IDs, and evidence IDs. They must not emit coordinates,

@@ -1311,6 +1311,49 @@ test("reviewAccessibilityContent references MDPR paragraph marker normalization 
   assert.equal(JSON.stringify(cleanup).includes('"fontSize"'), false);
 });
 
+test("reviewAccessibilityContent prefers MDPR source-cleanup diagnostics over marker heuristics", () => {
+  const suggestions = reviewAccessibilityContent({
+    markdown: [
+      "# Marker Review",
+      "## Notes",
+      "-공백 없는 하이픈 항목",
+    ].join("\n"),
+    sourcePath: "marker-review.md",
+    sourceCleanupDiagnostics: [
+      {
+        code: "SOURCE_CLEANUP_PARAGRAPH_MARKER",
+        details: {
+          sourceLine: 3,
+          originalMarker: "-",
+          normalizedMarker: "-",
+          action: "normalize-to-list-marker",
+        },
+      },
+    ],
+  });
+  const cleanup = suggestions.find((suggestion) => suggestion.type === "MARKDOWN_MARKER_NORMALIZATION_NOTE");
+
+  assert.equal(cleanup?.evidence.diagnosticLine, 3);
+  assert.equal(cleanup?.evidence.originalMarker, "-");
+  assert.equal(cleanup?.evidence.markdownExcerpt, undefined);
+  assert.match(cleanup?.suggestion.text ?? "", /MDPR reported paragraph-marker source cleanup/);
+  assert.equal(JSON.stringify(cleanup).includes('"coordinates"'), false);
+});
+
+test("reviewAccessibilityContent suppresses marker heuristics when MDPR diagnostics are explicitly empty", () => {
+  const suggestions = reviewAccessibilityContent({
+    markdown: [
+      "# Marker Review",
+      "## Notes",
+      "-공백 없는 하이픈 항목",
+    ].join("\n"),
+    sourcePath: "marker-review.md",
+    sourceCleanupDiagnostics: [],
+  });
+
+  assert.equal(suggestions.some((suggestion) => suggestion.type === "MARKDOWN_MARKER_NORMALIZATION_NOTE"), false);
+});
+
 test("buildSourceSlideEvidenceLedger maps slide claims to source and MDPR evidence refs", () => {
   const ledger = buildSourceSlideEvidenceLedger({
     markdown: [

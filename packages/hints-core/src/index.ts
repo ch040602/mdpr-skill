@@ -27,6 +27,8 @@ export type KeyMessageCandidate = {
   messageRole: "main-takeaway" | "decision-needed" | "risk-callout" | "proof-anchor" | "section-transition";
   emphasisLevel: "primary" | "secondary" | "supporting";
   elementIds: string[];
+  evidenceRefs?: string[];
+  claimRef?: string;
   preferredPlaceholderRole?: "title" | "subtitle" | "body" | "callout" | "caption";
   reason: string;
   confidence: number;
@@ -84,6 +86,7 @@ export type AgentHintPreflightFinding = {
     | "KEY_MESSAGE_EVIDENCE_MISSING"
     | "HINT_RESTATES_SOURCE_ELEMENTS"
     | "TEMPLATE_FILL_HINT_POLICY_CONFLICT"
+    | "STYLE_TRANSFORM_EVIDENCE_MISSING"
     | "DUPLICATE_HINT_CANDIDATE";
   slideId: string;
   evidence: Record<string, unknown>;
@@ -111,6 +114,7 @@ export type SelectionContext = {
   templateSourceRef?: string;
   preserveMasterSlides?: boolean;
   sourceImageRefs?: string[];
+  sourceEvidenceRefs?: string[];
   explicitGeneratedAssetRequestRef?: string;
   imagePolicy?: MediaPolicyCandidate["imageUse"];
   imageSearchPolicy?: MediaPolicyCandidate["imageSearch"];
@@ -122,6 +126,7 @@ export type HintBuildOptions = {
   templateSourceRef?: string;
   preserveMasterSlides?: boolean;
   sourceImageRefs?: string[];
+  sourceEvidenceRefs?: string[];
   explicitGeneratedAssetRequestRef?: string;
   imagePolicy?: MediaPolicyCandidate["imageUse"];
   imageSearchPolicy?: MediaPolicyCandidate["imageSearch"];
@@ -182,7 +187,7 @@ export function hintFromSelectionContext(context: SelectionContext, options: Hin
   const workflowIntentCandidate = buildWorkflowIntentCandidate(context, merged);
   const templateUseCandidate = buildTemplateUseCandidate(merged);
   const mediaPolicyCandidate = buildMediaPolicyCandidate(context, merged);
-  const keyMessageCandidates = buildKeyMessageCandidates(context.userInstruction, blockIds);
+  const keyMessageCandidates = buildKeyMessageCandidates(context.userInstruction, blockIds, merged.sourceEvidenceRefs);
   const contentSplitCandidates = buildContentSplitCandidates(context.userInstruction, blockIds);
   const readabilityCandidates = buildReadabilityCandidates(context.userInstruction, blockIds);
   const iconKeywordCandidates = buildIconKeywordCandidates(context.userInstruction, mediaPolicyCandidate.iconUse);
@@ -234,7 +239,9 @@ export function validateAgentHintPreflight(
     }
 
     for (const candidate of hint.keyMessageCandidates ?? []) {
-      if (!candidate.elementIds?.length || !candidate.reason || !candidate.confidence) {
+      const hasGrounding = Boolean(candidate.evidenceRefs?.length || candidate.claimRef);
+      const sectionTransitionWithRef = candidate.messageRole === "section-transition" && candidate.elementIds.some((id) => /section|heading|narrative/i.test(id));
+      if (!candidate.elementIds?.length || !candidate.reason || !candidate.confidence || candidate.emphasisLevel === "primary" && !hasGrounding && !sectionTransitionWithRef) {
         findings.push({
           severity: "warning",
           type: "KEY_MESSAGE_EVIDENCE_MISSING",
@@ -242,6 +249,7 @@ export function validateAgentHintPreflight(
           evidence: {
             messageRole: candidate.messageRole,
             hasElementRefs: Boolean(candidate.elementIds?.length),
+            hasEvidenceRefs: hasGrounding,
             hasReason: Boolean(candidate.reason),
             hasConfidence: Boolean(candidate.confidence),
           },
@@ -297,6 +305,27 @@ export function validateAgentHintPreflight(
       });
     }
 
+    if (
+      workflowIntent === "style-transform"
+      && !(hint.workflowIntentCandidate?.evidenceRefs ?? []).some((ref) => /style-transform|visual-system|overhaul|approval|proposal/i.test(ref))
+    ) {
+      findings.push({
+        severity: "warning",
+        type: "STYLE_TRANSFORM_EVIDENCE_MISSING",
+        slideId: hint.slideId,
+        evidence: {
+          workflowIntent,
+          evidenceRefCount: hint.workflowIntentCandidate?.evidenceRefs.length ?? 0,
+          rule: "style-transform-requires-explicit-user-or-approval-evidence",
+        },
+        suggestion: {
+          kind: "mdpr-skill-preflight",
+          target: "hints.workflowIntent.styleTransformEvidence",
+          operation: "addEvidence",
+        },
+      });
+    }
+
     const duplicateKeys = duplicateCandidateKeys(hint);
     if (duplicateKeys.length > 0) {
       findings.push({
@@ -318,12 +347,13 @@ export function validateAgentHintPreflight(
   return findings;
 }
 
-function mergeHintOptions(context: SelectionContext, options: HintBuildOptions): Required<Pick<HintBuildOptions, "sourceImageRefs">> & HintBuildOptions {
+function mergeHintOptions(context: SelectionContext, options: HintBuildOptions): Required<Pick<HintBuildOptions, "sourceImageRefs" | "sourceEvidenceRefs">> & HintBuildOptions {
   return {
     workflowIntent: options.workflowIntent ?? context.workflowIntent,
     templateSourceRef: options.templateSourceRef ?? context.templateSourceRef,
     preserveMasterSlides: options.preserveMasterSlides ?? context.preserveMasterSlides,
     sourceImageRefs: options.sourceImageRefs ?? context.sourceImageRefs ?? [],
+    sourceEvidenceRefs: options.sourceEvidenceRefs ?? context.sourceEvidenceRefs ?? [],
     explicitGeneratedAssetRequestRef: options.explicitGeneratedAssetRequestRef ?? context.explicitGeneratedAssetRequestRef,
     imagePolicy: options.imagePolicy ?? context.imagePolicy,
     imageSearchPolicy: options.imageSearchPolicy ?? context.imageSearchPolicy,
@@ -344,6 +374,7 @@ function buildWorkflowIntentCandidate(context: SelectionContext, options: HintBu
       ...(options.templateSourceRef ? [`template:${options.templateSourceRef}`] : []),
       ...(options.preserveMasterSlides ? ["template:preserve-master-slides"] : []),
       ...(hasExplicitGeneratedImageRequest(instruction) ? ["instruction:generated-asset-request"] : []),
+      ...(intent === "style-transform" && hasExplicitStyleTransformRequest(instruction) ? ["instruction:style-transform-request"] : []),
     ],
   };
 }
@@ -403,6 +434,11 @@ function hasExplicitGeneratedImageRequest(userInstruction: string): boolean {
   return asksForGeneratedImage;
 }
 
+function hasExplicitStyleTransformRequest(userInstruction: string): boolean {
+  const text = userInstruction.toLowerCase();
+  return /\b(new visual system|change the visual system|style transform|visual overhaul|redesign the style|new theme|different theme)\b|시각 시스템 변경|새로운 시각|스타일 변환|스타일을 바꿔|테마를 바꿔|전면 개편/.test(text);
+}
+
 function buildIconKeywordCandidates(userInstruction: string | undefined, iconUse: MediaPolicyCandidate["iconUse"]): string[] | undefined {
   if (!userInstruction || iconUse === "no-new-icons") return undefined;
   const text = userInstruction.toLowerCase();
@@ -411,7 +447,7 @@ function buildIconKeywordCandidates(userInstruction: string | undefined, iconUse
   return tokens.length ? tokens.slice(0, 4) : undefined;
 }
 
-function buildKeyMessageCandidates(userInstruction: string | undefined, blockIds: string[]): KeyMessageCandidate[] | undefined {
+function buildKeyMessageCandidates(userInstruction: string | undefined, blockIds: string[], sourceEvidenceRefs: string[] = []): KeyMessageCandidate[] | undefined {
   if (!userInstruction || blockIds.length === 0) return undefined;
   const text = userInstruction.toLowerCase();
   if (!/\b(key message|main point|takeaway|decision|risk|emphasize|highlight)\b|핵심|메시지|강조|결론|리스크|위험/.test(text)) return undefined;
@@ -426,6 +462,7 @@ function buildKeyMessageCandidates(userInstruction: string | undefined, blockIds
     messageRole,
     emphasisLevel: "primary",
     elementIds: blockIds.slice(0, 3),
+    evidenceRefs: sourceEvidenceRefs.length ? sourceEvidenceRefs.slice(0, 8) : blockIds.slice(0, 3).map((blockId) => `element:${blockId}`),
     preferredPlaceholderRole: "title",
     reason: "User instruction asks for key-message emphasis as semantic priority only.",
     confidence: 0.78,

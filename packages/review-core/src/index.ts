@@ -708,6 +708,7 @@ export type AccessibilityContentInput = {
   markdown: string;
   audience?: string;
   sourcePath?: string;
+  sourceCleanupDiagnostics?: Array<Record<string, unknown>>;
 };
 
 export type AccessibilityContentSuggestion = {
@@ -717,6 +718,8 @@ export type AccessibilityContentSuggestion = {
   evidence: {
     sourcePath: string;
     markdownExcerpt?: string;
+    diagnosticLine?: number;
+    originalMarker?: string;
     imagePath?: string;
     acronym?: string;
     audience?: string;
@@ -1216,17 +1219,27 @@ export function reviewRenderedPreviewCritique(input: RenderedPreviewCritiqueInpu
 export function reviewAccessibilityContent(input: AccessibilityContentInput): AccessibilityContentSuggestion[] {
   const sourcePath = input.sourcePath ?? "markdown";
   const suggestions: AccessibilityContentSuggestion[] = [];
-  const markerLine = input.markdown.split(/\r?\n/)
-    .map((line) => line.trim())
-    .find(isParagraphMarkerNormalizationCandidate);
-  if (markerLine) {
+  const cleanupDiagnostic = markerCleanupDiagnostic(input.sourceCleanupDiagnostics);
+  const markerLine = input.sourceCleanupDiagnostics === undefined
+    ? input.markdown.split(/\r?\n/)
+      .map((line) => line.trim())
+      .find(isParagraphMarkerNormalizationCandidate)
+    : undefined;
+  if (cleanupDiagnostic || markerLine) {
     suggestions.push({
       type: "MARKDOWN_MARKER_NORMALIZATION_NOTE",
       kind: "source-cleanup",
       generatedBy: "mdpr-skill",
-      evidence: { sourcePath, markdownExcerpt: markerLine.slice(0, 180) },
+      evidence: {
+        sourcePath,
+        ...(markerLine ? { markdownExcerpt: markerLine.slice(0, 180) } : {}),
+        ...(cleanupDiagnostic?.line !== undefined ? { diagnosticLine: cleanupDiagnostic.line } : {}),
+        ...(cleanupDiagnostic?.originalMarker ? { originalMarker: cleanupDiagnostic.originalMarker } : {}),
+      },
       suggestion: {
-        text: "MDPR owns paragraph-marker normalization for dash and bullet-like lines; keep the source as clear list items or plain sentences rather than using layout-specific marker prose.",
+        text: cleanupDiagnostic
+          ? "MDPR reported paragraph-marker source cleanup; treat it as authoring hygiene and do not convert it into marker-specific layout or rendering instructions."
+          : "MDPR owns paragraph-marker normalization for dash and bullet-like lines; keep the source as clear list items or plain sentences rather than using layout-specific marker prose.",
       },
       boundary: { mdprVisualAccessibilityAuthority: true },
     });
@@ -3154,6 +3167,22 @@ function isParagraphMarkerNormalizationCandidate(line: string): boolean {
   const trimmed = line.trim();
   if (!trimmed || /^-{3,}$/.test(trimmed) || /^-\d/.test(trimmed) || /^->/.test(trimmed)) return false;
   return /^[•·ㆍ▪◦‣–—−]\s*\S/.test(trimmed) || /^-[^\s-]\S*/.test(trimmed) || /^[-*]\s+\S/.test(trimmed);
+}
+
+function markerCleanupDiagnostic(diagnostics: Array<Record<string, unknown>> | undefined): { line?: number; originalMarker?: string } | undefined {
+  if (!diagnostics?.length) return undefined;
+  for (const diagnostic of diagnostics) {
+    const record = asRecord(diagnostic) ?? {};
+    const details = asRecord(record.details) ?? {};
+    const code = stringValue(record.code);
+    const action = stringValue(record.action) ?? stringValue(details.action);
+    if (code !== "SOURCE_CLEANUP_PARAGRAPH_MARKER" && code !== "paragraph-marker-normalized" && action !== "normalize-to-list-marker") continue;
+    return {
+      line: numberValue(record.line) ?? numberValue(details.sourceLine),
+      originalMarker: stringValue(record.originalMarker) ?? stringValue(details.originalMarker),
+    };
+  }
+  return undefined;
 }
 
 function hasQuantitativeClaim(line: string): boolean {

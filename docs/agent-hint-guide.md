@@ -70,6 +70,16 @@ as a PPT rendering authority. The equivalent preflight for mdpr-skill is:
 one primary key message per slide by default, minimal hint coverage, no hint
 that restates every source block, and no template-fill hint that adds image,
 icon, or style-transform candidates without explicit evidence.
+Primary key-message candidates should carry `evidenceRefs` or a `claimRef`
+whenever possible. Element IDs are necessary for mapping but are not enough by
+themselves to justify subjective emphasis. `section-transition` may use a
+heading or narrative section ref instead of a claim ref.
+
+`style-transform` is not the default when an existing PPTX/POTX/theme is
+provided. It requires explicit user evidence such as
+`instruction:style-transform-request` or an approval/proposal ref. Without that
+evidence, preflight should warn and the workflow should remain
+`template-fill`.
 
 `--markdown` is optional but recommended. When present, mdpr-skill hashes the
 current Markdown and rejects the selection context if `source.sourceSha256` is

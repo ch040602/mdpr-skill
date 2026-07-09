@@ -133,6 +133,7 @@ test("hintFromSelectionContext emits template-fill policies without new icons or
   assert.equal(hint.iconKeywordCandidates, undefined);
   assert.equal(hint.visualAssetCandidates, undefined);
   assert.equal(hint.keyMessageCandidates?.[0]?.messageRole, "main-takeaway");
+  assert.deepEqual(hint.keyMessageCandidates?.[0]?.evidenceRefs, ["element:claim-1", "element:proof-1", "element:detail-1"]);
   assert.equal(hint.contentSplitCandidates?.[0]?.preferredSplitBy, "list-chunk");
   assert.equal(hint.readabilityCandidates?.[0]?.action, "shorten-copy");
   assert.equal(JSON.stringify(hint).includes('"fontSize"'), false);
@@ -163,9 +164,31 @@ test("validateAgentHintPreflight flags overbroad and contradictory template-fill
   const types = findings.map((finding) => finding.type);
 
   assert.equal(types.includes("MULTIPLE_PRIMARY_KEY_MESSAGES"), true);
+  assert.equal(types.includes("KEY_MESSAGE_EVIDENCE_MISSING"), true);
   assert.equal(types.includes("HINT_RESTATES_SOURCE_ELEMENTS"), true);
   assert.equal(types.includes("TEMPLATE_FILL_HINT_POLICY_CONFLICT"), true);
   assert.equal(findings.every((finding) => finding.slideId === "slide-preflight"), true);
   assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
   assert.equal(JSON.stringify(findings).includes('"fontSize"'), false);
+});
+
+test("validateAgentHintPreflight gates style-transform on explicit evidence", () => {
+  const unsafe = validateAgentHintPreflight([{
+    slideId: "slide-style",
+    confidence: 0.72,
+    workflowIntentCandidate: { intent: "style-transform", confidence: 0.72, evidenceRefs: [] },
+  }]);
+  const safeHint = hintFromSelectionContext({
+    schemaVersion: "mdpr-selection-context-v1",
+    source: { kind: "mdpr-preview", sourceSha256 },
+    slideId: "slide-style",
+    userInstruction: "Use a new visual system and redesign the style.",
+    workflowIntent: "style-transform",
+  });
+  const safe = validateAgentHintPreflight([safeHint]);
+
+  assert.equal(unsafe.some((finding) => finding.type === "STYLE_TRANSFORM_EVIDENCE_MISSING"), true);
+  assert.deepEqual(safeHint.workflowIntentCandidate?.evidenceRefs, ["instruction:style-transform-request"]);
+  assert.equal(safe.some((finding) => finding.type === "STYLE_TRANSFORM_EVIDENCE_MISSING"), false);
+  assert.equal(JSON.stringify(unsafe).includes('"coordinates"'), false);
 });
