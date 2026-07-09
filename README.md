@@ -190,6 +190,9 @@ The repository also exposes a thin local CLI for skill-side artifacts:
 
 ```bash
 node bin/mdpr-skill.js --help
+node bin/mdpr-skill.js docs --list
+node bin/mdpr-skill.js docs bootstrap --dense
+node bin/mdpr-skill.js docs boundaries --dense
 node bin/mdpr-skill.js hint --source-sha256 <64hex> --out .mdpresent/proposals/agent-hint.json
 node bin/mdpr-skill.js review --manifest dist/mdpresent-manifest.json --out .mdpresent/review/review-report.json
 node bin/mdpr-skill.js narrative --markdown deck.md --manifest dist/mdpresent-manifest.json --source-notes notes.md --out .mdpresent/review/narrative-review.json
@@ -209,6 +212,13 @@ node bin/mdpr-skill.js gate validate-schema-sync --mdpr-path .cache/mdpr
 These commands create hints, reviews, eval reports, design candidates, and
 approval records. They do not choose final coordinates, colors, z-order, or
 renderer object IDs; MDPR owns those runtime decisions.
+
+The `docs` command is the agent bootstrap surface. It follows the same
+branch-local guidance pattern used by agent-ready design systems such as
+Astryx: the CLI prints the commands, boundaries, template-fill rules, media
+policy, review flow, design-import rules, and Astryx comparison for the exact
+checkout being used. Use `--dense` when an agent needs compact working context
+before creating hints or review artifacts.
 
 ## Usage
 

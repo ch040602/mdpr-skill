@@ -12,6 +12,7 @@ import { validateGeneratedAssetsManifest } from "./commands/codexPptGeneratedAss
 import { createMdprJobState, summarizeMdprJobState, updateMdprJobState, validateMdprJobState, type MdprJobState } from "./commands/codexPptJobState.js";
 import { buildCodexPptSlideTaskPackets } from "./commands/codexPptSlideTasks.js";
 import { analyzeHtmlDesign, buildThemeCandidateFromDesignMd } from "./commands/design.js";
+import { listAgentDocTopics, renderAgentDocList, renderAgentDocs, type AgentDocTopic } from "./commands/agentDocs.js";
 import { runValidateSchemaSync } from "./commands/validateSchemaSync.js";
 
 export type CliIo = {
@@ -36,6 +37,7 @@ export function runCli(argv: string[], io: CliIo = defaultIo): number {
     if (command === "validate-schema-sync" || command === "gate") {
       return runSchemaSyncCommand(args, io);
     }
+    if (command === "docs") return runDocsCommand(args, io);
     if (command === "hint") return runHintCommand(args, io);
     if (command === "review") return runReviewCommand(args, io);
     if (command === "narrative") return runNarrativeCommand(args, io);
@@ -67,6 +69,7 @@ function helpText(): string {
     "mdpr-skill",
     "",
     "Commands:",
+    "  docs --list | docs <bootstrap|boundaries|commands|template-fill|media|review|design-import|astryx-comparison> [--dense] [--json]",
     "  hint (--source-sha256 <64hex> | --selection-context <selection-context.json> [--markdown <deck.md>]) --out <agent-hint.json> [--workflow-intent template-fill] [--template-source <ref>] [--preserve-master-slides true] [--image-policy no-image] [--image-search-policy disabled] [--icon-policy no-new-icons]",
     "  review --manifest <manifest.json> [--presentation <presentation-ir.json>] [--layout <layout-ir.json>] [--template-summary <template-summary.json>] --out <review-report.json>",
     "  narrative --markdown <deck.md> [--manifest <manifest.json>] [--source-notes <notes.md>] --out <narrative-review.json>",
@@ -89,6 +92,52 @@ function helpText(): string {
     "  gate validate-schema-sync --mdpr-path <MdPr> [--shared-schema <name[,name]>]",
     "  change approve|reject <change-request.json> --out <change-request.json>",
   ].join("\n");
+}
+
+function runDocsCommand(args: string[], io: CliIo): number {
+  const topicArg = args[0] && !args[0].startsWith("--") ? args.shift() : undefined;
+  const options = parseOptions(args);
+  if (options.list === "true" || !topicArg) {
+    if (options.json === "true") {
+      io.stdout(JSON.stringify({
+        schemaVersion: "mdpr-skill-agent-docs-v1",
+        generatedBy: "mdpr-skill",
+        topics: listAgentDocTopics(),
+      }, null, 2));
+    } else {
+      io.stdout(renderAgentDocList());
+    }
+    return 0;
+  }
+
+  const topic = parseAgentDocTopic(topicArg);
+  if (options.json === "true") {
+    io.stdout(JSON.stringify({
+      schemaVersion: "mdpr-skill-agent-docs-v1",
+      generatedBy: "mdpr-skill",
+      topic,
+      dense: options.dense === "true",
+      markdown: renderAgentDocs(topic, { dense: options.dense === "true" }),
+    }, null, 2));
+  } else {
+    io.stdout(renderAgentDocs(topic, { dense: options.dense === "true" }));
+  }
+  return 0;
+}
+
+function parseAgentDocTopic(value: string): AgentDocTopic {
+  const allowed: AgentDocTopic[] = [
+    "bootstrap",
+    "boundaries",
+    "commands",
+    "template-fill",
+    "media",
+    "review",
+    "design-import",
+    "astryx-comparison",
+  ];
+  if (allowed.includes(value as AgentDocTopic)) return value as AgentDocTopic;
+  throw new Error(`Unknown docs topic: ${value}`);
 }
 
 function runCodexPptCommand(args: string[], io: CliIo): number {

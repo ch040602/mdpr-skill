@@ -15,6 +15,7 @@ test("runCli exposes help and command groups", () => {
 
   assert.equal(exitCode, 0);
   assert.match(output.join("\n"), /mdpr-skill/);
+  assert.match(output.join("\n"), /docs/);
   assert.match(output.join("\n"), /hint/);
   assert.match(output.join("\n"), /review/);
   assert.match(output.join("\n"), /narrative/);
@@ -34,6 +35,40 @@ test("runCli exposes help and command groups", () => {
   assert.match(output.join("\n"), /codex-ppt slide-tasks/);
   assert.match(output.join("\n"), /codex-ppt job-state/);
   assert.match(output.join("\n"), /codex-ppt generated-assets/);
+});
+
+test("runCli exposes dense agent docs inspired by branch-local CLI guidance", () => {
+  const listOutput: string[] = [];
+  assert.equal(runCli(["docs", "--list", "--json"], {
+    stdout: (value) => listOutput.push(value),
+    stderr: () => undefined,
+  }), 0);
+  const list = JSON.parse(listOutput.join("\n"));
+  assert.equal(list.schemaVersion, "mdpr-skill-agent-docs-v1");
+  assert.equal(list.topics.some((topic: { topic: string }) => topic.topic === "bootstrap"), true);
+  assert.equal(list.topics.some((topic: { topic: string }) => topic.topic === "astryx-comparison"), true);
+
+  const denseOutput: string[] = [];
+  assert.equal(runCli(["docs", "boundaries", "--dense"], {
+    stdout: (value) => denseOutput.push(value),
+    stderr: () => undefined,
+  }), 0);
+  const dense = denseOutput.join("\n");
+  assert.match(dense, /MDPR owns parsing/);
+  assert.match(dense, /Forbidden fields/);
+  assert.match(dense, /renderer objects/);
+  assert.equal(dense.includes("React component APIs"), false);
+
+  const jsonOutput: string[] = [];
+  assert.equal(runCli(["docs", "astryx-comparison", "--dense", "--json"], {
+    stdout: (value) => jsonOutput.push(value),
+    stderr: () => undefined,
+  }), 0);
+  const doc = JSON.parse(jsonOutput.join("\n"));
+  assert.equal(doc.topic, "astryx-comparison");
+  assert.equal(doc.dense, true);
+  assert.match(doc.markdown, /local branch CLI docs/);
+  assert.match(doc.markdown, /Do not borrow: React component APIs/);
 });
 
 test("runCli writes a codex-ppt compatibility implementation map", () => {
