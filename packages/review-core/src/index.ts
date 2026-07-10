@@ -1751,6 +1751,7 @@ export function reviewVisualPolicy(input: ReviewCoreInput): ReviewFinding[] {
 
 export function reviewDesignPolicy(input: ReviewCoreInput): ReviewFinding[] {
   return [
+    ...mdprPolishGateFindings(input),
     ...pptEffectUnsupportedFindings(input),
     ...rasterPrimaryContentRiskFindings(input),
     ...componentStyleDriftFindings(input),
@@ -1758,6 +1759,34 @@ export function reviewDesignPolicy(input: ReviewCoreInput): ReviewFinding[] {
     ...diagramAccentBudgetFindings(input),
     ...reviewContentFitPolicy(input),
   ];
+}
+
+export function mdprPolishGateFindings(input: ReviewCoreInput): ReviewFinding[] {
+  const manifest = asRecord(input.manifest) ?? {};
+  const validation = asRecord(manifest.validation);
+  const polish = asRecord(validation?.polish);
+  const requiredFailureCount = numberValue(polish?.requiredFailureCount) ?? 0;
+  if (requiredFailureCount <= 0) return [];
+
+  const chapters = asRecord(polish?.chapters) ?? {};
+  const failedChapters = Object.entries(chapters)
+    .filter(([, value]) => {
+      const chapter = asRecord(value);
+      return chapter?.required === true && chapter.passed === false;
+    })
+    .map(([key]) => key);
+
+  return [{
+    severity: "error",
+    type: "MDPR_POLISH_GATE_FAILED",
+    slideId: "deck",
+    evidence: {
+      requiredFailureCount,
+      failedChapters,
+      source: "manifest.validation.polish",
+      runtimeOwner: "MDPR",
+    },
+  }];
 }
 
 export function reviewTemplateFidelity(input: ReviewCoreInput): ReviewFinding[] {

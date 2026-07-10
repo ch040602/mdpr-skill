@@ -87,6 +87,12 @@ stale, or failing according to those MDPR-owned signals, recommend an MDPR
 runtime or validation-policy fix rather than presenting the LLM review as a
 release gate substitute.
 
+The `review` command mirrors a positive
+`validation.polish.requiredFailureCount` as an error finding with type
+`MDPR_POLISH_GATE_FAILED`, the failed required chapter names, and
+`runtimeOwner: MDPR`. Do not emit that finding when the required failure count
+is zero.
+
 Example MDPR-owned check after the runtime has built or validated a deck:
 
 ```bash

@@ -457,6 +457,41 @@ test("reviewDesignPolicy flags dense and wordy content before visual decoration"
   assert.equal(JSON.stringify(findings).includes('"coordinates"'), false);
 });
 
+test("reviewDesignPolicy mirrors required MDPR polish failures without flagging a passing manifest", () => {
+  const failed = reviewDesignPolicy({
+    manifest: {
+      validation: {
+        polish: {
+          requiredFailureCount: 1,
+          chapters: {
+            fontHierarchy: { required: true, passed: false, evidence: "minimum font is below the required floor" },
+            layoutComposition: { required: true, passed: true, evidence: "structured layout" },
+          },
+        },
+      },
+    },
+  });
+  const passed = reviewDesignPolicy({
+    manifest: {
+      validation: {
+        polish: {
+          requiredFailureCount: 0,
+          chapters: {
+            fontHierarchy: { required: true, passed: true, evidence: "readable hierarchy" },
+          },
+        },
+      },
+    },
+  });
+
+  const finding = failed.find((candidate) => candidate.type === "MDPR_POLISH_GATE_FAILED");
+  assert.ok(finding);
+  assert.equal(finding.severity, "error");
+  assert.equal(finding.evidence?.requiredFailureCount, 1);
+  assert.deepEqual(finding.evidence?.failedChapters, ["fontHierarchy"]);
+  assert.equal(passed.some((candidate) => candidate.type === "MDPR_POLISH_GATE_FAILED"), false);
+});
+
 test("buildGeneratorComparisonScorecard separates deterministic evidence from manual preference", () => {
   const scorecard = buildGeneratorComparisonScorecard({
     mdpr: {
