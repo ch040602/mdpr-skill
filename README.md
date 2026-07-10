@@ -74,6 +74,30 @@ Key proof artifacts:
 | Output | Editable PPTX, HTML, PDF, reports, previews | Hint files, review artifacts, generated review decks |
 | Safety boundary | Builds must work without hints | Must not choose final coordinates, colors, z-order, arrows, geometry, exact icons, or renderer object IDs |
 
+## MDPR Validation Handoff
+
+MDPR owns deterministic pass/fail decisions. When a manifest reports a positive
+`validation.polish.requiredFailureCount`, `mdpr-skill review` mirrors that
+runtime evidence as one error finding instead of making a second aesthetic
+judgment:
+
+```json
+{
+  "severity": "error",
+  "type": "MDPR_POLISH_GATE_FAILED",
+  "evidence": {
+    "requiredFailureCount": 1,
+    "failedChapters": ["fontHierarchy"],
+    "runtimeOwner": "MDPR"
+  }
+}
+```
+
+Passing manifests with `requiredFailureCount: 0` receive no polish-gate
+finding. The skill may explain the failure and propose an MDPR rule or config
+improvement, but it cannot override the result or repair final coordinates,
+font sizes, image crops, or renderer objects directly.
+
 ## Applied Comparison
 
 The public repository keeps comparison material at the product-boundary level.
@@ -244,6 +268,8 @@ and review the generated artifacts, but should not own the final slide layout:
 - approval-bound DESIGN.md theme candidates for MDPR theme/profile/rulebook workflows
 - local HTML design analysis with CSS-to-PPT feasibility notes
 - coherence and visual policy findings with evidence paths
+- evidence-backed mirroring of MDPR `validation.polish` failures through
+  `MDPR_POLISH_GATE_FAILED`
 - design rail review findings for unsupported PPT effects, raster risks, component drift, and diagram budgets
 - Markdown cleanup suggestions before MDPR builds
 - review loops that turn generated PPTX/PNG issues into MDPR rule improvements
