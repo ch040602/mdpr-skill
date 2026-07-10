@@ -98,6 +98,25 @@ finding. The skill may explain the failure and propose an MDPR rule or config
 improvement, but it cannot override the result or repair final coordinates,
 font sizes, image crops, or renderer objects directly.
 
+## Typography Review Rules
+
+MDPR remains the typography authority. Its required `fontHierarchy` chapter
+checks for a declared family, a title/body difference of at least `4pt`, a
+deck-wide Layout IR floor of at least `16pt`, and zero same-role font-size
+variance. `mdpr-skill` cites the manifest chapter and its runtime evidence; it
+does not recompute or soften those thresholds.
+
+- ordinary hint and review payloads may recommend shorter copy, content splits,
+  clearer paragraph levels, or stronger semantic emphasis, but must not prescribe
+  exact font families, point sizes, manual line breaks, or text-box geometry
+- in `template-fill`, preserve the template's typography and text colors; report
+  mismatches as evidence instead of replacing master or layout formatting
+- typography tokens copied from a design source are approval-bound candidates,
+  not runtime edits, and take effect only after they become an accepted MDPR
+  config, pack, or rule
+- do not claim that a font is installed or embedded from its family name alone;
+  host availability and substitution remain deployment checks
+
 ## Applied Comparison
 
 The public repository keeps comparison material at the product-boundary level.
