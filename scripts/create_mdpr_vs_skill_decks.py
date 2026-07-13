@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import time
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -201,6 +202,30 @@ def corpus_display_title(value: str) -> str:
     return re.sub(r"^\s*\d{1,3}[.)]\s+", "", value).strip()
 
 
+def heading_identity(value: str, *, strip_continuation: bool = False) -> str:
+    normalized = unicodedata.normalize("NFKC", value)
+    if strip_continuation:
+        normalized = re.sub(r"\s*\(continued(?:\s+\d+)?\)\s*$", "", normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r"^\s*\d{1,3}(?:(?:\s*[\W_]+\s*)|\s+)", "", normalized)
+    normalized = "".join(character if character.isalnum() else " " for character in normalized.casefold())
+    return " ".join(normalized.split())
+
+
+def unique_corpus_headings(headings: list[str], section_title: str, *, limit: int) -> list[str]:
+    seen = {heading_identity(section_title)}
+    retained: list[str] = []
+    for heading in headings:
+        display_heading = corpus_display_title(heading)
+        identity = heading_identity(display_heading)
+        if not identity or identity in seen:
+            continue
+        seen.add(identity)
+        retained.append(display_heading)
+        if len(retained) >= limit:
+            break
+    return retained
+
+
 def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
     lines = [
         "# MDPR Corpus: Runtime vs Review Evidence",
@@ -234,9 +259,10 @@ def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
     ]
     for path in topic_paths:
         item = next(summary for summary in summaries if summary["path"] == path)
-        lines.extend([f"## {corpus_display_title(item['title'])}", ""])
-        for heading in item["headings"][:5]:
-            lines.append(f"- {corpus_display_title(heading)}")
+        section_title = corpus_display_title(item["title"])
+        lines.extend([f"## {section_title}", ""])
+        for heading in unique_corpus_headings(item["headings"], section_title, limit=5):
+            lines.append(f"- {heading}")
         for bullet in item["bullets"][:4]:
             lines.append(f"- {bullet}")
         if item["table"]:
@@ -259,9 +285,10 @@ def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
         "",
     ])
     for path in [item for item in summaries if item["path"].startswith("examples/")]:
-        lines.extend([f"## Example: {path['path']}", ""])
-        for heading in path["headings"][:6]:
-            lines.append(f"- {corpus_display_title(heading)}")
+        section_title = f"Example: {path['path']}"
+        lines.extend([f"## {section_title}", ""])
+        for heading in unique_corpus_headings(path["headings"], section_title, limit=6):
+            lines.append(f"- {heading}")
         for bullet in path["bullets"][:4]:
             lines.append(f"- {bullet}")
         lines.append("")

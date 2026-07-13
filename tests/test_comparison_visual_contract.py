@@ -77,6 +77,50 @@ class ComparisonVisualContractTests(unittest.TestCase):
         self.assertNotIn("## 01.", corpus)
         self.assertIn("## 01-architecture", corpus)
 
+    def test_topic_headings_exclude_normalized_section_title_before_limit(self) -> None:
+        module = load_script("create_mdpr_vs_skill_heading_filter", "scripts/create_mdpr_vs_skill_decks.py")
+        topic_paths = [
+            "docs/01-architecture.md",
+            "docs/03-page-splitting.md",
+            "docs/04-layout-rules.md",
+            "docs/07-rendering-rules.md",
+            "docs/11-qa-overflow.md",
+        ]
+        summaries = []
+        for path in topic_paths:
+            title = "03. Page Splitting Rules" if path == "docs/03-page-splitting.md" else Path(path).stem
+            headings = [title, "Fallback"]
+            if path == "docs/03-page-splitting.md":
+                headings = [
+                    "03 — Page Splitting Rules!",
+                    "Heading Rules",
+                    "Slide Candidate",
+                    "Autosplit Boundary",
+                    "AST Parsing",
+                    "Overflow",
+                ]
+            summaries.append({
+                "path": path,
+                "title": title,
+                "headingCount": len(headings),
+                "headings": headings,
+                "bullets": [],
+                "table": [],
+                "code": [],
+                "codeLanguage": None,
+                "charCount": 100,
+            })
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            module.SOURCE_MD = Path(temp_dir) / "corpus.md"
+            module.build_source_corpus(summaries)
+            corpus = module.SOURCE_MD.read_text(encoding="utf-8")
+
+        section = corpus.split("## Page Splitting Rules", 1)[1].split("\n## ", 1)[0]
+        self.assertNotIn("- Page Splitting Rules", section)
+        retained = [line.removeprefix("- ") for line in section.splitlines() if line.startswith("- ")]
+        self.assertEqual(retained, ["Heading Rules", "Slide Candidate", "Autosplit Boundary", "AST Parsing", "Overflow"])
+
     def test_skill_evidence_deck_omits_decorative_one_line_regions_and_uses_readable_type(self) -> None:
         module = load_script("create_mdpr_vs_skill_decks", "scripts/create_mdpr_vs_skill_decks.py")
         summaries = [
@@ -251,6 +295,24 @@ class ComparisonVisualContractTests(unittest.TestCase):
             and shape.top <= title.top + title.height + Inches(0.8)
         ]
         self.assertEqual(rules, [])
+
+    def test_generated_mdpr_deck_has_no_exact_title_body_echo(self) -> None:
+        module = load_script("create_mdpr_vs_skill_title_echo", "scripts/create_mdpr_vs_skill_decks.py")
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        echoes = []
+        for slide_number, slide in enumerate(deck.slides, 1):
+            texts = [
+                shape.text.strip() for shape in slide.shapes
+                if getattr(shape, "has_text_frame", False) and shape.text.strip()
+            ]
+            if not texts or texts[0] == "Agenda":
+                continue
+            title_key = module.heading_identity(texts[0], strip_continuation=True)
+            duplicates = [text for text in texts[1:] if module.heading_identity(text) == title_key]
+            if duplicates:
+                echoes.append({"slide": slide_number, "title": texts[0], "duplicates": duplicates})
+
+        self.assertEqual(echoes, [])
 
     def test_exported_pngs_are_counted_once_on_case_insensitive_filesystems(self) -> None:
         module = load_script("create_mdpr_vs_skill_png_count", "scripts/create_mdpr_vs_skill_decks.py")

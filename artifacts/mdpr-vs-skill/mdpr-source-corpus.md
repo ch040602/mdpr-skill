@@ -19,7 +19,6 @@ MDPR manifest and previews => mdpr-skill hints or review findings => MDPR remain
 
 ## Architecture
 
-- Architecture
 - Flow
 - Package Roles
 - Design Principles
@@ -39,11 +38,11 @@ Markdown
 
 ## Page Splitting Rules
 
-- Page Splitting Rules
 - Heading Rules
 - cover or section
 - slide candidate
 - subsection or autosplit boundary
+- Procedure
 - Parse CommonMark/GFM Markdown into an AST.
 - Convert the AST into MDPR BlockIR while preserving presentation-relevant
 - Normalize Pandoc JSON into BlockIR when --parser pandoc is selected.
@@ -65,11 +64,11 @@ Markdown
 
 ## Layout Selection Rules
 
-- Layout Selection Rules
 - Selection Formula
 - Intent Detection
 - Count-Based Layouts
 - Presets
+- Pipeline Diagram Routing
 - Use the deck title as the single header.
 - Select the first pipeline diagram in source order as the hero object.
 - Synthesize one *-teaser-overview bullet list from up to four source sections.
@@ -91,11 +90,11 @@ SlideIntentScoreProfile + itemCount + blockType + density
 
 ## Rendering Rules
 
-- Rendering Rules
 - Shared Renderer Contract
 - PPTX Renderer
 - Decoration Styles
 - Color and Theme Policy
+- Surface Policy
 - consumes { Presentation IR, Layout IR }
 - uses Layout IR slide size, regions, theme fonts, colors, z-order, and overflow policy
 - emits editable text boxes for titles, paragraphs, lists, code, and fallback text
@@ -109,11 +108,11 @@ SlideIntentScoreProfile + itemCount + blockType + density
 
 ## Validation and Overflow Policy
 
-- Validation and Overflow Policy
 - Validation Checks
 - Overflow Resolution Order
 - Diagnostics
 - Text Normalization
+- Title Regions
 - text overflow
 - table overflow
 - missing images
