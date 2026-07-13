@@ -10,14 +10,14 @@
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprSourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
-    "mdprCommit": "b1ae7c04c04d5536db5edf7125bcc68669da6b03",
+    "mdprCommit": "c93ac84565515dda4f5a3c874b4aae469162f870",
     "mdprCommand": "node C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold\\packages\\cli\\dist\\index.js build artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {
       "slides": 35,
-      "shapes": 528,
-      "textFrames": 440,
-      "pictures": 85,
+      "shapes": 449,
+      "textFrames": 392,
+      "pictures": 54,
       "tables": 3,
       "charts": 0,
       "minFontSizePt": 16.0,
@@ -33,9 +33,9 @@
   },
   "mdprBaselineValidation": {
     "slides": 35,
-    "shapes": 528,
-    "textFrames": 440,
-    "pictures": 85,
+    "shapes": 449,
+    "textFrames": 392,
+    "pictures": 54,
     "tables": 3,
     "charts": 0,
     "minFontSizePt": 16.0,
@@ -88,7 +88,7 @@
         1600,
         900
       ],
-      "uniqueColors": 36,
+      "uniqueColors": 35,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -98,7 +98,7 @@
         1600,
         900
       ],
-      "uniqueColors": 36,
+      "uniqueColors": 65,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -120,7 +120,7 @@
         1600,
         900
       ],
-      "uniqueColors": 1036,
+      "uniqueColors": 1034,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },

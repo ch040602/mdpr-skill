@@ -23,7 +23,7 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `b1ae7c0` |
+| MDPR commit | `c93ac84` |
 | Markdown files | 21 |
 | Headings | 185 |
 | Source characters | 96,298 |
@@ -64,7 +64,13 @@ The current review led to these changes:
 - excluded intentional `.github` form checkboxes from unfinished-work detection
   while keeping unchecked boxes in governed documentation as failures;
 - isolated PowerPoint exports per slide, waited for full layout, fixed UTF-8
-  subprocess decoding, and rejected incomplete export sets.
+  subprocess decoding, retried two consecutive transient process failures, and
+  rejected incomplete export sets.
+- removed redundant continuous vertical rails and the TOC center separator;
+- added history-driven triptych/quartet topology, named it in the validator,
+  and rendered horizontal rows as open cells rather than repeated white cards;
+- corrected font-floor scope to text-bearing regions while keeping code and
+  captions governed, and lowered continuation markers to secondary title runs.
 
 ## Visual Improvement Loop Ledger
 
@@ -80,11 +86,22 @@ The current review led to these changes:
 | 8 | Three-line code snippets occupied a fixed 5.25in white panel and carried a non-semantic folded-corner accent. | Size code-focus regions from line count within the previous safe bound, vertically balance sparse snippets, and use a plain rounded code surface in PPTX and HTML. | Slides 17 and 20 show compact centered code panels with no fold; dense 30-line code retains the 5.25in bound and all code stays editable at 16pt or above. |
 | 9 | PowerPoint could export a slide while transiently returning a null `HWND`, but the isolated helper treated that optional cleanup handle as a hard failure. | Guard null/zero window handles while preserving presentation/export errors, COM cleanup, and the final PNG existence gate. | The previously failing slide 17 export succeeds, and the full 35 + 9 isolated export completes without fallback or stale evidence. |
 | 10 | Comparison artifacts and README ownership text referred to different runtime revisions, and the MDPR tables omitted the skill-side decorative-line boundary. | Regenerate both decks from MDPR `b1ae7c0`, align English/Korean/Chinese typography and line rules, and add one quick-choice sentence to both repositories. | The report is bound to `b1ae7c0`; 35/35 + 9/9 PowerPoint exports pass, both decks keep a 16pt minimum and zero named-container overflow, and the comparison text now states that the tools are complementary. |
+| 11 | Vertical lists had one continuous rail plus per-item accents. | Remove the continuous rail and keep only semantic item accents. | No redundant full-height rail remains. |
+| 12 | Two-column Agenda added a center separator despite sufficient whitespace and numbering. | Remove the center rule. | Agenda remains clearly grouped with no title-adjacent or center rule. |
+| 13 | Three equal items always used a vertical stack. | Add horizontal triptych with vertical fallback. | Three-item sections alternate row and stack geometry at 16pt+. |
+| 14 | Four-item sections repeated 2x2 cards. | Keep 2x2 default; select a compact quartet only after repeated 2x2 history. | A test deck renders 2x2, 2x2, then an equal four-column row. |
+| 15 | Image/decorative typography metadata could falsely lower the font floor. | Count only text-bearing regions; retain code/caption coverage and distinguish configured family from host availability. | A 6pt image placeholder passes; a 12pt caption still fails. |
+| 16 | Skill critique could treat line presence itself as a defect. | Require semantic-role, repetition, and rendered before/after evidence. | Meaningful borders remain; duplicate/unassigned rules are actionable. |
+| 17 | `(Cont. n/m)` used full title weight. | Preserve it as a separate muted PPTX run/HTML span at 16pt+. | Continuation state is legible but secondary. |
+| 18 | Triptych/quartet collapsed into generic `freeform-N` validator labels. | Add `card-row-3` and `card-row-4` visible signatures. | Geometry diversity reports the actual row topology. |
+| 19 | New row geometry still looked like the same white-card system. | Omit full surfaces only for horizontal rows; retain per-item accents. | Row slides read as open columns and visibly break card repetition. |
+| 20 | A transient PowerPoint process could fail twice and invalidate a full comparison. | Permit a third isolated attempt, clear stale output, and regenerate all evidence from `c93ac84`. | 35/35 + 9/9 export, invalid 0, 16pt floor, overflow 0, report `ok:true`. |
 
 ## Remaining Limitations
 
 - Content-preserving MDPR splitting can still produce low-density continuation
-  slides when a source section contains only a few large semantic blocks.
+  slides when a source section contains only a few large semantic blocks; the
+  continuation marker hierarchy is fixed, but source-preserving density remains.
 - Structural card accents and data separators remain when they communicate a
   real grouping; the rule removes only isolated or title-repeating lines.
 - Template master/theme OOXML can be preserved, but this comparison does not

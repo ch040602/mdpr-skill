@@ -392,7 +392,7 @@ class ComparisonVisualContractTests(unittest.TestCase):
             self.assertIn("warmup.png", helper)
             self.assertIn("Remove-Item -LiteralPath $warmupPath", helper)
 
-    def test_powerpoint_export_retries_one_transient_slide_failure(self) -> None:
+    def test_powerpoint_export_retries_two_transient_slide_failures(self) -> None:
         module = load_script("create_mdpr_vs_skill_slide_retry", "scripts/create_mdpr_vs_skill_decks.py")
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
@@ -406,7 +406,7 @@ class ComparisonVisualContractTests(unittest.TestCase):
             def flaky_run(command, **_kwargs):
                 nonlocal attempts
                 attempts += 1
-                if attempts == 1:
+                if attempts < 3:
                     raise module.subprocess.CalledProcessError(1, command, stderr="transient")
                 path = Path(command[command.index("-OutputPath") + 1])
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -416,7 +416,7 @@ class ComparisonVisualContractTests(unittest.TestCase):
                 paths = module.export_with_powerpoint(source, output)
 
             self.assertEqual(paths, [output / "slide-001.png"])
-            self.assertEqual(attempts, 2)
+            self.assertEqual(attempts, 3)
 
     def test_comparison_gate_rejects_failed_or_incomplete_current_exports(self) -> None:
         module = load_script("create_mdpr_vs_skill_report_gate", "scripts/create_mdpr_vs_skill_decks.py")

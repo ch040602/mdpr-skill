@@ -51,6 +51,11 @@ slide id, object kind, role, block ids, layout slide ids, and region ids. It
 must not echo raw coordinates, colors, typography, object ids, or renderer
 geometry back into the report.
 
+Visual comparisons must distinguish topology from surface styling. Current
+MDPR evidence names horizontal `card-row-3`/`card-row-4` geometry separately
+from grids and stacks, while open horizontal rows avoid counting a geometry
+change that still looks like the same repeated white-card treatment.
+
 `buildGeneratorComparisonScorecard` compares MDPR against external generator
 references using measurable evidence: editable object coverage, design decision
 trace presence, layout validation references, overflow/density finding counts,

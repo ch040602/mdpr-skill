@@ -747,7 +747,7 @@ def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600,
             "-Height",
             str(height),
         ]
-        for attempt in range(2):
+        for attempt in range(3):
             try:
                 subprocess.run(
                     command,
@@ -761,7 +761,7 @@ def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600,
                 break
             except subprocess.CalledProcessError:
                 output.unlink(missing_ok=True)
-                if attempt == 1:
+                if attempt == 2:
                     raise
         wait_for_stable_export(output, settle_seconds=0)
         exported.append(output)
