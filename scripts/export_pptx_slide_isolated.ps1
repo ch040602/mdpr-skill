@@ -23,7 +23,17 @@ $powerPointProcessId = 0
 try {
     $app = New-Object -ComObject PowerPoint.Application
     $app.Visible = -1
-    [void][PowerPointProcess]::GetWindowThreadProcessId([IntPtr]$app.HWND, [ref]$powerPointProcessId)
+    $windowHandle = $null
+    try {
+        $windowHandle = $app.HWND
+    }
+    catch {
+        # A transiently unavailable window handle must not block slide export.
+        $windowHandle = $null
+    }
+    if ($null -ne $windowHandle -and [Int64]$windowHandle -ne 0) {
+        [void][PowerPointProcess]::GetWindowThreadProcessId([IntPtr]$windowHandle, [ref]$powerPointProcessId)
+    }
     $presentation = $app.Presentations.Open($PptxPath, $true, $false, $false)
     if ($SlideIndex -lt 1 -or $SlideIndex -gt $presentation.Slides.Count) {
         throw "Slide index $SlideIndex is outside 1..$($presentation.Slides.Count)."
