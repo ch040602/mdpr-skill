@@ -144,6 +144,18 @@ class ComparisonVisualContractTests(unittest.TestCase):
             self.assertTrue(forbidden.isdisjoint(shape_names), sorted(forbidden & shape_names))
             self.assertGreaterEqual(module.validate_pptx(output)["minFontSizePt"], 16)
 
+            pipeline = deck.slides[3]
+            for prefix in ("mdpr", "skill"):
+                card = next(shape for shape in pipeline.shapes if shape.name == f"{prefix}_card")
+                body = [shape for shape in pipeline.shapes if shape.name.startswith(f"{prefix}_body_")]
+                self.assertTrue(body)
+                self.assertLessEqual(max(shape.top + shape.height for shape in body), card.top + card.height)
+
+            optional_visual = deck.slides[8]
+            optional_names = {shape.name for shape in optional_visual.shapes}
+            self.assertNotIn("body_panel", optional_names)
+            self.assertNotIn("icon_slot", optional_names)
+
     def test_preview_reset_removes_stale_render_evidence(self) -> None:
         module = load_script("create_mdpr_vs_skill_preview_reset", "scripts/create_mdpr_vs_skill_decks.py")
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -273,6 +285,25 @@ class ComparisonVisualContractTests(unittest.TestCase):
         self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
         complete["mdprBaselineValidation"]["minFontSizePt"] = 16
         complete["skillValidation"]["minFontSizePt"] = 15.9
+        self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
+
+    def test_comparison_gate_rejects_named_card_content_beyond_its_container(self) -> None:
+        module = load_script("create_mdpr_vs_skill_named_container_gate", "scripts/create_mdpr_vs_skill_decks.py")
+        complete = {
+            "sourceFileCount": 20,
+            "mdprBaselineValidation": {"slides": 10, "minFontSizePt": 16},
+            "skillValidation": {"slides": 9, "minFontSizePt": 16, "namedContainerOverflowCount": 1},
+            "powerPointExport": {
+                "ok": True,
+                "baselineSlideCount": 10,
+                "skillSlideCount": 9,
+                "baselineValidation": {"invalidSlideCount": 0},
+                "skillValidation": {"invalidSlideCount": 0},
+            },
+            "baselineRenderPreview": [{"hasContent": True}] * 4,
+            "skillRenderPreview": [{"hasContent": True}] * 4,
+        }
+
         self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
 
 

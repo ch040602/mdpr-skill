@@ -527,8 +527,8 @@ def add_pipeline_slide(prs: Presentation) -> None:
         add_text(slide, f"node_{i}_sub", x + 0.12, 2.86, 1.58, 0.34, sub, 16, P.muted, False, PP_ALIGN.CENTER)
         if i < len(nodes) - 1:
             add_shape(slide, f"arrow_{i}", MSO_AUTO_SHAPE_TYPE.RIGHT_ARROW, x + 1.86, 2.62, 0.48, 0.32, P.accent if i < 2 else P.accent2, P.accent if i < 2 else P.accent2)
-    add_card(slide, "mdpr", 0.82, 4.22, 5.35, 1.82, "MDPR owns", ["layout and typography", "editable rendering", "deterministic pass/fail"], P.accent, "doc")
-    add_card(slide, "skill", 6.72, 4.22, 5.35, 1.82, "mdpr-skill assists", ["semantic hints", "review explanations", "evidence routing"], P.accent2, "spark")
+    add_card(slide, "mdpr", 0.82, 4.08, 5.35, 2.05, "MDPR owns", ["layout and typography", "editable rendering", "deterministic pass/fail"], P.accent, "doc")
+    add_card(slide, "skill", 6.72, 4.08, 5.35, 2.05, "mdpr-skill assists", ["semantic hints", "review explanations", "evidence routing"], P.accent2, "spark")
 
 
 def add_docs_map_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
@@ -618,20 +618,31 @@ def add_chart_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
 def add_text_icon_slide(prs: Presentation) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "Visual suggestions remain optional and semantic")
-    add_shape(slide, "body_panel", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.9, 1.68, 7.0, 3.72, P.card, P.line)
-    add_text(slide, "body_heading", 1.22, 2.0, 5.8, 0.34, "Current skill behavior", 18, P.ink, True)
-    bullets = [
-        "Reserve an aside/corner region, not a primary region.",
-        "Use one black or white icon.",
-        "Prefer PowerPoint built-in icons.",
-        "Allow free SVG only with license record.",
-        "Validate icon center against text midpoint.",
+    add_title(slide, "Suggestions stop before geometry")
+    add_text(slide, "suggestion_heading", 0.88, 1.55, 5.25, 0.45, "mdpr-skill may suggest", 20, P.accent, True)
+    suggestions = [
+        ("PLACEMENT", "Reserve an aside or corner region."),
+        ("SOURCE", "Use one licensed monochrome icon."),
+        ("CHECK", "Compare visual center with the text midpoint."),
     ]
-    for i, bullet in enumerate(bullets):
-        add_text(slide, f"icon_bullet_{i}", 1.28, 2.55 + i * 0.48, 5.8, 0.36, f"- {bullet}", 16, P.muted)
-    add_shape(slide, "icon_slot", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 8.55, 2.15, 2.42, 2.42, P.surface, P.line)
-    draw_mono_icon(slide, "aside_icon", 9.18, 2.72, 1.6, "spark")
+    for i, (label, body) in enumerate(suggestions):
+        y = 2.25 + i * 1.18
+        add_shape(slide, f"suggestion_{i}_mark", MSO_AUTO_SHAPE_TYPE.RECTANGLE, 0.9, y + 0.05, 0.18, 0.58, P.accent, P.accent)
+        add_text(slide, f"suggestion_{i}_label", 1.28, y, 1.25, 0.3, label, 16, P.ink, True)
+        add_text(slide, f"suggestion_{i}_body", 2.58, y - 0.02, 3.55, 0.68, body, 16, P.muted)
+
+    add_shape(slide, "runtime_field", MSO_AUTO_SHAPE_TYPE.RECTANGLE, 6.72, 1.42, 5.9, 4.95, P.surface, P.surface)
+    add_text(slide, "runtime_heading", 7.18, 1.55, 4.85, 0.45, "MDPR still decides", 20, P.accent2, True)
+    decisions = [
+        ("01", "Exact geometry", "regions and coordinates"),
+        ("02", "Typography", "font family, size, and wrapping"),
+        ("03", "Pass or fail", "deterministic validation result"),
+    ]
+    for i, (num, title, body) in enumerate(decisions):
+        y = 2.22 + i * 1.2
+        add_text(slide, f"decision_{i}_num", 7.18, y, 0.58, 0.42, num, 18, P.accent2, True)
+        add_text(slide, f"decision_{i}_title", 7.92, y, 3.9, 0.34, title, 18, P.ink, True)
+        add_text(slide, f"decision_{i}_body", 7.92, y + 0.42, 3.9, 0.34, body, 16, P.muted)
 
 
 def build_skill_deck(summaries: list[dict[str, Any]], mdpr_result: dict[str, Any]) -> None:
@@ -738,7 +749,16 @@ def validate_pptx(path: Path) -> dict[str, Any]:
     prs = Presentation(path)
     counts = {"slides": len(prs.slides), "shapes": 0, "textFrames": 0, "pictures": 0, "tables": 0, "charts": 0}
     min_font = 999.0
-    for slide in prs.slides:
+    named_container_overflow: list[str] = []
+    for slide_index, slide in enumerate(prs.slides, 1):
+        named_shapes = {shape.name: shape for shape in slide.shapes}
+        for name, container in named_shapes.items():
+            if not name.endswith("_card"):
+                continue
+            prefix = name[:-5]
+            children = [shape for child_name, shape in named_shapes.items() if child_name.startswith(f"{prefix}_body_")]
+            if any(child.top + child.height > container.top + container.height for child in children):
+                named_container_overflow.append(f"slide-{slide_index}:{name}")
         for shape in slide.shapes:
             counts["shapes"] += 1
             if getattr(shape, "has_text_frame", False):
@@ -753,7 +773,12 @@ def validate_pptx(path: Path) -> dict[str, Any]:
                 counts["charts"] += 1
             if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
                 counts["pictures"] += 1
-    return {**counts, "minFontSizePt": None if min_font == 999.0 else min_font}
+    return {
+        **counts,
+        "minFontSizePt": None if min_font == 999.0 else min_font,
+        "namedContainerOverflowCount": len(named_container_overflow),
+        "namedContainerOverflow": named_container_overflow,
+    }
 
 
 def validate_pngs(paths: list[Path]) -> list[dict[str, Any]]:

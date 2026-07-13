@@ -23,7 +23,7 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `5614becde51785ca81c1907a78da692cc8626297` |
+| MDPR commit | `3b52be7b` |
 | Markdown files | 21 |
 | Headings | 184 |
 | Source characters | 93,102 |
@@ -65,6 +65,12 @@ The current review led to these changes:
   while keeping unchecked boxes in governed documentation as failures;
 - isolated PowerPoint exports per slide, waited for full layout, fixed UTF-8
   subprocess decoding, and rejected incomplete export sets.
+
+## Visual Improvement Loop Ledger
+
+| Loop | Visual finding | Accepted change | Rendered result |
+| ---: | --- | --- | --- |
+| 1 | MDPR rewarded exact layout repetition; review slide 4 clipped its last card rows; slide 9 spent most of its area on a generic rounded icon panel. | Prefer same-family layout alternation, reject named card content outside its container, enlarge the pipeline ownership cards, and replace slide 9 with a flat decision-boundary comparison. | 35 + 9 PowerPoint exports complete; 16pt floor; zero named-container overflow; slide 4 and slide 9 visually rechecked. |
 
 ## Remaining Limitations
 

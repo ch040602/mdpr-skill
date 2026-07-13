@@ -17,6 +17,7 @@ def comparison_report_ok(report: dict[str, Any], *, actual_run_exists: bool) -> 
         report["sourceFileCount"] >= 20
         and report["mdprBaselineValidation"]["slides"] >= 10
         and report["skillValidation"]["slides"] >= 9
+        and report["skillValidation"].get("namedContainerOverflowCount", 0) == 0
         and all(isinstance(value, (int, float)) and value >= MIN_FONT_SIZE_PT for value in minimum_fonts)
         and actual_run_exists
         and report["powerPointExport"]["ok"]

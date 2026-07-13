@@ -10,7 +10,7 @@
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprSourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
-    "mdprCommit": "5614becde51785ca81c1907a78da692cc8626297",
+    "mdprCommit": "3b52be72ed9b74bb068b493e49d4caababd67eb9",
     "mdprCommand": "node C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold\\packages\\cli\\dist\\index.js build artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {
@@ -20,7 +20,9 @@
       "pictures": 89,
       "tables": 3,
       "charts": 0,
-      "minFontSizePt": 16.0
+      "minFontSizePt": 16.0,
+      "namedContainerOverflowCount": 0,
+      "namedContainerOverflow": []
     },
     "skillResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
     "skillConsumes": [
@@ -36,16 +38,20 @@
     "pictures": 89,
     "tables": 3,
     "charts": 0,
-    "minFontSizePt": 16.0
+    "minFontSizePt": 16.0,
+    "namedContainerOverflowCount": 0,
+    "namedContainerOverflow": []
   },
   "skillValidation": {
     "slides": 9,
-    "shapes": 252,
-    "textFrames": 249,
+    "shapes": 262,
+    "textFrames": 259,
     "pictures": 0,
     "tables": 2,
     "charts": 1,
-    "minFontSizePt": 16.0
+    "minFontSizePt": 16.0,
+    "namedContainerOverflowCount": 0,
+    "namedContainerOverflow": []
   },
   "powerPointExport": {
     "ok": true,
@@ -144,7 +150,7 @@
         1600,
         900
       ],
-      "uniqueColors": 1054,
+      "uniqueColors": 1068,
       "nonWhitePixels": 1440000,
       "hasContent": true
     }
