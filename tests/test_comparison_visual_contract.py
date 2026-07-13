@@ -314,6 +314,38 @@ class ComparisonVisualContractTests(unittest.TestCase):
 
         self.assertEqual(echoes, [])
 
+    def test_generated_agenda_ordinals_are_global_unique_and_contiguous(self) -> None:
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        agenda_items = []
+        for slide in deck.slides:
+            texts = [
+                shape.text.strip() for shape in slide.shapes
+                if getattr(shape, "has_text_frame", False) and shape.text.strip()
+            ]
+            if not texts or not texts[0].startswith("Agenda"):
+                continue
+            agenda_items.extend(text for text in texts[1:] if text[:2].isdigit() and text[2:4] == "  ")
+
+        self.assertEqual([int(item[:2]) for item in agenda_items], list(range(1, 17)))
+        self.assertEqual([item[4:] for item in agenda_items], [
+            "Difference at a glance",
+            "Pipeline boundary",
+            "Architecture",
+            "Page Splitting Rules",
+            "Layout Selection Rules",
+            "Rendering Rules",
+            "Validation and Overflow Policy",
+            "Example decks from MDPR",
+            "Example: examples/basic/deck.md",
+            "Example: examples/comparison/deck.md",
+            "Example: examples/pipeline/deck.md",
+            "Example: examples/diagram-arrangements/deck.md",
+            "Example: examples/five-methods/deck.md",
+            "Example: examples/theme-preview-en/deck.md",
+            "Current skill output expectations",
+            "End state",
+        ])
+
     def test_exported_pngs_are_counted_once_on_case_insensitive_filesystems(self) -> None:
         module = load_script("create_mdpr_vs_skill_png_count", "scripts/create_mdpr_vs_skill_decks.py")
         with tempfile.TemporaryDirectory() as temp_dir:
