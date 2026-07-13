@@ -37,7 +37,7 @@
         ],
         [
           "Typography authority",
-          "Resolves font families, point sizes, region floors, and editable text runs; captions default to 18pt, and code keeps Consolas without a sub-16pt runtime exception",
+          "Resolves font families, point sizes, region floors, and editable text runs; captions default to 18pt, and generated code, captions, list badges, and diagram badges have no sub-16pt runtime exception",
           "May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry"
         ],
         [
@@ -46,9 +46,9 @@
           "Mirrors that manifest failure with evidence and must not recompute, soften, or override it"
         ],
         [
-          "Template fonts",
-          "--template preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set typography.fontFamily for an exact family match",
-          "Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded"
+          "Decorative lines",
+          "Built-in presets omit automatic title underlines, TOC horizontal rules, and isolated cover-bottom rules",
+          "Review evidence omits synthetic subtitles, title rules, and bottom takeaway bands unless source content requires them"
         ]
       ],
       "hasCode": true,
@@ -59,7 +59,7 @@
         "  -> MDPR deterministic parsing, splitting, layout, validation",
         "  -> editable PPTX / HTML / PDF"
       ],
-      "charCount": 21255
+      "charCount": 21679
     },
     {
       "path": "docs/00-product-definition.md",
@@ -374,7 +374,7 @@
         "{ Presentation IR, Layout IR } -> HTML",
         "{ Presentation IR, Layout IR } -> PDF"
       ],
-      "charCount": 8720
+      "charCount": 8938
     },
     {
       "path": "docs/08-roadmap.md",

@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `3f1d3e5` |
+| MDPR commit | `b1ae7c0` |
 | Markdown files | 21 |
-| Headings | 184 |
-| Source characters | 93,383 |
+| Headings | 185 |
+| Source characters | 96,298 |
 | MDPR baseline slides | 35 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
@@ -77,6 +77,9 @@ The current review led to these changes:
 | 5 | A neutral file inventory was misclassified as a semantic comparison because one item mentioned `comparison` and `before/after`, producing two long title-adjacent rules, a blank band, and uneven visible column starts. | Preserve two-column geometry as `neutral-split`, require paired evidence in separate semantic units for full comparison chrome, omit neutral body rules, top-align rows, and fail unqualified full comparison layouts in the polish validator. | Actual slide 21 has zero title-adjacent rules, aligned column starts, and no blank band; 35 + 9 PowerPoint exports remain valid with a 16pt minimum and zero named-container overflow. |
 | 6 | Five section-opening slides repeated their exact title as the first body card or row, wasting one of three or four visible content slots. | Normalize comparison-corpus headings, remove the emitted section title and later exact duplicates before applying the item limit, and keep the remaining unique headings in source order. | Slides 7, 9, 12, 15, and 18 now show each title once and retain the next useful editable item; deck-wide title/body echoes are zero, with 35 + 9 valid exports, a 16pt minimum, and zero named-container overflow. |
 | 7 | The balanced two-page Agenda used 01–08 on both pages, creating duplicate navigation identifiers and making the continuation read like a separate list. | Render TOC prefixes from each bound global `toc-item-N` block ID, retaining the slide-local region suffix only as a legacy fallback. | Slide 2 remains 01–08 and slide 3 is 09–16; the 8/8 split, geometry, editable text, 528-shape baseline, 35 + 9 valid exports, 16pt minimum, and zero overflow remain unchanged. |
+| 8 | Three-line code snippets occupied a fixed 5.25in white panel and carried a non-semantic folded-corner accent. | Size code-focus regions from line count within the previous safe bound, vertically balance sparse snippets, and use a plain rounded code surface in PPTX and HTML. | Slides 17 and 20 show compact centered code panels with no fold; dense 30-line code retains the 5.25in bound and all code stays editable at 16pt or above. |
+| 9 | PowerPoint could export a slide while transiently returning a null `HWND`, but the isolated helper treated that optional cleanup handle as a hard failure. | Guard null/zero window handles while preserving presentation/export errors, COM cleanup, and the final PNG existence gate. | The previously failing slide 17 export succeeds, and the full 35 + 9 isolated export completes without fallback or stale evidence. |
+| 10 | Comparison artifacts and README ownership text referred to different runtime revisions, and the MDPR tables omitted the skill-side decorative-line boundary. | Regenerate both decks from MDPR `b1ae7c0`, align English/Korean/Chinese typography and line rules, and add one quick-choice sentence to both repositories. | The report is bound to `b1ae7c0`; 35/35 + 9/9 PowerPoint exports pass, both decks keep a 16pt minimum and zero named-container overflow, and the comparison text now states that the tools are complementary. |
 
 ## Remaining Limitations
 

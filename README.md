@@ -71,6 +71,9 @@ Reproducible visual evidence and the remaining limitations are recorded in
 cross-repository schema check is stored in
 `artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
+Quick choice: run MDPR to build a deck; add `mdpr-skill` when you also want an
+agent review. They are complementary, not competing renderers.
+
 | Decision boundary | MDPR | mdpr-skill |
 | --- | --- | --- |
 | Use it for | Deterministic Markdown parsing, layout, validation, and editable `PPTX`/`HTML`/`PDF` output | Optional Codex hints, review findings, and comparison evidence before or after an MDPR build |
