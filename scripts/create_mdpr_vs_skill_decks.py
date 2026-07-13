@@ -20,6 +20,11 @@ from pptx.enum.shapes import MSO_AUTO_SHAPE_TYPE, MSO_SHAPE_TYPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Inches, Pt
 
+try:
+    from scripts.comparison_report_gate import MIN_FONT_SIZE_PT, comparison_report_ok
+except ModuleNotFoundError:
+    from comparison_report_gate import MIN_FONT_SIZE_PT, comparison_report_ok
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -47,8 +52,6 @@ REPORT = OUT / "mdpr-vs-skill-report.json"
 
 SLIDE_W = 13.333
 SLIDE_H = 7.5
-MIN_FONT_SIZE_PT = 16
-
 SOURCE_FILES = [
     "README.md",
     "docs/00-product-definition.md",
@@ -778,31 +781,6 @@ def clear_preview_files(output_dir: Path) -> None:
     for pattern in ("mdpr_baseline_preview_*.png", "skill_preview_*.png"):
         for path in output_dir.glob(pattern):
             path.unlink()
-
-
-def comparison_report_ok(report: dict[str, Any], *, actual_run_exists: bool) -> bool:
-    baseline_previews = report["baselineRenderPreview"]
-    skill_previews = report["skillRenderPreview"]
-    minimum_fonts = (
-        report["mdprBaselineValidation"].get("minFontSizePt"),
-        report["skillValidation"].get("minFontSizePt"),
-    )
-    return (
-        report["sourceFileCount"] >= 20
-        and report["mdprBaselineValidation"]["slides"] >= 10
-        and report["skillValidation"]["slides"] >= 9
-        and all(isinstance(value, (int, float)) and value >= MIN_FONT_SIZE_PT for value in minimum_fonts)
-        and actual_run_exists
-        and report["powerPointExport"]["ok"]
-        and report["powerPointExport"]["baselineSlideCount"] == report["mdprBaselineValidation"]["slides"]
-        and report["powerPointExport"]["skillSlideCount"] == report["skillValidation"]["slides"]
-        and report["powerPointExport"]["baselineValidation"]["invalidSlideCount"] == 0
-        and report["powerPointExport"]["skillValidation"]["invalidSlideCount"] == 0
-        and len(baseline_previews) == 4
-        and len(skill_previews) == 4
-        and all(item["hasContent"] for item in baseline_previews)
-        and all(item["hasContent"] for item in skill_previews)
-    )
 
 
 def git_commit(repo: Path) -> str | None:
