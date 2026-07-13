@@ -223,7 +223,7 @@
     {
       "path": "docs/04-layout-rules.md",
       "title": "04. Layout Selection Rules",
-      "headingCount": 13,
+      "headingCount": 14,
       "headings": [
         "04. Layout Selection Rules",
         "Selection Formula",
@@ -270,10 +270,10 @@
       "code": [
         "SlideIntentScoreProfile + itemCount + blockType + density",
         "  -> candidate LayoutPresets",
-        "  -> deterministic score",
+        "  -> deterministic score + bounded recent-geometry reuse penalty",
         "  -> selected LayoutPreset"
       ],
-      "charCount": 7433
+      "charCount": 8750
     },
     {
       "path": "docs/05-overrides-for-llm.md",
@@ -513,7 +513,7 @@
         "- minimum font size violations",
         "- missing override targets"
       ],
-      "charCount": 12426
+      "charCount": 13382
     },
     {
       "path": "docs/references.md",

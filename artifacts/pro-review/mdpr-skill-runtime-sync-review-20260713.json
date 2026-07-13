@@ -1,12 +1,12 @@
 {
   "schemaVersion": "mdpr-skill-runtime-sync-evidence-v2",
-  "created_at": "2026-07-13T07:50:12.3059932Z",
-  "provider": "local-rdd-typography-comparison",
+  "created_at": "2026-07-13T16:29:20.0200527Z",
+  "provider": "local-rdd-visual-cycle-05",
   "scope": {
     "repository": "C:/Users/hcslab_523/Documents/mdpr-skill",
     "mdprPath": "C:/Users/hcslab_523/Documents/mdpresent-spec-scaffold",
     "mdprSkillCommitAtValidation": "4a37ddd",
-    "mdprCommitAtValidation": "e35f454",
+    "mdprCommitAtValidation": "708ee9f",
     "mdprWorkspaceVersion": "0.1.0",
     "mdprCorePackageVersion": "0.1.0",
     "mdprValidationPackageVersion": "0.1.0"
@@ -81,12 +81,9 @@
       "status": "pass"
     }
   ],
-  "knownBaselineValidationIssue": {
+  "baselinePackValidation": {
     "command": "python scripts/validate_pack.py",
-    "status": "pre_existing_failure",
-    "scope": ".github pull request and issue templates",
-    "reason": "check_no_unchecked_boxes treats intentional template checkboxes as unfinished repository TODOs",
-    "introducedBeforeThisReview": true,
-    "currentTodoAffected": false
+    "status": "pass",
+    "note": "Intentional GitHub template checkboxes are scoped correctly and no longer produce a stale false-positive record."
   }
 }

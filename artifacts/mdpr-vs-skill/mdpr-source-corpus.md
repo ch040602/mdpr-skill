@@ -85,7 +85,7 @@ Markdown
 ```text
 SlideIntentScoreProfile + itemCount + blockType + density
   -> candidate LayoutPresets
-  -> deterministic score
+  -> deterministic score + bounded recent-geometry reuse penalty
   -> selected LayoutPreset
 ```
 

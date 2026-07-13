@@ -10,6 +10,9 @@ from pathlib import Path
 from unittest.mock import patch
 
 from pptx import Presentation
+from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.enum.text import MSO_ANCHOR
+from pptx.util import Inches
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -207,6 +210,47 @@ class ComparisonVisualContractTests(unittest.TestCase):
         self.assertEqual(len(mdpr_colors), 1)
         self.assertEqual(len(skill_colors), 1)
         self.assertNotEqual(mdpr_colors, skill_colors)
+
+    def test_actual_mdpr_neutral_inventory_has_no_comparison_rules_or_blank_band(self) -> None:
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        slide = deck.slides[20]
+        text = "\n".join(shape.text for shape in slide.shapes if getattr(shape, "has_text_frame", False))
+        expected = [
+            "Example decks from MDPR",
+            "basic/deck.md covers core flow and expected effects.",
+            "comparison/deck.md exercises before/after content.",
+            "pipeline/deck.md exercises diagram conversion.",
+            "diagram-arrangements/deck.md exercises multiple diagram structures.",
+            "theme-preview decks exercise preset variety.",
+        ]
+        for item in expected:
+            self.assertIn(item, text)
+
+        title = next(shape for shape in slide.shapes if getattr(shape, "has_text_frame", False) and shape.text == expected[0])
+        content = [
+            shape for shape in slide.shapes
+            if getattr(shape, "has_text_frame", False) and any(item in shape.text for item in expected[1:])
+        ]
+        self.assertGreaterEqual(len(content), 2)
+        first_by_column = {}
+        for shape in sorted(content, key=lambda candidate: (candidate.left, candidate.top)):
+            first_by_column.setdefault(round(shape.left / Inches(1), 1), shape)
+        starts = [shape.top for shape in first_by_column.values()]
+        self.assertEqual(len(starts), 2)
+        self.assertLessEqual(max(starts) - min(starts), Inches(0.1))
+        self.assertLessEqual(min(starts) - (title.top + title.height), Inches(0.8))
+        self.assertTrue(all(shape.text_frame.vertical_anchor == MSO_ANCHOR.TOP for shape in content))
+
+        rules = [
+            shape for shape in slide.shapes
+            if shape.shape_type == MSO_SHAPE_TYPE.AUTO_SHAPE
+            and (not getattr(shape, "has_text_frame", False) or not shape.text.strip())
+            and shape.width >= Inches(2.5)
+            and shape.height <= Inches(0.12)
+            and shape.top >= title.top + title.height
+            and shape.top <= title.top + title.height + Inches(0.8)
+        ]
+        self.assertEqual(rules, [])
 
     def test_exported_pngs_are_counted_once_on_case_insensitive_filesystems(self) -> None:
         module = load_script("create_mdpr_vs_skill_png_count", "scripts/create_mdpr_vs_skill_decks.py")
