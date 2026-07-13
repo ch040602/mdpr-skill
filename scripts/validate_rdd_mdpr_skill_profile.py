@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_JSON = ROOT / ".codex" / "review-driven-development" / "project-structure-completeness.json"
 PROFILE_MD = ROOT / ".codex" / "review-driven-development" / "project-structure-completeness.md"
-SYNC_EVIDENCE = ROOT / "artifacts" / "pro-review" / "mdpr-skill-runtime-sync-review-20260709.json"
+SYNC_EVIDENCE = ROOT / "artifacts" / "pro-review" / "mdpr-skill-runtime-sync-review-20260713.json"
 
 FORBIDDEN_TERMS = [
     "FLUX DERBY",
@@ -55,8 +55,8 @@ def validate_schema_sync_evidence() -> None:
     artifact = json.loads(SYNC_EVIDENCE.read_text(encoding="utf-8"))
     if artifact.get("schemaVersion") != "mdpr-skill-runtime-sync-evidence-v2":
         fail("fresh schema sync evidence has unexpected schemaVersion")
-    if not str(artifact.get("created_at", "")).startswith("2026-07-09T"):
-        fail("fresh schema sync evidence must be dated 2026-07-09 or later for this release profile")
+    if not str(artifact.get("created_at", "")).startswith("2026-07-13T"):
+        fail("fresh schema sync evidence must be dated 2026-07-13 for this release profile")
     if "20260706" in json.dumps(artifact):
         fail("fresh schema sync evidence must not reference stale 20260706 artifacts")
     schema_sync = artifact.get("schemaSync", {})
@@ -139,8 +139,8 @@ def main() -> None:
     if schema_sync.get("status") == "proven":
         source = str(schema_sync.get("source", ""))
         command = str(schema_sync.get("command", ""))
-        if source != "artifacts/pro-review/mdpr-skill-runtime-sync-review-20260709.json":
-            fail(f"schema_sync_gate_passed must use fresh 20260709 evidence, got {source!r}")
+        if source != "artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json":
+            fail(f"schema_sync_gate_passed must use fresh 20260713 evidence, got {source!r}")
         if source == "release_scan_coverage" or "validate-schema-sync" not in command:
             fail("schema_sync_gate_passed cannot be proven from inventory coverage alone")
     elif schema_sync.get("status") != "not_evaluated":

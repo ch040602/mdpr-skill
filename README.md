@@ -65,14 +65,17 @@ Key proof artifacts:
 
 ## Difference from MDPR
 
-| Area | MDPR | mdpr-skill |
+<!-- mdpr-runtime-skill-comparison -->
+| Decision boundary | MDPR | mdpr-skill |
 | --- | --- | --- |
-| Primary role | Markdown-to-presentation runtime | Optional Codex skill wrapper |
-| Runtime dependency | No LLM required | Agent used only for hints and review |
-| Final decisions | Parsing, splitting, layout, theme colors, typography, charts, tables, diagrams, icon catalog search, PPTX objects, validation | Short intent/grouping/importance/icon-keyword hints and critique notes |
-| Install path | `npm install -g @mdpresent/cli` | `git clone` this repository for Codex skill workflows |
-| Output | Editable PPTX, HTML, PDF, reports, previews | Hint files, review artifacts, generated review decks |
-| Safety boundary | Builds must work without hints | Must not choose final coordinates, colors, z-order, arrows, geometry, exact icons, or renderer object IDs |
+| Use it for | Deterministic Markdown parsing, layout, validation, and editable `PPTX`/`HTML`/`PDF` output | Optional Codex hints, review findings, and comparison evidence before or after an MDPR build |
+| Typography authority | Resolves font families, point sizes, region floors, and editable text runs; captions default to `14pt`, while code uses `Consolas` and may carry an `11pt` non-strict floor | May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry |
+| Strict visual failure | Required `fontHierarchy` checks every active Layout IR region against `16pt`; a smaller code/caption region stays visible as `MDPR_POLISH_GATE_FAILED` | Mirrors that manifest failure with evidence and must not recompute, soften, or override it |
+| Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded |
+| Output ownership | Owns final coordinates, colors, z-order, objects, rendering, and pass/fail | Produces hints, review reports, and evidence only; MDPR still makes every final runtime decision |
+
+Current cross-repository schema and boundary validation is recorded in
+`artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
 ## MDPR Validation Handoff
 

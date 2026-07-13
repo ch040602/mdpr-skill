@@ -3,10 +3,11 @@ import hashlib
 import json
 import re
 import unittest
+import subprocess
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SYNC_EVIDENCE = ROOT / "artifacts" / "pro-review" / "mdpr-skill-runtime-sync-review-20260709.json"
+SYNC_EVIDENCE = ROOT / "artifacts" / "pro-review" / "mdpr-skill-runtime-sync-review-20260713.json"
 
 
 def sha256_file(path: Path) -> str:
@@ -31,16 +32,23 @@ class AgentHintSchemaSyncTests(unittest.TestCase):
         )
 
     def test_runtime_schema_sync_evidence_is_bound_to_current_schema_hashes(self):
-        self.assertTrue(SYNC_EVIDENCE.exists(), "fresh 2026-07-09 schema sync evidence artifact is missing")
+        self.assertTrue(SYNC_EVIDENCE.exists(), "current schema sync evidence artifact is missing")
         artifact = json.loads(SYNC_EVIDENCE.read_text(encoding="utf-8"))
         self.assertEqual(artifact["schemaVersion"], "mdpr-skill-runtime-sync-evidence-v2")
-        self.assertRegex(artifact["created_at"], r"^2026-07-09T")
+        self.assertRegex(artifact["created_at"], r"^2026-07-13T")
         self.assertEqual(artifact["schemaSync"]["status"], "pass")
         self.assertEqual(artifact["schemaSync"]["findings"], [])
-        self.assertNotIn("20260706", json.dumps(artifact))
 
         mdpr_path = Path(artifact["scope"]["mdprPath"])
         self.assertTrue(mdpr_path.exists(), f"recorded MDPR path is missing: {mdpr_path}")
+        current_mdpr_commit = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            cwd=mdpr_path,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        self.assertEqual(artifact["scope"]["mdprCommitAtValidation"], current_mdpr_commit)
         for schema_name, local_hash in artifact["schemaSync"]["localSchemaHashes"].items():
             mdpr_hash = artifact["schemaSync"]["mdprSchemaHashes"].get(schema_name)
             self.assertEqual(local_hash, mdpr_hash, f"recorded local/MDPR hash drift for {schema_name}")
@@ -51,6 +59,21 @@ class AgentHintSchemaSyncTests(unittest.TestCase):
         self.assertIn("bridge-edge-allowed-hints.json", fixtures["accepted"])
         self.assertIn("bridge-edge-conflict-hints.json", fixtures["conflict"])
         self.assertIn("bridge-forbidden-hints.json", fixtures["forbidden"])
+
+    def test_readme_exposes_the_same_typography_decision_boundary(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        required_identifiers = [
+            "<!-- mdpr-runtime-skill-comparison -->",
+            "| MDPR | mdpr-skill |",
+            "fontHierarchy",
+            "16pt",
+            "MDPR_POLISH_GATE_FAILED",
+            "--template",
+            "typography.fontFamily",
+            "artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json",
+        ]
+        for identifier in required_identifiers:
+            self.assertIn(identifier, readme, f"README.md is missing comparison identifier {identifier}")
 
     def test_hints_core_manifest_uses_mdpr_agent_hint_schema_version(self):
         source = (ROOT / "packages" / "hints-core" / "src" / "index.ts").read_text(encoding="utf-8")
