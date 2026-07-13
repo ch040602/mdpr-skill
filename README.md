@@ -78,7 +78,7 @@ agent review. They are complementary, not competing renderers.
 | --- | --- | --- |
 | Use it for | Deterministic Markdown parsing, layout, validation, and editable `PPTX`/`HTML`/`PDF` output | Optional Codex hints, review findings, and comparison evidence before or after an MDPR build |
 | Typography authority | Resolves font families, point sizes, region floors, and editable text runs; captions default to `18pt`, and generated code, caption, list badge, and diagram badge text has no sub-`16pt` exception | May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry |
-| Strict visual failure | Required `fontHierarchy` checks every active Layout IR region against `16pt`; an explicit smaller override remains `MDPR_POLISH_GATE_FAILED` | Mirrors that manifest failure with evidence and must not recompute, soften, or override it |
+| Strict visual failure | Required `fontHierarchy` checks every text-bearing Layout IR region against `16pt`; image-only and empty decorative regions do not create glyph-floor failures, while code and captions remain covered | Mirrors `MDPR_POLISH_GATE_FAILED` with evidence and must not recompute, soften, or override it |
 | Decorative lines | Built-in presets omit automatic title underlines, TOC horizontal rules, and isolated cover-bottom rules | Review evidence omits synthetic subtitles, title rules, and bottom takeaway bands unless source content requires them |
 | Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded |
 | Output ownership | Owns final coordinates, colors, z-order, objects, rendering, and pass/fail | Produces hints, review reports, and evidence only; MDPR still makes every final runtime decision |
@@ -111,9 +111,11 @@ font sizes, image crops, or renderer objects directly.
 
 MDPR remains the typography authority. Its required `fontHierarchy` chapter
 checks for a declared family, a title/body difference of at least `4pt`, a
-deck-wide Layout IR floor of at least `16pt`, and zero same-role font-size
-variance. `mdpr-skill` cites the manifest chapter and its runtime evidence; it
-does not recompute or soften those thresholds.
+deck-wide text-bearing Layout IR floor of at least `16pt`, and zero same-role
+font-size variance. Image-only and empty decorative regions are excluded;
+code, captions, tables, charts, and diagrams remain governed when they carry
+text. `mdpr-skill` cites the manifest chapter and its runtime evidence; it does
+not recompute or soften those thresholds.
 
 - ordinary hint and review payloads may recommend shorter copy, content splits,
   clearer paragraph levels, or stronger semantic emphasis, but must not prescribe
@@ -330,7 +332,8 @@ Useful `DESIGN.md` sections:
 
 ## Decoration Grammar
 
-- Use numbered rails and thin rule lines.
+- Use numbered rails only for ordered source semantics; use thin rules only as
+  proven data or group separators.
 
 ## Registration Targets
 

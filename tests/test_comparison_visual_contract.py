@@ -36,6 +36,9 @@ class ComparisonVisualContractTests(unittest.TestCase):
         self.assertIn("isolated bottom rule", skill)
         self.assertIn("Inspect every exported slide", skill)
         self.assertIn("including list\n  and diagram number badges", skill)
+        self.assertIn("semantic role and repetition", skill)
+        self.assertIn("rendered before/after evidence", skill)
+        self.assertIn("text-bearing regions", skill)
 
     def test_external_mdpr_checkout_path_can_be_recorded_as_evidence(self) -> None:
         module = load_script("create_mdpr_vs_skill_paths", "scripts/create_mdpr_vs_skill_decks.py")
