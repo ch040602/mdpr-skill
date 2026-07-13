@@ -23,7 +23,7 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `3b52be7b` |
+| MDPR commit | `d179e2d` |
 | Markdown files | 21 |
 | Headings | 184 |
 | Source characters | 93,102 |
@@ -71,6 +71,8 @@ The current review led to these changes:
 | Loop | Visual finding | Accepted change | Rendered result |
 | ---: | --- | --- | --- |
 | 1 | MDPR rewarded exact layout repetition; review slide 4 clipped its last card rows; slide 9 spent most of its area on a generic rounded icon panel. | Prefer same-family layout alternation, reject named card content outside its container, enlarge the pipeline ownership cards, and replace slide 9 with a flat decision-boundary comparison. | 35 + 9 PowerPoint exports complete; 16pt floor; zero named-container overflow; slide 4 and slide 9 visually rechecked. |
+| 2 | Generated continuations greedily produced 14/2 Agenda pages and a 4/4/2 basic-example tail. | Balance entries across the required page count without changing capacity, order, or slide count. | Targeted PowerPoint exports show 8/8 Agenda pages and 4/3/3 example pages with no clipping or content loss. |
+| 3 | MDPR and mdpr-skill actor colors reversed between evidence slides 4 and 9. | Bind teal to MDPR and purple to mdpr-skill through explicit role constants on slides 1, 4, and 9. | Slides 1, 4, and 9 visually rechecked; actor-role color test passes and geometry/copy remain unchanged. |
 
 ## Remaining Limitations
 

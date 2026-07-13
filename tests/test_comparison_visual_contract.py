@@ -171,6 +171,43 @@ class ComparisonVisualContractTests(unittest.TestCase):
 
             self.assertFalse(any(path.exists() for path in stale))
 
+    def test_actor_role_colors_are_consistent_across_boundary_slides(self) -> None:
+        module = load_script("create_mdpr_vs_skill_actor_colors", "scripts/create_mdpr_vs_skill_decks.py")
+        deck = Presentation()
+        deck.slide_width = module.Inches(module.SLIDE_W)
+        deck.slide_height = module.Inches(module.SLIDE_H)
+        module.add_actual_mdpr_run_slide(
+            deck,
+            [{"headingCount": 1, "charCount": 1}],
+            {"slides": 1, "textFrames": 1, "tables": 0, "charts": 0},
+        )
+        module.add_pipeline_slide(deck)
+        module.add_text_icon_slide(deck)
+
+        actual = {shape.name: shape for shape in deck.slides[0].shapes}
+        pipeline = {shape.name: shape for shape in deck.slides[1].shapes}
+        boundary = {shape.name: shape for shape in deck.slides[2].shapes}
+
+        def text_rgb(shape):
+            return str(shape.text_frame.paragraphs[0].runs[0].font.color.rgb)
+
+        mdpr_colors = {
+            text_rgb(actual["actual_mdpr_title"]),
+            text_rgb(pipeline["mdpr_title"]),
+            text_rgb(boundary["runtime_heading"]),
+            *(text_rgb(boundary[f"decision_{index}_num"]) for index in range(3)),
+        }
+        skill_colors = {
+            text_rgb(actual["actual_skill_title"]),
+            text_rgb(pipeline["skill_title"]),
+            text_rgb(boundary["suggestion_heading"]),
+            *(str(boundary[f"suggestion_{index}_mark"].fill.fore_color.rgb) for index in range(3)),
+        }
+
+        self.assertEqual(len(mdpr_colors), 1)
+        self.assertEqual(len(skill_colors), 1)
+        self.assertNotEqual(mdpr_colors, skill_colors)
+
     def test_exported_pngs_are_counted_once_on_case_insensitive_filesystems(self) -> None:
         module = load_script("create_mdpr_vs_skill_png_count", "scripts/create_mdpr_vs_skill_decks.py")
         with tempfile.TemporaryDirectory() as temp_dir:
