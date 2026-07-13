@@ -10,7 +10,7 @@
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprSourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
-    "mdprCommit": "d179e2d0482a290aea708dca3655334d15a67dc6",
+    "mdprCommit": "3f1d3e5c7997143f1ec5aebb98e5f573648fe89c",
     "mdprCommand": "node C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold\\packages\\cli\\dist\\index.js build artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {
