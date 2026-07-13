@@ -186,7 +186,7 @@ REQUIRED_TEXT = {
     ],
     "docs/mdpr-vs-skill-results.md": [
         "MDPR baseline PPTX",
-        "Current skill PPTX",
+        "Review evidence PPTX",
         "artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx",
         "artifacts/mdpr-vs-skill/mdpr-skill-result.pptx",
         "npm run compare:mdpr-skill",
@@ -287,7 +287,7 @@ def check_required_text() -> None:
 def check_no_unchecked_boxes() -> None:
     offenders: list[str] = []
     for path in ROOT.rglob("*.md"):
-        if ".codex" in path.parts or ".cache" in path.parts:
+        if ".codex" in path.parts or ".cache" in path.parts or ".github" in path.parts:
             continue
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             if re.search(r"- \[ \]", line):

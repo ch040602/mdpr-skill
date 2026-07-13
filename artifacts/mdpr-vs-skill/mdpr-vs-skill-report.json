@@ -5,20 +5,22 @@
   "skillPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-result.pptx",
   "skillFromActualMdprRunPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
   "sourceFileCount": 21,
-  "sourceHeadingCount": 180,
-  "sourceCharCount": 73034,
+  "sourceHeadingCount": 184,
+  "sourceCharCount": 93102,
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
-    "mdprCommand": "node .cache/mdpr/packages/cli/dist/index.js build artifacts/mdpr-vs-skill/mdpr-source-corpus.md --to pptx --design clean",
+    "mdprSourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
+    "mdprCommit": "5614becde51785ca81c1907a78da692cc8626297",
+    "mdprCommand": "node C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold\\packages\\cli\\dist\\index.js build artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {
-      "slides": 46,
-      "shapes": 816,
-      "textFrames": 648,
-      "pictures": 165,
+      "slides": 35,
+      "shapes": 541,
+      "textFrames": 449,
+      "pictures": 89,
       "tables": 3,
       "charts": 0,
-      "minFontSizePt": 10.5
+      "minFontSizePt": 16.0
     },
     "skillResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
     "skillConsumes": [
@@ -28,32 +30,40 @@
     ]
   },
   "mdprBaselineValidation": {
-    "slides": 46,
-    "shapes": 816,
-    "textFrames": 648,
-    "pictures": 165,
+    "slides": 35,
+    "shapes": 541,
+    "textFrames": 449,
+    "pictures": 89,
     "tables": 3,
     "charts": 0,
-    "minFontSizePt": 10.5
+    "minFontSizePt": 16.0
   },
   "skillValidation": {
-    "slides": 10,
-    "shapes": 321,
-    "textFrames": 318,
+    "slides": 9,
+    "shapes": 252,
+    "textFrames": 249,
     "pictures": 0,
     "tables": 2,
     "charts": 1,
-    "minFontSizePt": 8.0
+    "minFontSizePt": 16.0
   },
   "powerPointExport": {
-    "ok": false,
-    "errors": [
-      {
-        "deck": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
-        "error": "(-2147352567, 'PowerPoint COM exception', (0, 'Microsoft PowerPoint', 'PowerPoint could not open the file.', '', 0, -2147467259), None)"
-      }
-    ],
-    "fallback": "Existing preview PNGs are reused when PowerPoint COM export is unavailable."
+    "ok": true,
+    "errors": [],
+    "baselineSlideCount": 35,
+    "skillSlideCount": 9,
+    "baselineValidation": {
+      "count": 35,
+      "invalidSlideCount": 0,
+      "invalidSlides": []
+    },
+    "skillValidation": {
+      "count": 9,
+      "invalidSlideCount": 0,
+      "invalidSlides": []
+    },
+    "fallback": null,
+    "evidencePolicy": "Each slide uses an isolated PowerPoint process, a stabilization delay, and a discarded warm-up frame; previews are cleared before each run and failed exports cannot reuse stale PNG evidence."
   },
   "baselineRenderPreview": [
     {
@@ -63,7 +73,7 @@
         900
       ],
       "uniqueColors": 34,
-      "nonWhitePixels": 1415079,
+      "nonWhitePixels": 1414081,
       "hasContent": true
     },
     {
@@ -72,8 +82,8 @@
         1600,
         900
       ],
-      "uniqueColors": 242,
-      "nonWhitePixels": 967171,
+      "uniqueColors": 36,
+      "nonWhitePixels": 1440000,
       "hasContent": true
     },
     {
@@ -82,8 +92,8 @@
         1600,
         900
       ],
-      "uniqueColors": 237,
-      "nonWhitePixels": 1089561,
+      "uniqueColors": 35,
+      "nonWhitePixels": 1440000,
       "hasContent": true
     },
     {
@@ -92,8 +102,8 @@
         1600,
         900
       ],
-      "uniqueColors": 34,
-      "nonWhitePixels": 1440000,
+      "uniqueColors": 130,
+      "nonWhitePixels": 855638,
       "hasContent": true
     }
   ],
@@ -104,7 +114,7 @@
         1600,
         900
       ],
-      "uniqueColors": 1124,
+      "uniqueColors": 1067,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },
@@ -114,8 +124,8 @@
         1600,
         900
       ],
-      "uniqueColors": 136,
-      "nonWhitePixels": 1440000,
+      "uniqueColors": 241,
+      "nonWhitePixels": 1421190,
       "hasContent": true
     },
     {
@@ -124,8 +134,8 @@
         1600,
         900
       ],
-      "uniqueColors": 284,
-      "nonWhitePixels": 1422225,
+      "uniqueColors": 525,
+      "nonWhitePixels": 1440000,
       "hasContent": true
     },
     {
@@ -134,7 +144,7 @@
         1600,
         900
       ],
-      "uniqueColors": 696,
+      "uniqueColors": 1054,
       "nonWhitePixels": 1440000,
       "hasContent": true
     }

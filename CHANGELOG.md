@@ -21,3 +21,7 @@ Initial public npm release candidate.
   publishing.
 - Add public security governance with Dependabot, CodeQL, OpenSSF Scorecard,
   and vulnerability reporting guidance.
+- Rebuild the MDPR comparison from the current sibling checkout, require
+  isolated PowerPoint exports and a 16pt generated-text floor, remove synthetic
+  subtitles and isolated rules, and ignore intentional `.github` form
+  checkboxes without weakening governed-document validation.

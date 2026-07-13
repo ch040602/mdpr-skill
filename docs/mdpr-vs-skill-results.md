@@ -1,66 +1,81 @@
-# MDPR vs Current Skill Results
+# MDPR vs mdpr-skill Review Evidence
 
-This comparison uses Markdown files from the local MDPR checkout as a shared source corpus. The generated source deck includes root README files, product docs, architecture docs, splitting/layout/rendering docs, validation docs, one ADR, and multiple example decks.
+This comparison uses the current sibling MDPR checkout, not the stale cached
+copy. MDPR renders the shared Markdown corpus; the mdpr-skill deck explains the
+review boundary and records evidence. It is not a second renderer.
 
 ## Result Files
 
 - MDPR baseline PPTX: `artifacts/mdpr-vs-skill/mdpr-baseline-result.pptx`
-- Current skill PPTX: `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
-- Skill PPTX from actual MDPR run: `artifacts/mdpr-vs-skill/mdpr-skill-from-actual-md-run.pptx`
+- Review evidence PPTX: `artifacts/mdpr-vs-skill/mdpr-skill-result.pptx`
+- Evidence copy tied to the actual MDPR run: `artifacts/mdpr-vs-skill/mdpr-skill-from-actual-md-run.pptx`
 - Shared Markdown source: `artifacts/mdpr-vs-skill/mdpr-source-corpus.md`
 - Source manifest: `artifacts/mdpr-vs-skill/source-manifest.json`
-- Validation report: `artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json`
+- Machine-readable report: `artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json`
 
-Regenerate the pair:
+Regenerate and validate both decks:
 
 ```bash
 npm run compare:mdpr-skill
 ```
 
-## Source Coverage
+## Current Evidence Scope
 
-The current generated set uses:
+| Evidence | Current value |
+| --- | ---: |
+| MDPR commit | `5614becde51785ca81c1907a78da692cc8626297` |
+| Markdown files | 21 |
+| Headings | 184 |
+| Source characters | 93,102 |
+| MDPR baseline slides | 35 |
+| Review evidence slides | 9 |
+| Minimum generated font in each PPTX | 16pt |
 
-- 24 Markdown files from `.cache/mdpr`
-- 192 headings
-- 48,879 source characters
-- README, Korean README, CODEX prompt, docs, ADR, and example deck files
+The 21 files comprise 13 product/runtime documents, six example decks, one
+root README, and one ADR. The manifest remains a JSON evidence artifact instead
+of being repeated across sparse presentation slides.
 
-## What MDPR Produces
+## Boundary Comparison
 
-MDPR is the baseline presentation runtime. In this comparison it:
-
-- parses the shared Markdown corpus;
-- creates MDPR `BlockIR`, outline, split plan, and `Presentation IR`;
-- renders a PowerPoint deck through the MDPR PPTX renderer;
-- keeps the output broad and content-complete, with 46 slides in the current run.
-
-This output is useful for validating coverage, split behavior, renderer correctness, editable text, tables, and stable deck generation.
-
-## What the Current Skill Produces
-
-The current skill does not replace MDPR. It starts after MDPR's semantic content boundary and demonstrates richer visual decisions. The generated `mdpr-skill-from-actual-md-run.pptx` deck records the concrete MDPR CLI run first, then shows the skill-side result from the same Markdown corpus and MDPR run metrics:
-
-- deterministic recipe and variant framing;
-- source coverage cards;
-- pipeline and responsibility diagrams;
-- native chart and table objects;
-- monotone text-only icon aside;
-- coherence-oriented typography, spacing, object variety, and visual hierarchy.
-
-The current run creates a 9-slide PPTX designed to explain the difference and show how visual diversification changes the output shape without taking over Markdown parsing.
-
-## Practical Difference
-
-| Decision boundary | MDPR | Current skill |
+| Decision boundary | MDPR | mdpr-skill review evidence |
 | --- | --- | --- |
-| Primary job | Markdown-to-presentation runtime | Optional semantic hint and review companion |
-| Input ownership | Markdown files, parser modes, Presentation IR, and Layout IR | MDPR manifests, semantic source context, and evidence paths |
-| Typography authority | Resolves exact family, point size, floors, and text geometry | Suggests copy or split changes only; exact typography remains forbidden |
-| Strict font handling | Required `fontHierarchy` checks the deck-wide `16pt` Layout IR floor, including code/caption regions | Mirrors `MDPR_POLISH_GATE_FAILED`; it cannot soften or replace the runtime result |
-| Template font handling | Preserves master/layout/theme OOXML while generated text uses resolved MDPR typography | Reports mismatches without replacing template typography |
-| Main output | Editable PPTX, HTML, PDF, manifests, and previews | Hint files, review reports, evidence ledgers, and comparison decks |
+| Primary job | Deterministic Markdown parsing, splitting, layout, validation, and rendering | Optional semantic hints, critique, and evidence |
+| Input | Markdown, parser mode, Presentation IR, Layout IR, templates | MDPR source context, manifests, rendered slides, and evidence paths |
+| Typography | Owns exact family, size, floor, wrapping, and editable text runs | May suggest copy reduction or splitting, but cannot prescribe exact typography |
+| Visual pass/fail | Owns required polish chapters and `MDPR_POLISH_GATE_FAILED` | Mirrors runtime failures and adds review findings without weakening them |
+| Output | Editable PPTX, HTML, PDF, manifests, and previews | Hint files, review reports, and comparison evidence |
 
-The current cross-repository schema/boundary check is stored in
-`artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json` and is tied
-to the MDPR commit recorded inside that artifact.
+## Visual Revalidation Findings
+
+Every slide is exported through its own PowerPoint process after a layout
+stabilization delay. Preview files are cleared first, exact slide counts are
+required, and a failed or partial export cannot fall back to stale PNGs.
+
+The current review led to these changes:
+
+- removed synthetic one-line subtitles, title underlines, isolated cover-bottom
+  rules, TOC horizontal rules, and bottom takeaway bands;
+- removed the slide-based source manifest and empty comparison section that
+  created 12 sparse or content-free slides;
+- normalized leading document numbers in comparison headings so Agenda does not
+  display duplicated numbering;
+- raised generated caption, code, list-badge, and diagram-badge behavior to the
+  16pt visual floor instead of preserving code/caption exceptions;
+- excluded intentional `.github` form checkboxes from unfinished-work detection
+  while keeping unchecked boxes in governed documentation as failures;
+- isolated PowerPoint exports per slide, waited for full layout, fixed UTF-8
+  subprocess decoding, and rejected incomplete export sets.
+
+## Remaining Limitations
+
+- Content-preserving MDPR splitting can still produce low-density continuation
+  slides when a source section contains only a few large semantic blocks.
+- Structural card accents and data separators remain when they communicate a
+  real grouping; the rule removes only isolated or title-repeating lines.
+- Template master/theme OOXML can be preserved, but this comparison does not
+  prove that a requested font is installed or embedded on every host.
+- The nine-slide review deck explains evidence and boundaries. It must not be
+  interpreted as a styled replacement for the 35-slide MDPR runtime output.
+
+Cross-repository schema and boundary validation is stored in
+`artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.

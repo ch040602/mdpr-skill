@@ -145,6 +145,20 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   exact icon name, file path, placement, or style.
 - For dense or wordy content, prefer semantic `contentSplitCandidates` and
   `readabilityCandidates` before visual decoration.
+- In review and comparison evidence, do not synthesize a one-line subtitle that
+  repeats the title, an automatic title underline, an isolated bottom rule, or
+  a takeaway band unless the source or template assigns it a real content role.
+  Keep structural card borders and data separators only when they clarify an
+  actual group or comparison.
+- Revalidate the rendered PPTX visually instead of inferring quality from the
+  source or manifest alone. Inspect every exported slide for clipping, sparse
+  continuation pages, repeated numbering, misleading decoration, and stale or
+  partial export frames; record remaining weaknesses instead of styling them
+  away in the evidence deck.
+- Treat `16pt` as the current MDPR generated-text visual floor, including list
+  and diagram number badges. Verify the runtime manifest and actual PPTX runs;
+  do not assume code or caption needs a smaller exception, and do not prescribe
+  an exact replacement size from the skill side.
 - For Korean decks and mixed Korean/English decks, prevent awkward wrapping as
   source cleanup: shorten claim titles, replace long inline tool names with a
   shorter label plus detail in notes, split long bullets into label/detail

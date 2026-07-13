@@ -66,16 +66,19 @@ Key proof artifacts:
 ## Difference from MDPR
 
 <!-- mdpr-runtime-skill-comparison -->
+Reproducible visual evidence and the remaining limitations are recorded in
+[the current MDPR-versus-review results](docs/mdpr-vs-skill-results.md). The
+cross-repository schema check is stored in
+`artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
+
 | Decision boundary | MDPR | mdpr-skill |
 | --- | --- | --- |
 | Use it for | Deterministic Markdown parsing, layout, validation, and editable `PPTX`/`HTML`/`PDF` output | Optional Codex hints, review findings, and comparison evidence before or after an MDPR build |
-| Typography authority | Resolves font families, point sizes, region floors, and editable text runs; captions default to `14pt`, while code uses `Consolas` and may carry an `11pt` non-strict floor | May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry |
-| Strict visual failure | Required `fontHierarchy` checks every active Layout IR region against `16pt`; a smaller code/caption region stays visible as `MDPR_POLISH_GATE_FAILED` | Mirrors that manifest failure with evidence and must not recompute, soften, or override it |
+| Typography authority | Resolves font families, point sizes, region floors, and editable text runs; captions default to `18pt`, and generated code, caption, list badge, and diagram badge text has no sub-`16pt` exception | May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry |
+| Strict visual failure | Required `fontHierarchy` checks every active Layout IR region against `16pt`; an explicit smaller override remains `MDPR_POLISH_GATE_FAILED` | Mirrors that manifest failure with evidence and must not recompute, soften, or override it |
+| Decorative lines | Built-in presets omit automatic title underlines, TOC horizontal rules, and isolated cover-bottom rules | Review evidence omits synthetic subtitles, title rules, and bottom takeaway bands unless source content requires them |
 | Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded |
 | Output ownership | Owns final coordinates, colors, z-order, objects, rendering, and pass/fail | Produces hints, review reports, and evidence only; MDPR still makes every final runtime decision |
-
-Current cross-repository schema and boundary validation is recorded in
-`artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
 ## MDPR Validation Handoff
 

@@ -1,51 +1,25 @@
-# MDPR Corpus: Baseline vs Design Components Skill
+# MDPR Corpus: Runtime vs Review Evidence
 
 This deck is generated from Markdown files inside the local MDPR checkout.
 
 ## Difference at a glance
 
-| Area | MDPR baseline | Current skill pack |
+| Area | MDPR runtime | mdpr-skill review companion |
 |---|---|---|
-| Role | Markdown to Presentation IR and renderer output | Visual diversification after MDPR content structure |
-| Parser | Built-in parser or Pandoc parser mode | Does not parse Markdown; consumes MDPR semantic output |
-| Layout | Rule layout and theme presets | Recipe, variant, icon, infographic, coherence, and validation rules |
-| PPTX | Editable text, tables, images, diagrams | Editable PPTX with richer component planning and visual QA |
-
-## Source manifest
-
-- README.md: mdpresent (13 headings, 15017 chars)
-- docs/00-product-definition.md: 00. Product Definition (6 headings, 1546 chars)
-- docs/01-architecture.md: 01. Architecture (4 headings, 3366 chars)
-- docs/02-requirements.md: 02. Requirements (12 headings, 3070 chars)
-- docs/03-page-splitting.md: 03. Page Splitting Rules (16 headings, 5370 chars)
-- docs/04-layout-rules.md: 04. Layout Selection Rules (10 headings, 3787 chars)
-- docs/05-overrides-for-llm.md: 05. Override Manifest (9 headings, 4030 chars)
-- docs/06-cli-spec.md: 06. CLI Specification (7 headings, 4187 chars)
-- docs/07-rendering-rules.md: 07. Rendering Rules (11 headings, 6360 chars)
-- docs/08-roadmap.md: 08. Roadmap (10 headings, 3462 chars)
-- docs/09-codex-implementation-guide.md: 09. Codex Implementation Guide (8 headings, 1595 chars)
-- docs/10-template-and-master-policy.md: 10. PPT Template and Slide Master Policy (8 headings, 1248 chars)
-- docs/11-qa-overflow.md: 11. Validation and Overflow Policy (12 headings, 10704 chars)
-- docs/references.md: References (8 headings, 756 chars)
-- docs/adr/0001-presentation-ir-schema-contract.md: ADR 0001: Presentation IR Schema Contract (5 headings, 1226 chars)
-- examples/basic/deck.md: AI Workflow Automation Proposal (10 headings, 1255 chars)
-- examples/comparison/deck.md: Comparison Structure Example (4 headings, 307 chars)
-- examples/pipeline/deck.md: Pipeline Example (3 headings, 186 chars)
-- examples/diagram-arrangements/deck.md: Diagram Arrangement Examples (6 headings, 457 chars)
-- examples/five-methods/deck.md: Five-Item Layout Example (2 headings, 200 chars)
-- examples/theme-preview-en/deck.md: MDPR Design Grammar (16 headings, 4905 chars)
+| Role | Markdown to Presentation IR and rendered output | Optional semantic hints, review findings, and evidence |
+| Parser | Built-in parser or Pandoc parser mode | Does not parse Markdown; reads MDPR evidence |
+| Layout | Owns deterministic layout, typography, and theme rules | Does not set final coordinates, font sizes, or theme values |
+| Output | Editable PPTX, HTML, PDF, manifests, and previews | JSON hints, review reports, and comparison evidence |
 
 ## Pipeline boundary
 
 Markdown => MDPR parser => BlockIR => Outline Tree => Split Planner => Presentation IR => Layout IR => Renderer
 
-Presentation IR => Slide Element IR => Feature Extractor => Design Components Rule Engine => Styled Deck IR => Editable PPTX
+MDPR manifest and previews => mdpr-skill hints or review findings => MDPR remains the only renderer
 
-## Parser and splitting topics
+## Architecture
 
-## 01. Architecture
-
-- 01. Architecture
+- Architecture
 - Flow
 - Package Roles
 - Design Principles
@@ -63,9 +37,9 @@ Markdown
   -> Presentation IR
 ```
 
-## 03. Page Splitting Rules
+## Page Splitting Rules
 
-- 03. Page Splitting Rules
+- Page Splitting Rules
 - Heading Rules
 - cover or section
 - slide candidate
@@ -89,14 +63,17 @@ Markdown
 ####  in-body heading
 ```
 
-## 04. Layout Selection Rules
+## Layout Selection Rules
 
-- 04. Layout Selection Rules
+- Layout Selection Rules
 - Selection Formula
 - Intent Detection
 - Count-Based Layouts
 - Presets
-- id: footer
+- Use the deck title as the single header.
+- Select the first pipeline diagram in source order as the hero object.
+- Synthesize one *-teaser-overview bullet list from up to four source sections.
+- Keep the first chart, table, and image in source order as proof objects.
 
 | Field | Value |
 |---|---|
@@ -112,9 +89,9 @@ SlideIntentScoreProfile + itemCount + blockType + density
   -> selected LayoutPreset
 ```
 
-## 07. Rendering Rules
+## Rendering Rules
 
-- 07. Rendering Rules
+- Rendering Rules
 - Shared Renderer Contract
 - PPTX Renderer
 - Decoration Styles
@@ -130,9 +107,9 @@ SlideIntentScoreProfile + itemCount + blockType + density
 { Presentation IR, Layout IR } -> PDF
 ```
 
-## 11. Validation and Overflow Policy
+## Validation and Overflow Policy
 
-- 11. Validation and Overflow Policy
+- Validation and Overflow Policy
 - Validation Checks
 - Overflow Resolution Order
 - Diagnostics
@@ -219,10 +196,10 @@ SlideIntentScoreProfile + itemCount + blockType + density
 - Pruned Style Families
 - Semantic Blocks
 - Pipeline Diagram
-- Preview styles: 5 pruned decoration grammars, not palette-only swaps.
+- Preview styles: 9 distinct decoration grammars, not palette-only swaps.
 - Pattern range: 36+ decoration and layout patterns selected by content role.
 - Object support: native tables, charts, proof objects, diagrams, images, and icon slots.
-- QA contract: readable text, bounded objects, aligned connectors, and editable PPTX output.
+- Validation contract: readable text, bounded objects, aligned connectors, and editable PPTX output.
 
 ## Current skill output expectations
 
@@ -233,4 +210,4 @@ SlideIntentScoreProfile + itemCount + blockType + density
 
 ## End state
 
-> MDPR remains the content and rendering runtime. The current skill pack adds deterministic visual decisions after MDPR has produced semantic structure.
+> MDPR remains the content and rendering runtime. mdpr-skill adds optional semantic hints, review findings, and evidence without owning final visual decisions.

@@ -1,19 +1,19 @@
 {
-  "sourceRoot": ".cache\\mdpr",
+  "sourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
   "files": [
     {
       "path": "README.md",
       "title": "mdpresent",
-      "headingCount": 13,
+      "headingCount": 14,
       "headings": [
         "mdpresent",
+        "Visual Proof",
         "What It Does",
         "MDPR + mdpr-skill",
         "How MDPR Differs",
         "Preview Gallery",
         "Theme Style Examples",
-        "Runtime Pipeline",
-        "Quick Usage"
+        "Runtime Pipeline"
       ],
       "bullets": [
         "**Input**: Markdown documents.",
@@ -26,24 +26,29 @@
       "hasTable": true,
       "table": [
         [
-          "Compared with",
-          "MDPR focus"
+          "Decision boundary",
+          "MDPR",
+          "mdpr-skill"
         ],
         [
-          "**Pandoc**",
-          "Pandoc is a broad document converter. MDPR is narrower: PPTX-first layout planning, editability, overflow validation, object preservation, and generated preview QA."
+          "Use it for",
+          "Deterministic Markdown parsing, layout, validation, and editable PPTX/HTML/PDF output",
+          "Optional Codex hints, review findings, and comparison evidence before or after an MDPR build"
         ],
         [
-          "**Marp / Slidev**",
-          "HTML/CSS slide tools are excellent for web decks. MDPR targets editable PowerPoint objects and downstream PPTX workflows."
+          "Typography authority",
+          "Resolves font families, point sizes, region floors, and editable text runs; captions default to 18pt, and code keeps Consolas without a sub-16pt runtime exception",
+          "May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry"
         ],
         [
-          "**LLM slide generators**",
-          "MDPR keeps deterministic ownership of parsing, splitting, layout, colors, z-order, and renderer output. mdpr-skill can suggest hints, but it cannot own final coordinates or style."
+          "Strict visual failure",
+          "Required fontHierarchy checks every active Layout IR region against 16pt; an explicit smaller override stays visible as MDPR_POLISH_GATE_FAILED",
+          "Mirrors that manifest failure with evidence and must not recompute, soften, or override it"
         ],
         [
-          "**Template-only automation**",
-          "MDPR derives slide structure from Markdown semantics, then applies reusable layout and theme grammar rather than filling a fixed master slide."
+          "Template fonts",
+          "--template preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set typography.fontFamily for an exact family match",
+          "Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded"
         ]
       ],
       "hasCode": true,
@@ -54,7 +59,7 @@
         "  -> MDPR deterministic parsing, splitting, layout, validation",
         "  -> editable PPTX / HTML / PDF"
       ],
-      "charCount": 15017
+      "charCount": 21255
     },
     {
       "path": "docs/00-product-definition.md",
@@ -74,7 +79,7 @@
         "It is not a tool that embeds CSS-rendered slide screenshots into PowerPoint.",
         "It is not an LLM runtime.",
         "analyze Markdown headings and content blocks",
-        "split slides from headings, density, and explicit separators"
+        "normalize paragraph marker bullets such as -, -item, •, ·, –,"
       ],
       "hasTable": false,
       "table": [],
@@ -86,7 +91,7 @@
         "- It is not a tool that embeds CSS-rendered slide screenshots into PowerPoint.",
         "- It is not an LLM runtime."
       ],
-      "charCount": 1546
+      "charCount": 2510
     },
     {
       "path": "docs/01-architecture.md",
@@ -103,8 +108,8 @@
         "layout owns coordinates, regions, slots, typography, and safe areas.",
         "Renderers implement target-format output only; they must not redo split or layout decisions.",
         "Overrides are the final exception layer after automatic planning.",
-        "PPT templates provide brand and background assets; body placement is recalculated by MDPR.",
-        "Optional agent hints may annotate coherence metadata, but deterministic MDPR rules own final output."
+        "PPT templates provide brand, background assets, and compatible master/layout placeholder geometry; MDPR recalculates placement onl",
+        "Optional agent hints may annotate coherence/planning metadata, but deterministic MDPR rules own final output."
       ],
       "hasTable": false,
       "table": [],
@@ -120,7 +125,7 @@
         "  -> Pack Validation / Token Import",
         "  -> Layout Planner (candidate scoring)"
       ],
-      "charCount": 3366
+      "charCount": 5246
     },
     {
       "path": "docs/02-requirements.md",
@@ -158,7 +163,7 @@
         "- HTML output",
         "- editable PPTX output"
       ],
-      "charCount": 3070
+      "charCount": 3132
     },
     {
       "path": "docs/03-page-splitting.md",
@@ -218,7 +223,7 @@
     {
       "path": "docs/04-layout-rules.md",
       "title": "04. Layout Selection Rules",
-      "headingCount": 10,
+      "headingCount": 13,
       "headings": [
         "04. Layout Selection Rules",
         "Selection Formula",
@@ -226,10 +231,15 @@
         "Count-Based Layouts",
         "Presets",
         "Pipeline Diagram Routing",
-        "Composition Grammar",
-        "Candidate Scoring"
+        "Pipeline-One-Page Teaser Rule",
+        "Composition Grammar"
       ],
       "bullets": [
+        "Use the deck title as the single header.",
+        "Select the first pipeline diagram in source order as the hero object.",
+        "Synthesize one *-teaser-overview bullet list from up to four source sections.",
+        "Keep the first chart, table, and image in source order as proof objects.",
+        "Drop raw section-label paragraphs and omit empty summary regions.",
         "id: footer"
       ],
       "hasTable": true,
@@ -263,7 +273,7 @@
         "  -> deterministic score",
         "  -> selected LayoutPreset"
       ],
-      "charCount": 3787
+      "charCount": 7433
     },
     {
       "path": "docs/05-overrides-for-llm.md",
@@ -324,13 +334,14 @@
       "code": [
         "mdpresent init",
         "mdpresent doctor --pdf",
+        "mdpresent job-state validate mdpr-job-state.json --json",
+        "mdpresent job-state status dist --json",
+        "mdpresent generated-assets validate mdpr-generated-assets.json --json",
         "mdpresent inspect deck.md --json",
         "mdpresent plan deck.md --json > layout.plan.json",
-        "mdpresent validate deck.md --override deck.override.yaml --hints deck.mdpr-hints.json --coherence",
-        "mdpresent build deck.md --to pptx,pdf,html --out dist",
-        "mdpresent diff deck.md --override deck.override.yaml"
+        "mdpresent validate deck.md --override deck.override.yaml --hints deck.mdpr-hints.json --coherence"
       ],
-      "charCount": 4187
+      "charCount": 6226
     },
     {
       "path": "docs/07-rendering-rules.md",
@@ -363,7 +374,7 @@
         "{ Presentation IR, Layout IR } -> HTML",
         "{ Presentation IR, Layout IR } -> PDF"
       ],
-      "charCount": 6360
+      "charCount": 8720
     },
     {
       "path": "docs/08-roadmap.md",
@@ -460,9 +471,11 @@
       "codeLanguage": "text",
       "code": [
         "Template controls brand.",
-        "Layout engine controls placement."
+        "Slide master/layout controls approved placeholder placement.",
+        "Layout engine controls fallback placement.",
+        "Layout engine controls placement when master/layout placeholders are absent, ambiguous, or unsafe."
       ],
-      "charCount": 1248
+      "charCount": 2276
     },
     {
       "path": "docs/11-qa-overflow.md",
@@ -500,7 +513,7 @@
         "- minimum font size violations",
         "- missing override targets"
       ],
-      "charCount": 10704
+      "charCount": 12426
     },
     {
       "path": "docs/references.md",
@@ -709,10 +722,10 @@
         "Table Coherence"
       ],
       "bullets": [
-        "Preview styles: 5 pruned decoration grammars, not palette-only swaps.",
+        "Preview styles: 9 distinct decoration grammars, not palette-only swaps.",
         "Pattern range: 36+ decoration and layout patterns selected by content role.",
         "Object support: native tables, charts, proof objects, diagrams, images, and icon slots.",
-        "QA contract: readable text, bounded objects, aligned connectors, and editable PPTX output.",
+        "Validation contract: readable text, bounded objects, aligned connectors, and editable PPTX output.",
         "Cover signal: title scale and first-viewport identity.",
         "Evidence rhythm: chart, table, and proof objects stay connected."
       ],
@@ -721,7 +734,7 @@
         [
           "Object",
           "Renderer expectation",
-          "QA signal"
+          "Validation signal"
         ],
         [
           "Text box",
@@ -751,7 +764,7 @@
         "Coverage: 92, 88, 95",
         "Defects: 3, 5, 2"
       ],
-      "charCount": 4905
+      "charCount": 5034
     }
   ]
 }

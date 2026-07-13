@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import subprocess
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -19,7 +21,22 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Inches, Pt
 
 ROOT = Path(__file__).resolve().parents[1]
-MDPR = ROOT / ".cache" / "mdpr"
+
+
+def resolve_mdpr_root() -> Path:
+    configured = os.environ.get("MDPR_SOURCE_DIR")
+    candidates = [
+        Path(configured).expanduser() if configured else None,
+        ROOT.parent / "mdpresent-spec-scaffold",
+        ROOT / ".cache" / "mdpr",
+    ]
+    for candidate in candidates:
+        if candidate is not None and (candidate / "packages" / "cli").is_dir():
+            return candidate.resolve()
+    return (ROOT / ".cache" / "mdpr").resolve()
+
+
+MDPR = resolve_mdpr_root()
 OUT = ROOT / "artifacts" / "mdpr-vs-skill"
 SOURCE_MD = OUT / "mdpr-source-corpus.md"
 MANIFEST = OUT / "source-manifest.json"
@@ -30,7 +47,7 @@ REPORT = OUT / "mdpr-vs-skill-report.json"
 
 SLIDE_W = 13.333
 SLIDE_H = 7.5
-MIN_FONT_SIZE_PT = 8
+MIN_FONT_SIZE_PT = 16
 
 SOURCE_FILES = [
     "README.md",
@@ -74,6 +91,14 @@ class Palette:
 
 
 P = Palette()
+
+
+def evidence_path(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return str(resolved.relative_to(ROOT.resolve()))
+    except ValueError:
+        return str(resolved)
 
 
 def rgb(hex_value: str) -> RGBColor:
@@ -167,35 +192,32 @@ def source_summary(relative_path: str) -> dict[str, Any]:
     }
 
 
+def corpus_display_title(value: str) -> str:
+    return re.sub(r"^\s*\d{1,3}[.)]\s+", "", value).strip()
+
+
 def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
     lines = [
-        "# MDPR Corpus: Baseline vs Design Components Skill",
+        "# MDPR Corpus: Runtime vs Review Evidence",
         "",
         "This deck is generated from Markdown files inside the local MDPR checkout.",
         "",
         "## Difference at a glance",
         "",
-        "| Area | MDPR baseline | Current skill pack |",
+        "| Area | MDPR runtime | mdpr-skill review companion |",
         "|---|---|---|",
-        "| Role | Markdown to Presentation IR and renderer output | Visual diversification after MDPR content structure |",
-        "| Parser | Built-in parser or Pandoc parser mode | Does not parse Markdown; consumes MDPR semantic output |",
-        "| Layout | Rule layout and theme presets | Recipe, variant, icon, infographic, coherence, and validation rules |",
-        "| PPTX | Editable text, tables, images, diagrams | Editable PPTX with richer component planning and visual QA |",
-        "",
-        "## Source manifest",
-        "",
+        "| Role | Markdown to Presentation IR and rendered output | Optional semantic hints, review findings, and evidence |",
+        "| Parser | Built-in parser or Pandoc parser mode | Does not parse Markdown; reads MDPR evidence |",
+        "| Layout | Owns deterministic layout, typography, and theme rules | Does not set final coordinates, font sizes, or theme values |",
+        "| Output | Editable PPTX, HTML, PDF, manifests, and previews | JSON hints, review reports, and comparison evidence |",
     ]
-    for item in summaries:
-        lines.append(f"- {item['path']}: {item['title']} ({item['headingCount']} headings, {item['charCount']} chars)")
     lines.extend([
         "",
         "## Pipeline boundary",
         "",
         "Markdown => MDPR parser => BlockIR => Outline Tree => Split Planner => Presentation IR => Layout IR => Renderer",
         "",
-        "Presentation IR => Slide Element IR => Feature Extractor => Design Components Rule Engine => Styled Deck IR => Editable PPTX",
-        "",
-        "## Parser and splitting topics",
+        "MDPR manifest and previews => mdpr-skill hints or review findings => MDPR remains the only renderer",
         "",
     ])
     topic_paths = [
@@ -207,9 +229,9 @@ def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
     ]
     for path in topic_paths:
         item = next(summary for summary in summaries if summary["path"] == path)
-        lines.extend([f"## {item['title']}", ""])
+        lines.extend([f"## {corpus_display_title(item['title'])}", ""])
         for heading in item["headings"][:5]:
-            lines.append(f"- {heading}")
+            lines.append(f"- {corpus_display_title(heading)}")
         for bullet in item["bullets"][:4]:
             lines.append(f"- {bullet}")
         if item["table"]:
@@ -234,7 +256,7 @@ def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
     for path in [item for item in summaries if item["path"].startswith("examples/")]:
         lines.extend([f"## Example: {path['path']}", ""])
         for heading in path["headings"][:6]:
-            lines.append(f"- {heading}")
+            lines.append(f"- {corpus_display_title(heading)}")
         for bullet in path["bullets"][:4]:
             lines.append(f"- {bullet}")
         lines.append("")
@@ -248,7 +270,7 @@ def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
         "",
         "## End state",
         "",
-        "> MDPR remains the content and rendering runtime. The current skill pack adds deterministic visual decisions after MDPR has produced semantic structure.",
+        "> MDPR remains the content and rendering runtime. mdpr-skill adds optional semantic hints, review findings, and evidence without owning final visual decisions.",
     ])
     SOURCE_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -318,9 +340,8 @@ def add_shape(slide, name: str, kind: MSO_AUTO_SHAPE_TYPE, x: float, y: float, w
     return shape
 
 
-def add_bg(slide, label: str = "skill result") -> None:
+def add_bg(slide) -> None:
     add_shape(slide, "z00_bg", MSO_AUTO_SHAPE_TYPE.RECTANGLE, 0, 0, SLIDE_W, SLIDE_H, P.bg, P.bg)
-    add_text(slide, "deck_label", 10.7, 0.28, 1.8, 0.2, label.upper(), 7, P.muted, True, PP_ALIGN.RIGHT)
 
 
 def draw_mono_icon(slide, name: str, x: float, y: float, size: float, kind: str, tone: str = P.ink) -> None:
@@ -342,11 +363,8 @@ def draw_mono_icon(slide, name: str, x: float, y: float, size: float, kind: str,
             add_shape(slide, f"{name}_line_{i}", MSO_AUTO_SHAPE_TYPE.RECTANGLE, x + size * 0.12, y + size * (0.16 + i * 0.13), size * 0.25, size * 0.035, P.bg, P.bg)
 
 
-def add_title(slide, title: str, subtitle: str = "") -> None:
-    add_text(slide, "title", 0.65, 0.42, 7.8, 0.52, title, 25, P.ink, True)
-    if subtitle:
-        add_text(slide, "subtitle", 0.67, 0.93, 8.4, 0.32, subtitle, 11, P.muted)
-    add_shape(slide, "title_rule", MSO_AUTO_SHAPE_TYPE.RECTANGLE, 0.66, 1.25, 1.7, 0.05, P.accent, P.accent)
+def add_title(slide, title: str) -> None:
+    add_text(slide, "title", 0.65, 0.42, 11.9, 0.58, title, 28, P.ink, True)
 
 
 def add_card(slide, name: str, x: float, y: float, w: float, h: float, title: str, body: list[str], accent: str = P.accent, icon: str | None = None) -> None:
@@ -358,22 +376,22 @@ def add_card(slide, name: str, x: float, y: float, w: float, h: float, title: st
     else:
         tx = x + 0.22
         tw = w - 0.44
-    add_text(slide, f"{name}_title", tx, y + 0.22, tw, 0.28, title, 13, accent, True)
-    for i, line in enumerate(body[:5]):
-        add_text(slide, f"{name}_body_{i}", tx, y + 0.63 + i * 0.32, tw, 0.26, line, 9, P.muted)
+    add_text(slide, f"{name}_title", tx, y + 0.2, tw, 0.38, title, 18, accent, True)
+    for i, line in enumerate(body[:3]):
+        add_text(slide, f"{name}_body_{i}", tx, y + 0.7 + i * 0.42, tw, 0.34, line, 16, P.muted)
 
 
 def add_difference_slide(prs: Presentation) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "MDPR vs Current Skill", "Same Markdown corpus, different responsibility boundary and output behavior.")
+    add_title(slide, "MDPR runtime and mdpr-skill boundary")
     headers = ["Area", "MDPR", "Current skill"]
     rows = [
-        ["Core role", "Markdown -> Presentation IR -> PPTX", "Visual decisions after MDPR structure"],
+        ["Core role", "Markdown -> editable presentation", "Optional hints and review evidence"],
         ["Parser", "Built-in or Pandoc mode", "No Markdown parsing"],
-        ["Design", "Theme/preset oriented", "Recipe, variant, icon, infographic rules"],
-        ["Validation", "Build and overflow checks", "Render comparison, z-order, coherence"],
-        ["PPTX", "Editable baseline objects", "Editable styled objects with richer variety"],
+        ["Design", "Owns layout and theme binding", "Suggests intent; no final geometry"],
+        ["Validation", "Owns deterministic pass/fail", "Mirrors MDPR findings with evidence"],
+        ["Output", "Editable PPTX, HTML, and PDF", "JSON hints, reports, and evidence"],
     ]
     table = slide.shapes.add_table(len(rows) + 1, 3, Inches(0.68), Inches(1.62), Inches(11.9), Inches(4.1)).table
     widths = [1.7, 4.25, 5.95]
@@ -394,25 +412,25 @@ def add_difference_slide(prs: Presentation) -> None:
         for cell in row.cells:
             for p in cell.text_frame.paragraphs:
                 for run in p.runs:
-                    run.font.size = Pt(9)
+                    run.font.size = Pt(16)
                     run.font.color.rgb = rgb("FFFFFF" if cell in table.rows[0].cells else P.ink)
                     run.font.bold = cell in table.rows[0].cells
 
 
 def add_actual_mdpr_run_slide(prs: Presentation, summaries: list[dict[str, Any]], mdpr_result: dict[str, Any]) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_bg(slide, "skill from actual mdpr run")
-    add_title(slide, "Actual Markdown Run -> Skill Result", "The skill deck is generated after MDPR has built a real PPTX from the shared Markdown corpus.")
+    add_bg(slide)
+    add_title(slide, "Evidence starts with an actual MDPR run")
     add_card(
         slide,
         "actual_source",
         0.75,
-        1.55,
+        1.45,
         3.65,
-        1.55,
+        2.0,
         "1. Real Markdown input",
         [
-            f"{len(summaries)} files from .cache/mdpr",
+            f"{len(summaries)} source files",
             f"{sum(item['headingCount'] for item in summaries)} headings",
             f"{sum(item['charCount'] for item in summaries):,} chars",
         ],
@@ -423,10 +441,10 @@ def add_actual_mdpr_run_slide(prs: Presentation, summaries: list[dict[str, Any]]
         slide,
         "actual_mdpr",
         4.85,
-        1.55,
+        1.45,
         3.65,
-        1.55,
-        "2. MDPR execution result",
+        2.0,
+        "2. MDPR output",
         [
             f"{mdpr_result['slides']} slides",
             f"{mdpr_result['textFrames']} editable text frames",
@@ -439,42 +457,31 @@ def add_actual_mdpr_run_slide(prs: Presentation, summaries: list[dict[str, Any]]
         slide,
         "actual_skill",
         8.95,
-        1.55,
+        1.45,
         3.65,
-        1.55,
-        "3. Skill generation",
+        2.0,
+        "3. mdpr-skill review",
         [
-            "uses MDPR source metrics",
-            "adds visual rule explanation",
-            "keeps parsing/runtime in MDPR",
+            "reads MDPR evidence",
+            "returns optional findings",
+            "does not render final slides",
         ],
         P.contrast,
         "spark",
     )
     for i, x in enumerate([4.42, 8.52]):
-        add_shape(slide, f"actual_arrow_{i}", MSO_AUTO_SHAPE_TYPE.RIGHT_ARROW, x, 2.15, 0.34, 0.28, P.dark, P.dark)
-    add_shape(slide, "actual_boundary", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.85, 3.85, 11.55, 1.6, P.surface, P.line)
-    add_text(slide, "actual_boundary_title", 1.12, 4.12, 3.1, 0.32, "Recorded boundary", 16, P.ink, True)
+        add_shape(slide, f"actual_arrow_{i}", MSO_AUTO_SHAPE_TYPE.RIGHT_ARROW, x, 2.3, 0.34, 0.28, P.dark, P.dark)
+    add_shape(slide, "actual_boundary", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.85, 4.05, 11.55, 1.65, P.surface, P.line)
+    add_text(slide, "actual_boundary_title", 1.12, 4.28, 3.1, 0.38, "Recorded boundary", 20, P.ink, True)
     add_text(
         slide,
         "actual_boundary_body",
         1.12,
-        4.55,
+        4.78,
         10.65,
-        0.34,
-        "MDPR creates the actual presentation output from Markdown first. mdpr-skill then produces a compact explanatory/validation PPTX from that concrete run, source manifest, and metrics.",
-        12,
-        P.muted,
-    )
-    add_text(
-        slide,
-        "actual_file_note",
-        1.12,
-        5.95,
-        10.65,
-        0.28,
-        f"Input artifact: {SOURCE_MD.relative_to(ROOT)}  |  MDPR PPTX: {BASELINE_PPTX.relative_to(ROOT)}  |  Skill PPTX: {SKILL_FROM_MDPR_RUN_PPTX.relative_to(ROOT)}",
-        9,
+        0.58,
+        "MDPR creates the presentation. mdpr-skill may explain or review evidence, but it does not create a second styled runtime output.",
+        16,
         P.muted,
     )
 
@@ -482,7 +489,7 @@ def add_actual_mdpr_run_slide(prs: Presentation, summaries: list[dict[str, Any]]
 def add_source_coverage_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "MDPR Markdown Corpus Coverage", "Docs, ADR, README files, and example decks are used as the shared input basis.")
+    add_title(slide, "The same Markdown corpus grounds both sides")
     groups = [
         ("Docs", [s for s in summaries if s["path"].startswith("docs/") and "/adr/" not in s["path"]]),
         ("Examples", [s for s in summaries if s["path"].startswith("examples/")]),
@@ -491,88 +498,92 @@ def add_source_coverage_slide(prs: Presentation, summaries: list[dict[str, Any]]
     ]
     for i, (name, items) in enumerate(groups):
         x = 0.72 + i * 3.05
-        add_shape(slide, f"group_{i}_card", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, x, 1.62, 2.65, 3.8, P.card, P.line)
-        add_text(slide, f"group_{i}_num", x + 0.22, 1.9, 1.2, 0.55, str(len(items)), 28, P.accent2 if i == 1 else P.accent, True)
-        add_text(slide, f"group_{i}_label", x + 0.24, 2.52, 1.6, 0.28, name, 13, P.ink, True)
-        add_text(slide, f"group_{i}_chars", x + 0.24, 2.9, 1.9, 0.22, f"{sum(item['charCount'] for item in items):,} chars", 9, P.muted, True)
-        for j, item in enumerate(items[:5]):
-            add_text(slide, f"group_{i}_item_{j}", x + 0.24, 3.32 + j * 0.31, 2.08, 0.22, item["path"].replace("docs/", ""), 7, P.muted)
-    add_shape(slide, "coverage_band", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.72, 5.82, 11.8, 0.58, P.surface2, P.line)
-    add_text(slide, "coverage_note", 0.96, 6.0, 10.9, 0.22, f"Total: {len(summaries)} Markdown files, {sum(item['headingCount'] for item in summaries)} headings, {sum(item['charCount'] for item in summaries):,} source characters.", 11, P.ink, True)
+        add_shape(slide, f"group_{i}_card", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, x, 1.48, 2.65, 4.75, P.card, P.line)
+        add_text(slide, f"group_{i}_num", x + 0.22, 1.78, 1.2, 0.55, str(len(items)), 30, P.accent2 if i == 1 else P.accent, True)
+        add_text(slide, f"group_{i}_label", x + 0.24, 2.48, 1.8, 0.38, name, 20, P.ink, True)
+        add_text(slide, f"group_{i}_chars", x + 0.24, 3.02, 2.1, 0.34, f"{sum(item['charCount'] for item in items):,} chars", 16, P.muted, True)
+        for j, item in enumerate(items[:3]):
+            add_text(slide, f"group_{i}_item_{j}", x + 0.24, 3.7 + j * 0.62, 2.08, 0.5, Path(item["path"]).name, 16, P.muted)
 
 
 def add_pipeline_slide(prs: Presentation) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "Responsibility Pipeline", "MDPR owns semantic structure; the skill owns optional design diversification.")
+    add_title(slide, "One runtime, one optional review companion")
     nodes = [
-        ("Markdown", "MDPR", P.card),
-        ("Parser", "simple/pandoc", P.card),
+        ("Markdown", "source", P.card),
+        ("Parser", "simple/Pandoc", P.card),
         ("Presentation IR", "semantic slides", P.surface),
-        ("Slide Element IR", "content contract", P.surface2),
-        ("Rule Engine", "recipes/variants", P.surface),
-        ("Styled PPTX", "editable output", P.card),
+        ("MDPR rules", "layout/theme", P.surface),
+        ("Editable PPTX", "runtime output", P.card),
     ]
     for i, (title, sub, fill) in enumerate(nodes):
-        x = 0.72 + i * 2.03
-        add_shape(slide, f"node_{i}", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, x, 2.25, 1.46, 1.05, fill, P.line)
-        add_text(slide, f"node_{i}_title", x + 0.15, 2.48, 1.16, 0.24, title, 10, P.ink, True, PP_ALIGN.CENTER)
-        add_text(slide, f"node_{i}_sub", x + 0.13, 2.82, 1.2, 0.22, sub, 7, P.muted, False, PP_ALIGN.CENTER)
+        x = 0.72 + i * 2.45
+        add_shape(slide, f"node_{i}", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, x, 2.25, 1.82, 1.12, fill, P.line)
+        add_text(slide, f"node_{i}_title", x + 0.12, 2.4, 1.58, 0.42, title, 16, P.ink, True, PP_ALIGN.CENTER)
+        add_text(slide, f"node_{i}_sub", x + 0.12, 2.86, 1.58, 0.34, sub, 16, P.muted, False, PP_ALIGN.CENTER)
         if i < len(nodes) - 1:
-            add_shape(slide, f"arrow_{i}", MSO_AUTO_SHAPE_TYPE.RIGHT_ARROW, x + 1.48, 2.58, 0.44, 0.32, P.accent if i < 3 else P.accent2, P.accent if i < 3 else P.accent2)
-    add_card(slide, "mdpr", 0.82, 4.22, 5.35, 1.42, "MDPR output", ["consistent baseline deck", "content split and renderer path", "theme-preset visual treatment"], P.accent, "doc")
-    add_card(slide, "skill", 6.72, 4.22, 5.35, 1.42, "Skill output", ["recipe selection", "monotone icon aside", "infographic and coherence validation"], P.accent2, "spark")
+            add_shape(slide, f"arrow_{i}", MSO_AUTO_SHAPE_TYPE.RIGHT_ARROW, x + 1.86, 2.62, 0.48, 0.32, P.accent if i < 2 else P.accent2, P.accent if i < 2 else P.accent2)
+    add_card(slide, "mdpr", 0.82, 4.22, 5.35, 1.82, "MDPR owns", ["layout and typography", "editable rendering", "deterministic pass/fail"], P.accent, "doc")
+    add_card(slide, "skill", 6.72, 4.22, 5.35, 1.82, "mdpr-skill assists", ["semantic hints", "review explanations", "evidence routing"], P.accent2, "spark")
 
 
 def add_docs_map_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "What the MDPR Docs Contribute", "Each source family feeds a different content shape into the generated decks.")
+    add_title(slide, "Source families exercise different runtime paths")
     rows = [
-        ("Architecture", "flow, packages, renderer boundary", "pipeline cards"),
-        ("Page splitting", "headings, density, slide breaks", "rules and examples"),
-        ("Layout rules", "regions, safe area, overflow", "grid and cards"),
-        ("Rendering rules", "PPTX/PDF/HTML behavior", "format matrix"),
-        ("Overrides", "LLM/human adjustment boundary", "annotation panel"),
-        ("Examples", "actual deck Markdown", "varied slide intents"),
+        ("Architecture", "packages and renderer", "pipeline evidence"),
+        ("Page splitting", "headings and density", "split-rule evidence"),
+        ("Layout rules", "regions and overflow", "grid evidence"),
+        ("Rendering rules", "PPTX, PDF, and HTML", "format evidence"),
+        ("Overrides", "human and LLM boundary", "annotation evidence"),
+        ("Examples", "actual deck Markdown", "intent evidence"),
     ]
     for i, (title, body, output) in enumerate(rows):
         x = 0.75 + (i % 3) * 4.0
-        y = 1.62 + (i // 3) * 1.82
-        add_card(slide, f"docmap_{i}", x, y, 3.45, 1.35, title, [body, f"Output: {output}"], P.accent if i % 2 == 0 else P.accent2, ["doc", "pipeline", "shield"][i % 3])
+        y = 1.48 + (i // 3) * 2.25
+        add_card(slide, f"docmap_{i}", x, y, 3.45, 1.9, title, [body, output], P.accent if i % 2 == 0 else P.accent2, ["doc", "pipeline", "shield"][i % 3])
 
 
 def add_visual_rules_slide(prs: Presentation) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "Skill Visual Rules Added on Top", "The skill changes visual choices, not MDPR's Markdown parsing role.")
-    add_card(slide, "icon", 0.78, 1.62, 3.65, 1.48, "Monotone icon aside", ["text-only slides only", "PowerPoint icon or licensed free SVG", "one black or white icon"], P.ink, "spark")
-    add_card(slide, "info", 4.86, 1.62, 3.65, 1.48, "Infographic seeds", ["cycle-loop", "ordered-rail", "ranked-stack", "chart-like families"], P.accent, "pipeline")
-    add_card(slide, "qa", 8.94, 1.62, 3.65, 1.48, "Coherence validation", ["minimum font size", "aligned icon midpoint", "z-order and object variety"], P.contrast, "shield")
+    add_title(slide, "mdpr-skill narrows review, not rendering")
+    add_card(slide, "icon", 0.78, 1.48, 3.65, 1.92, "Semantic hints", ["grouping and intent", "source-bound keywords", "content split candidates"], P.ink, "spark")
+    add_card(slide, "info", 4.86, 1.48, 3.65, 1.92, "Review evidence", ["rendered preview paths", "MDPR finding IDs", "manifest status"], P.accent, "pipeline")
+    add_card(slide, "qa", 8.94, 1.48, 3.65, 1.92, "Hard boundary", ["no coordinates", "no exact typography", "no pass/fail override"], P.contrast, "shield")
     add_shape(slide, "line", MSO_AUTO_SHAPE_TYPE.RECTANGLE, 1.05, 4.03, 10.95, 0.04, P.line, P.line)
     steps = [("1", "Detect text-only"), ("2", "Reserve aside slot"), ("3", "Pick monotone source"), ("4", "Validate alignment")]
     for i, (num, label) in enumerate(steps):
         x = 1.1 + i * 2.9
-        add_shape(slide, f"step_{i}_num", MSO_AUTO_SHAPE_TYPE.OVAL, x, 3.76, 0.46, 0.46, P.dark, P.dark, num, 10, "FFFFFF", True)
-        add_text(slide, f"step_{i}_label", x - 0.36, 4.42, 1.25, 0.26, label, 9, P.ink, True, PP_ALIGN.CENTER)
+        add_shape(slide, f"step_{i}_num", MSO_AUTO_SHAPE_TYPE.OVAL, x, 3.76, 0.46, 0.46, P.dark, P.dark, num, 16, "FFFFFF", True)
+        add_text(slide, f"step_{i}_label", x - 0.64, 4.4, 1.75, 0.56, label, 16, P.ink, True, PP_ALIGN.CENTER)
 
 
 def add_examples_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "Example Decks Used as Content Variety", "The same source set exercises comparison, pipeline, theme, and process-like slide types.")
+    add_title(slide, "Examples broaden content without changing ownership")
     examples = [s for s in summaries if s["path"].startswith("examples/")][:6]
     for i, item in enumerate(examples):
         x = 0.72 + (i % 3) * 4.0
-        y = 1.55 + (i // 3) * 1.95
-        body = item["headings"][:2] or item["bullets"][:2] or [item["title"]]
-        add_card(slide, f"example_{i}", x, y, 3.45, 1.55, item["path"].replace("examples/", ""), body, P.accent2 if i % 2 else P.accent, "doc")
+        y = 1.48 + (i // 3) * 2.25
+        family_names = {
+            "diagram-arrangements": "Diagram",
+            "five-methods": "Five Methods",
+            "theme-preview-en": "Theme Preview",
+        }
+        directory = Path(item["path"]).parent.name
+        family = family_names.get(directory, directory.replace("-", " ").title())
+        body = [item["title"][:45], f"{item['headingCount']} headings · {item['charCount']:,} chars"]
+        add_card(slide, f"example_{i}", x, y, 3.45, 1.9, family, body, P.accent2 if i % 2 else P.accent, "doc")
 
 
 def add_chart_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "Source Shape Summary", "The skill deck can introduce native chart/table objects while staying tied to MDPR source metadata.")
+    add_title(slide, "Corpus shape is evidence, not a second renderer")
     docs = [s for s in summaries if s["path"].startswith("docs/")]
     examples = [s for s in summaries if s["path"].startswith("examples/")]
     root = [s for s in summaries if not s["path"].startswith(("docs/", "examples/"))]
@@ -584,9 +595,9 @@ def add_chart_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     chart = chart_frame.chart
     chart.has_title = False
     chart.has_legend = False
-    chart.value_axis.tick_labels.font.size = Pt(8)
-    chart.category_axis.tick_labels.font.size = Pt(9)
-    table = slide.shapes.add_table(4, 4, Inches(6.85), Inches(1.82), Inches(5.15), Inches(2.2)).table
+    chart.value_axis.tick_labels.font.size = Pt(16)
+    chart.category_axis.tick_labels.font.size = Pt(16)
+    table = slide.shapes.add_table(4, 4, Inches(6.85), Inches(1.82), Inches(5.15), Inches(3.05)).table
     rows = [["Group", "Files", "Headings", "Chars"], ["Docs", str(len(docs)), str(sum(s["headingCount"] for s in docs)), f"{sum(s['charCount'] for s in docs):,}"], ["Examples", str(len(examples)), str(sum(s["headingCount"] for s in examples)), f"{sum(s['charCount'] for s in examples):,}"], ["Root", str(len(root)), str(sum(s["headingCount"] for s in root)), f"{sum(s['charCount'] for s in root):,}"]]
     for r, row in enumerate(rows):
         for c, value in enumerate(row):
@@ -596,16 +607,15 @@ def add_chart_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
             cell.fill.fore_color.rgb = rgb(P.surface if r == 0 else P.card)
             for p in cell.text_frame.paragraphs:
                 for run in p.runs:
-                    run.font.size = Pt(8)
+                    run.font.size = Pt(16)
                     run.font.bold = r == 0
                     run.font.color.rgb = rgb(P.ink)
-    add_card(slide, "chart_note", 6.85, 4.55, 5.15, 1.0, "Why this matters", ["MDPR baseline proves broad Markdown coverage.", "The skill deck proves richer object variety from the same corpus."], P.contrast, "shield")
 
 
 def add_text_icon_slide(prs: Presentation) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
-    add_title(slide, "Text-Only Relief: Monotone Icon Slot", "A quiet icon is used only when content is otherwise all text.")
+    add_title(slide, "Visual suggestions remain optional and semantic")
     add_shape(slide, "body_panel", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 0.9, 1.68, 7.0, 3.72, P.card, P.line)
     add_text(slide, "body_heading", 1.22, 2.0, 5.8, 0.34, "Current skill behavior", 18, P.ink, True)
     bullets = [
@@ -616,20 +626,9 @@ def add_text_icon_slide(prs: Presentation) -> None:
         "Validate icon center against text midpoint.",
     ]
     for i, bullet in enumerate(bullets):
-        add_text(slide, f"icon_bullet_{i}", 1.28, 2.55 + i * 0.43, 5.8, 0.26, f"- {bullet}", 12, P.muted)
+        add_text(slide, f"icon_bullet_{i}", 1.28, 2.55 + i * 0.48, 5.8, 0.36, f"- {bullet}", 16, P.muted)
     add_shape(slide, "icon_slot", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, 8.55, 2.15, 2.42, 2.42, P.surface, P.line)
     draw_mono_icon(slide, "aside_icon", 9.18, 2.72, 1.6, "spark")
-    add_text(slide, "icon_caption", 8.37, 4.9, 2.8, 0.3, "monotone-icon-aside", 11, P.ink, True, PP_ALIGN.CENTER)
-
-
-def add_appendix_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_bg(slide)
-    add_title(slide, "Source Appendix", "MDPR Markdown files used for both generated result decks.")
-    for i, item in enumerate(summaries[:18]):
-        x = 0.82 + (i // 9) * 5.9
-        y = 1.52 + (i % 9) * 0.48
-        add_text(slide, f"appendix_{i}", x, y, 5.4, 0.22, f"{i + 1:02d}. {item['path']}", 8, P.muted)
 
 
 def build_skill_deck(summaries: list[dict[str, Any]], mdpr_result: dict[str, Any]) -> None:
@@ -646,7 +645,6 @@ def build_skill_deck(summaries: list[dict[str, Any]], mdpr_result: dict[str, Any
         lambda: add_examples_slide(prs, summaries),
         lambda: add_chart_slide(prs, summaries),
         lambda: add_text_icon_slide(prs),
-        lambda: add_appendix_slide(prs, summaries),
     ]
     for add in slides:
         add()
@@ -654,23 +652,83 @@ def build_skill_deck(summaries: list[dict[str, Any]], mdpr_result: dict[str, Any
     shutil.copyfile(SKILL_PPTX, SKILL_FROM_MDPR_RUN_PPTX)
 
 
-def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600, height: int = 900) -> list[Path]:
-    import win32com.client  # type: ignore
+def exported_png_paths(output_dir: Path) -> list[Path]:
+    return sorted(path for path in output_dir.iterdir() if path.is_file() and path.suffix.lower() == ".png")
 
+
+def wait_for_stable_export(path: Path, *, timeout_seconds: float = 10.0, settle_seconds: float = 0.2) -> None:
+    deadline = time.monotonic() + timeout_seconds
+    previous_size = -1
+    stable_checks = 0
+    while time.monotonic() < deadline:
+        if path.is_file():
+            size = path.stat().st_size
+            if size > 0 and size == previous_size:
+                stable_checks += 1
+                if stable_checks >= 2:
+                    if settle_seconds:
+                        time.sleep(settle_seconds)
+                    return
+            else:
+                stable_checks = 0
+            previous_size = size
+        time.sleep(0.05)
+    raise TimeoutError(f"PowerPoint did not finish exporting {path}")
+
+
+def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600, height: int = 900) -> list[Path]:
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    app = win32com.client.DispatchEx("PowerPoint.Application")
-    presentation = None
-    try:
-        app.Visible = 1
-        presentation = app.Presentations.Open(str(pptx_path.resolve()), WithWindow=False)
-        presentation.Export(str(output_dir.resolve()), "PNG", width, height)
-    finally:
-        if presentation is not None:
-            presentation.Close()
-        app.Quit()
-    return sorted(output_dir.glob("*.PNG")) + sorted(output_dir.glob("*.png"))
+    slide_count = len(Presentation(pptx_path).slides)
+    helper = ROOT / "scripts" / "export_pptx_slide_isolated.ps1"
+    exported: list[Path] = []
+    for index in range(1, slide_count + 1):
+        output = output_dir / f"slide-{index:03d}.png"
+        command = [
+            "powershell",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            str(helper),
+            "-PptxPath",
+            str(pptx_path.resolve()),
+            "-OutputPath",
+            str(output.resolve()),
+            "-SlideIndex",
+            str(index),
+            "-Width",
+            str(width),
+            "-Height",
+            str(height),
+        ]
+        for attempt in range(2):
+            try:
+                subprocess.run(
+                    command,
+                    cwd=ROOT,
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                )
+                break
+            except subprocess.CalledProcessError:
+                output.unlink(missing_ok=True)
+                if attempt == 1:
+                    raise
+        wait_for_stable_export(output, settle_seconds=0)
+        exported.append(output)
+    return exported
+
+
+def summarize_export(paths: list[Path]) -> dict[str, Any]:
+    validation = validate_pngs(paths)
+    invalid = [item["file"] for item in validation if not item["hasContent"]]
+    return {"count": len(paths), "invalidSlideCount": len(invalid), "invalidSlides": invalid}
 
 
 def validate_pptx(path: Path) -> dict[str, Any]:
@@ -716,16 +774,59 @@ def normalized_error_message(error: Exception) -> str:
     return message.replace("예외가 발생했습니다.", "PowerPoint COM exception")
 
 
+def clear_preview_files(output_dir: Path) -> None:
+    for pattern in ("mdpr_baseline_preview_*.png", "skill_preview_*.png"):
+        for path in output_dir.glob(pattern):
+            path.unlink()
+
+
+def comparison_report_ok(report: dict[str, Any], *, actual_run_exists: bool) -> bool:
+    baseline_previews = report["baselineRenderPreview"]
+    skill_previews = report["skillRenderPreview"]
+    minimum_fonts = (
+        report["mdprBaselineValidation"].get("minFontSizePt"),
+        report["skillValidation"].get("minFontSizePt"),
+    )
+    return (
+        report["sourceFileCount"] >= 20
+        and report["mdprBaselineValidation"]["slides"] >= 10
+        and report["skillValidation"]["slides"] >= 9
+        and all(isinstance(value, (int, float)) and value >= MIN_FONT_SIZE_PT for value in minimum_fonts)
+        and actual_run_exists
+        and report["powerPointExport"]["ok"]
+        and report["powerPointExport"]["baselineSlideCount"] == report["mdprBaselineValidation"]["slides"]
+        and report["powerPointExport"]["skillSlideCount"] == report["skillValidation"]["slides"]
+        and report["powerPointExport"]["baselineValidation"]["invalidSlideCount"] == 0
+        and report["powerPointExport"]["skillValidation"]["invalidSlideCount"] == 0
+        and len(baseline_previews) == 4
+        and len(skill_previews) == 4
+        and all(item["hasContent"] for item in baseline_previews)
+        and all(item["hasContent"] for item in skill_previews)
+    )
+
+
+def git_commit(repo: Path) -> str | None:
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=repo,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip() or None if result.returncode == 0 else None
+
+
 def main() -> None:
     if not MDPR.is_dir():
         raise FileNotFoundError("MDPR checkout is missing. Run npm run install:mdpr first.")
     OUT.mkdir(parents=True, exist_ok=True)
     summaries = [source_summary(path) for path in SOURCE_FILES if (MDPR / path).is_file()]
-    MANIFEST.write_text(json.dumps({"sourceRoot": str(MDPR.relative_to(ROOT)), "files": summaries}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    MANIFEST.write_text(json.dumps({"sourceRoot": evidence_path(MDPR), "files": summaries}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     build_source_corpus(summaries)
     build_mdpr_baseline()
     mdpr_baseline_validation = validate_pptx(BASELINE_PPTX)
     build_skill_deck(summaries, mdpr_baseline_validation)
+    clear_preview_files(OUT)
     export_errors: list[dict[str, str]] = []
     try:
         baseline_exports = export_with_powerpoint(BASELINE_PPTX, OUT / "mdpr-baseline-export")
@@ -741,6 +842,8 @@ def main() -> None:
         shutil.copyfile(exported, OUT / f"mdpr_baseline_preview_{index}.png")
     for index, exported in enumerate(skill_exports[:4], 1):
         shutil.copyfile(exported, OUT / f"skill_preview_{index}.png")
+    baseline_export_validation = summarize_export(baseline_exports)
+    skill_export_validation = summarize_export(skill_exports)
     for temp_dir in [OUT / "mdpr-baseline-build", OUT / "mdpr-baseline-export", OUT / "skill-export"]:
         if temp_dir.exists():
             shutil.rmtree(temp_dir)
@@ -755,7 +858,9 @@ def main() -> None:
         "sourceCharCount": sum(item["charCount"] for item in summaries),
         "actualMarkdownRun": {
             "inputMarkdown": str(SOURCE_MD.relative_to(ROOT)),
-            "mdprCommand": "node .cache/mdpr/packages/cli/dist/index.js build artifacts/mdpr-vs-skill/mdpr-source-corpus.md --to pptx --design clean",
+            "mdprSourceRoot": evidence_path(MDPR),
+            "mdprCommit": git_commit(MDPR),
+            "mdprCommand": f"node {evidence_path(MDPR / 'packages/cli/dist/index.js')} build {SOURCE_MD.relative_to(ROOT)} --to pptx --design clean",
             "mdprResultPptx": str(BASELINE_PPTX.relative_to(ROOT)),
             "mdprResultValidation": mdpr_baseline_validation,
             "skillResultPptx": str(SKILL_FROM_MDPR_RUN_PPTX.relative_to(ROOT)),
@@ -770,19 +875,17 @@ def main() -> None:
         "powerPointExport": {
             "ok": not export_errors,
             "errors": export_errors,
-            "fallback": "Existing preview PNGs are reused when PowerPoint COM export is unavailable.",
+            "baselineSlideCount": len(baseline_exports),
+            "skillSlideCount": len(skill_exports),
+            "baselineValidation": baseline_export_validation,
+            "skillValidation": skill_export_validation,
+            "fallback": None,
+            "evidencePolicy": "Each slide uses an isolated PowerPoint process, a stabilization delay, and a discarded warm-up frame; previews are cleared before each run and failed exports cannot reuse stale PNG evidence.",
         },
         "baselineRenderPreview": validate_pngs([path for path in [OUT / f"mdpr_baseline_preview_{index}.png" for index in range(1, 5)] if path.is_file()]),
         "skillRenderPreview": validate_pngs([path for path in [OUT / f"skill_preview_{index}.png" for index in range(1, 5)] if path.is_file()]),
     }
-    report["ok"] = (
-        report["sourceFileCount"] >= 20
-        and report["mdprBaselineValidation"]["slides"] >= 10
-        and report["skillValidation"]["slides"] >= 9
-        and SKILL_FROM_MDPR_RUN_PPTX.is_file()
-        and all(item["hasContent"] for item in report["baselineRenderPreview"])
-        and all(item["hasContent"] for item in report["skillRenderPreview"])
-    )
+    report["ok"] = comparison_report_ok(report, actual_run_exists=SKILL_FROM_MDPR_RUN_PPTX.is_file())
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     if not report["ok"]:
         raise SystemExit(json.dumps(report, indent=2, ensure_ascii=False))
