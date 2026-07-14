@@ -147,7 +147,19 @@ def extract_bullets(text: str, limit: int = 6) -> list[str]:
 def extract_outline_facts(text: str) -> list[dict[str, Any]]:
     facts: list[dict[str, Any]] = []
     heading_stack: list[str] = []
+    fence: tuple[str, int] | None = None
     for source_index, line in enumerate(text.splitlines()):
+        fence_match = re.match(r"^\s*(`{3,}|~{3,})", line)
+        if fence_match:
+            marker = fence_match.group(1)
+            if fence is None:
+                fence = (marker[0], len(marker))
+            elif marker[0] == fence[0] and len(marker) >= fence[1]:
+                fence = None
+            continue
+        if fence is not None:
+            continue
+
         heading = re.match(r"^(#{1,6})\s+(.+?)\s*$", line)
         if heading:
             level = len(heading.group(1))

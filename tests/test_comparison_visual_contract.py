@@ -285,6 +285,17 @@ class ComparisonVisualContractTests(unittest.TestCase):
             "- Filename search",
         ]))
         self.assertEqual(module.extract_paired_comparison_groups(unrelated), [])
+        fenced_example = module.extract_outline_facts("\n".join([
+            "# Parser documentation",
+            "```markdown",
+            "## Current and Improved",
+            "### Current Approach",
+            "- Manual",
+            "### Improved Approach",
+            "- Automatic",
+            "```",
+        ]))
+        self.assertEqual(module.extract_paired_comparison_groups(fenced_example), [])
 
         summaries = [
             {
