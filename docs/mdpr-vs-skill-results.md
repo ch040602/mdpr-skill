@@ -42,7 +42,7 @@ of being repeated across sparse presentation slides.
 | Primary job | Deterministic Markdown parsing, splitting, layout, validation, and rendering | Optional semantic hints, critique, and evidence |
 | Input | Markdown, parser mode, Presentation IR, Layout IR, templates | MDPR source context, manifests, rendered slides, and evidence paths |
 | Typography | Owns exact family, size, floor, wrapping, and editable text runs | May suggest copy reduction or splitting, but cannot prescribe exact typography |
-| Visual pass/fail | Owns required polish chapters and `MDPR_POLISH_GATE_FAILED` | Mirrors runtime failures and adds review findings without weakening them |
+| Visual pass/fail | Owns required polish chapters and manifest pass/fail through `validation.polish.requiredFailureCount` | Mirrors runtime failures as `MDPR_POLISH_GATE_FAILED` and adds review findings without weakening them |
 | Output | Editable PPTX, HTML, PDF, manifests, and previews | Hint files, review reports, and comparison evidence |
 
 ## Visual Revalidation Findings
@@ -111,6 +111,7 @@ The current review led to these changes:
 | 31 | Additional Pro cycle 1 claimed the current font hierarchy report treated a configured family as host-availability evidence. | Reject after inspecting MDPR `6f26467`: the gate checks configured family presence and its evidence already says installed-font availability requires export-environment validation. | No duplicate status fields or OS-specific font probe were added; the 16pt floor and honest external host-font limitation remain unchanged. |
 | 32 | Additional Pro cycle 2 inspected current low-density continuation evidence for a new grouping or splitting defect. | Accept `NO_ACTION`: the sparse slides preserve small coherent source groups and contain no missing/duplicated block, orphaned context, or justified cross-section merge. | No speculative merge rule was added; moving items would only transfer whitespace or violate semantic boundaries, so the residual low density remains an explicit source-preservation limitation. |
 | 33 | Additional Pro cycle 3 found that mapped content regions with zero, negative, or non-finite geometry could bypass the slide-edge-only bounds predicate. | Accept as `RDD-T-00000048`: require finite geometry and positive extents only for title/block-bearing content, preserving the general all-region slide-boundary check. | Red failed 14/15; green passes 15/15 plus the full MDPR workspace. Invalid content emits one reasoned diagnostic, while an empty zero-size icon remains a passing false-positive control. |
+| 34 | Additional Pro cycle 4 found that the comparison assigned the literal `MDPR_POLISH_GATE_FAILED` finding type to MDPR even though review-core emits that mirror finding from MDPR manifest evidence. | Accept as `RDD-T-00000130`: state that MDPR owns pass/fail through `validation.polish.requiredFailureCount`, while mdpr-skill emits the named mirror finding without recalculating it. | Boundary regression failed 8/9 before the one-row correction and passes 9/9 after it; README still records both the mdpr-skill mirror action and `runtimeOwner: "MDPR"`. |
 
 ## Remaining Limitations
 

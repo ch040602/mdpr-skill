@@ -112,6 +112,24 @@ class BoundaryContractTest(unittest.TestCase):
 
         self.assertEqual(missing, [], "generator comparison doc must keep external generators out of runtime policy")
 
+    def test_polish_gate_decision_and_mirror_finding_have_distinct_owners(self):
+        comparison = (ROOT / "docs" / "mdpr-vs-skill-results.md").read_text(encoding="utf-8")
+        visual_row = next(
+            line for line in comparison.splitlines()
+            if line.startswith("| Visual pass/fail |")
+        )
+        cells = [cell.strip() for cell in visual_row.strip("|").split("|")]
+        self.assertEqual(len(cells), 3)
+        mdpr_cell, skill_cell = cells[1], cells[2]
+
+        self.assertIn("validation.polish.requiredFailureCount", mdpr_cell)
+        self.assertNotIn("MDPR_POLISH_GATE_FAILED", mdpr_cell)
+        self.assertIn("MDPR_POLISH_GATE_FAILED", skill_cell)
+
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("`mdpr-skill review` mirrors that", readme)
+        self.assertIn('"runtimeOwner": "MDPR"', readme)
+
 
 if __name__ == "__main__":
     unittest.main()
