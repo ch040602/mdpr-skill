@@ -1006,46 +1006,6 @@
           "sourceIndex": 6
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "It is not a direct Markdown-to-PowerPoint converter.",
-          "headingPath": [
-            "00. Product Definition",
-            "Non-Goals"
-          ],
-          "sourceIndex": 9
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "It is not a full Marp syntax clone.",
-          "headingPath": [
-            "00. Product Definition",
-            "Non-Goals"
-          ],
-          "sourceIndex": 10
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "It is not a tool that embeds CSS-rendered slide screenshots into PowerPoint.",
-          "headingPath": [
-            "00. Product Definition",
-            "Non-Goals"
-          ],
-          "sourceIndex": 11
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "It is not an LLM runtime.",
-          "headingPath": [
-            "00. Product Definition",
-            "Non-Goals"
-          ],
-          "sourceIndex": 12
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Responsibilities",
@@ -1054,126 +1014,6 @@
             "Responsibilities"
           ],
           "sourceIndex": 15
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "analyze Markdown headings and content blocks",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 18
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "normalize paragraph marker bullets such as -, -item, •, ·, –,",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 19
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "emit source-cleanup diagnostics for parser-owned authoring shorthand without",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 22
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "split slides from headings, density, explicit separators, and validated",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 24
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "detect comparison, example, method, table, image, code, chart, and diagram structures",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 26
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "choose layouts through deterministic rules",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 27
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "preserve configured font sizes and readable minimum font floors",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 28
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "use PPTX template backgrounds and master assets where appropriate",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 29
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "use CLI/config theme tokens for HTML and PDF outputs",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 30
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "apply override manifests for selected slide exceptions",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 31
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "produce generated artifact manifests and QA diagnostics",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 32
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "consume optional source-bound agent hints as weak planning metadata without",
-          "headingPath": [
-            "00. Product Definition",
-            "Responsibilities"
-          ],
-          "sourceIndex": 33
         },
         {
           "kind": "heading",
@@ -1896,106 +1736,6 @@
           "sourceIndex": 64
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "heading-based splitting",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 67
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "density-based autosplitting",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 68
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "intent detection",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 69
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "rule-based layout selection",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 70
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "override manifests",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 71
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "inspect / plan / validate / build",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 72
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "HTML output",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 73
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "editable PPTX output",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 74
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "theme styles, color seed, and color harmony",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 75
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "generated artifact QA",
-          "headingPath": [
-            "02. Requirements",
-            "Included Scope"
-          ],
-          "sourceIndex": 76
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Deferred Scope",
@@ -2004,76 +1744,6 @@
             "Deferred Scope"
           ],
           "sourceIndex": 79
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "complete Marp CSS compatibility",
-          "headingPath": [
-            "02. Requirements",
-            "Deferred Scope"
-          ],
-          "sourceIndex": 82
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "richer PPTX placeholder family matching",
-          "headingPath": [
-            "02. Requirements",
-            "Deferred Scope"
-          ],
-          "sourceIndex": 83
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "animation",
-          "headingPath": [
-            "02. Requirements",
-            "Deferred Scope"
-          ],
-          "sourceIndex": 84
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "video",
-          "headingPath": [
-            "02. Requirements",
-            "Deferred Scope"
-          ],
-          "sourceIndex": 85
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "speaker notes",
-          "headingPath": [
-            "02. Requirements",
-            "Deferred Scope"
-          ],
-          "sourceIndex": 86
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "perfect text measurement",
-          "headingPath": [
-            "02. Requirements",
-            "Deferred Scope"
-          ],
-          "sourceIndex": 87
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "automated perceptual scoring",
-          "headingPath": [
-            "02. Requirements",
-            "Deferred Scope"
-          ],
-          "sourceIndex": 88
         }
       ],
       "comparisonGroups": [],
@@ -2137,212 +1807,20 @@
         },
         {
           "kind": "heading",
-          "level": 1,
-          "text": "cover or section",
-          "headingPath": [
-            "cover or section"
-          ],
-          "sourceIndex": 5
-        },
-        {
-          "kind": "heading",
-          "level": 2,
-          "text": "slide candidate",
-          "headingPath": [
-            "cover or section",
-            "slide candidate"
-          ],
-          "sourceIndex": 6
-        },
-        {
-          "kind": "heading",
-          "level": 3,
-          "text": "subsection or autosplit boundary",
-          "headingPath": [
-            "cover or section",
-            "slide candidate",
-            "subsection or autosplit boundary"
-          ],
-          "sourceIndex": 7
-        },
-        {
-          "kind": "heading",
-          "level": 4,
-          "text": "in-body heading",
-          "headingPath": [
-            "cover or section",
-            "slide candidate",
-            "subsection or autosplit boundary",
-            "in-body heading"
-          ],
-          "sourceIndex": 8
-        },
-        {
-          "kind": "heading",
           "level": 2,
           "text": "Procedure",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Procedure"
           ],
           "sourceIndex": 11
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Parse CommonMark/GFM Markdown into an AST.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 14
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Convert the AST into MDPR BlockIR while preserving presentation-relevant",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 15
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Normalize Pandoc JSON into BlockIR when --parser pandoc is selected.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 17
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Build the heading tree.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 18
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Create slide candidates from h2 sections.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 19
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Calculate density for each candidate.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 20
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Keep candidates below the density threshold together.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 21
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Split explicit --- slide separators first.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 22
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Split overloaded candidates by h3 sections.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 23
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Split candidates without h3 sections by block groups.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 24
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Split long paragraphs by Markdown lines and sentence chunks.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 25
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Split long lists by list chunks.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 26
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Move tables, images, and code into dedicated slide candidates when needed.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 27
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Insert cover and table-of-contents slides.",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 28
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Split generated table-of-contents slides into continuation slides when the",
-          "headingPath": [
-            "cover or section",
-            "Procedure"
-          ],
-          "sourceIndex": 29
         },
         {
           "kind": "heading",
           "level": 2,
           "text": "Density Scores",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Density Scores"
           ],
           "sourceIndex": 33
@@ -2352,7 +1830,7 @@
           "level": 2,
           "text": "Preserved Block Structure",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Preserved Block Structure"
           ],
           "sourceIndex": 55
@@ -2362,7 +1840,7 @@
           "level": 2,
           "text": "Pandoc Mode",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Pandoc Mode"
           ],
           "sourceIndex": 69
@@ -2372,7 +1850,7 @@
           "level": 2,
           "text": "Structured Lists and Emphasis",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Structured Lists and Emphasis"
           ],
           "sourceIndex": 94
@@ -2382,7 +1860,7 @@
           "level": 2,
           "text": "Split Strategy",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Split Strategy"
           ],
           "sourceIndex": 104
@@ -2392,7 +1870,7 @@
           "level": 2,
           "text": "Long List Continuation",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Long List Continuation"
           ],
           "sourceIndex": 117
@@ -2402,7 +1880,7 @@
           "level": 2,
           "text": "Long Table Continuation",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Long Table Continuation"
           ],
           "sourceIndex": 136
@@ -2412,27 +1890,17 @@
           "level": 2,
           "text": "Split Override Example",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Split Override Example"
           ],
           "sourceIndex": 150
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "op: setSplit",
-          "headingPath": [
-            "cover or section",
-            "Split Override Example"
-          ],
-          "sourceIndex": 154
         },
         {
           "kind": "heading",
           "level": 2,
           "text": "Stable ID Policy",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Stable ID Policy"
           ],
           "sourceIndex": 162
@@ -2442,7 +1910,7 @@
           "level": 2,
           "text": "Generated TOC Capacity",
           "headingPath": [
-            "cover or section",
+            "03. Page Splitting Rules",
             "Generated TOC Capacity"
           ],
           "sourceIndex": 172
@@ -2693,16 +2161,6 @@
             "Safe Area"
           ],
           "sourceIndex": 263
-        },
-        {
-          "kind": "listItem",
-          "level": 3,
-          "text": "id: footer",
-          "headingPath": [
-            "04. Layout Selection Rules",
-            "Safe Area"
-          ],
-          "sourceIndex": 275
         }
       ],
       "comparisonGroups": [],
@@ -2872,26 +2330,6 @@
           "sourceIndex": 24
         },
         {
-          "kind": "listItem",
-          "level": 2,
-          "text": "op: setLayout",
-          "headingPath": [
-            "05. Override Manifest",
-            "Recommended Workflow"
-          ],
-          "sourceIndex": 36
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "op: setLayout",
-          "headingPath": [
-            "05. Override Manifest",
-            "Recommended Workflow"
-          ],
-          "sourceIndex": 45
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Target Priority",
@@ -2990,36 +2428,6 @@
             "Examples"
           ],
           "sourceIndex": 118
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "op: setTypography",
-          "headingPath": [
-            "05. Override Manifest",
-            "Examples"
-          ],
-          "sourceIndex": 122
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "op: setSlot",
-          "headingPath": [
-            "05. Override Manifest",
-            "Examples"
-          ],
-          "sourceIndex": 129
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "op: pinBlock",
-          "headingPath": [
-            "05. Override Manifest",
-            "Examples"
-          ],
-          "sourceIndex": 139
         },
         {
           "kind": "heading",
@@ -3142,126 +2550,6 @@
             "Orchestration Boundary"
           ],
           "sourceIndex": 36
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "resolves config sources",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 42
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "validates config files against schemas/config.schema.json",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 43
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "parses Markdown",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 44
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "validates optional agent hint files against schemas/agent-hint.schema.json",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 45
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "weakly merges accepted hints into coherence metadata",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 46
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "plans Presentation IR",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 47
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "plans Layout IR",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 48
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "collects diagnostics",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 49
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "returns Presentation IR slides",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 52
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "returns Presentation IR, Layout IR, and diagnostics",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 55
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "validates the shared plan",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 58
-        },
-        {
-          "kind": "listItem",
-          "level": 2,
-          "text": "renders requested outputs only when error diagnostics are absent",
-          "headingPath": [
-            "06. CLI Specification",
-            "Orchestration Boundary"
-          ],
-          "sourceIndex": 59
         },
         {
           "kind": "heading",
@@ -3492,136 +2780,6 @@
             "Validation"
           ],
           "sourceIndex": 105
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "missing override targets",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 132
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "invalid presets",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 133
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "invalid config schema fields",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 134
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "slot coordinates outside slide bounds",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 135
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "minimum font size violations",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 136
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "missing assets",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 137
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "possible overflow",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 138
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "claimless evidence slides",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 139
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "detached captions",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 140
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "orphan tables",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 141
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "low object coverage",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 142
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "polish gate required failures",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 143
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "design lock drift",
-          "headingPath": [
-            "06. CLI Specification",
-            "Validation"
-          ],
-          "sourceIndex": 144
         },
         {
           "kind": "heading",
@@ -4062,56 +3220,6 @@
             "Surface Policy"
           ],
           "sourceIndex": 99
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Resolve decoration style and color seed.",
-          "headingPath": [
-            "07. Rendering Rules",
-            "Surface Policy"
-          ],
-          "sourceIndex": 102
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Resolve a bounded absolute surface corner radius from role and region size.",
-          "headingPath": [
-            "07. Rendering Rules",
-            "Surface Policy"
-          ],
-          "sourceIndex": 103
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "If the policy uses SVG, generate an aspect-aware SVG surface so the visible radius stays fixed across shape sizes.",
-          "headingPath": [
-            "07. Rendering Rules",
-            "Surface Policy"
-          ],
-          "sourceIndex": 104
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Add PPT shadow/glow effects through transparent native geometry when needed.",
-          "headingPath": [
-            "07. Rendering Rules",
-            "Surface Policy"
-          ],
-          "sourceIndex": 105
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Render text, tables, charts, icons, and connectors above the surface.",
-          "headingPath": [
-            "07. Rendering Rules",
-            "Surface Policy"
-          ],
-          "sourceIndex": 106
         },
         {
           "kind": "heading",
@@ -5132,76 +4240,6 @@
           "sourceIndex": 33
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "slide index",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Inspect Fields"
-          ],
-          "sourceIndex": 36
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "slide id",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Inspect Fields"
-          ],
-          "sourceIndex": 37
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "role",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Inspect Fields"
-          ],
-          "sourceIndex": 38
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "title",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Inspect Fields"
-          ],
-          "sourceIndex": 39
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "headingPath",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Inspect Fields"
-          ],
-          "sourceIndex": 40
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "intent",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Inspect Fields"
-          ],
-          "sourceIndex": 41
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "primary item count",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Inspect Fields"
-          ],
-          "sourceIndex": 42
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Expected Plan Fields",
@@ -5210,76 +4248,6 @@
             "Expected Plan Fields"
           ],
           "sourceIndex": 45
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "slide size",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Plan Fields"
-          ],
-          "sourceIndex": 48
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "theme tokens",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Plan Fields"
-          ],
-          "sourceIndex": 49
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "layout preset",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Plan Fields"
-          ],
-          "sourceIndex": 50
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "regions",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Plan Fields"
-          ],
-          "sourceIndex": 51
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "typography",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Plan Fields"
-          ],
-          "sourceIndex": 52
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "overflow policy",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Plan Fields"
-          ],
-          "sourceIndex": 53
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "diagnostics",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Expected Plan Fields"
-          ],
-          "sourceIndex": 54
         },
         {
           "kind": "heading",
@@ -5292,86 +4260,6 @@
           "sourceIndex": 57
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "heading split snapshots",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 60
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "density calculation cases",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 61
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "intent detection cases",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 62
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "layout selection cases",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 63
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "override target resolution cases",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 64
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "schema validation cases",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 65
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "PPTX text/table/chart rendering cases",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 66
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "generated artifact evaluation",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Recommended Tests"
-          ],
-          "sourceIndex": 67
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Deferred Items",
@@ -5380,66 +4268,6 @@
             "Deferred Items"
           ],
           "sourceIndex": 70
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "complete PPTX template parser",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Deferred Items"
-          ],
-          "sourceIndex": 73
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "perfect text measurement",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Deferred Items"
-          ],
-          "sourceIndex": 74
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "animation",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Deferred Items"
-          ],
-          "sourceIndex": 75
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "video/audio",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Deferred Items"
-          ],
-          "sourceIndex": 76
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "one-to-one Marp CSS compatibility",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Deferred Items"
-          ],
-          "sourceIndex": 77
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "automated perceptual scoring",
-          "headingPath": [
-            "09. Codex Implementation Guide",
-            "Deferred Items"
-          ],
-          "sourceIndex": 78
         }
       ],
       "comparisonGroups": [],
@@ -5510,106 +4338,6 @@
           "sourceIndex": 19
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "slide size",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 22
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "theme colors",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 23
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "fonts",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 24
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "master background",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 25
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "layout background",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 26
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "logo",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 27
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "footer",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 28
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "decorative image assets",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 29
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "title, subtitle, body, image, table, and chart placeholder geometry",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 30
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "safe-area hints where available",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Import From Templates"
-          ],
-          "sourceIndex": 31
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Do Not Reuse Directly",
@@ -5618,66 +4346,6 @@
             "Do Not Reuse Directly"
           ],
           "sourceIndex": 34
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "arbitrary title/content box positions that are not master/layout placeholders",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Do Not Reuse Directly"
-          ],
-          "sourceIndex": 37
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "sample slide layout coordinates",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Do Not Reuse Directly"
-          ],
-          "sourceIndex": 38
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "sample text inside templates",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Do Not Reuse Directly"
-          ],
-          "sourceIndex": 39
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "images placed on ordinary sample slides; they must not be replayed into every generated slide",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Do Not Reuse Directly"
-          ],
-          "sourceIndex": 40
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "agent-provided replacement master/layout IDs",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Do Not Reuse Directly"
-          ],
-          "sourceIndex": 41
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "agent-provided final image crops, coordinates, or z-order",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Do Not Reuse Directly"
-          ],
-          "sourceIndex": 42
         },
         {
           "kind": "heading",
@@ -5690,56 +4358,6 @@
           "sourceIndex": 45
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "company logo",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Master-Layer Candidates"
-          ],
-          "sourceIndex": 48
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "fixed background patterns",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Master-Layer Candidates"
-          ],
-          "sourceIndex": 49
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "brand bars",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Master-Layer Candidates"
-          ],
-          "sourceIndex": 50
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "common footers",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Master-Layer Candidates"
-          ],
-          "sourceIndex": 51
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "decorative shapes or images",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Master-Layer Candidates"
-          ],
-          "sourceIndex": 52
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Body-Layer Candidates",
@@ -5750,86 +4368,6 @@
           "sourceIndex": 55
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "title",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 58
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "prose",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 59
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "lists",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 60
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "tables",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 61
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "images",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 62
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "charts",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 63
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "code",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 64
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "diagrams",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Body-Layer Candidates"
-          ],
-          "sourceIndex": 65
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Safe Area",
@@ -5838,26 +4376,6 @@
             "Safe Area"
           ],
           "sourceIndex": 68
-        },
-        {
-          "kind": "listItem",
-          "level": 3,
-          "text": "id: top-brand-bar",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Safe Area"
-          ],
-          "sourceIndex": 76
-        },
-        {
-          "kind": "listItem",
-          "level": 3,
-          "text": "id: footer",
-          "headingPath": [
-            "10. PPT Template and Slide Master Policy",
-            "Safe Area"
-          ],
-          "sourceIndex": 81
         },
         {
           "kind": "heading",
@@ -5926,126 +4444,6 @@
           "sourceIndex": 2
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "text overflow",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 5
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "table overflow",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 6
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "missing images",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 7
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "invalid asset paths",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 8
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "overlapping page numbers",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 9
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "safe-area violations",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 10
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "minimum font size violations",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 11
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "missing override targets",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 12
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "slot coordinates outside slide bounds",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 13
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "design lock drift",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 14
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "manifest visual-validation summary",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 15
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "manifest coherence-validation summary",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Validation Checks"
-          ],
-          "sourceIndex": 16
-        },
-        {
           "kind": "heading",
           "level": 2,
           "text": "Overflow Resolution Order",
@@ -6054,66 +4452,6 @@
             "Overflow Resolution Order"
           ],
           "sourceIndex": 19
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Place content with the default font size.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Overflow Resolution Order"
-          ],
-          "sourceIndex": 22
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Split known high-risk content groups such as very long lists into continuation slides.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Overflow Resolution Order"
-          ],
-          "sourceIndex": 23
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Measure overflow.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Overflow Resolution Order"
-          ],
-          "sourceIndex": 24
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Try a layout variant where the candidate set already provides one.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Overflow Resolution Order"
-          ],
-          "sourceIndex": 25
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Shrink down to the configured readable font floor.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Overflow Resolution Order"
-          ],
-          "sourceIndex": 26
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Emit warn or fail diagnostics if content still does not fit.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Overflow Resolution Order"
-          ],
-          "sourceIndex": 27
         },
         {
           "kind": "heading",
@@ -6154,76 +4492,6 @@
             "Pre-Render Text Containment Resolver"
           ],
           "sourceIndex": 77
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Build Presentation IR and initial Layout IR.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Pre-Render Text Containment Resolver"
-          ],
-          "sourceIndex": 82
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Measure region text with the same overflow validator used by validate.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Pre-Render Text Containment Resolver"
-          ],
-          "sourceIndex": 83
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "For TEXT_OVERFLOW under reflow/shrink/split policies, try another ranked",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Pre-Render Text Containment Resolver"
-          ],
-          "sourceIndex": 84
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "If no candidate improves fit, reduce region font size down to the",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Pre-Render Text Containment Resolver"
-          ],
-          "sourceIndex": 86
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "If the font is already at minimum and slide bounds allow it, expand region",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Pre-Render Text Containment Resolver"
-          ],
-          "sourceIndex": 88
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Re-run measurement for a bounded number of iterations.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Pre-Render Text Containment Resolver"
-          ],
-          "sourceIndex": 90
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "Do not auto-resolve fail or warn; those remain explicit diagnostics.",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Pre-Render Text Containment Resolver"
-          ],
-          "sourceIndex": 91
         },
         {
           "kind": "heading",
@@ -6464,46 +4732,6 @@
             "Future Improvements"
           ],
           "sourceIndex": 300
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "renderer-specific correction factors",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Future Improvements"
-          ],
-          "sourceIndex": 303
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "exact font metric integration where available",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Future Improvements"
-          ],
-          "sourceIndex": 304
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "script-aware width profiles",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Future Improvements"
-          ],
-          "sourceIndex": 305
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "OCR or perceptual screenshot scoring",
-          "headingPath": [
-            "11. Validation and Overflow Policy",
-            "Future Improvements"
-          ],
-          "sourceIndex": 306
         }
       ],
       "comparisonGroups": [],
