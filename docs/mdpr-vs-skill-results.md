@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `6f26467` |
+| MDPR commit | `8b60e07` |
 | Markdown files | 21 |
 | Headings | 185 |
-| Source characters | 97,905 |
+| Source characters | 98,301 |
 | MDPR baseline slides | 35 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
@@ -110,6 +110,7 @@ The current review led to these changes:
 | 30 | Follow-up Pro cycle 5 found that skill slide 3 separated 13 Docs and 1 ADR while slide 8 silently labelled the same 14-file aggregate as Docs. | Reuse one source-family grouping helper and conditionally label the existing three-category slide-8 aggregate `Docs + ADR`; keep slide 3's separate cards and every numeric value unchanged. | Fresh PowerPoint RGB evidence shows `Docs + ADR` once on the native chart axis and once in the editable table, slide 3 remains 13 Docs + 1 ADR, and the regenerated comparison passes 35/35 + 9/9, 16pt floor, invalid 0, overflow 0, report `ok:true`. |
 | 31 | Additional Pro cycle 1 claimed the current font hierarchy report treated a configured family as host-availability evidence. | Reject after inspecting MDPR `6f26467`: the gate checks configured family presence and its evidence already says installed-font availability requires export-environment validation. | No duplicate status fields or OS-specific font probe were added; the 16pt floor and honest external host-font limitation remain unchanged. |
 | 32 | Additional Pro cycle 2 inspected current low-density continuation evidence for a new grouping or splitting defect. | Accept `NO_ACTION`: the sparse slides preserve small coherent source groups and contain no missing/duplicated block, orphaned context, or justified cross-section merge. | No speculative merge rule was added; moving items would only transfer whitespace or violate semantic boundaries, so the residual low density remains an explicit source-preservation limitation. |
+| 33 | Additional Pro cycle 3 found that mapped content regions with zero, negative, or non-finite geometry could bypass the slide-edge-only bounds predicate. | Accept as `RDD-T-00000048`: require finite geometry and positive extents only for title/block-bearing content, preserving the general all-region slide-boundary check. | Red failed 14/15; green passes 15/15 plus the full MDPR workspace. Invalid content emits one reasoned diagnostic, while an empty zero-size icon remains a passing false-positive control. |
 
 ## Remaining Limitations
 
