@@ -6,11 +6,11 @@
   "skillFromActualMdprRunPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
   "sourceFileCount": 21,
   "sourceHeadingCount": 185,
-  "sourceCharCount": 97285,
+  "sourceCharCount": 97648,
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprSourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
-    "mdprCommit": "f547e1c4d1ce24731d444b2675c4658378b6bb46",
+    "mdprCommit": "4b7f5b3c9de1be65b748bf67ecb5b4c009a08828",
     "mdprCommand": "node C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold\\packages\\cli\\dist\\index.js build artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {
@@ -109,7 +109,7 @@
         900
       ],
       "uniqueColors": 130,
-      "nonWhitePixels": 855638,
+      "nonWhitePixels": 855503,
       "hasContent": true
     }
   ],
@@ -120,7 +120,7 @@
         1600,
         900
       ],
-      "uniqueColors": 1034,
+      "uniqueColors": 1035,
       "nonWhitePixels": 1440000,
       "hasContent": true
     },

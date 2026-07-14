@@ -71,7 +71,7 @@ Reproducible visual evidence and the remaining limitations are recorded in
 cross-repository schema check is stored in
 `artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
-Current reproducible comparison: MDPR `f547e1c` renders 35 editable slides and
+Current reproducible comparison: MDPR `4b7f5b3` renders 35 editable slides and
 the companion renders 9 evidence slides; PowerPoint exported 35/35 and 9/9,
 both decks keep a 16pt minimum, and neither has an invalid frame or named-card
 overflow. PowerPoint PNG evidence is normalized to true-color RGB before visual
@@ -87,6 +87,7 @@ agent review. They are complementary, not competing renderers.
 | Typography authority | Resolves font families, point sizes, region floors, and editable text runs; captions default to `18pt`, and generated code, caption, list badge, and diagram badge text has no sub-`16pt` exception | May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry |
 | Strict visual failure | Required `fontHierarchy` checks every text-bearing Layout IR region against `16pt`; image-only and empty decorative regions do not create glyph-floor failures, while code and captions remain covered | Mirrors `MDPR_POLISH_GATE_FAILED` with evidence and must not recompute, soften, or override it |
 | Decorative lines | Built-in presets omit automatic title underlines, TOC horizontal rules, and isolated cover-bottom rules | Review evidence omits synthetic subtitles, title rules, and bottom takeaway bands unless source content requires them |
+| Native tables | Keeps tables editable; eligible three-column comparisons use a compact label column and two equal evidence columns | Reviews rendered balance and source fidelity, but does not set column widths |
 | Visual variety | Tracks visible `card-row-3`, `card-row-4`, grid, stack, split, radial, and specialized-object geometry; horizontal rows use open cells instead of repeating full white cards | Reviews rendered before/after evidence and may propose a deterministic rule, but does not choose a final layout or surface |
 | Rendered evidence | Owns the editable deck; its text, geometry, and validation remain the source of truth | Normalizes PowerPoint comparison PNGs to RGB before visual review and rejects findings contradicted by PPTX XML, COM text layout, or regenerated evidence |
 | Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded |

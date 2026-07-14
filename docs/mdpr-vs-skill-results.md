@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `f547e1c` |
+| MDPR commit | `4b7f5b3` |
 | Markdown files | 21 |
 | Headings | 185 |
-| Source characters | 97,285 |
+| Source characters | 97,648 |
 | MDPR baseline slides | 35 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
@@ -103,6 +103,7 @@ The current review led to these changes:
 | 23 | Pro cycle 3 found that slide 6 used three 1.45in cards for one-line pipeline nodes. The first local test incorrectly modeled them as list items, which rendered evidence exposed as a false positive. | Correct the fixture to the actual `diagram` block and `pipeline` preset, then content-size only the existing diagram region for short 2–3-node continuations. | Slide 6 keeps its editable nodes, numbering, accents, connectors, 8.60in card width, and prior center while card height falls to 0.95in; long-label controls retain 5.75in capacity and the full comparison remains 35/35 + 9/9 with report `ok:true`. |
 | 24 | Pro cycle 4 correctly saw repeated path tails in the PowerPoint export of Agenda items 10 and 13, but attributed them to shrink-autofit. | Reject the proposed `fit:none` change after inspecting slide3.xml: it already has no `normAutofit`/`spAutoFit`, each source path occurs once, and each item is one editable shape. | No no-op runtime change was made. The reproducible PowerPoint-only wrap artifact remains explicitly scoped for cycle 5, with slides 8, 26, 28, and 33 retained as unaffected controls. |
 | 25 | Pro cycle 5 proposed splitting slash paths into multiple identical text runs, but a unique-path true-color render showed that the supposed repeated suffix was an indexed-palette review-display artifact. | Reject the runtime run-segmentation change; normalize comparison PNGs atomically to RGB after each isolated PowerPoint export and add a pixel-preservation regression. | PPTX text and geometry stay unchanged; slide 3 shows items 10 and 13 once in true-color evidence; all 8 tracked previews are RGB; 35/35 + 9/9 exports, 16pt floor, invalid 0, overflow 0, and report `ok:true` remain. |
+| 26 | Follow-up Pro cycle 1 found that slide 4 gave its short `Area` labels the same one-third width as the two evidence columns, wasting space and increasing evidence wrapping. | For eligible three-column comparison tables only, measure short one-line body labels, clamp the first column to at least 1.35in and at most 24%, and split the remainder equally; preserve equal widths for long-label controls. | Slide 4 changes from 3.733/3.733/3.733in to 1.350/4.925/4.925in, keeps every source cell once as a native editable table, and passes fresh RGB visual review; 35/35 + 9/9 exports, 16pt floor, invalid 0, overflow 0, and report `ok:true` remain. |
 
 ## Remaining Limitations
 

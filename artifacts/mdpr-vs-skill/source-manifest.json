@@ -59,7 +59,7 @@
         "  -> MDPR deterministic parsing, splitting, layout, validation",
         "  -> editable PPTX / HTML / PDF"
       ],
-      "charCount": 21679
+      "charCount": 22042
     },
     {
       "path": "docs/00-product-definition.md",

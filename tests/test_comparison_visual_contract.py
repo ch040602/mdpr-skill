@@ -42,6 +42,28 @@ def image_mode(path: Path) -> str:
 
 
 class ComparisonVisualContractTests(unittest.TestCase):
+    def test_mdpr_comparison_table_content_weights_short_label_column(self) -> None:
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        slide = deck.slides[3]
+        tables = [shape.table for shape in slide.shapes if getattr(shape, "has_table", False)]
+
+        self.assertEqual(len(tables), 1)
+        table = tables[0]
+        widths = [column.width for column in table.columns]
+        total = sum(widths)
+        self.assertEqual(len(widths), 3)
+        self.assertGreaterEqual(widths[0], Inches(1.35))
+        self.assertLessEqual(widths[0], total * 0.24 + 2)
+        self.assertLessEqual(abs(widths[1] - widths[2]), 2)
+
+        expected = [
+            "Area", "MDPR runtime", "mdpr-skill review companion",
+            "Role", "Parser", "Layout", "Output",
+        ]
+        text = [cell.text for row in table.rows for cell in row.cells]
+        for value in expected:
+            self.assertEqual(text.count(value), 1)
+
     def test_sparse_pipeline_continuation_uses_compact_editable_nodes(self) -> None:
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
         slide = deck.slides[5]
