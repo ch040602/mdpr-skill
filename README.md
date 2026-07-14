@@ -71,8 +71,8 @@ Reproducible visual evidence and the remaining limitations are recorded in
 cross-repository schema check is stored in
 `artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
-Current reproducible comparison: MDPR `8b60e07` renders 35 editable slides and
-the companion renders 9 evidence slides; PowerPoint exported 35/35 and 9/9,
+Current reproducible comparison: MDPR `21aced3` renders 32 editable slides and
+the companion renders 9 evidence slides; PowerPoint exported 32/32 and 9/9,
 both decks keep a 16pt minimum, and neither has an invalid frame or named-card
 overflow. PowerPoint PNG evidence is normalized to true-color RGB before visual
 inspection so indexed-palette display artifacts cannot be mistaken for deck

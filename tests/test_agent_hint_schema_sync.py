@@ -36,6 +36,7 @@ class AgentHintSchemaSyncTests(unittest.TestCase):
         artifact = json.loads(SYNC_EVIDENCE.read_text(encoding="utf-8"))
         self.assertEqual(artifact["schemaVersion"], "mdpr-skill-runtime-sync-evidence-v2")
         self.assertRegex(artifact["created_at"], r"^2026-07-13T")
+        self.assertRegex(artifact["revalidated_at"], r"^2026-07-14T")
         self.assertEqual(artifact["schemaSync"]["status"], "pass")
         self.assertEqual(artifact["schemaSync"]["findings"], [])
 

@@ -124,33 +124,29 @@ class ComparisonVisualContractTests(unittest.TestCase):
         self.assertAlmostEqual((cards[0].top + cards[-1].top + cards[-1].height) / 2 / Inches(1), 4.195, places=2)
         self.assertEqual(len(connectors), 2)
 
-    def test_sparse_continuation_triptych_uses_compact_editable_regions(self) -> None:
+    def test_paired_comparison_artifacts_preserve_editable_source_ancestry(self) -> None:
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
-        slide = deck.slides[23]
-        expected = [
-            "Report draft writing",
-            "Data collection",
-            "Source location is unclear",
-        ]
-        text_shapes = [shape for shape in slide.shapes if getattr(shape, "has_text_frame", False)]
-        matched = [
-            next(shape for shape in text_shapes if shape.text == text)
-            for text in expected
-        ]
-        accents = sorted(
-            (
-                shape
-                for shape in slide.shapes
-                if not (getattr(shape, "text", "") or "").strip() and shape.width <= Inches(0.1)
-            ),
-            key=lambda shape: shape.left,
-        )
+        expected = {
+            21: [
+                ["Current Approach", "Improved Approach"],
+                ["Owners manually prepare documents", "Meeting notes and report drafts are generated automatically"],
+                ["Quality depends on individual skill", "Documents follow a consistent structure"],
+                ["Search and reuse are difficult", "Materials are found with semantic search"],
+            ],
+            22: [
+                ["Current Approach", "Improved Approach"],
+                ["Documents are written manually", "Drafts are generated automatically"],
+                ["Format varies by person", "Format is standardized by template"],
+                ["Search is difficult", "Semantic search is available"],
+            ],
+        }
 
-        self.assertEqual([shape.text for shape in matched], expected)
-        self.assertEqual([round(shape.left / Inches(1), 2) for shape in matched], [1.14, 4.99, 8.84])
-        self.assertEqual(len(accents), 3)
-        self.assertTrue(all(Inches(1.55) <= shape.height < Inches(2.0) for shape in accents))
-        self.assertEqual(len({shape.top + shape.height // 2 for shape in accents}), 1)
+        for slide_index, rows in expected.items():
+            slide = deck.slides[slide_index]
+            tables = [shape.table for shape in slide.shapes if getattr(shape, "has_table", False)]
+            self.assertEqual(len(tables), 1)
+            actual = [[cell.text for cell in row.cells] for row in tables[0].rows]
+            self.assertEqual(actual, rows)
 
     def test_skill_contract_requires_rendered_visual_revalidation_without_synthetic_rules(self) -> None:
         skill = (ROOT / "skills" / "mdpr-skill" / "SKILL.md").read_text(encoding="utf-8")

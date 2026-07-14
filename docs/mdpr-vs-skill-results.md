@@ -23,13 +23,14 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `8b60e07` |
+| MDPR commit | `21aced3` |
 | Markdown files | 21 |
 | Headings | 185 |
-| Source characters | 98,301 |
-| MDPR baseline slides | 35 |
+| Source characters | 100,214 |
+| MDPR baseline slides | 32 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
+| Native MDPR tables | 5 |
 
 The 21 files comprise 13 product/runtime documents, six example decks, one
 root README, and one ADR. The manifest remains a JSON evidence artifact instead
@@ -73,6 +74,15 @@ The current review led to these changes:
   and rendered horizontal rows as open cells rather than repeated white cards;
 - corrected font-floor scope to text-bearing regions while keeping code and
   captions governed, and lowered continuation markers to secondary title runs.
+- recorded the export host font catalog in every MDPR manifest and added the
+  optional `--require-font-installed` gate, with separate missing-family and
+  unavailable-probe errors and explicit non-embedding evidence;
+- preserved source heading ancestry in the comparison corpus, promoting only
+  explicit current/improved sibling groups to editable two-column tables;
+- compacted short one- and two-item continuation regions around their measured
+  content while retaining full capacity for long controls;
+- serialized comparison exports with an OS file lock so a timed-out caller
+  cannot leave a second writer corrupting PNG evidence.
 
 ## Visual Improvement Loop Ledger
 
@@ -113,21 +123,32 @@ The current review led to these changes:
 | 33 | Additional Pro cycle 3 found that mapped content regions with zero, negative, or non-finite geometry could bypass the slide-edge-only bounds predicate. | Accept as `RDD-T-00000048`: require finite geometry and positive extents only for title/block-bearing content, preserving the general all-region slide-boundary check. | Red failed 14/15; green passes 15/15 plus the full MDPR workspace. Invalid content emits one reasoned diagnostic, while an empty zero-size icon remains a passing false-positive control. |
 | 34 | Additional Pro cycle 4 found that the comparison assigned the literal `MDPR_POLISH_GATE_FAILED` finding type to MDPR even though review-core emits that mirror finding from MDPR manifest evidence. | Accept as `RDD-T-00000130`: state that MDPR owns pass/fail through `validation.polish.requiredFailureCount`, while mdpr-skill emits the named mirror finding without recalculating it. | Boundary regression failed 8/9 before the one-row correction and passes 9/9 after it; README still records both the mdpr-skill mirror action and `runtimeOwner: "MDPR"`. |
 | 35 | Additional Pro cycle 5 proposed grouping slide 26 accents as three current-state items and one improved-state item. | Reject as `RDD-F-ca515d2be3`: current IR marks the slide as `grid`, all four items are flat level-0 peers in one split bullet block, and no comparison-side ancestry survives in the Markdown input. | No source-ungrounded A/A/A/B rule was added. Fresh contact-sheet review keeps the neutral peer-item alternation, while the comparison remains 35/35 + 9/9, 16pt, invalid 0, and overflow 0. |
+| 36 | The practical follow-up found three residual gaps: no host-font preflight, oversized short 1–2 item continuations, and a flattened comparison corpus. A timed-out comparison command also exposed concurrent writers using the same RGB temporary path. | Add manifest font-environment evidence plus strict opt-in failure, content-measured focal geometry with long-text controls, headingPath-based paired-table extraction with an unrelated-section negative control, and a cross-platform single-writer export lock. | Fresh PowerPoint review passes 32/32 + 9/9, 16pt minimum, invalid 0, named-container overflow 0, five native MDPR tables, and report `ok:true`. Slides 22–23 show complete editable current/improved columns without synthetic title rules; slide 25 preserves a compact coherent continuation. |
+
+## Resolved Practical Limits
+
+| Previous limit | Current behavior | False-positive control |
+| --- | --- | --- |
+| A configured family could silently substitute on an unknown host. | Every build records requested/installed/missing families and probe source; `--require-font-installed` fails a proven absence. | An unreadable host catalog emits `FONT_ENVIRONMENT_UNAVAILABLE`, not one missing-font error per family; `embedding.performed: false` prevents a portability claim. |
+| Short continuation tails used regions sized for much denser content. | One short item narrows to a centered focal card; two short items keep their source-mapped columns and content-size the shared height. | Long or wrapped items retain full capacity; no cross-section merge, extra caption, code, or decorative rule is invented. |
+| Example headings and bullets were flattened before comparison review. | The corpus records each list item's `headingPath`; explicit current/improved siblings become native editable tables. | Two unrelated sibling sections remain neutral and are covered by a negative regression. |
+| Two comparison processes could mutate the same export directory. | An OS-backed lock permits one writer for the artifact set. | The lock is released by process termination and a nested-writer regression must fail before artifact mutation. |
 
 ## Remaining Limitations
 
-- Content-preserving MDPR splitting can still produce low-density continuation
-  slides when a source section contains only a few large semantic blocks; the
-  continuation marker hierarchy is fixed, but source-preserving density remains.
-- Visual-review tools may cache an earlier image at the same path. Review loops
-  should use freshly generated evidence or a content-unique path in addition to
-  the RGB normalization performed by this comparison pipeline.
+- Automatic font embedding is still intentionally absent. Font licensing and
+  OOXML embedding policy must be resolved before MDPR can claim cross-machine
+  portability; the current manifest reports this honestly.
+- Large semantic blocks retain full regions even when a continuation page is
+  visually sparse. This is a source-fidelity choice, not permission to merge
+  unrelated sections or invent filler.
+- A presentation viewer can still misdisplay a valid RGB image. Review findings
+  must be checked against RGB pixel data, PPTX text/XML, and a fresh unique-path
+  export before changing runtime behavior.
 - Structural card accents and data separators remain when they communicate a
   real grouping; the rule removes only isolated or title-repeating lines.
-- Template master/theme OOXML can be preserved, but this comparison does not
-  prove that a requested font is installed or embedded on every host.
 - The nine-slide review deck explains evidence and boundaries. It must not be
-  interpreted as a styled replacement for the 35-slide MDPR runtime output.
+  interpreted as a styled replacement for the 32-slide MDPR runtime output.
 
 Cross-repository schema and boundary validation is stored in
 `artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.

@@ -137,37 +137,29 @@ SlideIntentScoreProfile + itemCount + blockType + density
 
 ## Example: examples/basic/deck.md
 
-- AI Workflow Automation Proposal
-- Problem Definition
-- Repetitive Work Is Growing
-- Search Costs Are Growing
-- Current Approach and Improved Approach
-- Current Approach
-- Meeting note cleanup
-- Report draft writing
-- Data collection
-- Source location is unclear
+| Current Approach | Improved Approach |
+|---|---|
+| Owners manually prepare documents | Meeting notes and report drafts are generated automatically |
+| Quality depends on individual skill | Documents follow a consistent structure |
+| Search and reuse are difficult | Materials are found with semantic search |
 
 ## Example: examples/comparison/deck.md
 
-- Comparison Structure Example
-- Current Approach and Improved Approach
-- Current Approach
-- Improved Approach
-- Documents are written manually
-- Format varies by person
-- Search is difficult
-- Drafts are generated automatically
+| Current Approach | Improved Approach |
+|---|---|
+| Documents are written manually | Drafts are generated automatically |
+| Format varies by person | Format is standardized by template |
+| Search is difficult | Semantic search is available |
 
 ## Example: examples/pipeline/deck.md
 
 - Pipeline Example
 - Publishing Flow
 - Five-Part Method
-- Capture source
-- Split structure
-- Plan layout
-- Render outputs
+  - Capture source
+  - Split structure
+  - Plan layout
+  - Render outputs
 
 ## Example: examples/diagram-arrangements/deck.md
 
@@ -182,23 +174,23 @@ SlideIntentScoreProfile + itemCount + blockType + density
 
 - Five-Item Layout Example
 - Five Execution Steps
-- Select a pilot team
-- Analyze repetitive document types
-- Design automation templates
-- Build a knowledge search index
+  - Select a pilot team
+  - Analyze repetitive document types
+  - Design automation templates
+  - Build a knowledge search index
 
 ## Example: examples/theme-preview-en/deck.md
 
 - MDPR Design Grammar
 - Teaser Summary
+  - Preview styles: 9 distinct decoration grammars, not palette-only swaps.
+  - Pattern range: 36+ decoration and layout patterns selected by content role.
+  - Object support: native tables, charts, proof objects, diagrams, images, and icon slots.
+  - Validation contract: readable text, bounded objects, aligned connectors, and editable PPTX output.
 - Composition Contract
 - Pruned Style Families
 - Semantic Blocks
 - Pipeline Diagram
-- Preview styles: 9 distinct decoration grammars, not palette-only swaps.
-- Pattern range: 36+ decoration and layout patterns selected by content role.
-- Object support: native tables, charts, proof objects, diagrams, images, and icon slots.
-- Validation contract: readable text, bounded objects, aligned connectors, and editable PPTX output.
 
 ## Current skill output expectations
 
