@@ -273,7 +273,7 @@
         "  -> deterministic score + bounded recent-geometry reuse penalty",
         "  -> selected LayoutPreset"
       ],
-      "charCount": 8750
+      "charCount": 9249
     },
     {
       "path": "docs/05-overrides-for-llm.md",

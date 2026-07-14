@@ -160,6 +160,11 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   continuation pages, repeated numbering, misleading decoration, and stale or
   partial export frames; record remaining weaknesses instead of styling them
   away in the evidence deck.
+- For sparse continuation pages, distinguish wrong topology from disproportionate
+  region height. Verify the current rendered topology first; when a short
+  source-backed row already exists, recommend content-measured runtime sizing
+  rather than another layout, extra copy, or decoration. MDPR owns the sizing
+  rule, while mdpr-skill records before/after evidence and source preservation.
 - Treat `16pt` as the current MDPR generated-text visual floor, including list
   and diagram number badges. Apply it to text-bearing regions, including code,
   captions, tables, charts, and diagrams; image-only and empty decorative

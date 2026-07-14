@@ -29,6 +29,34 @@ def load_script(name: str, relative_path: str):
 
 
 class ComparisonVisualContractTests(unittest.TestCase):
+    def test_sparse_continuation_triptych_uses_compact_editable_regions(self) -> None:
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        slide = deck.slides[23]
+        expected = [
+            "Report draft writing",
+            "Data collection",
+            "Source location is unclear",
+        ]
+        text_shapes = [shape for shape in slide.shapes if getattr(shape, "has_text_frame", False)]
+        matched = [
+            next(shape for shape in text_shapes if shape.text == text)
+            for text in expected
+        ]
+        accents = sorted(
+            (
+                shape
+                for shape in slide.shapes
+                if not (getattr(shape, "text", "") or "").strip() and shape.width <= Inches(0.1)
+            ),
+            key=lambda shape: shape.left,
+        )
+
+        self.assertEqual([shape.text for shape in matched], expected)
+        self.assertEqual([round(shape.left / Inches(1), 2) for shape in matched], [1.14, 4.99, 8.84])
+        self.assertEqual(len(accents), 3)
+        self.assertTrue(all(Inches(1.55) <= shape.height < Inches(2.0) for shape in accents))
+        self.assertEqual(len({shape.top + shape.height // 2 for shape in accents}), 1)
+
     def test_skill_contract_requires_rendered_visual_revalidation_without_synthetic_rules(self) -> None:
         skill = (ROOT / "skills" / "mdpr-skill" / "SKILL.md").read_text(encoding="utf-8")
 
