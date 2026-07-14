@@ -71,7 +71,7 @@ Reproducible visual evidence and the remaining limitations are recorded in
 cross-repository schema check is stored in
 `artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
-Current reproducible comparison: MDPR `21aced3` renders 32 editable slides and
+Current reproducible comparison: MDPR `1cf28ea` renders 32 editable slides and
 the companion renders 9 evidence slides; PowerPoint exported 32/32 and 9/9,
 both decks keep a 16pt minimum, and neither has an invalid frame or named-card
 overflow. PowerPoint PNG evidence is normalized to true-color RGB before visual
@@ -91,8 +91,8 @@ agent review. They are complementary, not competing renderers.
 | Comparison ancestry | Preserves source-mapped table columns and list hierarchy in Presentation/Layout IR | Keeps heading/list ancestry in the reproducible corpus and requests paired treatment only for explicit sibling groups; flat peers remain neutral |
 | Visual variety | Tracks visible `card-row-3`, `card-row-4`, grid, stack, split, radial, and specialized-object geometry; horizontal rows use open cells instead of repeating full white cards | Reviews rendered before/after evidence and may propose a deterministic rule, but does not choose a final layout or surface |
 | Rendered evidence | Owns the editable deck; its text, geometry, and validation remain the source of truth | Normalizes PowerPoint comparison PNGs to RGB before visual review and rejects findings contradicted by PPTX XML, COM text layout, or regenerated evidence |
-| Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded |
-| Host font evidence | Records requested, installed, and missing families plus probe source in `validation.fontEnvironment`; `--require-font-installed` fails proven absence or an unavailable probe, while embedding remains explicitly false | Cites MDPR evidence and distinguishes missing from uninspectable; it does not turn a host check into a portability claim |
+| Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or infer installation/embedding from a family name |
+| Font portability | Records host availability separately from explicit PPTX embedding. Repeatable `--embed-font` inputs are license-checked and packaged as EOT; `--require-font-embedded` gates exact planned family/style coverage | Cites MDPR hashes, `fsType`, part paths, and coverage. It never selects or embeds a font and does not override MDPR pass/fail or the font EULA |
 | Output ownership | Owns final coordinates, colors, z-order, objects, rendering, and pass/fail | Produces hints, review reports, and evidence only; MDPR still makes every final runtime decision |
 
 ## MDPR Validation Handoff
@@ -138,9 +138,11 @@ not recompute or soften those thresholds.
   not runtime edits, and take effect only after they become an accepted MDPR
   config, pack, or rule
 - use `validation.fontEnvironment` when present: distinguish a proven missing
-  family from an unavailable probe, cite its source, and never treat
-  `embedding.performed: false` as portability; do not infer installation or
-  embedding from a family name alone
+  family from an unavailable probe and cite its source. Treat
+  `embedding.performed: false` as non-portable; treat `true` as package evidence
+  only when hashes, `fsType`, EOT part paths, and complete planned face coverage
+  are present. Do not infer installation or embedding from a family name, and
+  do not reinterpret the font EULA
 
 ## Applied Comparison
 

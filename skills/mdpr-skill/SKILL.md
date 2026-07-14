@@ -185,9 +185,13 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   skill side.
 - When MDPR exposes `validation.fontEnvironment`, distinguish a proven missing
   family from `FONT_ENVIRONMENT_UNAVAILABLE`, and cite the recorded probe source.
-  A passing host catalog check is evidence for that export host only. Do not
-  claim portability or embedding when `embedding.performed` is false, and do not
-  duplicate MDPR's optional `--require-font-installed` pass/fail decision.
+  A passing host catalog check is evidence for that export host only. When
+  `embedding.performed` is false, do not claim portability. When it is true,
+  require MDPR-owned EOT part paths, source hashes, `fsType`, and complete
+  family/style coverage before describing the PPTX as portable. Treat the font
+  EULA as an external responsibility even when `fsType` permits embedding. Do
+  not select font files, embed them from the skill, or duplicate MDPR's
+  `--require-font-installed` / `--require-font-embedded` pass/fail decisions.
 - For Korean decks and mixed Korean/English decks, prevent awkward wrapping as
   source cleanup: shorten claim titles, replace long inline tool names with a
   shorter label plus detail in notes, split long bullets into label/detail

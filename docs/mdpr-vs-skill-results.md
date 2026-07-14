@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `21aced3` |
+| MDPR commit | `1cf28ea` |
 | Markdown files | 21 |
 | Headings | 185 |
-| Source characters | 100,214 |
+| Source characters | 102,167 |
 | MDPR baseline slides | 32 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
@@ -43,6 +43,7 @@ of being repeated across sparse presentation slides.
 | Primary job | Deterministic Markdown parsing, splitting, layout, validation, and rendering | Optional semantic hints, critique, and evidence |
 | Input | Markdown, parser mode, Presentation IR, Layout IR, templates | MDPR source context, manifests, rendered slides, and evidence paths |
 | Typography | Owns exact family, size, floor, wrapping, and editable text runs | May suggest copy reduction or splitting, but cannot prescribe exact typography |
+| Font portability | Owns host probing, OpenType license checks, explicit EOT packaging, face coverage, and manifest evidence | Reviews MDPR evidence only; never selects or embeds font files or overrides licensing/pass-fail |
 | Visual pass/fail | Owns required polish chapters and manifest pass/fail through `validation.polish.requiredFailureCount` | Mirrors runtime failures as `MDPR_POLISH_GATE_FAILED` and adds review findings without weakening them |
 | Output | Editable PPTX, HTML, PDF, manifests, and previews | Hint files, review reports, and comparison evidence |
 
@@ -74,9 +75,9 @@ The current review led to these changes:
   and rendered horizontal rows as open cells rather than repeated white cards;
 - corrected font-floor scope to text-bearing regions while keeping code and
   captions governed, and lowered continuation markers to secondary title runs.
-- recorded the export host font catalog in every MDPR manifest and added the
-  optional `--require-font-installed` gate, with separate missing-family and
-  unavailable-probe errors and explicit non-embedding evidence;
+- recorded the export host font catalog separately from portability, added the
+  optional `--require-font-installed` gate, and now accepts explicit
+  `--embed-font` faces with `--require-font-embedded` coverage gating;
 - preserved source heading ancestry in the comparison corpus, promoting only
   explicit current/improved sibling groups to editable two-column tables;
 - compacted short one- and two-item continuation regions around their measured
@@ -129,16 +130,17 @@ The current review led to these changes:
 
 | Previous limit | Current behavior | False-positive control |
 | --- | --- | --- |
-| A configured family could silently substitute on an unknown host. | Every build records requested/installed/missing families and probe source; `--require-font-installed` fails a proven absence. | An unreadable host catalog emits `FONT_ENVIRONMENT_UNAVAILABLE`, not one missing-font error per family; `embedding.performed: false` prevents a portability claim. |
+| A configured family could silently substitute on an unknown host. | Every build records requested/installed/missing families and probe source; `--require-font-installed` fails a proven absence. | An unreadable host catalog emits `FONT_ENVIRONMENT_UNAVAILABLE`, not one missing-font error per family. |
+| Host checks could not make a PPTX portable. | Repeatable explicit `--embed-font` faces are checked against OpenType `fsType`, packaged as uncompressed EOT parts, and recorded with hashes and part paths; `--require-font-embedded` gates actual planned family/style coverage. | Preflight never sets `performed: true`; restricted, preview/print-only, bitmap-only, malformed, duplicate, unused, and incomplete required faces fail. |
 | Short continuation tails used regions sized for much denser content. | One short item narrows to a centered focal card; two short items keep their source-mapped columns and content-size the shared height. | Long or wrapped items retain full capacity; no cross-section merge, extra caption, code, or decorative rule is invented. |
 | Example headings and bullets were flattened before comparison review. | The corpus records each list item's `headingPath`; explicit current/improved siblings become native editable tables. | Two unrelated sibling sections remain neutral and are covered by a negative regression. |
 | Two comparison processes could mutate the same export directory. | An OS-backed lock permits one writer for the artifact set. | The lock is released by process termination and a nested-writer regression must fail before artifact mutation. |
 
 ## Remaining Limitations
 
-- Automatic font embedding is still intentionally absent. Font licensing and
-  OOXML embedding policy must be resolved before MDPR can claim cross-machine
-  portability; the current manifest reports this honestly.
+- Font embedding is explicit, not a family-name autodiscovery or download
+  service. TTC/OTC/WOFF containers remain unsupported, and callers must verify
+  the font EULA even when OpenType `fsType` permits editable embedding.
 - Large semantic blocks retain full regions even when a continuation page is
   visually sparse. This is a source-fidelity choice, not permission to merge
   unrelated sections or invent filler.
