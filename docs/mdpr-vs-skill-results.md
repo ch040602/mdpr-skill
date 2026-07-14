@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `1cf28ea` |
+| MDPR commit | `9358b77` |
 | Markdown files | 21 |
 | Headings | 185 |
-| Source characters | 102,167 |
+| Source characters | 104,627 |
 | MDPR baseline slides | 32 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
@@ -43,7 +43,7 @@ of being repeated across sparse presentation slides.
 | Primary job | Deterministic Markdown parsing, splitting, layout, validation, and rendering | Optional semantic hints, critique, and evidence |
 | Input | Markdown, parser mode, Presentation IR, Layout IR, templates | MDPR source context, manifests, rendered slides, and evidence paths |
 | Typography | Owns exact family, size, floor, wrapping, and editable text runs | May suggest copy reduction or splitting, but cannot prescribe exact typography |
-| Font portability | Owns host probing, OpenType license checks, explicit EOT packaging, face coverage, and manifest evidence | Reviews MDPR evidence only; never selects or embeds font files or overrides licensing/pass-fail |
+| Font portability | Owns host probing, OpenType `fsType` checks, explicit EOT packaging, face coverage, post-render hash-bound caller attestations, and manifest pass/fail | Reviews MDPR evidence only; never creates license evidence, selects or embeds font files, interprets legal sufficiency, or overrides runtime pass/fail |
 | Visual pass/fail | Owns required polish chapters and manifest pass/fail through `validation.polish.requiredFailureCount` | Mirrors runtime failures as `MDPR_POLISH_GATE_FAILED` and adds review findings without weakening them |
 | Output | Editable PPTX, HTML, PDF, manifests, and previews | Hint files, review reports, and comparison evidence |
 
@@ -132,6 +132,7 @@ The current review led to these changes:
 | --- | --- | --- |
 | A configured family could silently substitute on an unknown host. | Every build records requested/installed/missing families and probe source; `--require-font-installed` fails a proven absence. | An unreadable host catalog emits `FONT_ENVIRONMENT_UNAVAILABLE`, not one missing-font error per family. |
 | Host checks could not make a PPTX portable. | Repeatable explicit `--embed-font` faces are checked against OpenType `fsType`, packaged as uncompressed EOT parts, and recorded with hashes and part paths; `--require-font-embedded` gates actual planned family/style coverage. | Preflight never sets `performed: true`; restricted, preview/print-only, bitmap-only, malformed, duplicate, unused, and incomplete required faces fail. |
+| Technical `fsType` checks could not carry per-font distribution authorization evidence. | `--font-license-evidence` binds caller-provided license source and authorization statements to each font SHA-256; `--require-font-license-evidence` rebinds the evidence to renderer-reported hashes after PPTX mutation. | Missing, malformed, unauthorized, duplicate, unused, stale, and post-render mismatched records fail; `legalDetermination: external` prevents a legal-sufficiency claim. |
 | Short continuation tails used regions sized for much denser content. | One short item narrows to a centered focal card; two short items keep their source-mapped columns and content-size the shared height. | Long or wrapped items retain full capacity; no cross-section merge, extra caption, code, or decorative rule is invented. |
 | Example headings and bullets were flattened before comparison review. | The corpus records each list item's `headingPath`; explicit current/improved siblings become native editable tables. | Two unrelated sibling sections remain neutral and are covered by a negative regression. |
 | Two comparison processes could mutate the same export directory. | An OS-backed lock permits one writer for the artifact set. | The lock is released by process termination and a nested-writer regression must fail before artifact mutation. |
@@ -139,8 +140,9 @@ The current review led to these changes:
 ## Remaining Limitations
 
 - Font embedding is explicit, not a family-name autodiscovery or download
-  service. TTC/OTC/WOFF containers remain unsupported, and callers must verify
-  the font EULA even when OpenType `fsType` permits editable embedding.
+  service. TTC/OTC/WOFF containers remain unsupported. MDPR can bind a caller's
+  attestation to exact bytes, but only the caller or license owner can establish
+  that the attestation is legally sufficient.
 - Large semantic blocks retain full regions even when a continuation page is
   visually sparse. This is a source-fidelity choice, not permission to merge
   unrelated sections or invent filler.

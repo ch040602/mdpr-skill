@@ -1,13 +1,13 @@
 {
   "schemaVersion": "mdpr-skill-runtime-sync-evidence-v2",
   "created_at": "2026-07-13T18:55:45Z",
-  "revalidated_at": "2026-07-14T12:53:24Z",
-  "provider": "local-font-embedding-runtime-sync-revalidation",
+  "revalidated_at": "2026-07-14T13:39:58Z",
+  "provider": "local-font-license-evidence-runtime-sync-revalidation",
   "scope": {
     "repository": "C:/Users/hcslab_523/Documents/mdpr-skill",
     "mdprPath": "C:/Users/hcslab_523/Documents/mdpresent-spec-scaffold",
-    "mdprSkillCommitAtValidation": "6e0b8b6",
-    "mdprCommitAtValidation": "1cf28ea",
+    "mdprSkillCommitAtValidation": "ee1bed8",
+    "mdprCommitAtValidation": "9358b77",
     "mdprWorkspaceVersion": "0.1.0",
     "mdprCorePackageVersion": "0.1.0",
     "mdprValidationPackageVersion": "0.1.0"
@@ -43,10 +43,12 @@
     },
     "skillFailurePolicy": "mirror MDPR_POLISH_GATE_FAILED with evidence; do not recompute, soften, or override",
     "templateFontPolicy": "preserve template master/layout/theme OOXML; generated text uses resolved MDPR typography unless typography.fontFamily is set to the template family",
-    "fontEmbeddingPolicy": "MDPR alone license-checks explicit TTF/OTF faces, packages EOT font parts, proves planned family/style coverage, and records hashes, fsType, and part paths; mdpr-skill reviews that evidence without selecting or embedding fonts",
+    "fontEmbeddingPolicy": "MDPR alone fsType-checks explicit TTF/OTF faces, packages EOT font parts, proves planned family/style coverage, and rebinds caller-provided license evidence to post-render font hashes while preserving legalDetermination: external; mdpr-skill reviews that evidence without creating attestations, interpreting legal sufficiency, selecting fonts, or embedding fonts",
     "fontEmbeddingFlags": [
       "--embed-font",
-      "--require-font-embedded"
+      "--require-font-embedded",
+      "--font-license-evidence",
+      "--require-font-license-evidence"
     ],
     "mdprReadmes": [
       "README.md",

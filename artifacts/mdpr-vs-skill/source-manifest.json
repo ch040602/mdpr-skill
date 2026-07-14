@@ -398,7 +398,7 @@
         {
           "kind": "listItem",
           "level": 1,
-          "text": "font selection remains explicit: MDPR does not download fonts or embed a",
+          "text": "pass --font-license-evidence <evidence.json> to bind caller-provided",
           "headingPath": [
             "mdpresent",
             "What It Does"
@@ -408,12 +408,22 @@
         {
           "kind": "listItem",
           "level": 1,
+          "text": "font selection remains explicit: MDPR does not download fonts or embed a",
+          "headingPath": [
+            "mdpresent",
+            "What It Does"
+          ],
+          "sourceIndex": 122
+        },
+        {
+          "kind": "listItem",
+          "level": 1,
           "text": "engineering reports that must become editable PowerPoint decks",
           "headingPath": [
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 124
+          "sourceIndex": 129
         },
         {
           "kind": "listItem",
@@ -423,7 +433,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 125
+          "sourceIndex": 130
         },
         {
           "kind": "listItem",
@@ -433,7 +443,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 126
+          "sourceIndex": 131
         },
         {
           "kind": "listItem",
@@ -443,7 +453,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 127
+          "sourceIndex": 132
         },
         {
           "kind": "heading",
@@ -453,7 +463,7 @@
             "mdpresent",
             "MDPR + mdpr-skill"
           ],
-          "sourceIndex": 129
+          "sourceIndex": 134
         },
         {
           "kind": "heading",
@@ -463,7 +473,7 @@
             "mdpresent",
             "How MDPR Differs"
           ],
-          "sourceIndex": 164
+          "sourceIndex": 169
         },
         {
           "kind": "heading",
@@ -473,7 +483,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 178
+          "sourceIndex": 183
         },
         {
           "kind": "listItem",
@@ -483,7 +493,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 180
+          "sourceIndex": 185
         },
         {
           "kind": "listItem",
@@ -493,7 +503,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 181
+          "sourceIndex": 186
         },
         {
           "kind": "listItem",
@@ -503,7 +513,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 182
+          "sourceIndex": 187
         },
         {
           "kind": "heading",
@@ -513,7 +523,7 @@
             "mdpresent",
             "Theme Style Examples"
           ],
-          "sourceIndex": 201
+          "sourceIndex": 206
         },
         {
           "kind": "heading",
@@ -523,7 +533,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 217
+          "sourceIndex": 222
         },
         {
           "kind": "listItem",
@@ -533,7 +543,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 219
+          "sourceIndex": 224
         },
         {
           "kind": "listItem",
@@ -543,7 +553,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 220
+          "sourceIndex": 225
         },
         {
           "kind": "listItem",
@@ -553,7 +563,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 221
+          "sourceIndex": 226
         },
         {
           "kind": "listItem",
@@ -563,7 +573,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 222
+          "sourceIndex": 227
         },
         {
           "kind": "heading",
@@ -573,7 +583,7 @@
             "mdpresent",
             "Quick Usage"
           ],
-          "sourceIndex": 241
+          "sourceIndex": 246
         },
         {
           "kind": "heading",
@@ -583,7 +593,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 282
+          "sourceIndex": 287
         },
         {
           "kind": "listItem",
@@ -593,7 +603,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 284
+          "sourceIndex": 289
         },
         {
           "kind": "listItem",
@@ -603,7 +613,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 285
+          "sourceIndex": 290
         },
         {
           "kind": "listItem",
@@ -613,7 +623,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 286
+          "sourceIndex": 291
         },
         {
           "kind": "listItem",
@@ -623,7 +633,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 287
+          "sourceIndex": 292
         },
         {
           "kind": "listItem",
@@ -633,7 +643,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 288
+          "sourceIndex": 293
         },
         {
           "kind": "listItem",
@@ -643,7 +653,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 289
+          "sourceIndex": 294
         },
         {
           "kind": "listItem",
@@ -653,7 +663,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 290
+          "sourceIndex": 295
         },
         {
           "kind": "listItem",
@@ -663,7 +673,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 291
+          "sourceIndex": 296
         },
         {
           "kind": "heading",
@@ -673,7 +683,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 302
+          "sourceIndex": 307
         },
         {
           "kind": "listItem",
@@ -683,7 +693,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 304
+          "sourceIndex": 309
         },
         {
           "kind": "listItem",
@@ -693,7 +703,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 305
+          "sourceIndex": 310
         },
         {
           "kind": "listItem",
@@ -703,7 +713,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 306
+          "sourceIndex": 311
         },
         {
           "kind": "listItem",
@@ -713,7 +723,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 307
+          "sourceIndex": 312
         },
         {
           "kind": "listItem",
@@ -723,7 +733,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 308
+          "sourceIndex": 313
         },
         {
           "kind": "listItem",
@@ -733,7 +743,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 309
+          "sourceIndex": 314
         },
         {
           "kind": "heading",
@@ -743,7 +753,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 311
+          "sourceIndex": 316
         },
         {
           "kind": "listItem",
@@ -753,7 +763,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 323
+          "sourceIndex": 328
         },
         {
           "kind": "listItem",
@@ -763,7 +773,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 324
+          "sourceIndex": 329
         },
         {
           "kind": "listItem",
@@ -773,7 +783,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 325
+          "sourceIndex": 330
         },
         {
           "kind": "listItem",
@@ -783,7 +793,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 326
+          "sourceIndex": 331
         },
         {
           "kind": "listItem",
@@ -793,7 +803,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 327
+          "sourceIndex": 332
         },
         {
           "kind": "listItem",
@@ -803,7 +813,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 328
+          "sourceIndex": 333
         },
         {
           "kind": "listItem",
@@ -813,7 +823,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 329
+          "sourceIndex": 334
         },
         {
           "kind": "listItem",
@@ -823,7 +833,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 330
+          "sourceIndex": 335
         },
         {
           "kind": "listItem",
@@ -833,7 +843,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 331
+          "sourceIndex": 336
         },
         {
           "kind": "listItem",
@@ -843,7 +853,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 332
+          "sourceIndex": 337
         },
         {
           "kind": "heading",
@@ -853,7 +863,7 @@
             "mdpresent",
             "GitHub Actions"
           ],
-          "sourceIndex": 342
+          "sourceIndex": 347
         },
         {
           "kind": "listItem",
@@ -863,7 +873,7 @@
             "mdpresent",
             "GitHub Actions"
           ],
-          "sourceIndex": 344
+          "sourceIndex": 349
         },
         {
           "kind": "listItem",
@@ -873,7 +883,7 @@
             "mdpresent",
             "GitHub Actions"
           ],
-          "sourceIndex": 345
+          "sourceIndex": 350
         },
         {
           "kind": "heading",
@@ -883,7 +893,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 352
+          "sourceIndex": 357
         },
         {
           "kind": "listItem",
@@ -893,7 +903,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 354
+          "sourceIndex": 359
         },
         {
           "kind": "listItem",
@@ -903,7 +913,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 355
+          "sourceIndex": 360
         },
         {
           "kind": "listItem",
@@ -913,7 +923,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 356
+          "sourceIndex": 361
         },
         {
           "kind": "listItem",
@@ -923,7 +933,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 357
+          "sourceIndex": 362
         },
         {
           "kind": "listItem",
@@ -933,7 +943,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 358
+          "sourceIndex": 363
         }
       ],
       "comparisonGroups": [],
@@ -973,7 +983,7 @@
         "  -> MDPR deterministic parsing, splitting, layout, validation",
         "  -> editable PPTX / HTML / PDF"
       ],
-      "charCount": 23584
+      "charCount": 24032
     },
     {
       "path": "docs/00-product-definition.md",
@@ -2629,7 +2639,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 80
+          "sourceIndex": 84
         },
         {
           "kind": "listItem",
@@ -2639,7 +2649,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 83
+          "sourceIndex": 87
         },
         {
           "kind": "listItem",
@@ -2649,7 +2659,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 87
+          "sourceIndex": 91
         },
         {
           "kind": "listItem",
@@ -2659,7 +2669,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 89
+          "sourceIndex": 93
         },
         {
           "kind": "listItem",
@@ -2669,7 +2679,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 90
+          "sourceIndex": 94
         },
         {
           "kind": "listItem",
@@ -2679,7 +2689,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 91
+          "sourceIndex": 95
         },
         {
           "kind": "listItem",
@@ -2689,7 +2699,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 92
+          "sourceIndex": 96
         },
         {
           "kind": "listItem",
@@ -2699,7 +2709,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 93
+          "sourceIndex": 97
         },
         {
           "kind": "listItem",
@@ -2709,7 +2719,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 94
+          "sourceIndex": 98
         },
         {
           "kind": "listItem",
@@ -2719,7 +2729,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 95
+          "sourceIndex": 99
         },
         {
           "kind": "listItem",
@@ -2729,7 +2739,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 96
+          "sourceIndex": 100
         },
         {
           "kind": "listItem",
@@ -2739,7 +2749,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 97
+          "sourceIndex": 101
         },
         {
           "kind": "listItem",
@@ -2749,7 +2759,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 99
+          "sourceIndex": 103
         },
         {
           "kind": "listItem",
@@ -2759,7 +2769,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 100
+          "sourceIndex": 104
         },
         {
           "kind": "listItem",
@@ -2769,7 +2779,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 103
+          "sourceIndex": 107
         },
         {
           "kind": "listItem",
@@ -2779,7 +2789,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 104
+          "sourceIndex": 108
         },
         {
           "kind": "listItem",
@@ -2789,7 +2799,7 @@
             "06. CLI Specification",
             "Current Build Behavior"
           ],
-          "sourceIndex": 105
+          "sourceIndex": 109
         },
         {
           "kind": "heading",
@@ -2799,7 +2809,7 @@
             "06. CLI Specification",
             "Validation"
           ],
-          "sourceIndex": 108
+          "sourceIndex": 112
         },
         {
           "kind": "heading",
@@ -2809,7 +2819,7 @@
             "06. CLI Specification",
             "Main Options"
           ],
-          "sourceIndex": 150
+          "sourceIndex": 154
         }
       ],
       "comparisonGroups": [],
@@ -2825,9 +2835,9 @@
         "mdpresent generated-assets validate mdpr-generated-assets.json --json",
         "mdpresent inspect deck.md --json",
         "mdpresent plan deck.md --json > layout.plan.json",
-        "mdpresent validate deck.md --override deck.override.yaml --hints deck.mdpr-hints.json --coherence --require-font-installed --embed-font Pretendard-Regular.ttf --embed-font Pretendard-Bold.ttf --require-font-embedded"
+        "mdpresent validate deck.md --override deck.override.yaml --hints deck.mdpr-hints.json --coherence --require-font-installed --embed-font Pretendard-Regular.ttf --embed-font Pretendard-Bold.ttf --require-font-embedded --font-license-evidence font-license-evidence.json --require-font-license-evidence"
       ],
-      "charCount": 6970
+      "charCount": 7438
     },
     {
       "path": "docs/07-rendering-rules.md",
@@ -4541,7 +4551,7 @@
             "11. Validation and Overflow Policy",
             "Build Manifest and Design Lock"
           ],
-          "sourceIndex": 212
+          "sourceIndex": 248
         },
         {
           "kind": "listItem",
@@ -4551,7 +4561,7 @@
             "11. Validation and Overflow Policy",
             "Build Manifest and Design Lock"
           ],
-          "sourceIndex": 214
+          "sourceIndex": 250
         },
         {
           "kind": "listItem",
@@ -4561,7 +4571,7 @@
             "11. Validation and Overflow Policy",
             "Build Manifest and Design Lock"
           ],
-          "sourceIndex": 216
+          "sourceIndex": 252
         },
         {
           "kind": "listItem",
@@ -4571,7 +4581,7 @@
             "11. Validation and Overflow Policy",
             "Build Manifest and Design Lock"
           ],
-          "sourceIndex": 217
+          "sourceIndex": 253
         },
         {
           "kind": "listItem",
@@ -4581,7 +4591,7 @@
             "11. Validation and Overflow Policy",
             "Build Manifest and Design Lock"
           ],
-          "sourceIndex": 219
+          "sourceIndex": 255
         },
         {
           "kind": "listItem",
@@ -4591,7 +4601,7 @@
             "11. Validation and Overflow Policy",
             "Build Manifest and Design Lock"
           ],
-          "sourceIndex": 221
+          "sourceIndex": 257
         },
         {
           "kind": "heading",
@@ -4601,7 +4611,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 265
+          "sourceIndex": 301
         },
         {
           "kind": "listItem",
@@ -4611,7 +4621,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 276
+          "sourceIndex": 312
         },
         {
           "kind": "listItem",
@@ -4621,7 +4631,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 277
+          "sourceIndex": 313
         },
         {
           "kind": "listItem",
@@ -4631,7 +4641,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 278
+          "sourceIndex": 314
         },
         {
           "kind": "listItem",
@@ -4641,7 +4651,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 280
+          "sourceIndex": 316
         },
         {
           "kind": "listItem",
@@ -4651,7 +4661,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 281
+          "sourceIndex": 317
         },
         {
           "kind": "listItem",
@@ -4661,7 +4671,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 282
+          "sourceIndex": 318
         },
         {
           "kind": "listItem",
@@ -4671,7 +4681,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 283
+          "sourceIndex": 319
         },
         {
           "kind": "listItem",
@@ -4681,7 +4691,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 284
+          "sourceIndex": 320
         },
         {
           "kind": "listItem",
@@ -4691,7 +4701,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 285
+          "sourceIndex": 321
         },
         {
           "kind": "listItem",
@@ -4701,7 +4711,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 287
+          "sourceIndex": 323
         },
         {
           "kind": "listItem",
@@ -4711,7 +4721,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 288
+          "sourceIndex": 324
         },
         {
           "kind": "listItem",
@@ -4721,7 +4731,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 291
+          "sourceIndex": 327
         },
         {
           "kind": "listItem",
@@ -4731,7 +4741,7 @@
             "11. Validation and Overflow Policy",
             "Actions Preview Evaluation"
           ],
-          "sourceIndex": 293
+          "sourceIndex": 329
         },
         {
           "kind": "heading",
@@ -4741,7 +4751,7 @@
             "11. Validation and Overflow Policy",
             "Performance Regression Gate"
           ],
-          "sourceIndex": 295
+          "sourceIndex": 331
         },
         {
           "kind": "heading",
@@ -4751,7 +4761,7 @@
             "11. Validation and Overflow Policy",
             "Future Improvements"
           ],
-          "sourceIndex": 312
+          "sourceIndex": 348
         }
       ],
       "comparisonGroups": [],
@@ -4769,7 +4779,7 @@
         "- minimum font size violations",
         "- missing override targets"
       ],
-      "charCount": 15102
+      "charCount": 16646
     },
     {
       "path": "docs/references.md",

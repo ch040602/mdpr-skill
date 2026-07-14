@@ -189,9 +189,16 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   `embedding.performed` is false, do not claim portability. When it is true,
   require MDPR-owned EOT part paths, source hashes, `fsType`, and complete
   family/style coverage before describing the PPTX as portable. Treat the font
-  EULA as an external responsibility even when `fsType` permits embedding. Do
-  not select font files, embed them from the skill, or duplicate MDPR's
-  `--require-font-installed` / `--require-font-embedded` pass/fail decisions.
+  EULA as an external responsibility even when `fsType` permits embedding.
+  When MDPR exposes `embedding.licenseEvidence`, distinguish exact post-render
+  SHA-256 binding from legal sufficiency: require `complete: true` before
+  describing a distribution workflow as evidence-complete, and preserve
+  `legalDetermination: external`. Do not create license evidence, do not
+  reinterpret its license terms, select font files, embed them from the skill,
+  or duplicate
+  MDPR's `--require-font-installed`, `--require-font-embedded`,
+  `--font-license-evidence`, or `--require-font-license-evidence` pass/fail
+  decisions.
 - For Korean decks and mixed Korean/English decks, prevent awkward wrapping as
   source cleanup: shorten claim titles, replace long inline tool names with a
   shorter label plus detail in notes, split long bullets into label/detail

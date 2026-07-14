@@ -130,6 +130,25 @@ class BoundaryContractTest(unittest.TestCase):
         self.assertIn("`mdpr-skill review` mirrors that", readme)
         self.assertIn('"runtimeOwner": "MDPR"', readme)
 
+    def test_font_license_evidence_stays_runtime_owned_and_legally_bounded(self):
+        skill = (ROOT / "skills" / "mdpr-skill" / "SKILL.md").read_text(encoding="utf-8").lower()
+        readme = (ROOT / "README.md").read_text(encoding="utf-8").lower()
+        comparison = (ROOT / "docs" / "mdpr-vs-skill-results.md").read_text(encoding="utf-8").lower()
+        combined = "\n".join([skill, readme, comparison])
+        normalized_skill = " ".join(skill.split())
+
+        for term in [
+            "--font-license-evidence",
+            "--require-font-license-evidence",
+            "legaldetermination: external",
+            "post-render",
+        ]:
+            self.assertIn(term, combined)
+
+        self.assertIn("do not create license evidence", normalized_skill)
+        self.assertIn("do not reinterpret", normalized_skill)
+        self.assertIn("mdpr", skill)
+
 
 if __name__ == "__main__":
     unittest.main()
