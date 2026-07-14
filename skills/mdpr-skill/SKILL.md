@@ -165,6 +165,11 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   source-backed row already exists, recommend content-measured runtime sizing
   rather than another layout, extra copy, or decoration. MDPR owns the sizing
   rule, while mdpr-skill records before/after evidence and source preservation.
+- Verify the semantic block and selected preset before writing a sparse-page
+  regression. Pipeline diagram nodes are not list items: when their rendered
+  cards are oversized, test the `diagram` block and `pipeline` region, preserve
+  node/edge mappings, and re-export PowerPoint. Reject a passing unit fixture if
+  the current rendered slide does not change; that is a validator false positive.
 - Treat `16pt` as the current MDPR generated-text visual floor, including list
   and diagram number badges. Apply it to text-bearing regions, including code,
   captions, tables, charts, and diagrams; image-only and empty decorative

@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `0cb69e4` |
+| MDPR commit | `f547e1c` |
 | Markdown files | 21 |
 | Headings | 185 |
-| Source characters | 96,298 |
+| Source characters | 97,285 |
 | MDPR baseline slides | 35 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
@@ -98,6 +98,7 @@ The current review led to these changes:
 | 20 | A transient PowerPoint process could fail twice and invalidate a full comparison. | Permit a third isolated attempt, clear stale output, and regenerate all evidence from `c93ac84`. | 35/35 + 9/9 export, invalid 0, 16pt floor, overflow 0, report `ok:true`. |
 | 21 | Pro cycle 1 assumed slide 24 still used stacked full-width strips. | Reject the duplicate row proposal after inspecting the actual PowerPoint export; narrow the next review to triptych height and whitespace balance. | Slide 24 already has an open horizontal triptych, ordered editable source text, and no card surface; no runtime change was justified. |
 | 22 | Pro cycle 2 correctly identified that the existing triptych fixed every short continuation item to a 2.75in-tall region. | Reuse the existing variant and font-metric measurer; compact only short text-only continuations while retaining the old center and all horizontal/source geometry. | Slide 24 keeps the same three editable source strings and 3-column topology, while its item accents shrink from 2.75in to 1.55in; 35/35 + 9/9 exports, 16pt floor, and overflow 0 remain. |
+| 23 | Pro cycle 3 found that slide 6 used three 1.45in cards for one-line pipeline nodes. The first local test incorrectly modeled them as list items, which rendered evidence exposed as a false positive. | Correct the fixture to the actual `diagram` block and `pipeline` preset, then content-size only the existing diagram region for short 2–3-node continuations. | Slide 6 keeps its editable nodes, numbering, accents, connectors, 8.60in card width, and prior center while card height falls to 0.95in; long-label controls retain 5.75in capacity and the full comparison remains 35/35 + 9/9 with report `ok:true`. |
 
 ## Remaining Limitations
 

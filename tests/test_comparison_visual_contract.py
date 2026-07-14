@@ -29,6 +29,40 @@ def load_script(name: str, relative_path: str):
 
 
 class ComparisonVisualContractTests(unittest.TestCase):
+    def test_sparse_pipeline_continuation_uses_compact_editable_nodes(self) -> None:
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        slide = deck.slides[5]
+        expected = [
+            "MDPR manifest and previews",
+            "mdpr-skill hints or review findings",
+            "MDPR remains the only renderer",
+        ]
+        text_shapes = [shape for shape in slide.shapes if getattr(shape, "has_text_frame", False)]
+        matched = [next(shape for shape in text_shapes if shape.text == text) for text in expected]
+        cards = sorted(
+            (
+                shape
+                for shape in slide.shapes
+                if not (getattr(shape, "text", "") or "").strip()
+                and Inches(8.5) <= shape.width <= Inches(8.7)
+                and shape.height > Inches(0.5)
+            ),
+            key=lambda shape: shape.top,
+        )
+        connectors = [
+            shape
+            for shape in slide.shapes
+            if not (getattr(shape, "text", "") or "").strip()
+            and shape.width <= Inches(0.01)
+            and Inches(0.3) <= shape.height <= Inches(0.5)
+        ]
+
+        self.assertEqual([shape.text for shape in matched], expected)
+        self.assertEqual(len(cards), 3)
+        self.assertEqual([round(shape.height / Inches(1), 2) for shape in cards], [0.95, 0.95, 0.95])
+        self.assertAlmostEqual((cards[0].top + cards[-1].top + cards[-1].height) / 2 / Inches(1), 4.195, places=2)
+        self.assertEqual(len(connectors), 2)
+
     def test_sparse_continuation_triptych_uses_compact_editable_regions(self) -> None:
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
         slide = deck.slides[23]

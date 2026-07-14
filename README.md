@@ -71,7 +71,7 @@ Reproducible visual evidence and the remaining limitations are recorded in
 cross-repository schema check is stored in
 `artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
-Current reproducible comparison: MDPR `0cb69e4` renders 35 editable slides and
+Current reproducible comparison: MDPR `f547e1c` renders 35 editable slides and
 the companion renders 9 evidence slides; PowerPoint exported 35/35 and 9/9,
 both decks keep a 16pt minimum, and neither has an invalid frame or named-card
 overflow.
