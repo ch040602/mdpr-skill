@@ -96,6 +96,7 @@ The current review led to these changes:
 | 18 | Triptych/quartet collapsed into generic `freeform-N` validator labels. | Add `card-row-3` and `card-row-4` visible signatures. | Geometry diversity reports the actual row topology. |
 | 19 | New row geometry still looked like the same white-card system. | Omit full surfaces only for horizontal rows; retain per-item accents. | Row slides read as open columns and visibly break card repetition. |
 | 20 | A transient PowerPoint process could fail twice and invalidate a full comparison. | Permit a third isolated attempt, clear stale output, and regenerate all evidence from `c93ac84`. | 35/35 + 9/9 export, invalid 0, 16pt floor, overflow 0, report `ok:true`. |
+| 21 | Pro cycle 1 assumed slide 24 still used stacked full-width strips. | Reject the duplicate row proposal after inspecting the actual PowerPoint export; narrow the next review to triptych height and whitespace balance. | Slide 24 already has an open horizontal triptych, ordered editable source text, and no card surface; no runtime change was justified. |
 
 ## Remaining Limitations
 
