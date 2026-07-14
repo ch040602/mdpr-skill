@@ -1,11 +1,11 @@
 {
   "schemaVersion": "mdpr-skill-runtime-sync-evidence-v2",
   "created_at": "2026-07-13T18:55:45Z",
-  "provider": "local-rdd-additional-cycle-04",
+  "provider": "local-rdd-additional-cycle-05",
   "scope": {
     "repository": "C:/Users/hcslab_523/Documents/mdpr-skill",
     "mdprPath": "C:/Users/hcslab_523/Documents/mdpresent-spec-scaffold",
-    "mdprSkillCommitAtValidation": "e9ae8ca",
+    "mdprSkillCommitAtValidation": "d5d9777",
     "mdprCommitAtValidation": "8b60e07",
     "mdprWorkspaceVersion": "0.1.0",
     "mdprCorePackageVersion": "0.1.0",
