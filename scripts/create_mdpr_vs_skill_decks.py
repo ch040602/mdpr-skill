@@ -143,6 +143,92 @@ def extract_bullets(text: str, limit: int = 6) -> list[str]:
     return bullets
 
 
+def extract_outline_facts(text: str) -> list[dict[str, Any]]:
+    facts: list[dict[str, Any]] = []
+    heading_stack: list[str] = []
+    for source_index, line in enumerate(text.splitlines()):
+        heading = re.match(r"^(#{1,6})\s+(.+?)\s*$", line)
+        if heading:
+            level = len(heading.group(1))
+            title = clean_line(heading.group(2))
+            heading_stack = heading_stack[:level - 1]
+            heading_stack.append(title)
+            facts.append({
+                "kind": "heading",
+                "level": level,
+                "text": title,
+                "headingPath": list(heading_stack),
+                "sourceIndex": source_index,
+            })
+            continue
+
+        list_item = re.match(r"^(\s*)(?:[-*]|\d+\.)\s+(.+?)\s*$", line.expandtabs(2))
+        if not list_item:
+            continue
+        text_value = clean_line(list_item.group(2))
+        if not text_value:
+            continue
+        facts.append({
+            "kind": "listItem",
+            "level": len(list_item.group(1)) // 2 + 1,
+            "text": text_value[:130],
+            "headingPath": list(heading_stack),
+            "sourceIndex": source_index,
+        })
+    return facts
+
+
+def extract_paired_comparison_groups(outline_facts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    items_by_path: dict[tuple[str, ...], list[str]] = {}
+    path_order: list[tuple[str, ...]] = []
+    for fact in outline_facts:
+        if fact.get("kind") != "listItem":
+            continue
+        path = tuple(fact.get("headingPath") or [])
+        if len(path) < 2:
+            continue
+        if path not in items_by_path:
+            path_order.append(path)
+            items_by_path[path] = []
+        items_by_path[path].append(str(fact.get("text", "")))
+
+    paths_by_parent: dict[tuple[str, ...], list[tuple[str, ...]]] = {}
+    for path in path_order:
+        paths_by_parent.setdefault(path[:-1], []).append(path)
+    for paths in paths_by_parent.values():
+        if len(paths) != 2:
+            continue
+        parent_text = " ".join(paths[0][:-1])
+        labels = [path[-1] for path in paths]
+        if not has_explicit_comparison_ancestry(parent_text, labels):
+            continue
+        return [
+            {"label": path[-1], "items": items_by_path[path]}
+            for path in paths
+        ]
+    return []
+
+
+def has_explicit_comparison_ancestry(parent_text: str, labels: list[str]) -> bool:
+    normalized_parent = unicodedata.normalize("NFKC", parent_text).casefold()
+    normalized_labels = [unicodedata.normalize("NFKC", label).casefold() for label in labels]
+    if re.search(r"\b(?:comparison|compare|versus|vs\.?|contrast)\b", normalized_parent):
+        return True
+
+    opposing_terms = [
+        (("before", "current", "old", "as-is", "as is", "existing", "현재", "기존"),
+         ("after", "improved", "new", "to-be", "to be", "future", "개선", "향후")),
+        (("manual", "baseline"), ("automatic", "automated", "target")),
+    ]
+    for left_terms, right_terms in opposing_terms:
+        left_side = any(any(term in label for term in left_terms) for label in normalized_labels)
+        right_side = any(any(term in label for term in right_terms) for label in normalized_labels)
+        parent_has_both = any(term in normalized_parent for term in left_terms) and any(term in normalized_parent for term in right_terms)
+        if (left_side and right_side) or parent_has_both:
+            return True
+    return False
+
+
 def extract_code_block(text: str) -> tuple[str, list[str]] | None:
     lines = text.splitlines()
     for index, line in enumerate(lines):
@@ -179,6 +265,7 @@ def extract_table(text: str) -> list[list[str]]:
 
 def source_summary(relative_path: str) -> dict[str, Any]:
     text = read_source(relative_path)
+    outline_facts = extract_outline_facts(text)
     headings = [clean_line(match.group(1)) for match in re.finditer(r"^#{1,3}\s+(.+)$", text, flags=re.MULTILINE)]
     bullets = extract_bullets(text)
     table = extract_table(text)
@@ -189,6 +276,8 @@ def source_summary(relative_path: str) -> dict[str, Any]:
         "headingCount": len(headings),
         "headings": headings[:8],
         "bullets": bullets,
+        "outlineFacts": outline_facts,
+        "comparisonGroups": extract_paired_comparison_groups(outline_facts),
         "hasTable": bool(table),
         "table": table,
         "hasCode": bool(code),
@@ -224,6 +313,54 @@ def unique_corpus_headings(headings: list[str], section_title: str, *, limit: in
         if len(retained) >= limit:
             break
     return retained
+
+
+def corpus_outline_lines(item: dict[str, Any], section_title: str, *, heading_limit: int = 6, item_limit: int = 4) -> list[str]:
+    outline = item.get("outlineFacts") or []
+    if not outline:
+        return [
+            *[f"- {heading}" for heading in unique_corpus_headings(item.get("headings", []), section_title, limit=heading_limit)],
+            *[f"- {bullet}" for bullet in item.get("bullets", [])[:item_limit]],
+        ]
+
+    lines: list[str] = []
+    retained_headings = 0
+    retained_items = 0
+    root_level = min((int(fact.get("level", 1)) for fact in outline if fact.get("kind") == "heading"), default=1)
+    for fact in outline:
+        kind = fact.get("kind")
+        text_value = corpus_display_title(str(fact.get("text", "")))
+        if kind == "heading":
+            if heading_identity(text_value) == heading_identity(section_title):
+                continue
+            if retained_headings >= heading_limit:
+                continue
+            indent = max(0, int(fact.get("level", root_level)) - root_level - 1)
+            lines.append(f"{'  ' * indent}- {text_value}")
+            retained_headings += 1
+        elif kind == "listItem" and retained_items < item_limit:
+            path_depth = len(fact.get("headingPath") or [])
+            indent = max(0, path_depth - 1) + max(0, int(fact.get("level", 1)) - 1)
+            lines.append(f"{'  ' * indent}- {text_value}")
+            retained_items += 1
+    return lines
+
+
+def comparison_table_lines(groups: list[dict[str, Any]]) -> list[str]:
+    if len(groups) != 2:
+        return []
+    escape = lambda value: str(value).replace("|", "\\|").replace("\n", " ")
+    left, right = groups
+    lines = [
+        f"| {escape(left['label'])} | {escape(right['label'])} |",
+        "|---|---|",
+    ]
+    row_count = max(len(left.get("items", [])), len(right.get("items", [])))
+    for index in range(row_count):
+        left_item = left.get("items", [])[index] if index < len(left.get("items", [])) else ""
+        right_item = right.get("items", [])[index] if index < len(right.get("items", [])) else ""
+        lines.append(f"| {escape(left_item)} | {escape(right_item)} |")
+    return lines
 
 
 def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
@@ -287,10 +424,11 @@ def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
     for path in [item for item in summaries if item["path"].startswith("examples/")]:
         section_title = f"Example: {path['path']}"
         lines.extend([f"## {section_title}", ""])
-        for heading in unique_corpus_headings(path["headings"], section_title, limit=6):
-            lines.append(f"- {heading}")
-        for bullet in path["bullets"][:4]:
-            lines.append(f"- {bullet}")
+        comparison_groups = path.get("comparisonGroups") or []
+        if len(comparison_groups) == 2:
+            lines.extend(comparison_table_lines(comparison_groups))
+        else:
+            lines.extend(corpus_outline_lines(path, section_title))
         lines.append("")
     lines.extend([
         "## Current skill output expectations",

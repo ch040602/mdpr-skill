@@ -165,6 +165,12 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   source-backed row already exists, recommend content-measured runtime sizing
   rather than another layout, extra copy, or decoration. MDPR owns the sizing
   rule, while mdpr-skill records before/after evidence and source preservation.
+- Preserve heading and list ancestry in comparison corpora and review evidence.
+  Promote content to paired columns or a native table only when two source
+  groups are explicit siblings under comparison-bearing ancestry such as
+  current/improved or before/after. A flat peer list is not enough evidence for
+  A/B accents. Keep a negative control so hierarchy detection cannot turn two
+  unrelated sections into a semantic comparison.
 - Verify the semantic block and selected preset before writing a sparse-page
   regression. Pipeline diagram nodes are not list items: when their rendered
   cards are oversized, test the `diagram` block and `pipeline` region, preserve
@@ -177,6 +183,11 @@ Use when a deck, Slide Element IR, Presentation IR, or ambiguous Markdown would 
   the runtime manifest and actual PPTX runs; do not assume code or caption needs
   a smaller exception, and do not prescribe an exact replacement size from the
   skill side.
+- When MDPR exposes `validation.fontEnvironment`, distinguish a proven missing
+  family from `FONT_ENVIRONMENT_UNAVAILABLE`, and cite the recorded probe source.
+  A passing host catalog check is evidence for that export host only. Do not
+  claim portability or embedding when `embedding.performed` is false, and do not
+  duplicate MDPR's optional `--require-font-installed` pass/fail decision.
 - For Korean decks and mixed Korean/English decks, prevent awkward wrapping as
   source cleanup: shorten claim titles, replace long inline tool names with a
   shorter label plus detail in notes, split long bullets into label/detail

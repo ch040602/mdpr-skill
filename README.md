@@ -88,9 +88,11 @@ agent review. They are complementary, not competing renderers.
 | Strict visual failure | Required `fontHierarchy` checks every text-bearing Layout IR region against `16pt`; image-only and empty decorative regions do not create glyph-floor failures, while code and captions remain covered | Mirrors `MDPR_POLISH_GATE_FAILED` with evidence and must not recompute, soften, or override it |
 | Decorative lines | Built-in presets omit automatic title underlines, body title bands, TOC horizontal rules, and isolated cover-bottom rules while retaining semantic item/container accents | Review evidence omits synthetic subtitles, title rules, and bottom takeaway bands unless source content requires them |
 | Native tables | Keeps tables editable; eligible three-column comparisons use a compact label column and two equal evidence columns | Reviews rendered balance and source fidelity, but does not set column widths |
+| Comparison ancestry | Preserves source-mapped table columns and list hierarchy in Presentation/Layout IR | Keeps heading/list ancestry in the reproducible corpus and requests paired treatment only for explicit sibling groups; flat peers remain neutral |
 | Visual variety | Tracks visible `card-row-3`, `card-row-4`, grid, stack, split, radial, and specialized-object geometry; horizontal rows use open cells instead of repeating full white cards | Reviews rendered before/after evidence and may propose a deterministic rule, but does not choose a final layout or surface |
 | Rendered evidence | Owns the editable deck; its text, geometry, and validation remain the source of truth | Normalizes PowerPoint comparison PNGs to RGB before visual review and rejects findings contradicted by PPTX XML, COM text layout, or regenerated evidence |
 | Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or claim that a font is installed or embedded |
+| Host font evidence | Records requested, installed, and missing families plus probe source in `validation.fontEnvironment`; `--require-font-installed` fails proven absence or an unavailable probe, while embedding remains explicitly false | Cites MDPR evidence and distinguishes missing from uninspectable; it does not turn a host check into a portability claim |
 | Output ownership | Owns final coordinates, colors, z-order, objects, rendering, and pass/fail | Produces hints, review reports, and evidence only; MDPR still makes every final runtime decision |
 
 ## MDPR Validation Handoff
@@ -135,8 +137,10 @@ not recompute or soften those thresholds.
 - typography tokens copied from a design source are approval-bound candidates,
   not runtime edits, and take effect only after they become an accepted MDPR
   config, pack, or rule
-- do not claim that a font is installed or embedded from its family name alone;
-  host availability and substitution remain deployment checks
+- use `validation.fontEnvironment` when present: distinguish a proven missing
+  family from an unavailable probe, cite its source, and never treat
+  `embedding.performed: false` as portability; do not infer installation or
+  embedding from a family name alone
 
 ## Applied Comparison
 

@@ -247,6 +247,92 @@ class ComparisonVisualContractTests(unittest.TestCase):
         retained = [line.removeprefix("- ") for line in section.splitlines() if line.startswith("- ")]
         self.assertEqual(retained, ["Heading Rules", "Slide Candidate", "Autosplit Boundary", "AST Parsing", "Overflow"])
 
+    def test_comparison_source_keeps_heading_ancestry_as_paired_table_columns(self) -> None:
+        module = load_script("create_mdpr_vs_skill_hierarchy", "scripts/create_mdpr_vs_skill_decks.py")
+        source = "\n".join([
+            "# Comparison Structure Example",
+            "",
+            "## Current Approach and Improved Approach",
+            "",
+            "### Current Approach",
+            "",
+            "- Documents are reviewed manually.",
+            "- Source location is unclear.",
+            "",
+            "### Improved Approach",
+            "",
+            "- Draft from structured source.",
+            "- Keep evidence links visible.",
+        ])
+
+        outline = module.extract_outline_facts(source)
+        groups = module.extract_paired_comparison_groups(outline)
+
+        self.assertEqual(
+            [fact["headingPath"] for fact in outline if fact["kind"] == "listItem"],
+            [
+                ["Comparison Structure Example", "Current Approach and Improved Approach", "Current Approach"],
+                ["Comparison Structure Example", "Current Approach and Improved Approach", "Current Approach"],
+                ["Comparison Structure Example", "Current Approach and Improved Approach", "Improved Approach"],
+                ["Comparison Structure Example", "Current Approach and Improved Approach", "Improved Approach"],
+            ],
+        )
+        self.assertEqual(groups, [
+            {"label": "Current Approach", "items": ["Documents are reviewed manually.", "Source location is unclear."]},
+            {"label": "Improved Approach", "items": ["Draft from structured source.", "Keep evidence links visible."]},
+        ])
+        unrelated = module.extract_outline_facts("\n".join([
+            "# Workflow Proposal",
+            "## Repetitive Work Is Growing",
+            "- Meeting cleanup",
+            "## Search Costs Are Growing",
+            "- Filename search",
+        ]))
+        self.assertEqual(module.extract_paired_comparison_groups(unrelated), [])
+
+        summaries = [
+            {
+                "path": path,
+                "title": Path(path).stem,
+                "headingCount": 1,
+                "headings": [Path(path).stem],
+                "bullets": [],
+                "table": [],
+                "code": [],
+                "codeLanguage": None,
+                "charCount": 100,
+            }
+            for path in [
+                "docs/01-architecture.md",
+                "docs/03-page-splitting.md",
+                "docs/04-layout-rules.md",
+                "docs/07-rendering-rules.md",
+                "docs/11-qa-overflow.md",
+            ]
+        ]
+        summaries.append({
+            "path": "examples/comparison/deck.md",
+            "title": "Comparison Structure Example",
+            "headingCount": 4,
+            "headings": [fact["text"] for fact in outline if fact["kind"] == "heading"],
+            "bullets": [fact["text"] for fact in outline if fact["kind"] == "listItem"],
+            "outlineFacts": outline,
+            "comparisonGroups": groups,
+            "table": [],
+            "code": [],
+            "codeLanguage": None,
+            "charCount": len(source),
+        })
+        with tempfile.TemporaryDirectory() as temp_dir:
+            module.SOURCE_MD = Path(temp_dir) / "corpus.md"
+            module.build_source_corpus(summaries)
+            corpus = module.SOURCE_MD.read_text(encoding="utf-8")
+
+        section = corpus.split("## Example: examples/comparison/deck.md", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("| Current Approach | Improved Approach |", section)
+        self.assertIn("| Documents are reviewed manually. | Draft from structured source. |", section)
+        self.assertNotIn("- Current Approach\n", section)
+
     def test_skill_evidence_deck_omits_decorative_one_line_regions_and_uses_readable_type(self) -> None:
         module = load_script("create_mdpr_vs_skill_decks", "scripts/create_mdpr_vs_skill_decks.py")
         summaries = [
