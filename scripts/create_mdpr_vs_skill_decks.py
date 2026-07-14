@@ -719,6 +719,21 @@ def wait_for_stable_export(path: Path, *, timeout_seconds: float = 10.0, settle_
     raise TimeoutError(f"PowerPoint did not finish exporting {path}")
 
 
+def normalize_visual_review_png(path: Path) -> None:
+    """Store PowerPoint review evidence as true-color PNG without pixel drift."""
+    with Image.open(path) as image:
+        if image.mode == "RGB":
+            return
+        normalized = image.convert("RGB")
+
+    temporary = path.with_name(f"{path.name}.rgb.tmp")
+    try:
+        normalized.save(temporary, format="PNG")
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600, height: int = 900) -> list[Path]:
     if output_dir.exists():
         shutil.rmtree(output_dir)
@@ -764,6 +779,7 @@ def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600,
                 if attempt == 2:
                     raise
         wait_for_stable_export(output, settle_seconds=0)
+        normalize_visual_review_png(output)
         exported.append(output)
     return exported
 

@@ -9,6 +9,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+from PIL import Image
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pptx.enum.text import MSO_ANCHOR
@@ -26,6 +27,18 @@ def load_script(name: str, relative_path: str):
     sys.modules[name] = module
     spec.loader.exec_module(module)
     return module
+
+
+def write_palette_png(path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image = Image.new("P", (1, 1))
+    image.putpalette([248, 250, 252] + [0, 0, 0] * 255)
+    image.save(path)
+
+
+def image_mode(path: Path) -> str:
+    with Image.open(path) as image:
+        return image.mode
 
 
 class ComparisonVisualContractTests(unittest.TestCase):
@@ -435,13 +448,13 @@ class ComparisonVisualContractTests(unittest.TestCase):
             def fake_run(command, **kwargs):
                 calls.append((command, kwargs))
                 path = Path(command[command.index("-OutputPath") + 1])
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_bytes(b"png")
+                write_palette_png(path)
 
             with patch.object(module.subprocess, "run", side_effect=fake_run):
                 paths = module.export_with_powerpoint(source, output)
 
             self.assertEqual(paths, [output / "slide-001.png", output / "slide-002.png"])
+            self.assertTrue(all(image_mode(path) == "RGB" for path in paths))
             self.assertEqual(len(calls), 2)
             commands = [call[0] for call in calls]
             self.assertEqual([call[call.index("-SlideIndex") + 1] for call in commands], ["1", "2"])
@@ -471,8 +484,7 @@ class ComparisonVisualContractTests(unittest.TestCase):
                 if attempts < 3:
                     raise module.subprocess.CalledProcessError(1, command, stderr="transient")
                 path = Path(command[command.index("-OutputPath") + 1])
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_bytes(b"png")
+                write_palette_png(path)
 
             with patch.object(module.subprocess, "run", side_effect=flaky_run):
                 paths = module.export_with_powerpoint(source, output)

@@ -49,7 +49,9 @@ of being repeated across sparse presentation slides.
 
 Every slide is exported through its own PowerPoint process after a layout
 stabilization delay. Preview files are cleared first, exact slide counts are
-required, and a failed or partial export cannot fall back to stale PNGs.
+required, and a failed or partial export cannot fall back to stale PNGs. Each
+accepted PowerPoint PNG is then stored as true-color RGB before visual review;
+this prevents indexed-palette viewer artifacts from becoming false findings.
 
 The current review led to these changes:
 
@@ -100,16 +102,16 @@ The current review led to these changes:
 | 22 | Pro cycle 2 correctly identified that the existing triptych fixed every short continuation item to a 2.75in-tall region. | Reuse the existing variant and font-metric measurer; compact only short text-only continuations while retaining the old center and all horizontal/source geometry. | Slide 24 keeps the same three editable source strings and 3-column topology, while its item accents shrink from 2.75in to 1.55in; 35/35 + 9/9 exports, 16pt floor, and overflow 0 remain. |
 | 23 | Pro cycle 3 found that slide 6 used three 1.45in cards for one-line pipeline nodes. The first local test incorrectly modeled them as list items, which rendered evidence exposed as a false positive. | Correct the fixture to the actual `diagram` block and `pipeline` preset, then content-size only the existing diagram region for short 2–3-node continuations. | Slide 6 keeps its editable nodes, numbering, accents, connectors, 8.60in card width, and prior center while card height falls to 0.95in; long-label controls retain 5.75in capacity and the full comparison remains 35/35 + 9/9 with report `ok:true`. |
 | 24 | Pro cycle 4 correctly saw repeated path tails in the PowerPoint export of Agenda items 10 and 13, but attributed them to shrink-autofit. | Reject the proposed `fit:none` change after inspecting slide3.xml: it already has no `normAutofit`/`spAutoFit`, each source path occurs once, and each item is one editable shape. | No no-op runtime change was made. The reproducible PowerPoint-only wrap artifact remains explicitly scoped for cycle 5, with slides 8, 26, 28, and 33 retained as unaffected controls. |
+| 25 | Pro cycle 5 proposed splitting slash paths into multiple identical text runs, but a unique-path true-color render showed that the supposed repeated suffix was an indexed-palette review-display artifact. | Reject the runtime run-segmentation change; normalize comparison PNGs atomically to RGB after each isolated PowerPoint export and add a pixel-preservation regression. | PPTX text and geometry stay unchanged; slide 3 shows items 10 and 13 once in true-color evidence; all 8 tracked previews are RGB; 35/35 + 9/9 exports, 16pt floor, invalid 0, overflow 0, and report `ok:true` remain. |
 
 ## Remaining Limitations
 
 - Content-preserving MDPR splitting can still produce low-density continuation
   slides when a source section contains only a few large semantic blocks; the
   continuation marker hierarchy is fixed, but source-preserving density remains.
-- PowerPoint can visually repeat a suffix while wrapping some long slash-delimited
-  Agenda paths even though slide XML contains the source once in one text shape
-  and has no autofit metadata. The current validators correctly avoid claiming
-  source duplication, but the rendered wrap artifact still needs a proven fix.
+- Visual-review tools may cache an earlier image at the same path. Review loops
+  should use freshly generated evidence or a content-unique path in addition to
+  the RGB normalization performed by this comparison pipeline.
 - Structural card accents and data separators remain when they communicate a
   real grouping; the rule removes only isolated or title-repeating lines.
 - Template master/theme OOXML can be preserved, but this comparison does not
