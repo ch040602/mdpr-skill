@@ -518,16 +518,21 @@ def add_actual_mdpr_run_slide(prs: Presentation, summaries: list[dict[str, Any]]
     )
 
 
+def source_family_groups(summaries: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    return {
+        "Docs": [s for s in summaries if s["path"].startswith("docs/") and "/adr/" not in s["path"]],
+        "Examples": [s for s in summaries if s["path"].startswith("examples/")],
+        "Root": [s for s in summaries if not s["path"].startswith(("docs/", "examples/"))],
+        "ADR": [s for s in summaries if "/adr/" in s["path"]],
+    }
+
+
 def add_source_coverage_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
     add_title(slide, "The same Markdown corpus grounds both sides")
-    groups = [
-        ("Docs", [s for s in summaries if s["path"].startswith("docs/") and "/adr/" not in s["path"]]),
-        ("Examples", [s for s in summaries if s["path"].startswith("examples/")]),
-        ("Root", [s for s in summaries if not s["path"].startswith(("docs/", "examples/"))]),
-        ("ADR", [s for s in summaries if "/adr/" in s["path"]]),
-    ]
+    family_groups = source_family_groups(summaries)
+    groups = [(name, family_groups[name]) for name in ("Docs", "Examples", "Root", "ADR")]
     for i, (name, items) in enumerate(groups):
         x = 0.72 + i * 3.05
         add_shape(slide, f"group_{i}_card", MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE, x, 1.48, 2.65, 4.75, P.card, P.line)
@@ -616,11 +621,13 @@ def add_chart_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
     add_title(slide, "Corpus shape is evidence, not a second renderer")
-    docs = [s for s in summaries if s["path"].startswith("docs/")]
-    examples = [s for s in summaries if s["path"].startswith("examples/")]
-    root = [s for s in summaries if not s["path"].startswith(("docs/", "examples/"))]
+    family_groups = source_family_groups(summaries)
+    docs = family_groups["Docs"] + family_groups["ADR"]
+    examples = family_groups["Examples"]
+    root = family_groups["Root"]
+    docs_label = "Docs + ADR" if family_groups["ADR"] else "Docs"
     data = CategoryChartData()
-    data.categories = ["Docs", "Examples", "Root"]
+    data.categories = [docs_label, "Examples", "Root"]
     data.add_series("Headings", (sum(s["headingCount"] for s in docs), sum(s["headingCount"] for s in examples), sum(s["headingCount"] for s in root)))
     chart_frame = slide.shapes.add_chart(XL_CHART_TYPE.COLUMN_CLUSTERED, Inches(0.92), Inches(1.75), Inches(5.35), Inches(3.4), data)
     chart_frame.name = "native_heading_chart"
@@ -630,7 +637,7 @@ def add_chart_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
     chart.value_axis.tick_labels.font.size = Pt(16)
     chart.category_axis.tick_labels.font.size = Pt(16)
     table = slide.shapes.add_table(4, 4, Inches(6.85), Inches(1.82), Inches(5.15), Inches(3.05)).table
-    rows = [["Group", "Files", "Headings", "Chars"], ["Docs", str(len(docs)), str(sum(s["headingCount"] for s in docs)), f"{sum(s['charCount'] for s in docs):,}"], ["Examples", str(len(examples)), str(sum(s["headingCount"] for s in examples)), f"{sum(s['charCount'] for s in examples):,}"], ["Root", str(len(root)), str(sum(s["headingCount"] for s in root)), f"{sum(s['charCount'] for s in root):,}"]]
+    rows = [["Group", "Files", "Headings", "Chars"], [docs_label, str(len(docs)), str(sum(s["headingCount"] for s in docs)), f"{sum(s['charCount'] for s in docs):,}"], ["Examples", str(len(examples)), str(sum(s["headingCount"] for s in examples)), f"{sum(s['charCount'] for s in examples):,}"], ["Root", str(len(root)), str(sum(s["headingCount"] for s in root)), f"{sum(s['charCount'] for s in root):,}"]]
     for r, row in enumerate(rows):
         for c, value in enumerate(row):
             cell = table.cell(r, c)

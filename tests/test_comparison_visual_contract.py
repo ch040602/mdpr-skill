@@ -381,6 +381,36 @@ class ComparisonVisualContractTests(unittest.TestCase):
         self.assertEqual(len(skill_colors), 1)
         self.assertNotEqual(mdpr_colors, skill_colors)
 
+    def test_corpus_chart_names_its_docs_and_adr_aggregate(self) -> None:
+        module = load_script("create_mdpr_vs_skill_corpus_groups", "scripts/create_mdpr_vs_skill_decks.py")
+        summaries = [
+            {"path": "docs/guide.md", "headingCount": 2, "charCount": 20},
+            {"path": "docs/adr/0001-contract.md", "headingCount": 3, "charCount": 30},
+            {"path": "examples/basic/deck.md", "headingCount": 4, "charCount": 40},
+            {"path": "README.md", "headingCount": 5, "charCount": 50},
+        ]
+        deck = Presentation()
+        module.add_source_coverage_slide(deck, summaries)
+        module.add_chart_slide(deck, summaries)
+
+        coverage = {shape.name: shape for shape in deck.slides[0].shapes}
+        self.assertEqual(coverage["group_0_label"].text, "Docs")
+        self.assertEqual(coverage["group_0_num"].text, "1")
+        self.assertEqual(coverage["group_3_label"].text, "ADR")
+        self.assertEqual(coverage["group_3_num"].text, "1")
+
+        chart_slide = deck.slides[1]
+        chart = next(shape.chart for shape in chart_slide.shapes if shape.has_chart)
+        table = next(shape.table for shape in chart_slide.shapes if shape.has_table)
+        self.assertEqual([category.label for category in chart.plots[0].categories], ["Docs + ADR", "Examples", "Root"])
+        self.assertEqual([cell.text for cell in table.rows[1].cells], ["Docs + ADR", "2", "5", "50"])
+
+        no_adr = [summary for summary in summaries if "/adr/" not in summary["path"]]
+        control = Presentation()
+        module.add_chart_slide(control, no_adr)
+        control_chart = next(shape.chart for shape in control.slides[0].shapes if shape.has_chart)
+        self.assertEqual([category.label for category in control_chart.plots[0].categories][0], "Docs")
+
     def test_actual_mdpr_neutral_inventory_has_no_comparison_rules_or_blank_band(self) -> None:
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
         slide = deck.slides[20]

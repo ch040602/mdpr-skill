@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `c3a3033` |
+| MDPR commit | `6f26467` |
 | Markdown files | 21 |
 | Headings | 185 |
-| Source characters | 97,847 |
+| Source characters | 97,905 |
 | MDPR baseline slides | 35 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |
@@ -106,6 +106,8 @@ The current review led to these changes:
 | 26 | Follow-up Pro cycle 1 found that slide 4 gave its short `Area` labels the same one-third width as the two evidence columns, wasting space and increasing evidence wrapping. | For eligible three-column comparison tables only, measure short one-line body labels, clamp the first column to at least 1.35in and at most 24%, and split the remainder equally; preserve equal widths for long-label controls. | Slide 4 changes from 3.733/3.733/3.733in to 1.350/4.925/4.925in, keeps every source cell once as a native editable table, and passes fresh RGB visual review; 35/35 + 9/9 exports, 16pt floor, invalid 0, overflow 0, and report `ok:true` remain. |
 | 27 | Follow-up Pro cycle 2 found no new defect in the current attached evidence after inspecting MDPR slides 1–4 and mdpr-skill slide 4. | Accept `NO_ACTION`: do not turn consistent Agenda alignment or table tracking into a subjective gate without a failing negative control, and do not repeat completed wrapping, ordinal, column-width, or RGB work. | No runtime or artifact change was justified; the push records the exact Pro session and retains the validated 35/35 + 9/9, 16pt, invalid 0, overflow 0 baseline. |
 | 28 | Follow-up Pro cycle 3 found a 11.2×0.08in blue bar below slide 15's title with no source or content anchor; local OOXML traced it to the separate `body` branch of `addRegionAccents`, not the already-removed generic title rule. | Restrict automatic region accents to semantic `item` regions. Do not add a wide-line validator heuristic; preserve pipeline, list-item, table, code-surface, comparison, and key-message boundaries through their existing paths. | The exact slide 15 regression changes red→green, item-accent negative control retains all three triptych accents, and fresh unique-path RGB exports show only the three unassigned body title bands on slides 11, 14, and 15 removed; 35/35 + 9/9 exports, 16pt floor, invalid 0, overflow 0, and report `ok:true` remain. |
+| 29 | Follow-up Pro cycle 4 found that horizontal and elbow-final pipeline connectors lost their visible direction markers while vertical terminals remained visible. | Verify the target markers already exist, then split z-order only: nonterminal segments behind node surfaces, terminal segments above surfaces and below decorations, badges, and text. | Slides 5 and 8 retain route points, node geometry, labels, and shape counts while fresh PowerPoint RGB exports show every right-, left-, up-, and down-facing arrowhead without card-text intrusion; renderer 62/62 and the full workspace pass. |
+| 30 | Follow-up Pro cycle 5 found that skill slide 3 separated 13 Docs and 1 ADR while slide 8 silently labelled the same 14-file aggregate as Docs. | Reuse one source-family grouping helper and conditionally label the existing three-category slide-8 aggregate `Docs + ADR`; keep slide 3's separate cards and every numeric value unchanged. | Fresh PowerPoint RGB evidence shows `Docs + ADR` once on the native chart axis and once in the editable table, slide 3 remains 13 Docs + 1 ADR, and the regenerated comparison passes 35/35 + 9/9, 16pt floor, invalid 0, overflow 0, report `ok:true`. |
 
 ## Remaining Limitations
 
