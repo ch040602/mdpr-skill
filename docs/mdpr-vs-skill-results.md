@@ -99,12 +99,17 @@ The current review led to these changes:
 | 21 | Pro cycle 1 assumed slide 24 still used stacked full-width strips. | Reject the duplicate row proposal after inspecting the actual PowerPoint export; narrow the next review to triptych height and whitespace balance. | Slide 24 already has an open horizontal triptych, ordered editable source text, and no card surface; no runtime change was justified. |
 | 22 | Pro cycle 2 correctly identified that the existing triptych fixed every short continuation item to a 2.75in-tall region. | Reuse the existing variant and font-metric measurer; compact only short text-only continuations while retaining the old center and all horizontal/source geometry. | Slide 24 keeps the same three editable source strings and 3-column topology, while its item accents shrink from 2.75in to 1.55in; 35/35 + 9/9 exports, 16pt floor, and overflow 0 remain. |
 | 23 | Pro cycle 3 found that slide 6 used three 1.45in cards for one-line pipeline nodes. The first local test incorrectly modeled them as list items, which rendered evidence exposed as a false positive. | Correct the fixture to the actual `diagram` block and `pipeline` preset, then content-size only the existing diagram region for short 2–3-node continuations. | Slide 6 keeps its editable nodes, numbering, accents, connectors, 8.60in card width, and prior center while card height falls to 0.95in; long-label controls retain 5.75in capacity and the full comparison remains 35/35 + 9/9 with report `ok:true`. |
+| 24 | Pro cycle 4 correctly saw repeated path tails in the PowerPoint export of Agenda items 10 and 13, but attributed them to shrink-autofit. | Reject the proposed `fit:none` change after inspecting slide3.xml: it already has no `normAutofit`/`spAutoFit`, each source path occurs once, and each item is one editable shape. | No no-op runtime change was made. The reproducible PowerPoint-only wrap artifact remains explicitly scoped for cycle 5, with slides 8, 26, 28, and 33 retained as unaffected controls. |
 
 ## Remaining Limitations
 
 - Content-preserving MDPR splitting can still produce low-density continuation
   slides when a source section contains only a few large semantic blocks; the
   continuation marker hierarchy is fixed, but source-preserving density remains.
+- PowerPoint can visually repeat a suffix while wrapping some long slash-delimited
+  Agenda paths even though slide XML contains the source once in one text shape
+  and has no autofit metadata. The current validators correctly avoid claiming
+  source duplication, but the rendered wrap artifact still needs a proven fix.
 - Structural card accents and data separators remain when they communicate a
   real grouping; the rule removes only isolated or title-repeating lines.
 - Template master/theme OOXML can be preserved, but this comparison does not
