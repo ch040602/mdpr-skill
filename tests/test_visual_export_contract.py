@@ -23,6 +23,16 @@ def load_comparison_script():
 
 
 class VisualExportContractTests(unittest.TestCase):
+    def test_comparison_export_rejects_a_concurrent_writer_for_the_same_artifacts(self) -> None:
+        comparison = load_comparison_script()
+        with tempfile.TemporaryDirectory() as tmp:
+            lock_path = Path(tmp) / "comparison.lock"
+            with comparison.exclusive_run_lock(lock_path):
+                with self.assertRaisesRegex(RuntimeError, "already running"):
+                    with comparison.exclusive_run_lock(lock_path):
+                        self.fail("a second writer must not enter the comparison artifact directory")
+            self.assertFalse(lock_path.exists())
+
     def test_palette_powerpoint_png_is_normalized_to_true_color_without_pixel_drift(self) -> None:
         comparison = load_comparison_script()
         with tempfile.TemporaryDirectory() as tmp:

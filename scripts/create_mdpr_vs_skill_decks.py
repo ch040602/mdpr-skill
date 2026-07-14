@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import time
 import unicodedata
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -879,6 +880,40 @@ def normalize_visual_review_png(path: Path) -> None:
         temporary.unlink(missing_ok=True)
 
 
+@contextmanager
+def exclusive_run_lock(path: Path):
+    """Prevent concurrent writers from mutating the same comparison artifacts."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle = path.open("a+b")
+    if path.stat().st_size == 0:
+        handle.write(b"0")
+        handle.flush()
+    handle.seek(0)
+    try:
+        if os.name == "nt":
+            import msvcrt
+            msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError as error:
+        handle.close()
+        raise RuntimeError(f"Comparison export is already running for {path.parent}") from error
+
+    try:
+        yield
+    finally:
+        handle.seek(0)
+        if os.name == "nt":
+            import msvcrt
+            msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        handle.close()
+        path.unlink(missing_ok=True)
+
+
 def export_with_powerpoint(pptx_path: Path, output_dir: Path, width: int = 1600, height: int = 900) -> list[Path]:
     if output_dir.exists():
         shutil.rmtree(output_dir)
@@ -1009,7 +1044,7 @@ def git_commit(repo: Path) -> str | None:
     return result.stdout.strip() or None if result.returncode == 0 else None
 
 
-def main() -> None:
+def run_comparison() -> None:
     if not MDPR.is_dir():
         raise FileNotFoundError("MDPR checkout is missing. Run npm run install:mdpr first.")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -1083,6 +1118,11 @@ def main() -> None:
     if not report["ok"]:
         raise SystemExit(json.dumps(report, indent=2, ensure_ascii=False))
     print(json.dumps(report, indent=2, ensure_ascii=False))
+
+
+def main() -> None:
+    with exclusive_run_lock(OUT / ".comparison-export.lock"):
+        run_comparison()
 
 
 if __name__ == "__main__":
