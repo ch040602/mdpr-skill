@@ -47,7 +47,7 @@
         ],
         [
           "Decorative lines",
-          "Built-in presets omit automatic title underlines, TOC horizontal rules, and isolated cover-bottom rules",
+          "Built-in presets omit automatic title underlines, body title bands, TOC horizontal rules, and isolated cover-bottom rules while retaining semantic item/container accents",
           "Review evidence omits synthetic subtitles, title rules, and bottom takeaway bands unless source content requires them"
         ]
       ],
@@ -59,7 +59,7 @@
         "  -> MDPR deterministic parsing, splitting, layout, validation",
         "  -> editable PPTX / HTML / PDF"
       ],
-      "charCount": 22042
+      "charCount": 22241
     },
     {
       "path": "docs/00-product-definition.md",

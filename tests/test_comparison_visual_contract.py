@@ -42,6 +42,32 @@ def image_mode(path: Path) -> str:
 
 
 class ComparisonVisualContractTests(unittest.TestCase):
+    def test_generated_body_list_has_no_unassigned_title_band(self) -> None:
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        slide = deck.slides[14]
+        title_bands = [
+            shape
+            for shape in slide.shapes
+            if not (getattr(shape, "text", "") or "").strip()
+            and shape.width >= Inches(9.3)
+            and shape.height <= Inches(0.12)
+            and Inches(1.3) <= shape.top <= Inches(2.0)
+        ]
+        text = [
+            shape.text
+            for shape in slide.shapes
+            if getattr(shape, "has_text_frame", False) and shape.text
+        ]
+
+        self.assertEqual(title_bands, [])
+        for value in [
+            "Rendering Rules",
+            "- Shared Renderer Contract",
+            "- PPTX Renderer",
+            "- Decoration Styles",
+        ]:
+            self.assertEqual(text.count(value), 1)
+
     def test_mdpr_comparison_table_content_weights_short_label_column(self) -> None:
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
         slide = deck.slides[3]
