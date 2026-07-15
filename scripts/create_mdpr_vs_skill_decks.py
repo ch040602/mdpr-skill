@@ -110,6 +110,20 @@ def evidence_path(path: Path) -> str:
         return str(resolved)
 
 
+def example_overview_lines(selected_examples: list[dict[str, Any]]) -> list[str]:
+    entries: list[str] = []
+    for item in selected_examples:
+        path = item["path"]
+        relative_path = path.removeprefix("examples/")
+        if path == "examples/five-methods/deck.md":
+            title = str(item["title"]).replace("|", "\\|")
+            entries.append(f"{relative_path} — {title}")
+        else:
+            entries.append(relative_path)
+    paired = [" · ".join(entries[index : index + 2]) for index in range(0, len(entries), 2)]
+    return [f"- {entry}" for entry in paired]
+
+
 def rgb(hex_value: str) -> RGBColor:
     return RGBColor(*(int(hex_value[i:i + 2], 16) for i in (0, 2, 4)))
 
@@ -379,6 +393,7 @@ def comparison_table_lines(groups: list[dict[str, Any]]) -> list[str]:
 
 
 def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
+    selected_examples = [item for item in summaries if item["path"].startswith("examples/")]
     lines = [
         "# MDPR Corpus: Runtime vs Review Evidence",
         "",
@@ -426,17 +441,10 @@ def build_source_corpus(summaries: list[dict[str, Any]]) -> None:
             lines.extend(item["code"][:6])
             lines.append("```")
         lines.append("")
-    lines.extend([
-        "## Example decks from MDPR",
-        "",
-        "- basic/deck.md covers core flow and expected effects.",
-        "- comparison/deck.md exercises before/after content.",
-        "- pipeline/deck.md exercises diagram conversion.",
-        "- diagram-arrangements/deck.md exercises multiple diagram structures.",
-        "- theme-preview decks exercise preset variety.",
-        "",
-    ])
-    for path in [item for item in summaries if item["path"].startswith("examples/")]:
+    lines.extend(["## Example decks from MDPR", ""])
+    lines.extend(example_overview_lines(selected_examples))
+    lines.append("")
+    for path in selected_examples:
         section_title = f"Example: {path['path']}"
         lines.extend([f"## {section_title}", ""])
         comparison_groups = path.get("comparisonGroups") or []

@@ -3,7 +3,7 @@
   "engine": "mdpresent",
   "source": {
     "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
-    "sha256": "0ef161d02bb7dbcd76b7ee9deea894d9d89706333595b3801348bec43b856636"
+    "sha256": "b5e314940bfb39c8bc3293b9193611b3117952eace0fdde4f53f7328ef97f000"
   },
   "config": {
     "sha256": "03de61edbf78ab3d273024363d8b3590f078d674c5a26419a52a68539929d2ec",
@@ -34,8 +34,8 @@
       "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-baseline-build\\deck.pptx",
       "format": "pptx",
       "exists": true,
-      "bytes": 622253,
-      "sha256": "b6eb5c416fa93291808668d8094b48f38a475a9a493da505c6f63084423e3564"
+      "bytes": 621542,
+      "sha256": "1958ce8eec3e7a33dd0d213195d85eca6b666352895c61b92f88dfd5c5f5d191"
     }
   ],
   "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-baseline-build\\mdpresent-design-lock.json",
@@ -921,28 +921,37 @@
     {
       "slideId": "example-decks-from-mdpr-1f8782",
       "layoutSlideId": "layout-example-decks-from-mdpr-1f8782",
-      "regionId": "left",
+      "regionId": "item-1",
       "blockIds": [
-        "block-26",
-        "block-26",
         "block-26"
       ],
-      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:left:block-26-block-26-block-26",
+      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:item-1:block-26",
       "objectKind": "native-text",
-      "role": "body",
+      "role": "item",
       "editable": true
     },
     {
       "slideId": "example-decks-from-mdpr-1f8782",
       "layoutSlideId": "layout-example-decks-from-mdpr-1f8782",
-      "regionId": "right",
+      "regionId": "item-2",
       "blockIds": [
-        "block-26",
         "block-26"
       ],
-      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:right:block-26-block-26",
+      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:item-2:block-26",
       "objectKind": "native-text",
-      "role": "body",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-decks-from-mdpr-1f8782",
+      "layoutSlideId": "layout-example-decks-from-mdpr-1f8782",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-26"
+      ],
+      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:item-3:block-26",
+      "objectKind": "native-text",
+      "role": "item",
       "editable": true
     },
     {
@@ -2057,10 +2066,10 @@
       "intraSlideSpacingDrift": 0,
       "textBackgroundLuminanceDrift": 0,
       "intraSlideSpacingCoverage": {
-        "checkedSlides": 18,
+        "checkedSlides": 19,
         "skippedSlides": 0,
-        "notApplicableSlides": 14,
-        "checkedGroups": 44,
+        "notApplicableSlides": 13,
+        "checkedGroups": 46,
         "skipped": [],
         "notApplicable": [
           {
@@ -2101,10 +2110,6 @@
           },
           {
             "slideId": "3-3-d74d2e",
-            "reason": "fewer than 3 content regions in spacing scope"
-          },
-          {
-            "slideId": "example-decks-from-mdpr-1f8782",
             "reason": "fewer than 3 content regions in spacing scope"
           },
           {
@@ -2281,7 +2286,7 @@
           "evidence": "Layout presets and visible region geometry are checked for structured composition without deck-wide topology saturation.",
           "structuredLayoutRatio": 1,
           "genericBlockySlideCount": 0,
-          "averageRegionsPerContentSlide": 3.552,
+          "averageRegionsPerContentSlide": 3.586,
           "eligibleSlideCount": 0,
           "dominantGeometry": null,
           "dominantGeometryRatio": 0,
@@ -2355,9 +2360,9 @@
     "textClipRiskCount": 0,
     "contrastFailures": 0,
     "connectorWarnings": 0,
-    "buildMs": 505,
+    "buildMs": 497,
     "outputBytes": {
-      "pptx": 622253
+      "pptx": 621542
     }
   }
 }

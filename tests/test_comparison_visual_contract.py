@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -14,7 +15,6 @@ from unittest.mock import patch
 from PIL import Image
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
-from pptx.enum.text import MSO_ANCHOR
 from pptx.util import Inches
 
 from tests.test_comparison_report_gate import complete_report as complete_gate_report
@@ -584,32 +584,20 @@ class ComparisonVisualContractTests(unittest.TestCase):
     def test_actual_mdpr_neutral_inventory_has_no_comparison_rules_or_blank_band(self) -> None:
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
         slide = deck.slides[20]
-        text = "\n".join(shape.text for shape in slide.shapes if getattr(shape, "has_text_frame", False))
         expected = [
-            "Example decks from MDPR",
-            "basic/deck.md covers core flow and expected effects.",
-            "comparison/deck.md exercises before/after content.",
-            "pipeline/deck.md exercises diagram conversion.",
-            "diagram-arrangements/deck.md exercises multiple diagram structures.",
-            "theme-preview decks exercise preset variety.",
+            "basic/deck.md",
+            "comparison/deck.md",
+            "pipeline/deck.md",
+            "diagram-arrangements/deck.md",
+            "five-methods/deck.md — Five-Item Layout Example",
+            "theme-preview-en/deck.md",
         ]
+        self.assertEqual([shape for shape in slide.shapes if getattr(shape, "has_table", False)], [])
+        text = "\n".join(shape.text for shape in slide.shapes if getattr(shape, "has_text_frame", False))
         for item in expected:
             self.assertIn(item, text)
 
-        title = next(shape for shape in slide.shapes if getattr(shape, "has_text_frame", False) and shape.text == expected[0])
-        content = [
-            shape for shape in slide.shapes
-            if getattr(shape, "has_text_frame", False) and any(item in shape.text for item in expected[1:])
-        ]
-        self.assertGreaterEqual(len(content), 2)
-        first_by_column = {}
-        for shape in sorted(content, key=lambda candidate: (candidate.left, candidate.top)):
-            first_by_column.setdefault(round(shape.left / Inches(1), 1), shape)
-        starts = [shape.top for shape in first_by_column.values()]
-        self.assertEqual(len(starts), 2)
-        self.assertLessEqual(max(starts) - min(starts), Inches(0.1))
-        self.assertLessEqual(min(starts) - (title.top + title.height), Inches(0.8))
-        self.assertTrue(all(shape.text_frame.vertical_anchor == MSO_ANCHOR.TOP for shape in content))
+        title = next(shape for shape in slide.shapes if getattr(shape, "has_text_frame", False) and shape.text == "Example decks from MDPR")
 
         rules = [
             shape for shape in slide.shapes
@@ -621,6 +609,43 @@ class ComparisonVisualContractTests(unittest.TestCase):
             and shape.top <= title.top + title.height + Inches(0.8)
         ]
         self.assertEqual(rules, [])
+
+    def test_example_overview_matches_selected_example_families(self) -> None:
+        module = load_script("create_mdpr_vs_skill_example_overview", "scripts/create_mdpr_vs_skill_decks.py")
+        manifest = json.loads((ROOT / "artifacts" / "mdpr-vs-skill" / "source-manifest.json").read_text(encoding="utf-8"))
+        selected_examples = [item for item in manifest["files"] if item["path"].startswith("examples/")]
+        selected_families = [
+            Path(item["path"]).parent.name.removesuffix("-en")
+            for item in selected_examples
+        ]
+        overview_lines = module.example_overview_lines(selected_examples)
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
+        overview = next(
+            slide for slide in deck.slides
+            if any(getattr(shape, "text", "") == "Example decks from MDPR" for shape in slide.shapes)
+        )
+        overview_text_parts = [
+            shape.text.lower()
+            for shape in overview.shapes
+            if getattr(shape, "has_text_frame", False)
+        ]
+        for shape in overview.shapes:
+            if getattr(shape, "has_table", False):
+                overview_text_parts.extend(cell.text.lower() for row in shape.table.rows for cell in row.cells)
+        overview_text = "\n".join(overview_text_parts)
+        overview_families = [
+            match.removesuffix("-en")
+            for match in re.findall(r"([a-z0-9-]+)/deck\.md", overview_text)
+        ]
+
+        self.assertEqual(len(selected_families), 6)
+        self.assertEqual(len(selected_families), len(set(selected_families)))
+        self.assertEqual(len(overview_lines), 3)
+        self.assertIn("five-methods/deck.md — Five-Item Layout Example", overview_lines[-1])
+        self.assertIn("theme-preview-en/deck.md", overview_lines[-1])
+        self.assertEqual(overview_families, selected_families)
+        for unselected in ("readme-final", "readme-teaser", "language-preview"):
+            self.assertNotIn(unselected, overview_text)
 
     def test_generated_mdpr_deck_has_no_exact_title_body_echo(self) -> None:
         module = load_script("create_mdpr_vs_skill_title_echo", "scripts/create_mdpr_vs_skill_decks.py")

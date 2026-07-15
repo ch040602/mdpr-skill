@@ -129,11 +129,9 @@ SlideIntentScoreProfile + itemCount + blockType + density
 
 ## Example decks from MDPR
 
-- basic/deck.md covers core flow and expected effects.
-- comparison/deck.md exercises before/after content.
-- pipeline/deck.md exercises diagram conversion.
-- diagram-arrangements/deck.md exercises multiple diagram structures.
-- theme-preview decks exercise preset variety.
+- basic/deck.md · comparison/deck.md
+- pipeline/deck.md · diagram-arrangements/deck.md
+- five-methods/deck.md — Five-Item Layout Example · theme-preview-en/deck.md
 
 ## Example: examples/basic/deck.md
 
