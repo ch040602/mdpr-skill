@@ -1,45 +1,42 @@
 # mdpr-skill
 
-`mdpr-skill` is a thin Codex skill companion for
-[MDPR](https://github.com/ch040602/MdPr).
+`mdpr-skill` is the optional Codex review companion for
+[MDPR](https://github.com/ch040602/MdPr). It adds semantic hints, rendered-slide
+critique, and evidence ledgers without taking ownership of final slide geometry.
 
-Turn rough Markdown decks into reviewable, visually scored presentation systems
-without letting an agent own the final slide geometry. `mdpr-skill` adds
-semantic hints, visual-review loops, codex-ppt compatibility rails, and
-comparison ledgers around MDPR. MDPR remains the deterministic presentation
-runtime.
+> **Choose MDPR to build the deck. Add `mdpr-skill` when you also want an
+> agent-assisted review.** MDPR remains the deterministic runtime and final
+> pass/fail authority.
 
-For LLM-advised high-quality output, run the skill before MDPR finalizes the
-deck. For normal Markdown-to-PPTX generation, use MDPR directly.
-
-Positioning:
-
-```text
-MDPR is the deterministic runtime. mdpr-skill is the optional agent review
-companion. The LLM can suggest; MDPR renders.
-```
-
-Star, bug reports, Markdown edge cases, and PPTX feature requests should go to
-the main MDPR repository:
-
-- MDPR: https://github.com/ch040602/MdPr
-- npm CLI: https://www.npmjs.com/package/@mdpresent/cli
-- Preview gallery: https://ch040602.github.io/MdPr/theme-preview/
-- New issue: https://github.com/ch040602/MdPr/issues/new/choose
-
-Looking for a first useful PR? Bring one real Markdown deck, one visual review
-case, or one reusable style proposal:
-
-- Add a public Markdown corpus case:
-  https://github.com/ch040602/mdpr-skill/issues/new?template=markdown_corpus.yml
-- Propose a reusable review/theme workflow:
-  https://github.com/ch040602/mdpr-skill/issues/new?template=theme_or_review_case.yml
-- Pick a bounded starter task:
-  https://github.com/ch040602/mdpr-skill/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
-- Read the contributor lanes:
-  [CONTRIBUTING.md](CONTRIBUTING.md#first-pr-lanes)
+[MDPR](https://github.com/ch040602/MdPr) ·
+[npm CLI](https://www.npmjs.com/package/@mdpresent/cli) ·
+[Preview gallery](https://ch040602.github.io/MdPr/theme-preview/) ·
+[Comparison evidence](docs/mdpr-vs-skill-results.md) ·
+[Contributing](CONTRIBUTING.md#first-pr-lanes)
 
 ![Codex presentations, MDPR, and mdpr-skill plus MDPR visual comparison](docs/assets/mdpr-mode-comparison.png)
+
+## Quick Start
+
+Build a deck with MDPR:
+
+```bash
+npm install -g @mdpresent/cli
+mdpresent build deck.md --to pptx,html --out dist --visual
+```
+
+Add the review companion from this checkout:
+
+```bash
+git clone https://github.com/ch040602/mdpr-skill.git
+cd mdpr-skill
+npm install
+node bin/mdpr-skill.js docs bootstrap --dense
+node bin/mdpr-skill.js review --manifest dist/mdpresent-manifest.json --out .mdpresent/review/review-report.json
+```
+
+The companion writes hints, findings, and evidence. It does not write final
+coordinates, colors, font sizes, z-order, or renderer objects.
 
 ## Visual Proof
 
@@ -71,7 +68,7 @@ Reproducible visual evidence and the remaining limitations are recorded in
 cross-repository schema check is stored in
 `artifacts/pro-review/mdpr-skill-runtime-sync-review-20260713.json`.
 
-Current reproducible comparison: MDPR `9358b77` renders 32 editable slides and
+Current reproducible comparison: MDPR `41a84af` renders 32 editable slides and
 the companion renders 9 evidence slides; PowerPoint exported 32/32 and 9/9,
 both decks keep a 16pt minimum, and neither has an invalid frame or named-card
 overflow. PowerPoint PNG evidence is normalized to true-color RGB before visual
@@ -202,12 +199,8 @@ messages live in [promotion/contributor-outreach-kit.md](promotion/contributor-o
 
 ## Installation
 
-Install MDPR for normal Markdown-to-PPTX usage:
-
-```bash
-npm install -g @mdpresent/cli
-mdpresent build deck.md --to pptx,html --out dist
-```
+Use the [Quick Start](#quick-start) for a normal MDPR build. The options below
+cover package and skill development setup.
 
 After the package is published to npm, install or try the optional
 `mdpr-skill` CLI without cloning this repository:

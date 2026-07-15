@@ -1,13 +1,13 @@
 {
   "schemaVersion": "mdpr-skill-runtime-sync-evidence-v2",
   "created_at": "2026-07-13T18:55:45Z",
-  "revalidated_at": "2026-07-14T13:39:58Z",
-  "provider": "local-font-license-evidence-runtime-sync-revalidation",
+  "revalidated_at": "2026-07-15T03:17:00Z",
+  "provider": "local-readme-and-runtime-sync-revalidation",
   "scope": {
     "repository": "C:/Users/hcslab_523/Documents/mdpr-skill",
     "mdprPath": "C:/Users/hcslab_523/Documents/mdpresent-spec-scaffold",
-    "mdprSkillCommitAtValidation": "ee1bed8",
-    "mdprCommitAtValidation": "9358b77",
+    "mdprSkillCommitAtValidation": "0b41ec2",
+    "mdprCommitAtValidation": "41a84af",
     "mdprWorkspaceVersion": "0.1.0",
     "mdprCorePackageVersion": "0.1.0",
     "mdprValidationPackageVersion": "0.1.0"

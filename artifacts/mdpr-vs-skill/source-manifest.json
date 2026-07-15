@@ -4,24 +4,24 @@
     {
       "path": "README.md",
       "title": "mdpresent",
-      "headingCount": 14,
+      "headingCount": 15,
       "headings": [
         "mdpresent",
+        "Quick Start",
         "Visual Proof",
         "What It Does",
         "MDPR + mdpr-skill",
         "How MDPR Differs",
         "Preview Gallery",
-        "Theme Style Examples",
-        "Runtime Pipeline"
+        "Theme Style Examples"
       ],
       "bullets": [
-        "**Input**: Markdown documents.",
-        "**Intermediate model**: Presentation IR and Layout IR.",
-        "**Outputs**: editable PPTX, plus HTML and PDF.",
-        "**Runtime**: rule-based parsing, splitting, layout, validation, theme selection, and rendering.",
-        "**LLM-advised quality**: use mdpr-skill when you want agent-side semantic hints, review loops, or visual-quality advice before MDP",
-        "**Agent boundary**: mdpr-skill may pass compact semantic hints through --hints, but MDPR rejects final layout/style decisions. MDP"
+        "**PPTX first**: produces editable PowerPoint slides, then exports PNG previews for review.",
+        "**Deterministic runtime**: no API key, model call, or external LLM is required for build output.",
+        "**PDF export**: creates PPTX first, then saves that PPTX as PDF with PowerPoint on Windows or LibreOffice in CI/Linux.",
+        "**One-page teaser mode**: --pipeline-one-page keeps dense pipeline, feature, chart, and table summaries on one rendered slide.",
+        "**Markdown semantics**: parses CommonMark/GFM Markdown into an AST, then preserves headings, lists, links, emphasis, tables, HTML ",
+        "**Design grammar**: separates decoration style from color seed and derives PPT theme/chart colors from the selected harmony."
       ],
       "outlineFacts": [
         {
@@ -34,76 +34,14 @@
           "sourceIndex": 0
         },
         {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**Input**: Markdown documents.",
+          "kind": "heading",
+          "level": 2,
+          "text": "Quick Start",
           "headingPath": [
-            "mdpresent"
+            "mdpresent",
+            "Quick Start"
           ],
-          "sourceIndex": 25
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**Intermediate model**: Presentation IR and Layout IR.",
-          "headingPath": [
-            "mdpresent"
-          ],
-          "sourceIndex": 26
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**Outputs**: editable PPTX, plus HTML and PDF.",
-          "headingPath": [
-            "mdpresent"
-          ],
-          "sourceIndex": 27
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**Runtime**: rule-based parsing, splitting, layout, validation, theme selection, and rendering.",
-          "headingPath": [
-            "mdpresent"
-          ],
-          "sourceIndex": 28
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**LLM-advised quality**: use mdpr-skill when you want agent-side semantic hints, review loops, or visual-quality advice before MDP",
-          "headingPath": [
-            "mdpresent"
-          ],
-          "sourceIndex": 29
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**Agent boundary**: mdpr-skill may pass compact semantic hints through --hints, but MDPR rejects final layout/style decisions. MDP",
-          "headingPath": [
-            "mdpresent"
-          ],
-          "sourceIndex": 30
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**Install path**: install MDPR with npm install -g @mdpresent/cli; use mdpr-skill only when you want optional Codex-assisted revie",
-          "headingPath": [
-            "mdpresent"
-          ],
-          "sourceIndex": 31
-        },
-        {
-          "kind": "listItem",
-          "level": 1,
-          "text": "**README assets**: the main teaser is built from examples/readme-teaser/deck.md with --pipeline-one-page; gallery images come from",
-          "headingPath": [
-            "mdpresent"
-          ],
-          "sourceIndex": 32
+          "sourceIndex": 37
         },
         {
           "kind": "heading",
@@ -113,7 +51,7 @@
             "mdpresent",
             "Visual Proof"
           ],
-          "sourceIndex": 41
+          "sourceIndex": 56
         },
         {
           "kind": "heading",
@@ -123,7 +61,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 53
+          "sourceIndex": 68
         },
         {
           "kind": "listItem",
@@ -133,7 +71,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 55
+          "sourceIndex": 70
         },
         {
           "kind": "listItem",
@@ -143,7 +81,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 56
+          "sourceIndex": 71
         },
         {
           "kind": "listItem",
@@ -153,7 +91,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 57
+          "sourceIndex": 72
         },
         {
           "kind": "listItem",
@@ -163,7 +101,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 58
+          "sourceIndex": 73
         },
         {
           "kind": "listItem",
@@ -173,7 +111,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 59
+          "sourceIndex": 74
         },
         {
           "kind": "listItem",
@@ -183,7 +121,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 60
+          "sourceIndex": 75
         },
         {
           "kind": "listItem",
@@ -193,7 +131,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 61
+          "sourceIndex": 76
         },
         {
           "kind": "listItem",
@@ -203,7 +141,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 62
+          "sourceIndex": 77
         },
         {
           "kind": "listItem",
@@ -213,7 +151,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 63
+          "sourceIndex": 78
         },
         {
           "kind": "listItem",
@@ -223,7 +161,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 67
+          "sourceIndex": 82
         },
         {
           "kind": "listItem",
@@ -233,7 +171,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 70
+          "sourceIndex": 85
         },
         {
           "kind": "listItem",
@@ -243,7 +181,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 72
+          "sourceIndex": 87
         },
         {
           "kind": "listItem",
@@ -253,7 +191,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 74
+          "sourceIndex": 89
         },
         {
           "kind": "listItem",
@@ -263,7 +201,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 76
+          "sourceIndex": 91
         },
         {
           "kind": "listItem",
@@ -273,7 +211,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 78
+          "sourceIndex": 93
         },
         {
           "kind": "listItem",
@@ -283,7 +221,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 80
+          "sourceIndex": 95
         },
         {
           "kind": "listItem",
@@ -293,7 +231,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 85
+          "sourceIndex": 100
         },
         {
           "kind": "listItem",
@@ -303,7 +241,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 87
+          "sourceIndex": 102
         },
         {
           "kind": "listItem",
@@ -313,7 +251,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 90
+          "sourceIndex": 105
         },
         {
           "kind": "listItem",
@@ -323,7 +261,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 93
+          "sourceIndex": 108
         },
         {
           "kind": "listItem",
@@ -333,7 +271,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 95
+          "sourceIndex": 110
         },
         {
           "kind": "listItem",
@@ -343,7 +281,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 98
+          "sourceIndex": 113
         },
         {
           "kind": "listItem",
@@ -353,7 +291,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 101
+          "sourceIndex": 116
         },
         {
           "kind": "listItem",
@@ -363,7 +301,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 104
+          "sourceIndex": 119
         },
         {
           "kind": "listItem",
@@ -373,7 +311,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 107
+          "sourceIndex": 122
         },
         {
           "kind": "listItem",
@@ -383,7 +321,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 110
+          "sourceIndex": 125
         },
         {
           "kind": "listItem",
@@ -393,7 +331,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 113
+          "sourceIndex": 128
         },
         {
           "kind": "listItem",
@@ -403,7 +341,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 117
+          "sourceIndex": 132
         },
         {
           "kind": "listItem",
@@ -413,7 +351,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 122
+          "sourceIndex": 137
         },
         {
           "kind": "listItem",
@@ -423,7 +361,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 129
+          "sourceIndex": 144
         },
         {
           "kind": "listItem",
@@ -433,7 +371,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 130
+          "sourceIndex": 145
         },
         {
           "kind": "listItem",
@@ -443,7 +381,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 131
+          "sourceIndex": 146
         },
         {
           "kind": "listItem",
@@ -453,7 +391,7 @@
             "mdpresent",
             "What It Does"
           ],
-          "sourceIndex": 132
+          "sourceIndex": 147
         },
         {
           "kind": "heading",
@@ -463,7 +401,7 @@
             "mdpresent",
             "MDPR + mdpr-skill"
           ],
-          "sourceIndex": 134
+          "sourceIndex": 149
         },
         {
           "kind": "heading",
@@ -473,7 +411,7 @@
             "mdpresent",
             "How MDPR Differs"
           ],
-          "sourceIndex": 169
+          "sourceIndex": 184
         },
         {
           "kind": "heading",
@@ -483,7 +421,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 183
+          "sourceIndex": 198
         },
         {
           "kind": "listItem",
@@ -493,7 +431,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 185
+          "sourceIndex": 200
         },
         {
           "kind": "listItem",
@@ -503,7 +441,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 186
+          "sourceIndex": 201
         },
         {
           "kind": "listItem",
@@ -513,7 +451,7 @@
             "mdpresent",
             "Preview Gallery"
           ],
-          "sourceIndex": 187
+          "sourceIndex": 202
         },
         {
           "kind": "heading",
@@ -523,7 +461,7 @@
             "mdpresent",
             "Theme Style Examples"
           ],
-          "sourceIndex": 206
+          "sourceIndex": 221
         },
         {
           "kind": "heading",
@@ -533,7 +471,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 222
+          "sourceIndex": 237
         },
         {
           "kind": "listItem",
@@ -543,7 +481,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 224
+          "sourceIndex": 239
         },
         {
           "kind": "listItem",
@@ -553,7 +491,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 225
+          "sourceIndex": 240
         },
         {
           "kind": "listItem",
@@ -563,7 +501,7 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 226
+          "sourceIndex": 241
         },
         {
           "kind": "listItem",
@@ -573,17 +511,17 @@
             "mdpresent",
             "Runtime Pipeline"
           ],
-          "sourceIndex": 227
+          "sourceIndex": 242
         },
         {
           "kind": "heading",
           "level": 2,
-          "text": "Quick Usage",
+          "text": "Command Reference",
           "headingPath": [
             "mdpresent",
-            "Quick Usage"
+            "Command Reference"
           ],
-          "sourceIndex": 246
+          "sourceIndex": 261
         },
         {
           "kind": "heading",
@@ -593,7 +531,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 287
+          "sourceIndex": 302
         },
         {
           "kind": "listItem",
@@ -603,7 +541,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 289
+          "sourceIndex": 304
         },
         {
           "kind": "listItem",
@@ -613,7 +551,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 290
+          "sourceIndex": 305
         },
         {
           "kind": "listItem",
@@ -623,7 +561,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 291
+          "sourceIndex": 306
         },
         {
           "kind": "listItem",
@@ -633,7 +571,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 292
+          "sourceIndex": 307
         },
         {
           "kind": "listItem",
@@ -643,7 +581,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 293
+          "sourceIndex": 308
         },
         {
           "kind": "listItem",
@@ -653,7 +591,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 294
+          "sourceIndex": 309
         },
         {
           "kind": "listItem",
@@ -663,7 +601,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 295
+          "sourceIndex": 310
         },
         {
           "kind": "listItem",
@@ -673,7 +611,7 @@
             "mdpresent",
             "Design Controls"
           ],
-          "sourceIndex": 296
+          "sourceIndex": 311
         },
         {
           "kind": "heading",
@@ -683,7 +621,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 307
+          "sourceIndex": 322
         },
         {
           "kind": "listItem",
@@ -693,7 +631,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 309
+          "sourceIndex": 324
         },
         {
           "kind": "listItem",
@@ -703,7 +641,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 310
+          "sourceIndex": 325
         },
         {
           "kind": "listItem",
@@ -713,7 +651,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 311
+          "sourceIndex": 326
         },
         {
           "kind": "listItem",
@@ -723,7 +661,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 312
+          "sourceIndex": 327
         },
         {
           "kind": "listItem",
@@ -733,7 +671,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 313
+          "sourceIndex": 328
         },
         {
           "kind": "listItem",
@@ -743,7 +681,7 @@
             "mdpresent",
             "Coherence Rules"
           ],
-          "sourceIndex": 314
+          "sourceIndex": 329
         },
         {
           "kind": "heading",
@@ -753,7 +691,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 316
+          "sourceIndex": 331
         },
         {
           "kind": "listItem",
@@ -763,7 +701,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 328
+          "sourceIndex": 343
         },
         {
           "kind": "listItem",
@@ -773,7 +711,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 329
+          "sourceIndex": 344
         },
         {
           "kind": "listItem",
@@ -783,7 +721,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 330
+          "sourceIndex": 345
         },
         {
           "kind": "listItem",
@@ -793,7 +731,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 331
+          "sourceIndex": 346
         },
         {
           "kind": "listItem",
@@ -803,7 +741,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 332
+          "sourceIndex": 347
         },
         {
           "kind": "listItem",
@@ -813,7 +751,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 333
+          "sourceIndex": 348
         },
         {
           "kind": "listItem",
@@ -823,7 +761,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 334
+          "sourceIndex": 349
         },
         {
           "kind": "listItem",
@@ -833,7 +771,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 335
+          "sourceIndex": 350
         },
         {
           "kind": "listItem",
@@ -843,7 +781,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 336
+          "sourceIndex": 351
         },
         {
           "kind": "listItem",
@@ -853,7 +791,7 @@
             "mdpresent",
             "Project Map"
           ],
-          "sourceIndex": 337
+          "sourceIndex": 352
         },
         {
           "kind": "heading",
@@ -863,7 +801,7 @@
             "mdpresent",
             "GitHub Actions"
           ],
-          "sourceIndex": 347
+          "sourceIndex": 362
         },
         {
           "kind": "listItem",
@@ -873,7 +811,7 @@
             "mdpresent",
             "GitHub Actions"
           ],
-          "sourceIndex": 349
+          "sourceIndex": 364
         },
         {
           "kind": "listItem",
@@ -883,7 +821,7 @@
             "mdpresent",
             "GitHub Actions"
           ],
-          "sourceIndex": 350
+          "sourceIndex": 365
         },
         {
           "kind": "heading",
@@ -893,7 +831,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 357
+          "sourceIndex": 372
         },
         {
           "kind": "listItem",
@@ -903,7 +841,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 359
+          "sourceIndex": 374
         },
         {
           "kind": "listItem",
@@ -913,7 +851,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 360
+          "sourceIndex": 375
         },
         {
           "kind": "listItem",
@@ -923,7 +861,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 361
+          "sourceIndex": 376
         },
         {
           "kind": "listItem",
@@ -933,7 +871,7 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 362
+          "sourceIndex": 377
         },
         {
           "kind": "listItem",
@@ -943,47 +881,40 @@
             "mdpresent",
             "Acknowledgements"
           ],
-          "sourceIndex": 363
+          "sourceIndex": 378
         }
       ],
       "comparisonGroups": [],
       "hasTable": true,
       "table": [
         [
-          "Decision boundary",
-          "MDPR",
-          "mdpr-skill"
+          "",
+          "MDPR"
         ],
         [
-          "Use it for",
-          "Deterministic Markdown parsing, layout, validation, and editable PPTX/HTML/PDF output",
-          "Optional Codex hints, review findings, and comparison evidence before or after an MDPR build"
+          "Input",
+          "Markdown"
         ],
         [
-          "Typography authority",
-          "Resolves font families, point sizes, region floors, and editable text runs; captions default to 18pt, and generated code, captions, list badges, and diagram badges have no sub-16pt runtime exception",
-          "May suggest shorter copy or a content split, but must not prescribe an exact family, point size, line break, or text-box geometry"
+          "Output",
+          "Editable PPTX, HTML, and PDF"
         ],
         [
-          "Strict visual failure",
-          "Required fontHierarchy checks every active Layout IR region against 16pt; an explicit smaller override stays visible as MDPR_POLISH_GATE_FAILED",
-          "Mirrors that manifest failure with evidence and must not recompute, soften, or override it"
+          "Runtime",
+          "Rule-based parsing, splitting, layout, validation, theme binding, and rendering"
         ],
         [
-          "Decorative lines",
-          "Built-in presets omit automatic title underlines, body title bands, TOC horizontal rules, and isolated cover-bottom rules while retaining semantic item/container accents",
-          "Review evidence omits synthetic subtitles, title rules, and bottom takeaway bands unless source content requires them"
+          "Optional review",
+          "mdpr-skill provides semantic hints and evidence without owning final layout"
         ]
       ],
       "hasCode": true,
-      "codeLanguage": "text",
+      "codeLanguage": "bash",
       "code": [
-        "Markdown",
-        "  -> optional mdpr-skill review hints",
-        "  -> MDPR deterministic parsing, splitting, layout, validation",
-        "  -> editable PPTX / HTML / PDF"
+        "npm install -g @mdpresent/cli",
+        "mdpresent build deck.md --to pptx,pdf,html --out dist --design executive --visual"
       ],
-      "charCount": 24032
+      "charCount": 23757
     },
     {
       "path": "docs/00-product-definition.md",

@@ -23,10 +23,10 @@ npm run compare:mdpr-skill
 
 | Evidence | Current value |
 | --- | ---: |
-| MDPR commit | `9358b77` |
+| MDPR commit | `41a84af` |
 | Markdown files | 21 |
-| Headings | 185 |
-| Source characters | 104,627 |
+| Headings | 186 |
+| Source characters | 104,352 |
 | MDPR baseline slides | 32 |
 | Review evidence slides | 9 |
 | Minimum generated font in each PPTX | 16pt |

@@ -5,12 +5,12 @@
   "skillPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-result.pptx",
   "skillFromActualMdprRunPptx": "artifacts\\mdpr-vs-skill\\mdpr-skill-from-actual-md-run.pptx",
   "sourceFileCount": 21,
-  "sourceHeadingCount": 185,
-  "sourceCharCount": 104627,
+  "sourceHeadingCount": 186,
+  "sourceCharCount": 104352,
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprSourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
-    "mdprCommit": "9358b77bf8e0f171650d9e342f165614e0980db2",
+    "mdprCommit": "41a84af7b71b351918598ec1434792e19bd99822",
     "mdprCommand": "node C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold\\packages\\cli\\dist\\index.js build artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {

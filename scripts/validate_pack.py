@@ -141,7 +141,7 @@ REQUIRED_FILES = [
 REQUIRED_TEXT = {
     "README.md": [
         "https://github.com/ch040602/mdpr",
-        "thin Codex skill companion",
+        "optional Codex review companion",
         "Difference from MDPR",
         "Installation",
         "npm install",
