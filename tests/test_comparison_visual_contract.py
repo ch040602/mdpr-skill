@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import importlib.util
 import io
+import json
 import sys
 import tempfile
 import unittest
@@ -14,6 +16,8 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 from pptx.enum.text import MSO_ANCHOR
 from pptx.util import Inches
+
+from tests.test_comparison_report_gate import complete_report as complete_gate_report
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,6 +46,52 @@ def image_mode(path: Path) -> str:
 
 
 class ComparisonVisualContractTests(unittest.TestCase):
+    def test_runtime_design_evidence_is_copied_and_bounded_from_mdpr_manifest(self) -> None:
+        module = load_script("create_mdpr_vs_skill_runtime_evidence", "scripts/create_mdpr_vs_skill_decks.py")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            source = root / "build" / "mdpresent-manifest.json"
+            stable = root / "artifacts" / "mdpr-runtime-manifest.json"
+            source.parent.mkdir(parents=True)
+            manifest = {
+                "engine": "mdpresent",
+                "slideCount": 12,
+                "validation": {
+                    "polish": {
+                        "checked": True,
+                        "requiredFailureCount": 0,
+                        "chapters": {
+                            "layoutComposition": {
+                                "required": True,
+                                "passed": True,
+                                "eligibleSlideCount": 10,
+                                "dominantGeometryRatio": 0.4,
+                            },
+                        },
+                    },
+                    "coherence": {
+                        "checked": True,
+                        "checks": {
+                            "claimlessEvidenceSlides": True,
+                            "detachedCaptions": True,
+                            "orphanTables": True,
+                            "lowObjectCoverage": True,
+                        },
+                        "diagnostics": [{"level": "warning", "code": "EXAMPLE"}],
+                    },
+                },
+            }
+            source.write_text(json.dumps(manifest), encoding="utf-8")
+
+            evidence = module.capture_runtime_design_evidence(source, stable, "c" * 40, artifact_root=root)
+
+            self.assertEqual(stable.read_bytes(), source.read_bytes())
+            self.assertEqual(evidence["manifestPath"], "artifacts/mdpr-runtime-manifest.json")
+            self.assertEqual(evidence["manifestSha256"], hashlib.sha256(stable.read_bytes()).hexdigest())
+            self.assertEqual(evidence["polish"]["layoutComposition"]["dominantGeometryRatio"], 0.4)
+            self.assertEqual(evidence["coherence"]["errorCount"], 0)
+            self.assertNotIn("diagnostics", evidence["coherence"])
+
     def test_generated_body_list_has_no_unassigned_title_band(self) -> None:
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")
         slide = deck.slides[14]
@@ -665,69 +715,37 @@ class ComparisonVisualContractTests(unittest.TestCase):
 
     def test_comparison_gate_rejects_failed_or_incomplete_current_exports(self) -> None:
         module = load_script("create_mdpr_vs_skill_report_gate", "scripts/create_mdpr_vs_skill_decks.py")
-        complete = {
-            "sourceFileCount": 20,
-            "mdprBaselineValidation": {"slides": 10, "minFontSizePt": 16},
-            "skillValidation": {"slides": 9, "minFontSizePt": 16},
-            "powerPointExport": {
-                "ok": True,
-                "baselineSlideCount": 10,
-                "skillSlideCount": 9,
-                "baselineValidation": {"invalidSlideCount": 0},
-                "skillValidation": {"invalidSlideCount": 0},
-            },
-            "baselineRenderPreview": [{"hasContent": True}] * 4,
-            "skillRenderPreview": [{"hasContent": True}] * 4,
-        }
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            complete = complete_gate_report(root)
 
-        self.assertTrue(module.comparison_report_ok(complete, actual_run_exists=True))
-        complete["powerPointExport"]["ok"] = False
-        self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
-        complete["powerPointExport"]["ok"] = True
-        complete["baselineRenderPreview"] = complete["baselineRenderPreview"][:3]
-        self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
+            self.assertTrue(module.comparison_report_ok(complete, actual_run_exists=True, artifact_root=root))
+            complete["powerPointExport"]["ok"] = False
+            self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True, artifact_root=root))
+            complete["powerPointExport"]["ok"] = True
+            complete["baselineRenderPreview"] = complete["baselineRenderPreview"][:3]
+            self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True, artifact_root=root))
 
     def test_comparison_gate_rejects_sub_floor_typography_in_either_deck(self) -> None:
         module = load_script("create_mdpr_vs_skill_font_gate", "scripts/create_mdpr_vs_skill_decks.py")
-        complete = {
-            "sourceFileCount": 20,
-            "mdprBaselineValidation": {"slides": 10, "minFontSizePt": 16},
-            "skillValidation": {"slides": 9, "minFontSizePt": 16},
-            "powerPointExport": {
-                "ok": True,
-                "baselineSlideCount": 10,
-                "skillSlideCount": 9,
-                "baselineValidation": {"invalidSlideCount": 0},
-                "skillValidation": {"invalidSlideCount": 0},
-            },
-            "baselineRenderPreview": [{"hasContent": True}] * 4,
-            "skillRenderPreview": [{"hasContent": True}] * 4,
-        }
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            complete = complete_gate_report(root)
 
-        complete["mdprBaselineValidation"]["minFontSizePt"] = 15.9
-        self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
-        complete["mdprBaselineValidation"]["minFontSizePt"] = 16
-        complete["skillValidation"]["minFontSizePt"] = 15.9
-        self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
+            complete["mdprBaselineValidation"]["minFontSizePt"] = 15.9
+            self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True, artifact_root=root))
+            complete["mdprBaselineValidation"]["minFontSizePt"] = 16
+            complete["skillValidation"]["minFontSizePt"] = 15.9
+            self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True, artifact_root=root))
 
     def test_comparison_gate_rejects_named_card_content_beyond_its_container(self) -> None:
         module = load_script("create_mdpr_vs_skill_named_container_gate", "scripts/create_mdpr_vs_skill_decks.py")
-        complete = {
-            "sourceFileCount": 20,
-            "mdprBaselineValidation": {"slides": 10, "minFontSizePt": 16},
-            "skillValidation": {"slides": 9, "minFontSizePt": 16, "namedContainerOverflowCount": 1},
-            "powerPointExport": {
-                "ok": True,
-                "baselineSlideCount": 10,
-                "skillSlideCount": 9,
-                "baselineValidation": {"invalidSlideCount": 0},
-                "skillValidation": {"invalidSlideCount": 0},
-            },
-            "baselineRenderPreview": [{"hasContent": True}] * 4,
-            "skillRenderPreview": [{"hasContent": True}] * 4,
-        }
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            complete = complete_gate_report(root)
+            complete["skillValidation"]["namedContainerOverflowCount"] = 1
 
-        self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True))
+            self.assertFalse(module.comparison_report_ok(complete, actual_run_exists=True, artifact_root=root))
 
 
 class ValidatePackCheckboxContractTests(unittest.TestCase):

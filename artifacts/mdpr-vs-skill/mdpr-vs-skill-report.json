@@ -31,6 +31,40 @@
       "the concrete MDPR PPTX run metrics"
     ]
   },
+  "runtimeDesignEvidence": {
+    "manifestPath": "artifacts/mdpr-vs-skill/mdpr-runtime-manifest.json",
+    "manifestSha256": "1caf9f32f8b5618c4cb9d5cb74f05fb076c10243d58f62283e398c807f923839",
+    "mdprCommit": "41a84af7b71b351918598ec1434792e19bd99822",
+    "engine": "mdpresent",
+    "slideCount": 32,
+    "polish": {
+      "checked": true,
+      "requiredFailureCount": 0,
+      "layoutComposition": {
+        "required": true,
+        "passed": true,
+        "evidence": "Layout presets and visible region geometry are checked for structured composition without deck-wide topology saturation.",
+        "structuredLayoutRatio": 1,
+        "genericBlockySlideCount": 0,
+        "averageRegionsPerContentSlide": 3.552,
+        "eligibleSlideCount": 0,
+        "dominantGeometry": null,
+        "dominantGeometryRatio": 0,
+        "maxSameGeometryInFive": 0
+      }
+    },
+    "coherence": {
+      "checked": true,
+      "errorCount": 0,
+      "warningCount": 11,
+      "checks": {
+        "claimlessEvidenceSlides": false,
+        "detachedCaptions": true,
+        "orphanTables": false,
+        "lowObjectCoverage": true
+      }
+    }
+  },
   "mdprBaselineValidation": {
     "slides": 32,
     "shapes": 397,

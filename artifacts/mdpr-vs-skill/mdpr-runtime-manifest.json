@@ -1,0 +1,2361 @@
+{
+  "schemaVersion": 1,
+  "engine": "mdpresent",
+  "source": {
+    "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
+    "sha256": "0ef161d02bb7dbcd76b7ee9deea894d9d89706333595b3801348bec43b856636"
+  },
+  "config": {
+    "sha256": "03de61edbf78ab3d273024363d8b3590f078d674c5a26419a52a68539929d2ec",
+    "sources": [
+      {
+        "kind": "default"
+      }
+    ]
+  },
+  "override": null,
+  "pack": null,
+  "agentHints": {
+    "enabled": false,
+    "source": null,
+    "sourceSha256": null,
+    "accepted": 0,
+    "rejected": 0,
+    "ignoredBecauseStale": 0,
+    "forbiddenFieldCount": 0
+  },
+  "presentationMode": "normal",
+  "slideCount": 32,
+  "outputs": [
+    "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-baseline-build\\deck.pptx"
+  ],
+  "artifacts": [
+    {
+      "path": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-baseline-build\\deck.pptx",
+      "format": "pptx",
+      "exists": true,
+      "bytes": 622253,
+      "sha256": "4706ef6648bd9746c91e2ae09e96756765a3a0fbd520badc6d0b589b1be30749"
+    }
+  ],
+  "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-baseline-build\\mdpresent-design-lock.json",
+  "pptxObjects": [
+    {
+      "slideId": "mdpr-corpus-runtime-vs-review-evidence-0ca23d",
+      "layoutSlideId": "layout-mdpr-corpus-runtime-vs-review-evidence-0ca23d",
+      "regionId": "title",
+      "blockIds": [
+        "__title:mdpr-corpus-runtime-vs-review-evidence-0ca23d"
+      ],
+      "shapeName": "mdpr:mdpr-corpus-runtime-vs-review-evidence-0ca23d:title:__title:mdpr-corpus-runtime-vs-review-evidence-0ca23d",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-2-0772f8"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:title:__title:1-2-0772f8",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-1",
+      "blockIds": [
+        "toc-item-1"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-1:toc-item-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-2",
+      "blockIds": [
+        "toc-item-2"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-2:toc-item-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-3",
+      "blockIds": [
+        "toc-item-3"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-3:toc-item-3",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-4",
+      "blockIds": [
+        "toc-item-4"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-4:toc-item-4",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-5",
+      "blockIds": [
+        "toc-item-5"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-5:toc-item-5",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-6",
+      "blockIds": [
+        "toc-item-6"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-6:toc-item-6",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-7",
+      "blockIds": [
+        "toc-item-7"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-7:toc-item-7",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-0772f8",
+      "layoutSlideId": "layout-1-2-0772f8",
+      "regionId": "toc-item-8",
+      "blockIds": [
+        "toc-item-8"
+      ],
+      "shapeName": "mdpr:1-2-0772f8:toc-item-8:toc-item-8",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-2-7bfb60"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:title:__title:2-2-7bfb60",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-1",
+      "blockIds": [
+        "toc-item-9"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-1:toc-item-9",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-2",
+      "blockIds": [
+        "toc-item-10"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-2:toc-item-10",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-3",
+      "blockIds": [
+        "toc-item-11"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-3:toc-item-11",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-4",
+      "blockIds": [
+        "toc-item-12"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-4:toc-item-12",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-5",
+      "blockIds": [
+        "toc-item-13"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-5:toc-item-13",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-6",
+      "blockIds": [
+        "toc-item-14"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-6:toc-item-14",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-7",
+      "blockIds": [
+        "toc-item-15"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-7:toc-item-15",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-7bfb60",
+      "layoutSlideId": "layout-2-2-7bfb60",
+      "regionId": "toc-item-8",
+      "blockIds": [
+        "toc-item-16"
+      ],
+      "shapeName": "mdpr:2-2-7bfb60:toc-item-8:toc-item-16",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "difference-at-a-glance-e2e4df",
+      "layoutSlideId": "layout-difference-at-a-glance-e2e4df",
+      "regionId": "title",
+      "blockIds": [
+        "__title:difference-at-a-glance-e2e4df"
+      ],
+      "shapeName": "mdpr:difference-at-a-glance-e2e4df:title:__title:difference-at-a-glance-e2e4df",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "difference-at-a-glance-e2e4df",
+      "layoutSlideId": "layout-difference-at-a-glance-e2e4df",
+      "regionId": "table",
+      "blockIds": [
+        "block-4"
+      ],
+      "shapeName": "mdpr:difference-at-a-glance-e2e4df:table:block-4",
+      "objectKind": "native-table",
+      "role": "table",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-cbec28",
+      "layoutSlideId": "layout-1-2-cbec28",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-2-cbec28"
+      ],
+      "shapeName": "mdpr:1-2-cbec28:title:__title:1-2-cbec28",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-cbec28",
+      "layoutSlideId": "layout-1-2-cbec28",
+      "regionId": "diagram",
+      "blockIds": [
+        "block-6"
+      ],
+      "shapeName": "mdpr:1-2-cbec28:diagram:block-6",
+      "objectKind": "native-diagram",
+      "role": "diagram",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-9dab57",
+      "layoutSlideId": "layout-2-2-9dab57",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-2-9dab57"
+      ],
+      "shapeName": "mdpr:2-2-9dab57:title:__title:2-2-9dab57",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-9dab57",
+      "layoutSlideId": "layout-2-2-9dab57",
+      "regionId": "diagram",
+      "blockIds": [
+        "block-7"
+      ],
+      "shapeName": "mdpr:2-2-9dab57:diagram:block-7",
+      "objectKind": "native-diagram",
+      "role": "diagram",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-c51ee9",
+      "layoutSlideId": "layout-1-2-c51ee9",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-2-c51ee9"
+      ],
+      "shapeName": "mdpr:1-2-c51ee9:title:__title:1-2-c51ee9",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-c51ee9",
+      "layoutSlideId": "layout-1-2-c51ee9",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-9-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-c51ee9:item-1:block-9-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-c51ee9",
+      "layoutSlideId": "layout-1-2-c51ee9",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-9-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-c51ee9:item-2:block-9-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-c51ee9",
+      "layoutSlideId": "layout-1-2-c51ee9",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-9-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-c51ee9:item-3:block-9-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-c51ee9",
+      "layoutSlideId": "layout-1-2-c51ee9",
+      "regionId": "item-4",
+      "blockIds": [
+        "block-9-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-c51ee9:item-4:block-9-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-6d3a3b",
+      "layoutSlideId": "layout-2-2-6d3a3b",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-2-6d3a3b"
+      ],
+      "shapeName": "mdpr:2-2-6d3a3b:title:__title:2-2-6d3a3b",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-6d3a3b",
+      "layoutSlideId": "layout-2-2-6d3a3b",
+      "regionId": "diagram",
+      "blockIds": [
+        "block-10"
+      ],
+      "shapeName": "mdpr:2-2-6d3a3b:diagram:block-10",
+      "objectKind": "native-diagram",
+      "role": "diagram",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c49d80",
+      "layoutSlideId": "layout-1-3-c49d80",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-3-c49d80"
+      ],
+      "shapeName": "mdpr:1-3-c49d80:title:__title:1-3-c49d80",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c49d80",
+      "layoutSlideId": "layout-1-3-c49d80",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-12-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-c49d80:item-1:block-12-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c49d80",
+      "layoutSlideId": "layout-1-3-c49d80",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-12-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-c49d80:item-2:block-12-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c49d80",
+      "layoutSlideId": "layout-1-3-c49d80",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-12-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-c49d80:item-3:block-12-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-2107ad",
+      "layoutSlideId": "layout-2-3-2107ad",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-3-2107ad"
+      ],
+      "shapeName": "mdpr:2-3-2107ad:title:__title:2-3-2107ad",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-2107ad",
+      "layoutSlideId": "layout-2-3-2107ad",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-12-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-2107ad:item-1:block-12-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-2107ad",
+      "layoutSlideId": "layout-2-3-2107ad",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-12-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-2107ad:item-2:block-12-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-2107ad",
+      "layoutSlideId": "layout-2-3-2107ad",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-12-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-2107ad:item-3:block-12-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-a4649c",
+      "layoutSlideId": "layout-3-3-a4649c",
+      "regionId": "title",
+      "blockIds": [
+        "__title:3-3-a4649c"
+      ],
+      "shapeName": "mdpr:3-3-a4649c:title:__title:3-3-a4649c",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-a4649c",
+      "layoutSlideId": "layout-3-3-a4649c",
+      "regionId": "body",
+      "blockIds": [
+        "block-12-chunk-3",
+        "block-14"
+      ],
+      "shapeName": "mdpr:3-3-a4649c:body:block-12-chunk-3-block-14",
+      "objectKind": "native-text",
+      "role": "body",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-a4649c",
+      "layoutSlideId": "layout-3-3-a4649c",
+      "regionId": "table",
+      "blockIds": [
+        "block-13"
+      ],
+      "shapeName": "mdpr:3-3-a4649c:table:block-13",
+      "objectKind": "native-table",
+      "role": "table",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c0cf7e",
+      "layoutSlideId": "layout-1-3-c0cf7e",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-3-c0cf7e"
+      ],
+      "shapeName": "mdpr:1-3-c0cf7e:title:__title:1-3-c0cf7e",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c0cf7e",
+      "layoutSlideId": "layout-1-3-c0cf7e",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-16-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-c0cf7e:item-1:block-16-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c0cf7e",
+      "layoutSlideId": "layout-1-3-c0cf7e",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-16-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-c0cf7e:item-2:block-16-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-c0cf7e",
+      "layoutSlideId": "layout-1-3-c0cf7e",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-16-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-c0cf7e:item-3:block-16-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-500204",
+      "layoutSlideId": "layout-2-3-500204",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-3-500204"
+      ],
+      "shapeName": "mdpr:2-3-500204:title:__title:2-3-500204",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-500204",
+      "layoutSlideId": "layout-2-3-500204",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-16-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-500204:item-1:block-16-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-500204",
+      "layoutSlideId": "layout-2-3-500204",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-16-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-500204:item-2:block-16-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-500204",
+      "layoutSlideId": "layout-2-3-500204",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-16-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-500204:item-3:block-16-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-5eedd2",
+      "layoutSlideId": "layout-3-3-5eedd2",
+      "regionId": "title",
+      "blockIds": [
+        "__title:3-3-5eedd2"
+      ],
+      "shapeName": "mdpr:3-3-5eedd2:title:__title:3-3-5eedd2",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-5eedd2",
+      "layoutSlideId": "layout-3-3-5eedd2",
+      "regionId": "body",
+      "blockIds": [
+        "block-16-chunk-3",
+        "block-18"
+      ],
+      "shapeName": "mdpr:3-3-5eedd2:body:block-16-chunk-3-block-18",
+      "objectKind": "native-text",
+      "role": "body",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-5eedd2",
+      "layoutSlideId": "layout-3-3-5eedd2",
+      "regionId": "table",
+      "blockIds": [
+        "block-17"
+      ],
+      "shapeName": "mdpr:3-3-5eedd2:table:block-17",
+      "objectKind": "native-table",
+      "role": "table",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-0466ef",
+      "layoutSlideId": "layout-1-3-0466ef",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-3-0466ef"
+      ],
+      "shapeName": "mdpr:1-3-0466ef:title:__title:1-3-0466ef",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-0466ef",
+      "layoutSlideId": "layout-1-3-0466ef",
+      "regionId": "body",
+      "blockIds": [
+        "block-20-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-0466ef:body:block-20-chunk-1",
+      "objectKind": "native-text",
+      "role": "body",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-068207",
+      "layoutSlideId": "layout-2-3-068207",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-3-068207"
+      ],
+      "shapeName": "mdpr:2-3-068207:title:__title:2-3-068207",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-068207",
+      "layoutSlideId": "layout-2-3-068207",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-20-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-068207:item-1:block-20-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-068207",
+      "layoutSlideId": "layout-2-3-068207",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-20-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-068207:item-2:block-20-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-068207",
+      "layoutSlideId": "layout-2-3-068207",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-20-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-068207:item-3:block-20-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-983be2",
+      "layoutSlideId": "layout-3-3-983be2",
+      "regionId": "title",
+      "blockIds": [
+        "__title:3-3-983be2"
+      ],
+      "shapeName": "mdpr:3-3-983be2:title:__title:3-3-983be2",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-983be2",
+      "layoutSlideId": "layout-3-3-983be2",
+      "regionId": "code",
+      "blockIds": [
+        "block-21"
+      ],
+      "shapeName": "mdpr:3-3-983be2:code:block-21",
+      "objectKind": "native-text",
+      "role": "code",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-4b2f30",
+      "layoutSlideId": "layout-1-3-4b2f30",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-3-4b2f30"
+      ],
+      "shapeName": "mdpr:1-3-4b2f30:title:__title:1-3-4b2f30",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-4b2f30",
+      "layoutSlideId": "layout-1-3-4b2f30",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-23-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-4b2f30:item-1:block-23-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-4b2f30",
+      "layoutSlideId": "layout-1-3-4b2f30",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-23-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-4b2f30:item-2:block-23-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-4b2f30",
+      "layoutSlideId": "layout-1-3-4b2f30",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-23-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-4b2f30:item-3:block-23-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-fe6c97",
+      "layoutSlideId": "layout-2-3-fe6c97",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-3-fe6c97"
+      ],
+      "shapeName": "mdpr:2-3-fe6c97:title:__title:2-3-fe6c97",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-fe6c97",
+      "layoutSlideId": "layout-2-3-fe6c97",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-23-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-fe6c97:item-1:block-23-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-fe6c97",
+      "layoutSlideId": "layout-2-3-fe6c97",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-23-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-fe6c97:item-2:block-23-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-fe6c97",
+      "layoutSlideId": "layout-2-3-fe6c97",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-23-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-fe6c97:item-3:block-23-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-d74d2e",
+      "layoutSlideId": "layout-3-3-d74d2e",
+      "regionId": "title",
+      "blockIds": [
+        "__title:3-3-d74d2e"
+      ],
+      "shapeName": "mdpr:3-3-d74d2e:title:__title:3-3-d74d2e",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-d74d2e",
+      "layoutSlideId": "layout-3-3-d74d2e",
+      "regionId": "code",
+      "blockIds": [
+        "block-24"
+      ],
+      "shapeName": "mdpr:3-3-d74d2e:code:block-24",
+      "objectKind": "native-text",
+      "role": "code",
+      "editable": true
+    },
+    {
+      "slideId": "example-decks-from-mdpr-1f8782",
+      "layoutSlideId": "layout-example-decks-from-mdpr-1f8782",
+      "regionId": "title",
+      "blockIds": [
+        "__title:example-decks-from-mdpr-1f8782"
+      ],
+      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:title:__title:example-decks-from-mdpr-1f8782",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "example-decks-from-mdpr-1f8782",
+      "layoutSlideId": "layout-example-decks-from-mdpr-1f8782",
+      "regionId": "left",
+      "blockIds": [
+        "block-26",
+        "block-26",
+        "block-26"
+      ],
+      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:left:block-26-block-26-block-26",
+      "objectKind": "native-text",
+      "role": "body",
+      "editable": true
+    },
+    {
+      "slideId": "example-decks-from-mdpr-1f8782",
+      "layoutSlideId": "layout-example-decks-from-mdpr-1f8782",
+      "regionId": "right",
+      "blockIds": [
+        "block-26",
+        "block-26"
+      ],
+      "shapeName": "mdpr:example-decks-from-mdpr-1f8782:right:block-26-block-26",
+      "objectKind": "native-text",
+      "role": "body",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-basic-deck-md-90c3cd",
+      "layoutSlideId": "layout-example-examples-basic-deck-md-90c3cd",
+      "regionId": "title",
+      "blockIds": [
+        "__title:example-examples-basic-deck-md-90c3cd"
+      ],
+      "shapeName": "mdpr:example-examples-basic-deck-md-90c3cd:title:__title:example-examples-basic-deck-md-90c3cd",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-basic-deck-md-90c3cd",
+      "layoutSlideId": "layout-example-examples-basic-deck-md-90c3cd",
+      "regionId": "table",
+      "blockIds": [
+        "block-28"
+      ],
+      "shapeName": "mdpr:example-examples-basic-deck-md-90c3cd:table:block-28",
+      "objectKind": "native-table",
+      "role": "table",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-comparison-deck-md-12e155",
+      "layoutSlideId": "layout-example-examples-comparison-deck-md-12e155",
+      "regionId": "title",
+      "blockIds": [
+        "__title:example-examples-comparison-deck-md-12e155"
+      ],
+      "shapeName": "mdpr:example-examples-comparison-deck-md-12e155:title:__title:example-examples-comparison-deck-md-12e155",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-comparison-deck-md-12e155",
+      "layoutSlideId": "layout-example-examples-comparison-deck-md-12e155",
+      "regionId": "table",
+      "blockIds": [
+        "block-30"
+      ],
+      "shapeName": "mdpr:example-examples-comparison-deck-md-12e155:table:block-30",
+      "objectKind": "native-table",
+      "role": "table",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-1624b4",
+      "layoutSlideId": "layout-1-2-1624b4",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-2-1624b4"
+      ],
+      "shapeName": "mdpr:1-2-1624b4:title:__title:1-2-1624b4",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-1624b4",
+      "layoutSlideId": "layout-1-2-1624b4",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-32-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-1624b4:item-1:block-32-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-1624b4",
+      "layoutSlideId": "layout-1-2-1624b4",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-32-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-1624b4:item-2:block-32-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-1624b4",
+      "layoutSlideId": "layout-1-2-1624b4",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-32-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-1624b4:item-3:block-32-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-2-1624b4",
+      "layoutSlideId": "layout-1-2-1624b4",
+      "regionId": "item-4",
+      "blockIds": [
+        "block-32-chunk-1"
+      ],
+      "shapeName": "mdpr:1-2-1624b4:item-4:block-32-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-a2c94a",
+      "layoutSlideId": "layout-2-2-a2c94a",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-2-a2c94a"
+      ],
+      "shapeName": "mdpr:2-2-a2c94a:title:__title:2-2-a2c94a",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-a2c94a",
+      "layoutSlideId": "layout-2-2-a2c94a",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-32-chunk-2"
+      ],
+      "shapeName": "mdpr:2-2-a2c94a:item-1:block-32-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-a2c94a",
+      "layoutSlideId": "layout-2-2-a2c94a",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-32-chunk-2"
+      ],
+      "shapeName": "mdpr:2-2-a2c94a:item-2:block-32-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-2-a2c94a",
+      "layoutSlideId": "layout-2-2-a2c94a",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-32-chunk-2"
+      ],
+      "shapeName": "mdpr:2-2-a2c94a:item-3:block-32-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-diagram-arrangements-deck-md-adac59",
+      "layoutSlideId": "layout-example-examples-diagram-arrangements-deck-md-adac59",
+      "regionId": "title",
+      "blockIds": [
+        "__title:example-examples-diagram-arrangements-deck-md-adac59"
+      ],
+      "shapeName": "mdpr:example-examples-diagram-arrangements-deck-md-adac59:title:__title:example-examples-diagram-arrangements-deck-md-adac59",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-diagram-arrangements-deck-md-adac59",
+      "layoutSlideId": "layout-example-examples-diagram-arrangements-deck-md-adac59",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-34"
+      ],
+      "shapeName": "mdpr:example-examples-diagram-arrangements-deck-md-adac59:item-1:block-34",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-diagram-arrangements-deck-md-adac59",
+      "layoutSlideId": "layout-example-examples-diagram-arrangements-deck-md-adac59",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-34"
+      ],
+      "shapeName": "mdpr:example-examples-diagram-arrangements-deck-md-adac59:item-2:block-34",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-diagram-arrangements-deck-md-adac59",
+      "layoutSlideId": "layout-example-examples-diagram-arrangements-deck-md-adac59",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-34"
+      ],
+      "shapeName": "mdpr:example-examples-diagram-arrangements-deck-md-adac59:item-3:block-34",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-diagram-arrangements-deck-md-adac59",
+      "layoutSlideId": "layout-example-examples-diagram-arrangements-deck-md-adac59",
+      "regionId": "item-4",
+      "blockIds": [
+        "block-34"
+      ],
+      "shapeName": "mdpr:example-examples-diagram-arrangements-deck-md-adac59:item-4:block-34",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-diagram-arrangements-deck-md-adac59",
+      "layoutSlideId": "layout-example-examples-diagram-arrangements-deck-md-adac59",
+      "regionId": "item-5",
+      "blockIds": [
+        "block-34"
+      ],
+      "shapeName": "mdpr:example-examples-diagram-arrangements-deck-md-adac59:item-5:block-34",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-diagram-arrangements-deck-md-adac59",
+      "layoutSlideId": "layout-example-examples-diagram-arrangements-deck-md-adac59",
+      "regionId": "item-6",
+      "blockIds": [
+        "block-34"
+      ],
+      "shapeName": "mdpr:example-examples-diagram-arrangements-deck-md-adac59:item-6:block-34",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-five-methods-deck-md-6608d8",
+      "layoutSlideId": "layout-example-examples-five-methods-deck-md-6608d8",
+      "regionId": "title",
+      "blockIds": [
+        "__title:example-examples-five-methods-deck-md-6608d8"
+      ],
+      "shapeName": "mdpr:example-examples-five-methods-deck-md-6608d8:title:__title:example-examples-five-methods-deck-md-6608d8",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-five-methods-deck-md-6608d8",
+      "layoutSlideId": "layout-example-examples-five-methods-deck-md-6608d8",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-36"
+      ],
+      "shapeName": "mdpr:example-examples-five-methods-deck-md-6608d8:item-1:block-36",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-five-methods-deck-md-6608d8",
+      "layoutSlideId": "layout-example-examples-five-methods-deck-md-6608d8",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-36"
+      ],
+      "shapeName": "mdpr:example-examples-five-methods-deck-md-6608d8:item-2:block-36",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-five-methods-deck-md-6608d8",
+      "layoutSlideId": "layout-example-examples-five-methods-deck-md-6608d8",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-36"
+      ],
+      "shapeName": "mdpr:example-examples-five-methods-deck-md-6608d8:item-3:block-36",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-five-methods-deck-md-6608d8",
+      "layoutSlideId": "layout-example-examples-five-methods-deck-md-6608d8",
+      "regionId": "item-4",
+      "blockIds": [
+        "block-36"
+      ],
+      "shapeName": "mdpr:example-examples-five-methods-deck-md-6608d8:item-4:block-36",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-five-methods-deck-md-6608d8",
+      "layoutSlideId": "layout-example-examples-five-methods-deck-md-6608d8",
+      "regionId": "item-5",
+      "blockIds": [
+        "block-36"
+      ],
+      "shapeName": "mdpr:example-examples-five-methods-deck-md-6608d8:item-5:block-36",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "example-examples-five-methods-deck-md-6608d8",
+      "layoutSlideId": "layout-example-examples-five-methods-deck-md-6608d8",
+      "regionId": "item-6",
+      "blockIds": [
+        "block-36"
+      ],
+      "shapeName": "mdpr:example-examples-five-methods-deck-md-6608d8:item-6:block-36",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-9e7dc8",
+      "layoutSlideId": "layout-1-3-9e7dc8",
+      "regionId": "title",
+      "blockIds": [
+        "__title:1-3-9e7dc8"
+      ],
+      "shapeName": "mdpr:1-3-9e7dc8:title:__title:1-3-9e7dc8",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-9e7dc8",
+      "layoutSlideId": "layout-1-3-9e7dc8",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-38-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-9e7dc8:item-1:block-38-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-9e7dc8",
+      "layoutSlideId": "layout-1-3-9e7dc8",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-38-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-9e7dc8:item-2:block-38-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-9e7dc8",
+      "layoutSlideId": "layout-1-3-9e7dc8",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-38-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-9e7dc8:item-3:block-38-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "1-3-9e7dc8",
+      "layoutSlideId": "layout-1-3-9e7dc8",
+      "regionId": "item-4",
+      "blockIds": [
+        "block-38-chunk-1"
+      ],
+      "shapeName": "mdpr:1-3-9e7dc8:item-4:block-38-chunk-1",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-298275",
+      "layoutSlideId": "layout-2-3-298275",
+      "regionId": "title",
+      "blockIds": [
+        "__title:2-3-298275"
+      ],
+      "shapeName": "mdpr:2-3-298275:title:__title:2-3-298275",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-298275",
+      "layoutSlideId": "layout-2-3-298275",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-38-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-298275:item-1:block-38-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-298275",
+      "layoutSlideId": "layout-2-3-298275",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-38-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-298275:item-2:block-38-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "2-3-298275",
+      "layoutSlideId": "layout-2-3-298275",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-38-chunk-2"
+      ],
+      "shapeName": "mdpr:2-3-298275:item-3:block-38-chunk-2",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-bec926",
+      "layoutSlideId": "layout-3-3-bec926",
+      "regionId": "title",
+      "blockIds": [
+        "__title:3-3-bec926"
+      ],
+      "shapeName": "mdpr:3-3-bec926:title:__title:3-3-bec926",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-bec926",
+      "layoutSlideId": "layout-3-3-bec926",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-38-chunk-3"
+      ],
+      "shapeName": "mdpr:3-3-bec926:item-1:block-38-chunk-3",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-bec926",
+      "layoutSlideId": "layout-3-3-bec926",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-38-chunk-3"
+      ],
+      "shapeName": "mdpr:3-3-bec926:item-2:block-38-chunk-3",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "3-3-bec926",
+      "layoutSlideId": "layout-3-3-bec926",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-38-chunk-3"
+      ],
+      "shapeName": "mdpr:3-3-bec926:item-3:block-38-chunk-3",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "current-skill-output-expectations-e56835",
+      "layoutSlideId": "layout-current-skill-output-expectations-e56835",
+      "regionId": "title",
+      "blockIds": [
+        "__title:current-skill-output-expectations-e56835"
+      ],
+      "shapeName": "mdpr:current-skill-output-expectations-e56835:title:__title:current-skill-output-expectations-e56835",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "current-skill-output-expectations-e56835",
+      "layoutSlideId": "layout-current-skill-output-expectations-e56835",
+      "regionId": "item-1",
+      "blockIds": [
+        "block-40"
+      ],
+      "shapeName": "mdpr:current-skill-output-expectations-e56835:item-1:block-40",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "current-skill-output-expectations-e56835",
+      "layoutSlideId": "layout-current-skill-output-expectations-e56835",
+      "regionId": "item-2",
+      "blockIds": [
+        "block-40"
+      ],
+      "shapeName": "mdpr:current-skill-output-expectations-e56835:item-2:block-40",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "current-skill-output-expectations-e56835",
+      "layoutSlideId": "layout-current-skill-output-expectations-e56835",
+      "regionId": "item-3",
+      "blockIds": [
+        "block-40"
+      ],
+      "shapeName": "mdpr:current-skill-output-expectations-e56835:item-3:block-40",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "current-skill-output-expectations-e56835",
+      "layoutSlideId": "layout-current-skill-output-expectations-e56835",
+      "regionId": "item-4",
+      "blockIds": [
+        "block-40"
+      ],
+      "shapeName": "mdpr:current-skill-output-expectations-e56835:item-4:block-40",
+      "objectKind": "native-text",
+      "role": "item",
+      "editable": true
+    },
+    {
+      "slideId": "end-state-9e2e49",
+      "layoutSlideId": "layout-end-state-9e2e49",
+      "regionId": "title",
+      "blockIds": [
+        "__title:end-state-9e2e49"
+      ],
+      "shapeName": "mdpr:end-state-9e2e49:title:__title:end-state-9e2e49",
+      "objectKind": "native-text",
+      "role": "title",
+      "editable": true
+    },
+    {
+      "slideId": "end-state-9e2e49",
+      "layoutSlideId": "layout-end-state-9e2e49",
+      "regionId": "key-message",
+      "blockIds": [
+        "block-42"
+      ],
+      "shapeName": "mdpr:end-state-9e2e49:key-message:block-42",
+      "objectKind": "native-text",
+      "role": "body",
+      "editable": true
+    }
+  ],
+  "diagnostics": [],
+  "validation": {
+    "fontEnvironment": {
+      "checked": true,
+      "source": "fontconfig",
+      "requestedFamilies": [
+        "Pretendard",
+        "Consolas"
+      ],
+      "installedFamilies": [
+        "MS Serif",
+        "Century Gothic",
+        "TeX Gyre TermesX",
+        "CountryBlueprint",
+        "Castellar",
+        "SimSun",
+        "宋体",
+        "Bahnschrift",
+        "Swis721 Lt BT",
+        "Terminal",
+        "Candara",
+        "Magneto",
+        "Microsoft PhagsPa",
+        "Latin Modern Sans Quotation",
+        "LM Sans Quot 8",
+        "Franklin Gothic Book",
+        "Papyrus",
+        "Cambria Math",
+        "Informal Roman",
+        "Segoe Fluent Icons",
+        "Bodoni MT",
+        "Bodoni MT Condensed",
+        "Bell MT",
+        "Malgun Gothic",
+        "맑은 고딕",
+        "Microsoft Himalaya",
+        "Cascadia Mono",
+        "Gulim",
+        "굴림",
+        "Latin Modern Sans",
+        "LM Sans 17",
+        "MoeumT R",
+        "휴먼모음T",
+        "LM Sans 9",
+        "Artifakt Element",
+        "Artifakt Element Thin",
+        "Sitka",
+        "Sitka Text",
+        "Magic R",
+        "휴먼매직체",
+        "Noto Serif KR",
+        "Segoe UI Variable",
+        "CommercialScript BT",
+        "CommercialScript",
+        "Latin Modern Mono Light",
+        "LM Mono Light 10",
+        "Book Antiqua",
+        "Constantia",
+        "Artifakt Element Hair",
+        "Tahoma",
+        "Segoe UI",
+        "AmdtSymbols",
+        "Bodoni MT Black",
+        "Yu Gothic UI",
+        "Yu Gothic UI Semilight",
+        "Dutch801 Rm BT",
+        "Agave Nerd Font Mono",
+        "Segoe UI Light",
+        "Agave Nerd Font Propo",
+        "Noto Sans KR",
+        "Noto Sans KR Thin",
+        "Source Han Sans JP",
+        "源ノ角ゴシック JP",
+        "Leelawadee UI",
+        "Rockwell Condensed",
+        "LM Sans 10",
+        "BankGothic Lt BT",
+        "Consolas",
+        "Wingdings",
+        "MingLiU_HKSCS-ExtB",
+        "細明體_HKSCS-ExtB",
+        "Latin Modern Roman",
+        "LM Roman 6",
+        "Rage Italic",
+        "GreekC",
+        "LM Roman 5",
+        "Rockwell",
+        "GothicE",
+        "Haan Wing2",
+        "Cascadia Code",
+        "Ebrima",
+        "MingLiU-ExtB",
+        "細明體-ExtB",
+        "Corbel",
+        "Corbel Light",
+        "Latin Modern Roman Slanted",
+        "LM Roman Slanted 10",
+        "Nirmala Text",
+        "Microsoft Yi Baiti",
+        "Lucida Fax",
+        "Swis721 Ex BT",
+        "Arial Rounded MT Bold",
+        "Tw Cen MT Condensed",
+        "RomanT",
+        "Chiller",
+        "Franklin Gothic Demi",
+        "HYGothic-Extra",
+        "HY견고딕",
+        "Linux Biolinum O",
+        "Perpetua",
+        "Monospac821 BT",
+        "HYGothic-Medium",
+        "HY중고딕",
+        "MS Outlook",
+        "System",
+        "Batang",
+        "바탕",
+        "Latin Modern Mono Prop Light",
+        "LM Mono Prop Light 10",
+        "Nirmala UI",
+        "Nirmala UI Semilight",
+        "Artifakt Element Black",
+        "SimSun-ExtG",
+        "Gill Sans MT",
+        "Fixedsys",
+        "French Script MT",
+        "Latin Modern Mono Caps",
+        "LM Mono Caps 10",
+        "LM Sans 12",
+        "Linux Libertine Initials O",
+        "Swis721 Blk BT",
+        "LM Roman Slanted 8",
+        "AIGDT",
+        "HCR Dotum",
+        "함초롬돋움",
+        "HYShortSamul-Medium",
+        "HY얕은샘물M",
+        "Symbol",
+        "Linux Libertine O",
+        "Calibri",
+        "Calibri Light",
+        "Gabriola",
+        "Franklin Gothic Demi Cond",
+        "ISOCP2",
+        "Complex",
+        "ISOCPEUR",
+        "Trebuchet MS",
+        "LM Roman Slanted 12",
+        "Mongolian Baiti",
+        "Arial",
+        "Arial Narrow",
+        "HYPost-Medium",
+        "HY엽서M",
+        "Tempus Sans ITC",
+        "Small Fonts",
+        "Latin Modern Mono",
+        "LM Mono 12",
+        "Dotum",
+        "돋움",
+        "Pyunji R",
+        "휴먼편지체",
+        "Matura MT Script Capitals",
+        "Microsoft JhengHei UI",
+        "HYPost-Light",
+        "HY엽서L",
+        "Linux Biolinum Keyboard O",
+        "Microsoft New Tai Lue",
+        "ISOCTEUR",
+        "HCR Batang ExtB",
+        "함초롬바탕 확장B",
+        "ScriptS",
+        "Txt",
+        "Harrington",
+        "EuroRoman",
+        "GungsuhChe",
+        "궁서체",
+        "Mistral",
+        "LM Roman Slanted 9",
+        "TechnicLite",
+        "Agave Nerd Font",
+        "Courier",
+        "ISOCP3",
+        "BatangChe",
+        "바탕체",
+        "Inconsolatazi4",
+        "LM Mono 10",
+        "LM Roman 9",
+        "Dutch801 XBd BT",
+        "CommercialPi BT",
+        "Symusic",
+        "Artifakt Element Heavy",
+        "Symap",
+        "GothicG",
+        "HYPMokGak-Bold",
+        "HY목각파임B",
+        "Courier New",
+        "Hancom Hoonminjeongeum_V",
+        "한컴 훈민정음 세로쓰기",
+        "Hancom MalangMalang",
+        "한컴 말랑말랑",
+        "Hancom MalangMalang Bold",
+        "한컴 말랑말랑 Bold",
+        "Lucida Sans",
+        "Cambria",
+        "Cooper Black",
+        "Goudy Old Style",
+        "Segoe Print",
+        "Latin Modern Roman Dunhill",
+        "LM Roman Dunhill 10",
+        "Han Santteut Dotum",
+        "한컴산뜻돋움",
+        "Baskerville Old Face",
+        "Segoe UI Semibold",
+        "Harlow Solid Italic",
+        "Swis721 Cn BT",
+        "Elephant",
+        "Artifakt Element Medium",
+        "Tw Cen MT",
+        "Yu Gothic",
+        "游ゴシック",
+        "Gigi",
+        "LM Roman 10",
+        "Dubai",
+        "Georgia",
+        "Microsoft YaHei",
+        "微软雅黑",
+        "Arial Black",
+        "RomanS",
+        "Lucida Sans Typewriter",
+        "Kunstler Script",
+        "LM Roman 8",
+        "Eras Medium ITC",
+        "HYMyeongJo-Extra",
+        "HY견명조",
+        "HYSinMyeongJo-Medium",
+        "HY신명조",
+        "Verdana",
+        "Berlin Sans FB",
+        "Latin Modern Roman Demi",
+        "LM Roman Demi 10",
+        "Swis721 LtCn BT",
+        "Snap ITC",
+        "ScriptC",
+        "Microsoft JhengHei",
+        "微軟正黑體",
+        "Perpetua Titling MT",
+        "LM Mono 9",
+        "Webdings",
+        "Linux Libertine Display O",
+        "Monotxt",
+        "Palace Script MT",
+        "Footlight MT Light",
+        "Ami R",
+        "휴먼아미체",
+        "Showcard Gothic",
+        "Yu Gothic Medium",
+        "游ゴシック Medium",
+        "Agency FB",
+        "Swis721 BT",
+        "Dubai Medium",
+        "LM Sans 8",
+        "Candara Light",
+        "MingLiU_MSCS-ExtB",
+        "細明體_MSCS-ExtB",
+        "LM Mono 8",
+        "LM Roman 12",
+        "Latin Modern Roman Unslanted",
+        "LM Roman Unslanted 10",
+        "PanRoman",
+        "HCR Batang Ext",
+        "함초롬바탕 확장",
+        "MS Sans Serif",
+        "Segoe Script",
+        "8514fix",
+        "Latin Modern Mono Light Cond",
+        "LM Mono Light Cond 10",
+        "Franklin Gothic Heavy",
+        "Vladimir Script",
+        "Latin Modern Mono Slanted",
+        "LM Mono Slanted 10",
+        "Comic Sans MS",
+        "LM Roman Slanted 17",
+        "Linux Libertine Mono O",
+        "Lucida Bright",
+        "Latin Modern Roman Caps",
+        "LM Roman Caps 10",
+        "Palatino Linotype",
+        "HCR Dotum Ext",
+        "함초롬돋움 확장",
+        "Calisto MT",
+        "HYHeadLine-Medium",
+        "HY헤드라인M",
+        "Yu Gothic Light",
+        "游ゴシック Light",
+        "8514oem",
+        "HCR Batang",
+        "함초롬바탕",
+        "Edwardian Script ITC",
+        "LM Roman 7",
+        "Playbill",
+        "Niagara Solid",
+        "Hancom Gothic",
+        "한컴 고딕",
+        "Artifakt Element Light",
+        "SimSun-ExtB",
+        "Romantic",
+        "Latin Modern Mono Prop",
+        "LM Mono Prop 10",
+        "Impact",
+        "RomanD",
+        "Stylus BT",
+        "InconsolataN",
+        "MS PGothic",
+        "ＭＳ Ｐゴシック",
+        "Jokerman",
+        "Century Schoolbook",
+        "MS Gothic",
+        "ＭＳ ゴシック",
+        "Bookman Old Style",
+        "Segoe UI Historic",
+        "Times New Roman",
+        "RomanC",
+        "Script MT Bold",
+        "Microsoft YaHei UI",
+        "Dubai Light",
+        "Goudy Stout",
+        "Source Han Sans JP Normal",
+        "源ノ角ゴシック JP Normal",
+        "Bauhaus 93",
+        "AMGDT",
+        "Swis721 BlkCn BT",
+        "Ink Free",
+        "ISOCT",
+        "Swis721 BdOul BT",
+        "ntxsups",
+        "Segoe UI Black",
+        "Curlz MT",
+        "Nirmala Text Semilight",
+        "Microsoft YaHei Light",
+        "微软雅黑 Light",
+        "MV Boli",
+        "Gill Sans MT Condensed",
+        "LM Roman 17",
+        "PMingLiU-ExtB",
+        "新細明體-ExtB",
+        "Proxy 4",
+        "Prx4",
+        "Swis721 LtEx BT",
+        "GENISO",
+        "Lucida Calligraphy",
+        "Gungsuh",
+        "궁서",
+        "Proxy 5",
+        "Prx5",
+        "Gadugi",
+        "Swis721 BdCnOul BT",
+        "Rockwell Extra Bold",
+        "Californian FB",
+        "HancomEQN",
+        "Proxy 6",
+        "Prx6",
+        "Ravie",
+        "Swis721 BlkEx BT",
+        "Sans Serif Collection",
+        "Lucida Handwriting",
+        "SansSerif",
+        "Proxy 7",
+        "Prx7",
+        "Artifakt Element Book",
+        "Segoe UI Semilight",
+        "Bodoni MT Poster Compressed",
+        "BankGothic Md BT",
+        "Kristen ITC",
+        "MS Reference Sans Serif",
+        "Segoe UI Emoji",
+        "Wingdings 3",
+        "Bernard MT Condensed",
+        "Garamond",
+        "Maiandra GD",
+        "Proxy 8",
+        "Prx8",
+        "Javanese Text",
+        "TechnicBold",
+        "Poor Richard",
+        "Wingdings 2",
+        "Proxy 1",
+        "Prx1",
+        "Berlin Sans FB Demi",
+        "Proxy 9",
+        "Prx9",
+        "Vivaldi",
+        "GDT",
+        "Syastro",
+        "Proxy 2",
+        "Prx2",
+        "Gill Sans MT Ext Condensed Bold",
+        "Blackadder ITC",
+        "NewJumja",
+        "Gloucester MT Extra Condensed",
+        "Vineta BT",
+        "Vineta",
+        "ISOCT2",
+        "Proxy 3",
+        "Prx3",
+        "Freestyle Script",
+        "Imprint MT Shadow",
+        "NSimSun",
+        "新宋体",
+        "Lucida Sans Unicode",
+        "SuperFrench",
+        "Viner Hand ITC",
+        "Symeteo",
+        "HarmonyOS Sans SC",
+        "Monotype Corsiva",
+        "Segoe UI Symbol",
+        "GulimChe",
+        "굴림체",
+        "Microsoft JhengHei UI Light",
+        "Britannic Bold",
+        "High Tower Text",
+        "Pristina",
+        "ISOCT3",
+        "Yu Gothic UI Light",
+        "Juice ITC",
+        "Century",
+        "MS Reference Specialty",
+        "Wide Latin",
+        "Hancom MalangMalang Regular",
+        "한컴 말랑말랑 Regular",
+        "DotumChe",
+        "돋움체",
+        "Forte",
+        "Malgun Gothic Semilight",
+        "맑은 고딕 Semilight",
+        "Microsoft Sans Serif",
+        "Eras Bold ITC",
+        "Microsoft Tai Le",
+        "New Gulim",
+        "새굴림",
+        "Felix Titling",
+        "Marlett",
+        "ItalicC",
+        "Arial Unicode MS",
+        "Algerian",
+        "Copperplate Gothic Light",
+        "Gill Sans Ultra Bold",
+        "微軟正黑體 Light",
+        "Microsoft JhengHei Light",
+        "Modern No. 20",
+        "Simplex",
+        "CityBlueprint",
+        "Copperplate Gothic Bold",
+        "Segoe MDL2 Assets",
+        "Franklin Gothic Medium",
+        "Terminal Greek 737 (437G)",
+        "Symath",
+        "Bookshelf Symbol 7",
+        "Stencil",
+        "GreekS",
+        "Onyx",
+        "HyhwpEQ",
+        "Technic",
+        "Tw Cen MT Condensed Extra Bold",
+        "UniversalMath1 BT",
+        "NanumGothic",
+        "GothicI",
+        "OCR A Extended",
+        "Headline R",
+        "휴먼둥근헤드라인",
+        "MS UI Gothic",
+        "Italic",
+        "Franklin Gothic Medium Cond",
+        "Haettenschweiler",
+        "Expo M",
+        "휴먼엑스포",
+        "MT Extra",
+        "Eras Light ITC",
+        "AcadEref",
+        "Yet R",
+        "휴먼옛체",
+        "Parchment",
+        "Microsoft YaHei UI Light",
+        "Engravers MT",
+        "Niagara Engraved",
+        "Lucida Console",
+        "Myanmar Text",
+        "Gill Sans Ultra Bold Condensed",
+        "Latin Modern Sans Demi Cond",
+        "LM Sans Demi Cond 10",
+        "Leelawadee UI Semilight",
+        "ItalicT",
+        "Old English Text MT",
+        "Sylfaen",
+        "Yu Gothic UI Semibold",
+        "Terminal Greek 869",
+        "HYGungSo-Bold",
+        "HY궁서B",
+        "Hancom Hoonminjeongeum_H",
+        "한컴 훈민정음 가로쓰기",
+        "Swis721 BlkOul BT",
+        "Bradley Hand ITC",
+        "Centaur",
+        "Colonna MT",
+        "Broadway",
+        "Eras Demi ITC",
+        "HYGraphic-Medium",
+        "HY그래픽M",
+        "Brush Script MT",
+        "ISOCP"
+      ],
+      "missingFamilies": [
+        "Pretendard"
+      ],
+      "allAvailable": false,
+      "embedding": {
+        "performed": false,
+        "reason": "font-embedding-not-requested",
+        "licenseEvidence": {
+          "supplied": false,
+          "required": false,
+          "records": [],
+          "missingFontSha256": [],
+          "unusedFontSha256": [],
+          "complete": false,
+          "legalDetermination": "external"
+        }
+      }
+    },
+    "layoutOverflow": [],
+    "visual": null,
+    "coherence": {
+      "checked": true,
+      "thresholds": {
+        "minimumMixedObjectGroupingScore": 0.75,
+        "minimumObjectCoverageRatio": 0.2,
+        "intraSlideSpacingTolerancePx": 8,
+        "minimumTextBackgroundContrastRatio": 4.5,
+        "maxTextColorGrayscaleChannelDrift": 2
+      },
+      "orphanEvidenceBlocks": 3,
+      "captionDetached": 0,
+      "claimlessSlides": 8,
+      "neutralTitleWithoutMessage": 0,
+      "sectionMotifDrift": 0,
+      "intraSlideSpacingDrift": 0,
+      "textBackgroundLuminanceDrift": 0,
+      "intraSlideSpacingCoverage": {
+        "checkedSlides": 18,
+        "skippedSlides": 0,
+        "notApplicableSlides": 14,
+        "checkedGroups": 44,
+        "skipped": [],
+        "notApplicable": [
+          {
+            "slideId": "mdpr-corpus-runtime-vs-review-evidence-0ca23d",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "difference-at-a-glance-e2e4df",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "1-2-cbec28",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "2-2-9dab57",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "2-2-6d3a3b",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "3-3-a4649c",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "3-3-5eedd2",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "1-3-0466ef",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "3-3-983be2",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "3-3-d74d2e",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "example-decks-from-mdpr-1f8782",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "example-examples-basic-deck-md-90c3cd",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "example-examples-comparison-deck-md-12e155",
+            "reason": "fewer than 3 content regions in spacing scope"
+          },
+          {
+            "slideId": "end-state-9e2e49",
+            "reason": "fewer than 3 content regions in spacing scope"
+          }
+        ],
+        "scope": {
+          "includedRoles": [
+            "body",
+            "chart",
+            "code",
+            "diagram",
+            "icon",
+            "image",
+            "item",
+            "table"
+          ],
+          "excludedRoles": [
+            "footer",
+            "pageNumber",
+            "subtitle",
+            "title"
+          ],
+          "excludedLayoutDirections": [
+            "radial"
+          ],
+          "minimumContentRegions": 3
+        }
+      },
+      "continuationTitleQuality": "ok",
+      "mixedObjectGroupingScore": 1,
+      "checks": {
+        "claimlessEvidenceSlides": false,
+        "detachedCaptions": true,
+        "orphanTables": false,
+        "lowObjectCoverage": true,
+        "neutralTitleMessages": true,
+        "sectionMotifDrift": true,
+        "intraSlideSpacing": true,
+        "textBackgroundLuminance": true
+      },
+      "diagnostics": [
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "difference-at-a-glance-e2e4df",
+          "message": "Slide \"Difference at a glance\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "difference-at-a-glance-e2e4df",
+          "message": "Slide \"Difference at a glance\" starts with a table that is not attached to an explanatory paragraph."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "1-2-cbec28",
+          "message": "Slide \"Pipeline boundary\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "2-2-9dab57",
+          "message": "Slide \"Pipeline boundary (Cont. 2/2)\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "2-2-6d3a3b",
+          "message": "Slide \"Architecture (Cont. 2/2)\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "3-3-a4649c",
+          "message": "Slide \"Page Splitting Rules (Cont. 3/3)\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "3-3-5eedd2",
+          "message": "Slide \"Layout Selection Rules (Cont. 3/3)\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "example-examples-basic-deck-md-90c3cd",
+          "message": "Slide \"Example: examples/basic/deck.md\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "example-examples-basic-deck-md-90c3cd",
+          "message": "Slide \"Example: examples/basic/deck.md\" starts with a table that is not attached to an explanatory paragraph."
+        },
+        {
+          "level": "warning",
+          "code": "CLAIMLESS_EVIDENCE_SLIDE",
+          "slideId": "example-examples-comparison-deck-md-12e155",
+          "message": "Slide \"Example: examples/comparison/deck.md\" contains evidence objects without a claim-like explanatory block."
+        },
+        {
+          "level": "warning",
+          "code": "ORPHAN_TABLE",
+          "slideId": "example-examples-comparison-deck-md-12e155",
+          "message": "Slide \"Example: examples/comparison/deck.md\" starts with a table that is not attached to an explanatory paragraph."
+        }
+      ]
+    },
+    "polish": {
+      "checked": true,
+      "source": {
+        "videoId": "GX0Fn-5YqKE",
+        "title": "Do not use AI-made PPT as-is",
+        "chapters": [
+          {
+            "time": "00:24",
+            "key": "fontHierarchy",
+            "label": "font changes"
+          },
+          {
+            "time": "02:33",
+            "key": "layoutComposition",
+            "label": "layout"
+          },
+          {
+            "time": "05:20",
+            "key": "highlightPage",
+            "label": "highlight page"
+          },
+          {
+            "time": "07:13",
+            "key": "coverPage",
+            "label": "cover page"
+          },
+          {
+            "time": "07:48",
+            "key": "detailPolish",
+            "label": "detail polish"
+          },
+          {
+            "time": "08:45",
+            "key": "beforeAfterComparison",
+            "label": "before/after comparison"
+          }
+        ]
+      },
+      "chapters": {
+        "fontHierarchy": {
+          "required": true,
+          "passed": true,
+          "evidence": "Title/body hierarchy, readable text-bearing font floor, configured family presence, and same-role consistency are checked from Layout IR typography; installed-font availability requires export-environment validation.",
+          "titleFontPt": 48,
+          "bodyFontPt": 30,
+          "minFontPt": 18,
+          "sameRoleFontVarianceCount": 0,
+          "fontFamily": "Pretendard"
+        },
+        "layoutComposition": {
+          "required": true,
+          "passed": true,
+          "evidence": "Layout presets and visible region geometry are checked for structured composition without deck-wide topology saturation.",
+          "structuredLayoutRatio": 1,
+          "genericBlockySlideCount": 0,
+          "averageRegionsPerContentSlide": 3.552,
+          "eligibleSlideCount": 0,
+          "dominantGeometry": null,
+          "dominantGeometryRatio": 0,
+          "maxSameGeometryInFive": 0
+        },
+        "highlightPage": {
+          "required": true,
+          "passed": true,
+          "evidence": "Quote and key-message intents must route to quote/key-message layouts when important claims exist.",
+          "importantClaimSlideCount": 1,
+          "highlightedSlideCount": 1
+        },
+        "coverPage": {
+          "required": true,
+          "passed": true,
+          "evidence": "Cover slides must use the cover preset with visible title hierarchy and no empty body artifacts.",
+          "coverSlideCount": 1,
+          "polishedCoverCount": 1
+        },
+        "detailPolish": {
+          "required": true,
+          "passed": true,
+          "evidence": "Detail polish reuses visual diagnostics and rejects semantic comparison chrome on neutral split content.",
+          "visualErrorCount": 0,
+          "comparisonSemanticMismatchCount": 0,
+          "overlapCount": 0,
+          "clippingRiskCount": 0,
+          "contrastFailureCount": 0,
+          "connectorClearanceCount": 0
+        },
+        "beforeAfterComparison": {
+          "required": false,
+          "passed": false,
+          "evidence": "Theme-gallery builds with at least two presets provide deterministic before/after comparison evidence for representative decks.",
+          "presets": []
+        }
+      },
+      "requiredFailureCount": 0,
+      "optionalFailureCount": 1
+    },
+    "overflowResolution": {
+      "checked": true,
+      "strategyCounts": {
+        "preSplit": 8,
+        "candidateReflow": 0,
+        "regionExpansion": 0,
+        "fontShrink": 0
+      },
+      "continuationSlides": 21,
+      "continuationGroups": 8,
+      "continuationReasons": {
+        "list": 7,
+        "table": 0,
+        "code": 0,
+        "paragraph": 0,
+        "mixed": 1,
+        "toc": 0
+      },
+      "graphOrDiagramBlocksSplit": true
+    }
+  },
+  "metrics": {
+    "slideCount": 32,
+    "overflowCount": 0,
+    "coherenceWarningCount": 11,
+    "coherenceErrorCount": 0,
+    "visualWarningCount": 0,
+    "visualErrorCount": 0,
+    "polishWarningCount": 0,
+    "minFontPt": 18,
+    "textClipRiskCount": 0,
+    "contrastFailures": 0,
+    "connectorWarnings": 0,
+    "buildMs": 566,
+    "outputBytes": {
+      "pptx": 622253
+    }
+  }
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -51,6 +52,7 @@ BASELINE_PPTX = OUT / "mdpr-baseline-result.pptx"
 SKILL_PPTX = OUT / "mdpr-skill-result.pptx"
 SKILL_FROM_MDPR_RUN_PPTX = OUT / "mdpr-skill-from-actual-md-run.pptx"
 REPORT = OUT / "mdpr-vs-skill-report.json"
+RUNTIME_MANIFEST = OUT / "mdpr-runtime-manifest.json"
 
 SLIDE_W = 13.333
 SLIDE_H = 7.5
@@ -475,6 +477,68 @@ def build_mdpr_baseline() -> None:
     if not generated.is_file():
         raise FileNotFoundError(f"MDPR did not write {generated}")
     shutil.copyfile(generated, BASELINE_PPTX)
+
+
+def capture_runtime_design_evidence(
+    source_manifest: Path,
+    stable_manifest: Path,
+    mdpr_commit: str | None,
+    *,
+    artifact_root: Path = ROOT,
+) -> dict[str, Any]:
+    manifest = json.loads(source_manifest.read_text(encoding="utf-8"))
+    validation = manifest.get("validation") or {}
+    polish = validation.get("polish") or {}
+    layout_composition = (polish.get("chapters") or {}).get("layoutComposition") or {}
+    coherence = validation.get("coherence") or {}
+    coherence_checks = coherence.get("checks") or {}
+    diagnostics = coherence.get("diagnostics") or []
+    stable_manifest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source_manifest, stable_manifest)
+    relative_manifest = stable_manifest.resolve().relative_to(artifact_root.resolve())
+    bounded_layout_fields = (
+        "required",
+        "passed",
+        "evidence",
+        "structuredLayoutRatio",
+        "genericBlockySlideCount",
+        "averageRegionsPerContentSlide",
+        "eligibleSlideCount",
+        "dominantGeometry",
+        "dominantGeometryRatio",
+        "maxSameGeometryInFive",
+    )
+    bounded_coherence_checks = (
+        "claimlessEvidenceSlides",
+        "detachedCaptions",
+        "orphanTables",
+        "lowObjectCoverage",
+    )
+    return {
+        "manifestPath": relative_manifest.as_posix(),
+        "manifestSha256": hashlib.sha256(stable_manifest.read_bytes()).hexdigest(),
+        "mdprCommit": mdpr_commit,
+        "engine": manifest.get("engine"),
+        "slideCount": manifest.get("slideCount"),
+        "polish": {
+            "checked": polish.get("checked"),
+            "requiredFailureCount": polish.get("requiredFailureCount"),
+            "layoutComposition": {
+                key: layout_composition.get(key)
+                for key in bounded_layout_fields
+                if key in layout_composition
+            },
+        },
+        "coherence": {
+            "checked": coherence.get("checked"),
+            "errorCount": sum(item.get("level") == "error" for item in diagnostics),
+            "warningCount": sum(item.get("level") == "warning" for item in diagnostics),
+            "checks": {
+                key: coherence_checks.get(key)
+                for key in bounded_coherence_checks
+            },
+        },
+    }
 
 
 def add_text(slide, name: str, x: float, y: float, w: float, h: float, text: str, size: int, color: str = P.ink, bold: bool = False, align: PP_ALIGN | None = None):
@@ -1064,6 +1128,12 @@ def run_comparison() -> None:
     MANIFEST.write_text(json.dumps({"sourceRoot": evidence_path(MDPR), "files": summaries}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     build_source_corpus(summaries)
     build_mdpr_baseline()
+    mdpr_commit = git_commit(MDPR)
+    runtime_design_evidence = capture_runtime_design_evidence(
+        OUT / "mdpr-baseline-build" / "mdpresent-manifest.json",
+        RUNTIME_MANIFEST,
+        mdpr_commit,
+    )
     mdpr_baseline_validation = validate_pptx(BASELINE_PPTX)
     build_skill_deck(summaries, mdpr_baseline_validation)
     clear_preview_files(OUT)
@@ -1099,7 +1169,7 @@ def run_comparison() -> None:
         "actualMarkdownRun": {
             "inputMarkdown": str(SOURCE_MD.relative_to(ROOT)),
             "mdprSourceRoot": evidence_path(MDPR),
-            "mdprCommit": git_commit(MDPR),
+            "mdprCommit": mdpr_commit,
             "mdprCommand": f"node {evidence_path(MDPR / 'packages/cli/dist/index.js')} build {SOURCE_MD.relative_to(ROOT)} --to pptx --design clean",
             "mdprResultPptx": str(BASELINE_PPTX.relative_to(ROOT)),
             "mdprResultValidation": mdpr_baseline_validation,
@@ -1110,6 +1180,7 @@ def run_comparison() -> None:
                 "the concrete MDPR PPTX run metrics",
             ],
         },
+        "runtimeDesignEvidence": runtime_design_evidence,
         "mdprBaselineValidation": mdpr_baseline_validation,
         "skillValidation": validate_pptx(SKILL_PPTX),
         "powerPointExport": {
@@ -1125,7 +1196,11 @@ def run_comparison() -> None:
         "baselineRenderPreview": validate_pngs([path for path in [OUT / f"mdpr_baseline_preview_{index}.png" for index in range(1, 5)] if path.is_file()]),
         "skillRenderPreview": validate_pngs([path for path in [OUT / f"skill_preview_{index}.png" for index in range(1, 5)] if path.is_file()]),
     }
-    report["ok"] = comparison_report_ok(report, actual_run_exists=SKILL_FROM_MDPR_RUN_PPTX.is_file())
+    report["ok"] = comparison_report_ok(
+        report,
+        actual_run_exists=SKILL_FROM_MDPR_RUN_PPTX.is_file(),
+        artifact_root=ROOT,
+    )
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     if not report["ok"]:
         raise SystemExit(json.dumps(report, indent=2, ensure_ascii=False))

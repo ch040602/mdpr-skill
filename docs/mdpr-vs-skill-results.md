@@ -11,6 +11,7 @@ review boundary and records evidence. It is not a second renderer.
 - Evidence copy tied to the actual MDPR run: `artifacts/mdpr-vs-skill/mdpr-skill-from-actual-md-run.pptx`
 - Shared Markdown source: `artifacts/mdpr-vs-skill/mdpr-source-corpus.md`
 - Source manifest: `artifacts/mdpr-vs-skill/source-manifest.json`
+- Exact MDPR build manifest: `artifacts/mdpr-vs-skill/mdpr-runtime-manifest.json`
 - Machine-readable report: `artifacts/mdpr-vs-skill/mdpr-vs-skill-report.json`
 
 Regenerate and validate both decks:
@@ -125,6 +126,7 @@ The current review led to these changes:
 | 34 | Additional Pro cycle 4 found that the comparison assigned the literal `MDPR_POLISH_GATE_FAILED` finding type to MDPR even though review-core emits that mirror finding from MDPR manifest evidence. | Accept as `RDD-T-00000130`: state that MDPR owns pass/fail through `validation.polish.requiredFailureCount`, while mdpr-skill emits the named mirror finding without recalculating it. | Boundary regression failed 8/9 before the one-row correction and passes 9/9 after it; README still records both the mdpr-skill mirror action and `runtimeOwner: "MDPR"`. |
 | 35 | Additional Pro cycle 5 proposed grouping slide 26 accents as three current-state items and one improved-state item. | Reject as `RDD-F-ca515d2be3`: current IR marks the slide as `grid`, all four items are flat level-0 peers in one split bullet block, and no comparison-side ancestry survives in the Markdown input. | No source-ungrounded A/A/A/B rule was added. Fresh contact-sheet review keeps the neutral peer-item alternation, while the comparison remains 35/35 + 9/9, 16pt, invalid 0, and overflow 0. |
 | 36 | The practical follow-up found three residual gaps: no host-font preflight, oversized short 1–2 item continuations, and a flattened comparison corpus. A timed-out comparison command also exposed concurrent writers using the same RGB temporary path. | Add manifest font-environment evidence plus strict opt-in failure, content-measured focal geometry with long-text controls, headingPath-based paired-table extraction with an unrelated-section negative control, and a cross-platform single-writer export lock. | Fresh PowerPoint review passes 32/32 + 9/9, 16pt minimum, invalid 0, named-container overflow 0, five native MDPR tables, and report `ok:true`. Slides 22–23 show complete editable current/improved columns without synthetic title rules; slide 25 preserves a compact coherent continuation. |
+| 37 | The comparison report could pass from aggregate PPTX, typography, overflow, and preview counts without proving that the same MDPR build passed runtime layout-composition and coherence validation. | Copy the exact generated `mdpresent-manifest.json`, bind it by SHA-256 and MDPR commit, and consume MDPR-owned polish/coherence status without duplicating its geometry heuristics. | Missing, stale, commit-mismatched, polish-failing, or coherence-error evidence fails closed. MDPR warnings remain warnings. The regenerated 32/32 + 9/9 export keeps the 16pt floor, zero invalid frames, and zero named-container overflow. |
 
 ## Resolved Practical Limits
 
