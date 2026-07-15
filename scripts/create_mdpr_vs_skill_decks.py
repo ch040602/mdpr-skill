@@ -499,6 +499,8 @@ def capture_runtime_design_evidence(
     bounded_layout_fields = (
         "required",
         "passed",
+        "applicable",
+        "notApplicableReason",
         "evidence",
         "structuredLayoutRatio",
         "genericBlockySlideCount",

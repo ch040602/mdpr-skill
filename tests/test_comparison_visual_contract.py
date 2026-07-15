@@ -88,6 +88,7 @@ class ComparisonVisualContractTests(unittest.TestCase):
                             "layoutComposition": {
                                 "required": True,
                                 "passed": True,
+                                "applicable": True,
                                 "eligibleSlideCount": 10,
                                 "dominantGeometryRatio": 0.4,
                             },
@@ -113,6 +114,8 @@ class ComparisonVisualContractTests(unittest.TestCase):
             self.assertEqual(evidence["manifestPath"], "artifacts/mdpr-runtime-manifest.json")
             self.assertEqual(evidence["manifestSha256"], hashlib.sha256(stable.read_bytes()).hexdigest())
             self.assertEqual(evidence["polish"]["layoutComposition"]["dominantGeometryRatio"], 0.4)
+            self.assertIs(evidence["polish"]["layoutComposition"]["applicable"], True)
+            self.assertNotIn("maxSameGeometryInFive", evidence["polish"]["layoutComposition"])
             self.assertEqual(evidence["coherence"]["errorCount"], 0)
             self.assertNotIn("diagnostics", evidence["coherence"])
 

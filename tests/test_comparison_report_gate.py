@@ -6,7 +6,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.comparison_report_gate import comparison_report_ok
+from scripts.comparison_report_gate import (
+    RUNTIME_LAYOUT_COMPOSITION_EVIDENCE_VACUOUS,
+    comparison_report_ok,
+    runtime_layout_composition_diagnostics,
+)
 
 
 def complete_report(root: Path) -> dict:
@@ -23,6 +27,7 @@ def complete_report(root: Path) -> dict:
                         "required": True,
                         "passed": True,
                         "eligibleSlideCount": 8,
+                        "dominantGeometry": "card-grid-2x2",
                         "dominantGeometryRatio": 0.5,
                         "maxSameGeometryInFive": 3,
                     },
@@ -67,6 +72,7 @@ def complete_report(root: Path) -> dict:
                     "required": True,
                     "passed": True,
                     "eligibleSlideCount": 8,
+                    "dominantGeometry": "card-grid-2x2",
                     "dominantGeometryRatio": 0.5,
                     "maxSameGeometryInFive": 3,
                 },
@@ -112,6 +118,69 @@ class ComparisonReportGateTests(unittest.TestCase):
 
     def test_complete_report_passes(self) -> None:
         self.assertTrue(comparison_report_ok(complete_report(self.root), actual_run_exists=True, artifact_root=self.root))
+
+    def test_required_runtime_layout_evidence_cannot_pass_vacuously(self) -> None:
+        report = complete_report(self.root)
+        manifest_path = self.root / report["runtimeDesignEvidence"]["manifestPath"]
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest_layout = manifest["validation"]["polish"]["chapters"]["layoutComposition"]
+        report_layout = report["runtimeDesignEvidence"]["polish"]["layoutComposition"]
+        for layout in (manifest_layout, report_layout):
+            layout["eligibleSlideCount"] = 0
+            layout["dominantGeometryRatio"] = 0
+            layout["maxSameGeometryInFive"] = 0
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        report["runtimeDesignEvidence"]["manifestSha256"] = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+
+        self.assertEqual(
+            runtime_layout_composition_diagnostics(report_layout),
+            [RUNTIME_LAYOUT_COMPOSITION_EVIDENCE_VACUOUS],
+        )
+        self.assertFalse(comparison_report_ok(report, actual_run_exists=True, artifact_root=self.root))
+
+    def test_explicit_runtime_not_applicable_passes(self) -> None:
+        report = complete_report(self.root)
+        manifest_path = self.root / report["runtimeDesignEvidence"]["manifestPath"]
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest_layout = manifest["validation"]["polish"]["chapters"]["layoutComposition"]
+        report_layout = report["runtimeDesignEvidence"]["polish"]["layoutComposition"]
+        for layout in (manifest_layout, report_layout):
+            layout.update({
+                "eligibleSlideCount": 0,
+                "dominantGeometryRatio": 0,
+                "maxSameGeometryInFive": 0,
+                "applicable": False,
+                "notApplicableReason": "Every content slide uses an excluded specialized object layout.",
+            })
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        report["runtimeDesignEvidence"]["manifestSha256"] = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+
+        self.assertEqual(runtime_layout_composition_diagnostics(report_layout), [])
+        self.assertTrue(comparison_report_ok(report, actual_run_exists=True, artifact_root=self.root))
+
+    def test_runtime_layout_failure_is_not_relabelled_as_vacuous(self) -> None:
+        layout = {
+            "required": True,
+            "passed": False,
+            "eligibleSlideCount": 0,
+            "dominantGeometryRatio": 0,
+            "maxSameGeometryInFive": 0,
+        }
+        self.assertEqual(runtime_layout_composition_diagnostics(layout), [])
+
+    def test_runtime_layout_population_requires_typed_finite_metrics(self) -> None:
+        layout = {
+            "required": True,
+            "passed": True,
+            "eligibleSlideCount": True,
+            "dominantGeometry": "card-grid-2x2",
+            "dominantGeometryRatio": float("nan"),
+            "maxSameGeometryInFive": 1,
+        }
+        self.assertEqual(
+            runtime_layout_composition_diagnostics(layout),
+            [RUNTIME_LAYOUT_COMPOSITION_EVIDENCE_VACUOUS],
+        )
 
     def test_missing_runtime_design_evidence_fails_closed(self) -> None:
         report = complete_report(self.root)

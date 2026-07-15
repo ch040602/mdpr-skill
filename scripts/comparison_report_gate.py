@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from pathlib import Path
 from typing import Any
@@ -9,6 +10,40 @@ from typing import Any
 
 MIN_FONT_SIZE_PT = 16
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+RUNTIME_LAYOUT_COMPOSITION_EVIDENCE_VACUOUS = "RUNTIME_LAYOUT_COMPOSITION_EVIDENCE_VACUOUS"
+
+
+def runtime_layout_composition_diagnostics(layout: Any) -> list[str]:
+    if not isinstance(layout, dict):
+        return []
+    if layout.get("required") is not True or layout.get("passed") is not True:
+        return []
+    eligible_slide_count = layout.get("eligibleSlideCount")
+    dominant_ratio = layout.get("dominantGeometryRatio")
+    max_same_in_five = layout.get("maxSameGeometryInFive")
+    populated_evidence = (
+        isinstance(eligible_slide_count, int)
+        and not isinstance(eligible_slide_count, bool)
+        and eligible_slide_count > 0
+        and isinstance(layout.get("dominantGeometry"), str)
+        and bool(layout["dominantGeometry"].strip())
+        and isinstance(dominant_ratio, (int, float))
+        and not isinstance(dominant_ratio, bool)
+        and math.isfinite(dominant_ratio)
+        and 0 <= dominant_ratio <= 1
+        and isinstance(max_same_in_five, int)
+        and not isinstance(max_same_in_five, bool)
+        and 1 <= max_same_in_five <= min(5, eligible_slide_count)
+    )
+    if populated_evidence:
+        return []
+    explicit_not_applicable = (
+        eligible_slide_count == 0
+        and layout.get("applicable") is False
+        and isinstance(layout.get("notApplicableReason"), str)
+        and bool(layout["notApplicableReason"].strip())
+    )
+    return [] if explicit_not_applicable else [RUNTIME_LAYOUT_COMPOSITION_EVIDENCE_VACUOUS]
 
 
 def skill_surface_evidence_ok(report: dict[str, Any]) -> bool:
@@ -85,6 +120,7 @@ def runtime_design_evidence_ok(report: dict[str, Any], *, artifact_root: Path) -
         "required",
         "passed",
         "eligibleSlideCount",
+        "dominantGeometry",
         "dominantGeometryRatio",
         "maxSameGeometryInFive",
     )
@@ -113,6 +149,7 @@ def runtime_design_evidence_ok(report: dict[str, Any], *, artifact_root: Path) -
         and layout_evidence_matches
         and layout_composition.get("required") is True
         and layout_composition.get("passed") is True
+        and not runtime_layout_composition_diagnostics(layout_composition)
         and isinstance(coherence, dict)
         and coherence.get("checked") is manifest_coherence.get("checked") is True
         and coherence.get("errorCount") == 0

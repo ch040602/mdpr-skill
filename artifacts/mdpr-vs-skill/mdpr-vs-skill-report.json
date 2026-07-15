@@ -10,7 +10,7 @@
   "actualMarkdownRun": {
     "inputMarkdown": "artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md",
     "mdprSourceRoot": "C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold",
-    "mdprCommit": "41a84af7b71b351918598ec1434792e19bd99822",
+    "mdprCommit": "b055bb83adbce42ef94fb4921539e1e71793a509",
     "mdprCommand": "node C:\\Users\\hcslab_523\\Documents\\mdpresent-spec-scaffold\\packages\\cli\\dist\\index.js build artifacts\\mdpr-vs-skill\\mdpr-source-corpus.md --to pptx --design clean",
     "mdprResultPptx": "artifacts\\mdpr-vs-skill\\mdpr-baseline-result.pptx",
     "mdprResultValidation": {
@@ -33,8 +33,8 @@
   },
   "runtimeDesignEvidence": {
     "manifestPath": "artifacts/mdpr-vs-skill/mdpr-runtime-manifest.json",
-    "manifestSha256": "e8a55f369232f50a1fe256f3238a3d69686ef5fdee1f2d7fa6321bb7261cf310",
-    "mdprCommit": "41a84af7b71b351918598ec1434792e19bd99822",
+    "manifestSha256": "388fcefb4d679ad630ddfcd26546b1e27367a380a3ff01e13dcf6a71229b66b0",
+    "mdprCommit": "b055bb83adbce42ef94fb4921539e1e71793a509",
     "engine": "mdpresent",
     "slideCount": 32,
     "polish": {
@@ -43,6 +43,8 @@
       "layoutComposition": {
         "required": true,
         "passed": true,
+        "applicable": false,
+        "notApplicableReason": "Every content slide uses an explicitly excluded specialized object layout.",
         "evidence": "Layout presets and visible region geometry are checked for structured composition without deck-wide topology saturation.",
         "structuredLayoutRatio": 1,
         "genericBlockySlideCount": 0,

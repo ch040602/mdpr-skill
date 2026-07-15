@@ -35,7 +35,7 @@
       "format": "pptx",
       "exists": true,
       "bytes": 622253,
-      "sha256": "33684cba7105e2bdc6ffefbf806b5da2afe1f98ed24cb7ed006d057425d9ff79"
+      "sha256": "b6eb5c416fa93291808668d8094b48f38a475a9a493da505c6f63084423e3564"
     }
   ],
   "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-baseline-build\\mdpresent-design-lock.json",
@@ -2276,6 +2276,8 @@
         "layoutComposition": {
           "required": true,
           "passed": true,
+          "applicable": false,
+          "notApplicableReason": "Every content slide uses an explicitly excluded specialized object layout.",
           "evidence": "Layout presets and visible region geometry are checked for structured composition without deck-wide topology saturation.",
           "structuredLayoutRatio": 1,
           "genericBlockySlideCount": 0,
@@ -2353,7 +2355,7 @@
     "textClipRiskCount": 0,
     "contrastFailures": 0,
     "connectorWarnings": 0,
-    "buildMs": 506,
+    "buildMs": 505,
     "outputBytes": {
       "pptx": 622253
     }
