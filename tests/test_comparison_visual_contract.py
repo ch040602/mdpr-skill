@@ -647,6 +647,43 @@ class ComparisonVisualContractTests(unittest.TestCase):
         for unselected in ("readme-final", "readme-teaser", "language-preview"):
             self.assertNotIn(unselected, overview_text)
 
+    def test_source_family_samples_use_shortest_unique_suffix(self) -> None:
+        module = load_script("create_mdpr_vs_skill_unique_source_labels", "scripts/create_mdpr_vs_skill_decks.py")
+        self.assertEqual(
+            module.shortest_unique_source_labels([
+                "examples/basic/deck.md",
+                "examples/comparison/deck.md",
+                "examples/pipeline/deck.md",
+            ]),
+            ["basic/deck.md", "comparison/deck.md", "pipeline/deck.md"],
+        )
+        self.assertEqual(
+            module.shortest_unique_source_labels([
+                "docs/00-product-definition.md",
+                "README.md",
+                "docs/adr/0001-presentation-ir-schema-contract.md",
+            ]),
+            ["00-product-definition.md", "README.md", "0001-presentation-ir-schema-contract.md"],
+        )
+        self.assertEqual(
+            module.shortest_unique_source_labels(["a/shared/file.md", "b/shared/file.md"]),
+            ["a/shared/file.md", "b/shared/file.md"],
+        )
+        with self.assertRaises(ValueError):
+            module.shortest_unique_source_labels(["C:/private/checkout/deck.md"])
+        with self.assertRaises(ValueError):
+            module.shortest_unique_source_labels(["../outside/deck.md"])
+        with self.assertRaises(ValueError):
+            module.shortest_unique_source_labels(["examples/basic/deck.md", "examples/basic/deck.md"])
+
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-skill-result.pptx")
+        labels = [
+            shape.text
+            for shape in deck.slides[2].shapes
+            if shape.name.startswith("group_1_item_")
+        ]
+        self.assertEqual(labels, ["basic/deck.md", "comparison/deck.md", "pipeline/deck.md"])
+
     def test_generated_mdpr_deck_has_no_exact_title_body_echo(self) -> None:
         module = load_script("create_mdpr_vs_skill_title_echo", "scripts/create_mdpr_vs_skill_decks.py")
         deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-baseline-result.pptx")

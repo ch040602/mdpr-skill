@@ -35,7 +35,7 @@
       "format": "pptx",
       "exists": true,
       "bytes": 621542,
-      "sha256": "1958ce8eec3e7a33dd0d213195d85eca6b666352895c61b92f88dfd5c5f5d191"
+      "sha256": "cf9fe3d58bd925c9c10a0dc36b9b8f66813438812fbf52ee5df51b0e2782fd5d"
     }
   ],
   "designLock": "C:\\Users\\hcslab_523\\Documents\\mdpr-skill\\artifacts\\mdpr-vs-skill\\mdpr-baseline-build\\mdpresent-design-lock.json",
@@ -2360,7 +2360,7 @@
     "textClipRiskCount": 0,
     "contrastFailures": 0,
     "connectorWarnings": 0,
-    "buildMs": 497,
+    "buildMs": 639,
     "outputBytes": {
       "pptx": 621542
     }

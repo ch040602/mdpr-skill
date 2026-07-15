@@ -124,6 +124,37 @@ def example_overview_lines(selected_examples: list[dict[str, Any]]) -> list[str]
     return [f"- {entry}" for entry in paired]
 
 
+def shortest_unique_source_labels(source_paths: list[str]) -> list[str]:
+    path_parts: list[list[str]] = []
+    for raw_path in source_paths:
+        normalized = str(raw_path).replace("\\", "/")
+        if normalized.startswith("/") or re.match(r"^[A-Za-z]:/", normalized):
+            raise ValueError("Source labels require repository-relative paths.")
+        parts = [part for part in normalized.split("/") if part not in ("", ".")]
+        if not parts or ".." in parts:
+            raise ValueError("Source labels require normalized repository-relative paths.")
+        path_parts.append(parts)
+
+    labels = [parts[-1] for parts in path_parts]
+    by_basename: dict[str, list[int]] = {}
+    for index, label in enumerate(labels):
+        by_basename.setdefault(label, []).append(index)
+    for indices in by_basename.values():
+        if len(indices) == 1:
+            continue
+        resolved = False
+        for depth in range(2, max(len(path_parts[index]) for index in indices) + 1):
+            candidates = ["/".join(path_parts[index][-depth:]) for index in indices]
+            if len(candidates) == len(set(candidates)):
+                for index, candidate in zip(indices, candidates):
+                    labels[index] = candidate
+                resolved = True
+                break
+        if not resolved:
+            raise ValueError("Duplicate source paths cannot be displayed bijectively.")
+    return labels
+
+
 def rgb(hex_value: str) -> RGBColor:
     return RGBColor(*(int(hex_value[i:i + 2], 16) for i in (0, 2, 4)))
 
@@ -803,8 +834,10 @@ def add_source_coverage_slide(prs: Presentation, summaries: list[dict[str, Any]]
         add_text(slide, f"group_{i}_num", x + 0.22, 1.78, 1.2, 0.55, str(len(items)), 30, P.accent2 if i == 1 else P.accent, True)
         add_text(slide, f"group_{i}_label", x + 0.24, 2.48, 1.8, 0.38, name, 20, P.ink, True)
         add_text(slide, f"group_{i}_chars", x + 0.24, 3.02, 2.1, 0.34, f"{sum(item['charCount'] for item in items):,} chars", 16, P.muted, True)
-        for j, item in enumerate(items[:3]):
-            add_text(slide, f"group_{i}_item_{j}", x + 0.24, 3.7 + j * 0.62, 2.08, 0.5, Path(item["path"]).name, 16, P.muted)
+        sample_items = items[:3]
+        sample_labels = shortest_unique_source_labels([item["path"] for item in sample_items])
+        for j, label in enumerate(sample_labels):
+            add_text(slide, f"group_{i}_item_{j}", x + 0.24, 3.7 + j * 0.62, 2.08, 0.5, label, 16, P.muted)
 
 
 def add_pipeline_slide(prs: Presentation) -> None:

@@ -33,7 +33,7 @@
   },
   "runtimeDesignEvidence": {
     "manifestPath": "artifacts/mdpr-vs-skill/mdpr-runtime-manifest.json",
-    "manifestSha256": "de3b9a1fe5b8ee535875988e72bd6d65cf04c70edcb006d16f4ce5d91505df02",
+    "manifestSha256": "63fe9993738e9d608df6f0d6e797d231079d1b201c5ea4f76d6af66838fec635",
     "mdprCommit": "b055bb83adbce42ef94fb4921539e1e71793a509",
     "engine": "mdpresent",
     "slideCount": 32,

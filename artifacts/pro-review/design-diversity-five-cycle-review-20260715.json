@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-07-15",
+  "scope": "Five bounded ChatGPT Pro review-driven-development cycles focused on design diversity and coherence.",
+  "pinnedConversationUrl": "https://chatgpt.com/c/6a54e470-a2bc-83e8-aa5a-5ae4916e88f2",
+  "rounds": [
+    {
+      "cycle": 1,
+      "sessionId": "01KXHX6E6244D45QJ7J8WAWVQ9",
+      "finding": "The comparison gate did not prove that its aggregate result came from the exact MDPR runtime design and coherence manifest.",
+      "disposition": "accepted",
+      "implementationCommit": "48247f7"
+    },
+    {
+      "cycle": 2,
+      "sessionId": "01KXHZAKABBFDP7W9F91T9K4FJ",
+      "finding": "Five skill evidence slides repeated the enclosing-card surface and two six-item catalogs were nearly identical.",
+      "disposition": "accepted",
+      "implementationCommit": "f3ac7b5"
+    },
+    {
+      "cycle": 3,
+      "sessionId": "01KXJ0W73CFG1K72FBWMMZ1BBV",
+      "finding": "A required runtime layout-composition chapter passed with zero eligible slides and no applicability explanation.",
+      "disposition": "accepted-cross-repository",
+      "implementationCommits": {
+        "mdpr": "b055bb8",
+        "mdprSkill": "8dd96b5"
+      }
+    },
+    {
+      "cycle": 4,
+      "sessionId": "01KXJ2MK3Q8SYQ1A4M6H6SGDAQ",
+      "finding": "The MDPR example overview omitted the selected five-methods family that appeared later in the same deck.",
+      "disposition": "accepted-after-rgb-visual-iteration",
+      "implementationCommit": "c1c229c"
+    },
+    {
+      "cycle": 5,
+      "sessionId": "01KXJ6P6S8HCYWZ3WGY4EY0F1P",
+      "finding": "Three distinct example sources collapsed to the repeated basename deck.md in the source-family evidence card.",
+      "disposition": "accepted",
+      "implementationCommit": "the commit containing this ledger"
+    }
+  ],
+  "invalidAttemptsExcluded": [
+    {
+      "reason": "An early workflow-runner attempt used an unrelated prompt and unverified model state."
+    },
+    {
+      "sessionId": "01KXJ2KKA51KMRWMAAW74MFEBG",
+      "reason": "A delayed duplicate cycle-4 send was interrupted and never counted or used."
+    }
+  ],
+  "finalEvidence": {
+    "mdprCommit": "b055bb83adbce42ef94fb4921539e1e71793a509",
+    "mdprSlides": 32,
+    "skillSlides": 9,
+    "minimumFontPt": 16,
+    "invalidSlides": 0,
+    "namedContainerOverflow": 0,
+    "mdprCoherenceErrors": 0,
+    "mdprCoherenceWarnings": 11,
+    "skillMaxSameSurfaceRun": 4,
+    "skillSaturatedWindows": [],
+    "comparisonOk": true
+  }
+}
