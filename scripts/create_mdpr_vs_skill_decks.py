@@ -628,6 +628,45 @@ def add_card(slide, name: str, x: float, y: float, w: float, h: float, title: st
         add_text(slide, f"{name}_body_{i}", tx, y + 0.7 + i * 0.42, tw, 0.34, line, 16, P.muted)
 
 
+def add_open_catalog_cell(slide, name: str, x: float, y: float, w: float, title: str, body: list[str], accent: str) -> None:
+    draw_mono_icon(slide, f"{name}_icon", x + 0.18, y + 0.18, 0.65, "doc")
+    tx = x + 0.88
+    tw = w - 1.08
+    add_text(slide, f"{name}_title", tx, y + 0.2, tw, 0.38, title, 18, accent, True)
+    for i, line in enumerate(body[:3]):
+        add_text(slide, f"{name}_body_{i}", tx, y + 0.7 + i * 0.42, tw, 0.34, line, 16, P.muted)
+
+
+def choose_surface_family(preferred: str, history: list[str], *, alternate: str | None = None, max_run: int = 4) -> str:
+    if alternate and len(history) >= max_run and all(family == preferred for family in history[-max_run:]):
+        return alternate
+    return preferred
+
+
+def collect_skill_surface_evidence(families: list[str]) -> dict[str, Any]:
+    runs: list[int] = []
+    current_run = 0
+    previous = None
+    for family in families:
+        current_run = current_run + 1 if family == previous else 1
+        runs.append(current_run)
+        previous = family
+    saturated_windows = [
+        {"slides": list(range(index - 3, index + 2)), "family": families[index]}
+        for index, run in enumerate(runs)
+        if run >= 5
+    ]
+    return {
+        "checked": True,
+        "surfaceFamilyBySlide": [
+            {"slide": index, "family": family}
+            for index, family in enumerate(families, 1)
+        ],
+        "maxSameSurfaceRun": max(runs, default=0),
+        "saturatedWindows": saturated_windows,
+    }
+
+
 def add_difference_slide(prs: Presentation) -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
@@ -813,7 +852,7 @@ def add_visual_rules_slide(prs: Presentation) -> None:
         add_text(slide, f"step_{i}_label", x - 0.64, 4.4, 1.75, 0.56, label, 16, P.ink, True, PP_ALIGN.CENTER)
 
 
-def add_examples_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
+def add_examples_slide(prs: Presentation, summaries: list[dict[str, Any]], surface_family: str = "enclosed-card") -> None:
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide)
     add_title(slide, "Examples broaden content without changing ownership")
@@ -829,7 +868,11 @@ def add_examples_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> No
         directory = Path(item["path"]).parent.name
         family = family_names.get(directory, directory.replace("-", " ").title())
         body = [item["title"][:45], f"{item['headingCount']} headings · {item['charCount']:,} chars"]
-        add_card(slide, f"example_{i}", x, y, 3.45, 1.9, family, body, P.accent2 if i % 2 else P.accent, "doc")
+        accent = P.accent2 if i % 2 else P.accent
+        if surface_family == "open-catalog":
+            add_open_catalog_cell(slide, f"example_{i}", x, y, 3.45, family, body, accent)
+        else:
+            add_card(slide, f"example_{i}", x, y, 3.45, 1.9, family, body, accent, "doc")
 
 
 def add_chart_slide(prs: Presentation, summaries: list[dict[str, Any]]) -> None:
@@ -896,25 +939,29 @@ def add_text_icon_slide(prs: Presentation) -> None:
         add_text(slide, f"decision_{i}_body", 7.92, y + 0.42, 3.9, 0.34, body, 16, P.muted)
 
 
-def build_skill_deck(summaries: list[dict[str, Any]], mdpr_result: dict[str, Any]) -> None:
+def build_skill_deck(summaries: list[dict[str, Any]], mdpr_result: dict[str, Any]) -> dict[str, Any]:
     prs = Presentation()
     prs.slide_width = Inches(SLIDE_W)
     prs.slide_height = Inches(SLIDE_H)
     slides = [
-        lambda: add_actual_mdpr_run_slide(prs, summaries, mdpr_result),
-        lambda: add_difference_slide(prs),
-        lambda: add_source_coverage_slide(prs, summaries),
-        lambda: add_pipeline_slide(prs),
-        lambda: add_docs_map_slide(prs, summaries),
-        lambda: add_visual_rules_slide(prs),
-        lambda: add_examples_slide(prs, summaries),
-        lambda: add_chart_slide(prs, summaries),
-        lambda: add_text_icon_slide(prs),
+        (lambda _surface: add_actual_mdpr_run_slide(prs, summaries, mdpr_result), "enclosed-card", None),
+        (lambda _surface: add_difference_slide(prs), "native-table", None),
+        (lambda _surface: add_source_coverage_slide(prs, summaries), "enclosed-card", None),
+        (lambda _surface: add_pipeline_slide(prs), "enclosed-card", None),
+        (lambda _surface: add_docs_map_slide(prs, summaries), "enclosed-card", None),
+        (lambda _surface: add_visual_rules_slide(prs), "enclosed-card", None),
+        (lambda surface: add_examples_slide(prs, summaries, surface), "enclosed-card", "open-catalog"),
+        (lambda _surface: add_chart_slide(prs, summaries), "chart-table", None),
+        (lambda _surface: add_text_icon_slide(prs), "split-field", None),
     ]
-    for add in slides:
-        add()
+    surface_history: list[str] = []
+    for add, preferred, alternate in slides:
+        surface = choose_surface_family(preferred, surface_history, alternate=alternate)
+        add(surface)
+        surface_history.append(surface)
     prs.save(SKILL_PPTX)
     shutil.copyfile(SKILL_PPTX, SKILL_FROM_MDPR_RUN_PPTX)
+    return collect_skill_surface_evidence(surface_history)
 
 
 def exported_png_paths(output_dir: Path) -> list[Path]:
@@ -1135,7 +1182,7 @@ def run_comparison() -> None:
         mdpr_commit,
     )
     mdpr_baseline_validation = validate_pptx(BASELINE_PPTX)
-    build_skill_deck(summaries, mdpr_baseline_validation)
+    skill_surface_evidence = build_skill_deck(summaries, mdpr_baseline_validation)
     clear_preview_files(OUT)
     export_errors: list[dict[str, str]] = []
     try:
@@ -1181,6 +1228,7 @@ def run_comparison() -> None:
             ],
         },
         "runtimeDesignEvidence": runtime_design_evidence,
+        "skillSurfaceEvidence": skill_surface_evidence,
         "mdprBaselineValidation": mdpr_baseline_validation,
         "skillValidation": validate_pptx(SKILL_PPTX),
         "powerPointExport": {

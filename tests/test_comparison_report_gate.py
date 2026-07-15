@@ -83,6 +83,22 @@ def complete_report(root: Path) -> dict:
             },
         },
         "actualMarkdownRun": {"mdprCommit": "b" * 40},
+        "skillSurfaceEvidence": {
+            "checked": True,
+            "surfaceFamilyBySlide": [
+                {"slide": 1, "family": "enclosed-card"},
+                {"slide": 2, "family": "native-table"},
+                {"slide": 3, "family": "enclosed-card"},
+                {"slide": 4, "family": "enclosed-card"},
+                {"slide": 5, "family": "enclosed-card"},
+                {"slide": 6, "family": "enclosed-card"},
+                {"slide": 7, "family": "open-catalog"},
+                {"slide": 8, "family": "chart-table"},
+                {"slide": 9, "family": "split-field"},
+            ],
+            "maxSameSurfaceRun": 4,
+            "saturatedWindows": [],
+        },
     }
 
 
@@ -100,6 +116,19 @@ class ComparisonReportGateTests(unittest.TestCase):
     def test_missing_runtime_design_evidence_fails_closed(self) -> None:
         report = complete_report(self.root)
         del report["runtimeDesignEvidence"]
+        self.assertFalse(comparison_report_ok(report, actual_run_exists=True, artifact_root=self.root))
+
+    def test_missing_or_saturated_skill_surface_evidence_fails_closed(self) -> None:
+        report = complete_report(self.root)
+        del report["skillSurfaceEvidence"]
+        self.assertFalse(comparison_report_ok(report, actual_run_exists=True, artifact_root=self.root))
+
+        report = complete_report(self.root)
+        report["skillSurfaceEvidence"]["surfaceFamilyBySlide"][6]["family"] = "enclosed-card"
+        report["skillSurfaceEvidence"]["maxSameSurfaceRun"] = 5
+        report["skillSurfaceEvidence"]["saturatedWindows"] = [
+            {"slides": [3, 4, 5, 6, 7], "family": "enclosed-card"},
+        ]
         self.assertFalse(comparison_report_ok(report, actual_run_exists=True, artifact_root=self.root))
 
     def test_stale_runtime_manifest_hash_fails_closed(self) -> None:

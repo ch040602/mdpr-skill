@@ -33,7 +33,7 @@
   },
   "runtimeDesignEvidence": {
     "manifestPath": "artifacts/mdpr-vs-skill/mdpr-runtime-manifest.json",
-    "manifestSha256": "1caf9f32f8b5618c4cb9d5cb74f05fb076c10243d58f62283e398c807f923839",
+    "manifestSha256": "e8a55f369232f50a1fe256f3238a3d69686ef5fdee1f2d7fa6321bb7261cf310",
     "mdprCommit": "41a84af7b71b351918598ec1434792e19bd99822",
     "engine": "mdpresent",
     "slideCount": 32,
@@ -65,6 +65,49 @@
       }
     }
   },
+  "skillSurfaceEvidence": {
+    "checked": true,
+    "surfaceFamilyBySlide": [
+      {
+        "slide": 1,
+        "family": "enclosed-card"
+      },
+      {
+        "slide": 2,
+        "family": "native-table"
+      },
+      {
+        "slide": 3,
+        "family": "enclosed-card"
+      },
+      {
+        "slide": 4,
+        "family": "enclosed-card"
+      },
+      {
+        "slide": 5,
+        "family": "enclosed-card"
+      },
+      {
+        "slide": 6,
+        "family": "enclosed-card"
+      },
+      {
+        "slide": 7,
+        "family": "open-catalog"
+      },
+      {
+        "slide": 8,
+        "family": "chart-table"
+      },
+      {
+        "slide": 9,
+        "family": "split-field"
+      }
+    ],
+    "maxSameSurfaceRun": 4,
+    "saturatedWindows": []
+  },
   "mdprBaselineValidation": {
     "slides": 32,
     "shapes": 397,
@@ -78,8 +121,8 @@
   },
   "skillValidation": {
     "slides": 9,
-    "shapes": 262,
-    "textFrames": 259,
+    "shapes": 256,
+    "textFrames": 253,
     "pictures": 0,
     "tables": 2,
     "charts": 1,

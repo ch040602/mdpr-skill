@@ -46,6 +46,30 @@ def image_mode(path: Path) -> str:
 
 
 class ComparisonVisualContractTests(unittest.TestCase):
+    def test_surface_history_breaks_the_second_six_item_catalog_without_losing_content(self) -> None:
+        module = load_script("create_mdpr_vs_skill_surface_history", "scripts/create_mdpr_vs_skill_decks.py")
+        saturated = ["native-table", "enclosed-card", "enclosed-card", "enclosed-card", "enclosed-card"]
+        self.assertEqual(
+            module.choose_surface_family("enclosed-card", saturated, alternate="open-catalog"),
+            "open-catalog",
+        )
+        evidence = module.collect_skill_surface_evidence([
+            "enclosed-card", "native-table", "enclosed-card", "enclosed-card",
+            "enclosed-card", "enclosed-card", "open-catalog", "chart-table", "split-field",
+        ])
+        self.assertEqual(evidence["maxSameSurfaceRun"], 4)
+        self.assertEqual(evidence["saturatedWindows"], [])
+
+        deck = Presentation(ROOT / "artifacts" / "mdpr-vs-skill" / "mdpr-skill-result.pptx")
+        first_catalog = deck.slides[4]
+        second_catalog = deck.slides[6]
+        self.assertEqual(len([shape for shape in first_catalog.shapes if shape.name.startswith("docmap_") and shape.name.endswith("_card")]), 6)
+        self.assertEqual(len([shape for shape in second_catalog.shapes if shape.name.startswith("example_") and shape.name.endswith("_card")]), 0)
+        expected_titles = ["Basic", "Comparison", "Pipeline", "Diagram", "Five Methods", "Theme Preview"]
+        visible_text = [shape.text for shape in second_catalog.shapes if getattr(shape, "has_text_frame", False)]
+        for title in expected_titles:
+            self.assertEqual(visible_text.count(title), 1)
+
     def test_runtime_design_evidence_is_copied_and_bounded_from_mdpr_manifest(self) -> None:
         module = load_script("create_mdpr_vs_skill_runtime_evidence", "scripts/create_mdpr_vs_skill_decks.py")
         with tempfile.TemporaryDirectory() as temp_dir:

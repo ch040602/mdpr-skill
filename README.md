@@ -76,6 +76,8 @@ inspection so indexed-palette display artifacts cannot be mistaken for deck
 defects. Comparison success is also bound to the exact generated MDPR manifest
 by SHA-256 and commit: required polish or coherence errors fail closed, while
 MDPR coherence warnings remain warnings instead of becoming skill-owned errors.
+The skill evidence deck separately limits one semantic surface family to four
+consecutive slides, without reusing or overriding MDPR's runtime thresholds.
 
 Quick choice: run MDPR to build a deck; add `mdpr-skill` when you also want an
 agent review. They are complementary, not competing renderers.
@@ -91,6 +93,7 @@ agent review. They are complementary, not competing renderers.
 | Visual variety | Tracks visible `card-row-3`, `card-row-4`, grid, stack, split, radial, and specialized-object geometry; horizontal rows use open cells instead of repeating full white cards | Reviews rendered before/after evidence and may propose a deterministic rule, but does not choose a final layout or surface |
 | Rendered evidence | Owns the editable deck; its text, geometry, and validation remain the source of truth | Normalizes PowerPoint comparison PNGs to RGB before visual review and rejects findings contradicted by PPTX XML, COM text layout, or regenerated evidence |
 | Comparison gate | Records `validation.polish`, `validation.coherence`, slide count, and runtime identity in the build manifest | Verifies the exact copied manifest hash and commit, mirrors MDPR-owned failures, and never recreates layout-diversity thresholds |
+| Evidence surface variety | Owns runtime slide surfaces and their validation | Tracks semantic surface families only inside the nine-slide review artifact; a fifth consecutive family is rejected and the later catalog falls back to open cells |
 | Template fonts | `--template` preserves master/layout/theme OOXML, but generated text uses resolved MDPR typography; set `typography.fontFamily` for an exact family match | Reports a template mismatch; it does not replace master typography or infer installation/embedding from a family name |
 | Font portability | Records host availability separately from explicit PPTX embedding. Repeatable `--embed-font` inputs are `fsType`-checked and packaged as EOT; strict face and hash-bound license-evidence gates reject incomplete or stale proof | Cites MDPR hashes, `fsType`, part paths, coverage, and caller attestations. It never creates license evidence, selects or embeds a font, interprets legal sufficiency, or overrides MDPR pass/fail |
 | Output ownership | Owns final coordinates, colors, z-order, objects, rendering, and pass/fail | Produces hints, review reports, and evidence only; MDPR still makes every final runtime decision |

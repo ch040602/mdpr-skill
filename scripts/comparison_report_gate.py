@@ -11,6 +11,41 @@ MIN_FONT_SIZE_PT = 16
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
+def skill_surface_evidence_ok(report: dict[str, Any]) -> bool:
+    evidence = report.get("skillSurfaceEvidence")
+    if not isinstance(evidence, dict) or evidence.get("checked") is not True:
+        return False
+    by_slide = evidence.get("surfaceFamilyBySlide")
+    slide_count = report.get("skillValidation", {}).get("slides")
+    if not isinstance(by_slide, list) or len(by_slide) != slide_count:
+        return False
+    families: list[str] = []
+    for expected_slide, item in enumerate(by_slide, 1):
+        if not isinstance(item, dict) or item.get("slide") != expected_slide:
+            return False
+        family = item.get("family")
+        if not isinstance(family, str) or not family:
+            return False
+        families.append(family)
+    runs: list[int] = []
+    current_run = 0
+    previous = None
+    for family in families:
+        current_run = current_run + 1 if family == previous else 1
+        runs.append(current_run)
+        previous = family
+    saturated_windows = [
+        {"slides": list(range(index - 3, index + 2)), "family": families[index]}
+        for index, run in enumerate(runs)
+        if run >= 5
+    ]
+    return (
+        evidence.get("maxSameSurfaceRun") == max(runs, default=0)
+        and evidence.get("saturatedWindows") == saturated_windows
+        and not saturated_windows
+    )
+
+
 def runtime_design_evidence_ok(report: dict[str, Any], *, artifact_root: Path) -> bool:
     evidence = report.get("runtimeDesignEvidence")
     actual_run = report.get("actualMarkdownRun")
@@ -104,6 +139,7 @@ def comparison_report_ok(
         and report["skillValidation"].get("namedContainerOverflowCount", 0) == 0
         and all(isinstance(value, (int, float)) and value >= MIN_FONT_SIZE_PT for value in minimum_fonts)
         and runtime_design_evidence_ok(report, artifact_root=artifact_root or Path.cwd())
+        and skill_surface_evidence_ok(report)
         and actual_run_exists
         and report["powerPointExport"]["ok"]
         and report["powerPointExport"]["baselineSlideCount"] == report["mdprBaselineValidation"]["slides"]
